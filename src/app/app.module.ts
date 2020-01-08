@@ -8,9 +8,11 @@ import { FooterComponent } from './components/footer/footer.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { CookieService } from 'ngx-cookie-service';
-import { RootStoreModule } from './root-store/root-store.module';
+import { RootStoreModule } from './store/root-store.module';
 import { WINDOW_PROVIDERS } from './providers/window.provider';
 import { DOCUMENT_PROVIDERS } from './providers/document.provider';
+import { AuthService } from './services/auth.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -23,10 +25,16 @@ import { DOCUMENT_PROVIDERS } from './providers/document.provider';
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        HttpClientModule, // Making Http call within the app
         AppRoutingModule, // <-- Routing modules should be imported in the correct order.c
         RootStoreModule,
     ],
-    providers: [CookieService, ...DOCUMENT_PROVIDERS, ...WINDOW_PROVIDERS],
+    providers: [
+        CookieService, // Service to store and retreive cookies
+        ...DOCUMENT_PROVIDERS, // For header sections logic
+        ...WINDOW_PROVIDERS, // For headers sections logic
+        AuthService, // Auth service is an app level service
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

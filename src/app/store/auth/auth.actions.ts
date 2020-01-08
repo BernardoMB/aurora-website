@@ -2,12 +2,9 @@ import { createAction, props } from '@ngrx/store';
 
 export const login = createAction(
     '[Auth] Login',
-    props<{ email: string; password: string }>(),
+    props<{ username: string; password: string }>(),
 );
-export const loginSuccess = createAction(
-    '[Auth] LoginSuccess',
-    props<{ token: string }>(),
-);
+export const loginSuccess = createAction('[Auth] LoginSuccess');
 export const loginFailure = createAction(
     '[Auth] LoginSuccess',
     props<{ error: any }>(),
@@ -19,7 +16,12 @@ export const getUserInfo = createAction(
 );
 export const getUserInfoSuccess = createAction(
     '[Auth] GetUserInfoSuccess',
-    props<{ id: string; email: string; username: string; token: string; emailVerified: string; }>(),
+    props<{
+        id: string;
+        email: string;
+        username: string;
+        emailVerified: boolean;
+    }>(),
 );
 export const getUserInfoFailure = createAction(
     '[Auth] GetUserInfoFailure',
@@ -28,7 +30,10 @@ export const getUserInfoFailure = createAction(
 
 export const signup = createAction('[Auth] Signup', props<{}>());
 export const signupSuccess = createAction('[Auth] SignupSuccess', props<{}>());
-export const signupFailure = createAction('[Auth] SignupFailure', props<{ error: any }>());
+export const signupFailure = createAction(
+    '[Auth] SignupFailure',
+    props<{ error: any }>(),
+);
 
 export const logout = createAction('[Auth] Logout', props<{}>());
 export const logoutSuccess = createAction('[Auth] LogoutSuccess', props<{}>());
