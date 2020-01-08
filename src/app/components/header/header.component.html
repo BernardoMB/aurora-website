@@ -4,5 +4,6 @@
   <a routerLink="/events" routerLinkActive="active">Events</a>
   <a href="#contact" [class.active]="currentSection === 'contact'">Contact</a>
   <a href="#invest" [class.active]="currentSection === 'invest'">Invest</a>
-  <button>Login</button>
+  <button (click)="onLogin()">Login</button>
+  <button (click)="onRegister()">Register</button>
 </div>

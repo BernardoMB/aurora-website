@@ -6,16 +6,29 @@ export const login = createAction(
 );
 export const loginSuccess = createAction(
     '[Auth] LoginSuccess',
-    props<{ token: string; email: string }>(),
+    props<{ token: string }>(),
 );
 export const loginFailure = createAction(
     '[Auth] LoginSuccess',
     props<{ error: any }>(),
 );
 
+export const getUserInfo = createAction(
+    '[Auth] GetUserInfo',
+    props<{ token: string }>(),
+);
+export const getUserInfoSuccess = createAction(
+    '[Auth] GetUserInfoSuccess',
+    props<{ id: string; email: string; username: string; token: string; emailVerified: string; }>(),
+);
+export const getUserInfoFailure = createAction(
+    '[Auth] GetUserInfoFailure',
+    props<{ error: any }>(),
+);
+
 export const signup = createAction('[Auth] Signup', props<{}>());
 export const signupSuccess = createAction('[Auth] SignupSuccess', props<{}>());
-export const signupFailure = createAction('[Auth] SignupFailure', props<{}>());
+export const signupFailure = createAction('[Auth] SignupFailure', props<{ error: any }>());
 
 export const logout = createAction('[Auth] Logout', props<{}>());
 export const logoutSuccess = createAction('[Auth] LogoutSuccess', props<{}>());
@@ -29,7 +42,7 @@ export const loginWithToken = createAction(
 );
 export const loginWithTokenSuccess = createAction(
     '[Auth] LoginWithTokenSuccess',
-    props<{ token: string; email: string }>(),
+    props<{ token: string }>(),
 );
 export const loginWithTokenFailure = createAction(
     '[Auth] LoginWithTokenSuccess',

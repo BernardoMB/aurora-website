@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header (login)="onLogin()" (register)="onRegister()"></app-header>
 <div [@routeAnimation]="getAnimationData(routerOutlet)">
   <router-outlet #routerOutlet="outlet"></router-outlet>
 </div>
