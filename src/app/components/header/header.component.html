@@ -1,9 +1,19 @@
 <div class="header">
-  <a [routerLink]="['courses']" routerLinkActive="active">Learning</a>
-  <a routerLink="/news" routerLinkActive="active">News</a>
-  <a routerLink="/events" routerLinkActive="active">Events</a>
-  <a href="#contact" [class.active]="currentSection === 'contact'">Contact</a>
-  <a href="#invest" [class.active]="currentSection === 'invest'">Invest</a>
-  <button (click)="onLogin()">Login</button>
-  <button (click)="onRegister()">Register</button>
+  <div class="header_inner">
+    <a [routerLink]="['courses']" routerLinkActive="active">Learning</a>
+    <a routerLink="/news" routerLinkActive="active">News</a>
+    <a routerLink="/events" routerLinkActive="active">Events</a>
+    <a href="#contact" [class.active]="currentSection === 'contact'">Contact</a>
+    <a href="#invest" [class.active]="currentSection === 'invest'">Invest</a>
+    <div class="user-section" *ngIf="user" (mouseenter) ="showUserMenu = true" (mouseleave)="showUserMenu = false">
+      <div>{{user.username}}</div>
+      <div class="user-menu" *ngIf="showUserMenu">
+        <div (click)="onLogout()">Log out</div>
+      </div>
+    </div>
+    <div *ngIf="!user">
+      <button (click)="onLogin()">Login</button>
+      <button (click)="onRegister()">Register</button>
+    </div>
+  </div>
 </div>

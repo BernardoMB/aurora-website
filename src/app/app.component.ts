@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { slideInAnimation } from './animations';
 import { CookieService } from 'ngx-cookie-service';
-import { Store } from '@ngrx/store';
-import { AuthState } from './store/auth/auth.state';
-import { login } from './store/auth/auth.actions';
+import { Store, select } from '@ngrx/store';
+import { login, loginWithToken, logout } from './store/auth/auth.actions';
+import { log } from './shared/utils';
+import { User } from './shared/models/user.model';
+import { selectAuthUser } from './store/auth/auth.selectors';
+import { State } from './store/state';
 
 @Component({
     selector: 'app-root',
@@ -13,11 +16,11 @@ import { login } from './store/auth/auth.actions';
     animations: [slideInAnimation],
 })
 export class AppComponent implements OnInit {
-    title = 'aurora-website';
+    user: User;
 
     constructor(
         private cookieService: CookieService,
-        private store: Store<AuthState>,
+        private store: Store<State>,
     ) {}
 
     getAnimationData(outlet: RouterOutlet) {
@@ -29,22 +32,37 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        const token = this.cookieService.get('token');
+        const token = this.cookieService.get('userToken');
         if (token) {
-            // TODO: Dispatch login attempt.
+            log('AppComponent: User token found! Dispatching login action');
+            this.store.dispatch(loginWithToken());
         }
 
+        this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
+            if (user) {
+                this.user = user;
+            } else {
+                this.user = undefined;
+            }
+        });
         // TODO: Subscribe to the user in property of the authentication state.
         // TODO: If the authentication state changes and there is a user, then pass
         // TODO: the user to the application header so it changes its behavior given that theres is a logged in user.
     }
 
     onLogin() {
+        // ! Login modal
         // TODO: Open login modal.
         console.log('Should open login modal');
+        log('AppComponent: Dispatching login action');
         this.store.dispatch(
             login({ username: 'kevinislas', password: 'Qawsed-123' }),
         );
+    }
+
+    onLogout() {
+        log('AppComponent: Dispatching logout action');
+        this.store.dispatch(logout());
     }
 
     onRegister() {

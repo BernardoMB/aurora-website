@@ -12,7 +12,11 @@ import { RootStoreModule } from './store/root-store.module';
 import { WINDOW_PROVIDERS } from './providers/window.provider';
 import { DOCUMENT_PROVIDERS } from './providers/document.provider';
 import { AuthService } from './services/auth.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {
+    TokenInterceptor,
+    ErrorInterceptor,
+} from './services/token.interceptor';
 
 @NgModule({
     declarations: [
@@ -30,10 +34,22 @@ import { HttpClientModule } from '@angular/common/http';
         RootStoreModule,
     ],
     providers: [
-        CookieService, // Service to store and retreive cookies
         ...DOCUMENT_PROVIDERS, // For header sections logic
         ...WINDOW_PROVIDERS, // For headers sections logic
+        CookieService, // Service to store and retreive cookies
         AuthService, // Auth service is an app level service
+        {
+            // Interceptor
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenInterceptor,
+            multi: true,
+        },
+        {
+            // Interceptor
+            provide: HTTP_INTERCEPTORS,
+            useClass: ErrorInterceptor,
+            multi: true,
+        },
     ],
     bootstrap: [AppComponent],
 })

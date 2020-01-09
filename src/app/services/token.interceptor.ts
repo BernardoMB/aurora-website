@@ -5,11 +5,13 @@ import {
     HttpHandler,
     HttpRequest,
     HttpErrorResponse,
+    HttpResponse,
+    HttpHeaders,
 } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { Observable, of as observableOf, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap, map } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
 import { log } from '../shared/utils';
 
@@ -28,11 +30,11 @@ export class TokenInterceptor implements HttpInterceptor {
         log('Token interceptor: Intercepting request', request.url);
         this.authService = this.injector.get(AuthService);
         // console.log('Token interceptor: Getting refresh token from cookie...');
-        log('Token interceptor: Getting refresh token from cookie...');
+        log('Token interceptor: Getting user token from cookie...');
         const userToken: string = this.cookieService.get('userToken');
         if (userToken) {
             // console.log('Token interceptor: Refresh token found!');
-            log('Token interceptor: Refresh token found!');
+            log('Token interceptor: User token found!');
             // console.log('Token interceptor: Modifiying request...');
             log('Token interceptor: Modifiying request...');
             request = request.clone({
@@ -45,13 +47,52 @@ export class TokenInterceptor implements HttpInterceptor {
             log('Modified request:', request);
         } else {
             // console.log('Token interceptor: No refresh token is present!');
-            log('Token interceptor: No refresh token is present!');
+            log('Token interceptor: No user token is present!');
         }
         // console.log('Token interceptor: Handling request');
         log('Token interceptor: Handling request');
-        return next.handle(request);
+        return next.handle(request).pipe(
+            map((event: HttpEvent<any>) => {
+                if (event instanceof HttpResponse) {
+                    const response = event;
+                    const authorizationHeader = response.headers.get(
+                        'Authorization',
+                    );
+                    if (authorizationHeader) {
+                        log('Authorization header is present');
+                        const incomingUserToken = authorizationHeader.split(
+                            ' ',
+                        )[1];
+                        this.cookieService.set('userToken', incomingUserToken);
+                    }
+                }
+                return event;
+            }),
+        );
     }
 }
+
+/* @Injectable()
+export class ResponseInterceptor implements HttpInterceptor {
+    constructor(private cookieService: CookieService) {}
+    intercept(
+        request: HttpRequest<any>,
+        next: HttpHandler,
+    ): Observable<HttpEvent<any>> {
+        return next.handle(request).pipe(
+            tap((response: HttpResponse<any>) => {
+                const responseHeaders: HttpHeaders = response.headers;
+                if ((responseHeaders as any).Authorization) {
+                    log('Authorization header is present');
+                    const authorizationHeader = (responseHeaders as any)
+                        .Authorization;
+                    const userToken = authorizationHeader.split(' ')[1];
+                    this.cookieService.set('userToken', userToken);
+                }
+            })
+        );
+    }
+} */
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {

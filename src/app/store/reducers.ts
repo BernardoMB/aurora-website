@@ -1,23 +1,17 @@
-import {
-  ActionReducer,
-  ActionReducerMap,
-  MetaReducer,
-} from '@ngrx/store';
+import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { environment } from '../../environments/environment';
 
-export interface State {}
-
-export const reducers: ActionReducerMap<State> = {};
+export const reducers: ActionReducerMap<{}> = {};
 
 // console.log all actions
 export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
-  return (state, action) => {
-      console.log('state', state);
-      console.log('action', action);
-      return reducer(state, action);
-  };
+    return (state, action) => {
+        console.log('state', state);
+        console.log('action', action);
+        return reducer(state, action);
+    };
 }
 
-export const metaReducers: MetaReducer<State>[] = !environment.production
-  ? [debug]
-  : [];
+export const metaReducers: MetaReducer<{}>[] = !environment.production
+    ? [debug]
+    : [];

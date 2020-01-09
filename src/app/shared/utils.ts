@@ -23,6 +23,10 @@ export class PagedData<T> {
 export const log = (message?: string, value?: any) => {
     const shouldLog = true;
     if (shouldLog) {
-        console.log(message, value);
+        if (value) {
+            console.log(message, value);
+        } else {
+            console.log(message);
+        }
     }
 };

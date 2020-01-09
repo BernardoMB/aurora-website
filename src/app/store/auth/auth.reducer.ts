@@ -1,6 +1,7 @@
 import * as AuthActions from './auth.actions';
 import { createReducer, on, Action } from '@ngrx/store';
 import { initialAuthState, AuthState } from './auth.state';
+import { User } from '../../shared/models/user.model';
 
 export const authFeatureKey = 'auth';
 
@@ -14,26 +15,23 @@ const authReducer = createReducer(
         ...state,
         errorMessage: 'Incorrect email and/or password.',
     })),
-    on(
-        AuthActions.getUserInfoSuccess,
-        (state: AuthState, { id, email, username, emailVerified }) => ({
-            ...state,
-            user: { id, email, username, emailVerified },
-        }),
-    ),
+    on(AuthActions.getUserInfoSuccess, (state: AuthState, payload: User) => ({
+        ...state,
+        user: { ...payload },
+    })),
     on(AuthActions.signupFailure, (state: AuthState, { error }) => ({
         ...state,
-        errorMessage: error.message, // TODO: test this reducer
+        errorMessage: error.message, // TODO: Implement correct error handling
     })),
-    on(AuthActions.logout, () => initialAuthState),
-    on(AuthActions.loginWithTokenSuccess, (state: AuthState, { token }) => ({
+    on(AuthActions.loginWithTokenSuccess, (state: AuthState) => ({
         ...state,
         isAuthenticated: true,
     })),
     on(AuthActions.loginWithTokenFailure, (state: AuthState, { error }) => ({
         ...state,
-        errorMessage: 'Incorrect email and/or password.',
+        errorMessage: 'Session is no longer valid.',
     })),
+    on(AuthActions.logout, () => initialAuthState),
 );
 
 export function reducer(state: AuthState | undefined, action: Action) {

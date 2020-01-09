@@ -1,4 +1,7 @@
 import { createAction, props } from '@ngrx/store';
+import { User } from '../../shared/models/user.model';
+import { SignupDto } from '../../shared/dtos/signup.dto';
+import { GetUserDto } from '../../shared/dtos/get-user.dto';
 
 export const login = createAction(
     '[Auth] Login',
@@ -16,40 +19,34 @@ export const getUserInfo = createAction(
 );
 export const getUserInfoSuccess = createAction(
     '[Auth] GetUserInfoSuccess',
-    props<{
-        id: string;
-        email: string;
-        username: string;
-        emailVerified: boolean;
-    }>(),
+    props<User>(),
 );
 export const getUserInfoFailure = createAction(
     '[Auth] GetUserInfoFailure',
     props<{ error: any }>(),
 );
 
-export const signup = createAction('[Auth] Signup', props<{}>());
-export const signupSuccess = createAction('[Auth] SignupSuccess', props<{}>());
+export const signup = createAction('[Auth] Signup', props<SignupDto>());
+export const signupSuccess = createAction(
+    '[Auth] SignupSuccess',
+    props<GetUserDto>(),
+);
 export const signupFailure = createAction(
     '[Auth] SignupFailure',
     props<{ error: any }>(),
 );
 
-export const logout = createAction('[Auth] Logout', props<{}>());
-export const logoutSuccess = createAction('[Auth] LogoutSuccess', props<{}>());
-export const logoutFailure = createAction('[Auth] LogoutFailure', props<{}>());
-
 export const getStatus = createAction('[Auth] GetStatus', props<{}>());
 
-export const loginWithToken = createAction(
-    '[Auth] LoginWithToken',
-    props<{ token: string }>(),
-);
+export const loginWithToken = createAction('[Auth] LoginWithToken');
 export const loginWithTokenSuccess = createAction(
     '[Auth] LoginWithTokenSuccess',
-    props<{ token: string }>(),
 );
 export const loginWithTokenFailure = createAction(
     '[Auth] LoginWithTokenSuccess',
     props<{ error: any }>(),
 );
+
+export const logout = createAction('[Auth] Logout');
+export const logoutSuccess = createAction('[Auth] LogoutSuccess');
+export const logoutFailure = createAction('[Auth] LogoutFailure');

@@ -1,8 +1,29 @@
 .header {
-  background: #84f7d7;
-  box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1),
-    0 3px 1px 0 rgba(20, 23, 28, 0.1);
-  display: block;
-  position: relative;
-  z-index: 1010;
+    background: #84f7d7;
+    box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1),
+        0 3px 1px 0 rgba(20, 23, 28, 0.1);
+    display: block;
+    position: relative;
+    z-index: 1010;
+    .header_inner {
+        display: flex;
+        justify-content: space-between;
+        background: inherit;
+        box-sizing: border-box;
+        height: 65px;
+        max-width: 1440px;
+        margin: auto;
+        padding: 0 20px;
+        position: relative;
+        z-index: 1011;
+        .user-section {
+            position: relative;
+            .user-menu {
+                position: absolute;
+                right: 0px;
+                background-color: white;
+                cursor: pointer;
+            }
+        }
+    }
 }
