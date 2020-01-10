@@ -14,10 +14,13 @@ import {
     loginWithTokenSuccess,
     loginWithTokenFailure,
     logout,
+    signupFailure,
 } from './auth.actions';
 import { of } from 'rxjs';
 import { GetUserDto } from '../../shared/dtos/get-user.dto';
 import { CookieService } from 'ngx-cookie-service';
+import { log } from '../../shared/utils';
+import { HttpErrorResponse } from '@angular/common/http';
 
 /**
  * Authentication effects
@@ -39,7 +42,11 @@ export class AuthEffects {
                         );
                         return loginSuccess();
                     }),
-                    catchError(error => of(loginFailure({ error }))),
+                    catchError((errorResponse: HttpErrorResponse) => {
+                      log('Catched error from service:', errorResponse);
+                      log('Dispatching login failure action');
+                      return of(loginFailure({ error: errorResponse, message: errorResponse.error.message }));
+                    }),
                 ),
             ),
         ),
@@ -77,7 +84,9 @@ export class AuthEffects {
                             emailVerified: responseBody.emailVerified,
                         }),
                     ),
-                    catchError(error => of(loginFailure({ error }))),
+                    catchError((errorResponse: HttpErrorResponse) =>
+                      of(loginFailure({ error: errorResponse, message: errorResponse.error.message }))
+                    ),
                 ),
             ),
         ),
@@ -90,7 +99,7 @@ export class AuthEffects {
                 exhaustMap(action =>
                     this.authService
                         .signup(action)
-                        .pipe(catchError(error => of(loginFailure({ error })))),
+                        .pipe(catchError(error => of(signupFailure({ error })))),
                 ),
             ),
         { dispatch: false },
@@ -119,7 +128,7 @@ export class AuthEffects {
                             email: responseBody.email,
                             username: responseBody.username,
                             emailVerified: responseBody.emailVerified,
-                        }),
+                        })
                     ),
                     catchError(error => of(getUserInfoFailure({ error }))),
                 ),

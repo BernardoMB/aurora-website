@@ -45,9 +45,6 @@ export class AppComponent implements OnInit {
                 this.user = undefined;
             }
         });
-        // TODO: Subscribe to the user in property of the authentication state.
-        // TODO: If the authentication state changes and there is a user, then pass
-        // TODO: the user to the application header so it changes its behavior given that theres is a logged in user.
     }
 
     onLogin() {
@@ -56,7 +53,7 @@ export class AppComponent implements OnInit {
         console.log('Should open login modal');
         log('AppComponent: Dispatching login action');
         this.store.dispatch(
-            login({ username: 'kevinislas', password: 'Qawsed-123' }),
+            login({ username: 'kevinislas', password: 'Qawsed123' }),
         );
     }
 

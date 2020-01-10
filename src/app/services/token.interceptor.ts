@@ -103,26 +103,20 @@ export class ErrorInterceptor implements HttpInterceptor {
     ): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             catchError(error => {
+                log('ErrorInterceptor: Response interceptor catched error!');
                 if (
                     error instanceof HttpErrorResponse &&
                     error.status === 401
                 ) {
-                    // console.log('Error interceptor: Response status is 401 (unauthorized)');
-                    log(
-                        'Error interceptor: Response status is 401 (unauthorized)',
-                    );
-                    // console.log('Error interceptor: Removeing refresh and id tokens');
-                    log('Error interceptor: Removeing refresh and id tokens');
-                    // localStorage.removeItem('idToken');
-                    this.cookieService.delete('idToken');
-                    // localStorage.removeItem('refreshToken');
-                    this.cookieService.delete('refreshToken');
-                    // console.log('Error interceptor: Redirecting to login page');
-                    log('Error interceptor: Redirecting to login page');
-                    this.router.navigateByUrl('/log-in');
+                    log('ErrorInterceptor: Response status is 401 (unauthorized)');
+                    log('ErrorInterceptor: Removeing userToken');
+                    this.cookieService.delete('userToken');
+                    /**
+                     * No redirecting is need
+                     * // log('ErrorInterceptor: Redirecting to login page');
+                     * // this.router.navigateByUrl('/log-in');
+                     */
                 }
-                // console.error('Response interceptor catched error!');
-                log('Response interceptor catched error!');
                 return throwError(error);
             }),
         );

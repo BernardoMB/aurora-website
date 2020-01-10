@@ -10,15 +10,19 @@ const authReducer = createReducer(
     on(AuthActions.loginSuccess, (state: AuthState) => ({
         ...state,
         isAuthenticated: true,
+        errorMessage: null
     })),
-    on(AuthActions.loginFailure, (state: AuthState, { error }) => ({
+    on(AuthActions.loginFailure, (state: AuthState, { error, message }) => ({
         ...state,
-        errorMessage: 'Incorrect email and/or password.',
+        errorMessage: message,
     })),
-    on(AuthActions.getUserInfoSuccess, (state: AuthState, payload: User) => ({
-        ...state,
-        user: { ...payload },
-    })),
+    on(AuthActions.getUserInfoSuccess, (state: AuthState, { id, email, username, emailVerified }) => {
+        return {
+          ...state,
+          user: { id, email, username, emailVerified },
+        }
+      }
+    ),
     on(AuthActions.signupFailure, (state: AuthState, { error }) => ({
         ...state,
         errorMessage: error.message, // TODO: Implement correct error handling
