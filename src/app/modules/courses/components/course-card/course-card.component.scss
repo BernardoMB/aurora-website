@@ -1,0 +1,19 @@
+.course-card-wrapper {
+    .course-card-container {
+        border-radius: 5px;
+        box-shadow: rgba(0, 0, 0, 0.75) -2px 2px 5px 0px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 160px;
+        width: 216px;
+        .course-details {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            color: white;
+            border-radius: 5px;
+            border-bottom-right-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+    }
+}

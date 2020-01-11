@@ -1,0 +1,66 @@
+.courses-jumbotron-section {
+    overflow: hidden;
+    .jumbotron-wrapper {
+        background-size: cover;
+        resize: both;
+        background-position-x: center;
+        background-position-y: center;
+        background-image: url('/assets/img/jumbotrons/courses-jumbotron.jpg');
+        .jumbotron-conatiner {
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 280px;
+            .jumbotron-texts {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                font-family: 'Open Sans';
+                color: white;
+                .jumbotron-title {
+                    font-size: 36px;
+                    font-weight: 300;
+                    line-height: 1.1;
+                }
+                .jumbotron-description {
+                    margin-top: 14px;
+                    font-size: 18px;
+                    font-weight: lighter;
+                    line-height: 1.1;
+                }
+            }
+        }
+    }
+}
+
+.featured-courses-section {
+    display: flex;
+    justify-content: center;
+    .featured-courses-container {
+        overflow: hidden;
+        max-width: 1440px;
+        display: flex;
+        flex-direction: column;
+        padding: 40px 20px;
+        .featured-title-container {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            color: #1b4568;
+            .featured-title {
+                font-family: 'Trebuchet MS', Helvetica, sans-serif;
+                font-size: 20px;
+                font-weight: bold;
+            }
+        }
+        .featured-videos-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            .course-card {
+                margin: 10px 20px;
+            }
+        }
+    }
+}

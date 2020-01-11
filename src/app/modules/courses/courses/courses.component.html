@@ -1,2 +1,26 @@
-<p>courses works!</p>
+<section class="courses-jumbotron-section">
+  <div class="jumbotron-wrapper">
+    <div class="jumbotron-conatiner">
+      <div class="jumbotron-texts">
+        <div class="jumbotron-title">Courses</div>
+        <div class="jumbotron-description">Build your library for your career and personal growth</div>
+      </div>
+    </div>
+  </div>
+</section>
+<section *ngIf="featuredCourses.length > 0" class="featured-courses-section">
+  <div class="featured-courses-container">
+    <div class="featured-title-container">
+      <div class="featured-title">Featured</div>
+    </div>
+    <div class="featured-videos-container">
+      <div class="course-card" *ngFor="let course of featuredCourses; let i = index">
+        <app-course-card [course]="course"></app-course-card>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
 <button [routerLink]="['/courses', '1']" >Go to course>

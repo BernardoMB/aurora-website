@@ -10,6 +10,7 @@ import { CourseDetailComponent } from './views/course-detail/course-detail.compo
 import { LessonComponent } from './views/lesson/lesson.component';
 import { LearnComponent } from './views/learn/learn.component';
 import { CartComponent } from './views/cart/cart.component';
+import { CourseCardComponent } from './components/course-card/course-card.component';
 
 @NgModule({
     declarations: [
@@ -21,6 +22,7 @@ import { CartComponent } from './views/cart/cart.component';
         LessonComponent,
         LearnComponent,
         CartComponent,
+        CourseCardComponent,
     ],
     imports: [CommonModule, CoursesRoutingModule],
 })

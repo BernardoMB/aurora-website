@@ -17,6 +17,7 @@ import {
     TokenInterceptor,
     ErrorInterceptor,
 } from './services/token.interceptor';
+import { MaterialModule } from './material.module';
 
 @NgModule({
     declarations: [
@@ -30,6 +31,7 @@ import {
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule, // Making Http call within the app
+        MaterialModule,
         AppRoutingModule, // <-- Routing modules should be imported in the correct order.c
         RootStoreModule,
     ],
