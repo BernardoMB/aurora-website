@@ -7,7 +7,7 @@
         background-position-y: center;
         background-image: url('/assets/img/jumbotrons/courses-jumbotron.jpg');
         .jumbotron-conatiner {
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -35,31 +35,86 @@
 }
 
 .featured-courses-section {
-    display: flex;
-    justify-content: center;
+    display: block;
+    position: relative;
     .featured-courses-container {
-        overflow: hidden;
+        padding: 40px 20px;
         max-width: 1440px;
         display: flex;
         flex-direction: column;
-        padding: 40px 20px;
+        overflow: hidden;
+        box-sizing: border-box;
+        position: relative;
+        margin: auto;
         .featured-title-container {
             display: flex;
             align-items: center;
-            justify-content: start;
-            color: #1b4568;
+            justify-content: space-between;
+            font-family: 'Trebuchet MS', Helvetica, sans-serif;
             .featured-title {
-                font-family: 'Trebuchet MS', Helvetica, sans-serif;
+                color: #1b4568;
                 font-size: 20px;
                 font-weight: bold;
             }
+            a {
+                margin-right: 20px;
+                font-size: 18px;
+                color: darkgray;
+                text-decoration: underline;
+                cursor: pointer;
+            }
         }
-        .featured-videos-container {
+        .featured-cards-container {
             display: flex;
+            justify-content: space-between;
             flex-wrap: wrap;
             margin-top: 10px;
             .course-card {
-                margin: 10px 20px;
+                margin: 10px 0px;
+                margin-right: 20px;
+            }
+        }
+    }
+}
+
+.categories-section {
+    display: block;
+    position: relative;
+    .categories-container {
+        padding: 40px 20px;
+        max-width: 1440px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-sizing: border-box;
+        position: relative;
+        margin: auto;
+        .categories-title-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'Trebuchet MS', Helvetica, sans-serif;
+            .categories-title {
+                color: #1b4568;
+                font-size: 20px;
+                font-weight: bold;
+            }
+            a {
+                margin-right: 20px;
+                font-size: 18px;
+                color: darkgray;
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        }
+        .categories-cards-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            .category-card {
+                margin: 10px 0px;
+                margin-right: 20px;
             }
         }
     }

@@ -186,6 +186,55 @@ export class CoursesComponent implements OnInit {
         },
     ];
 
+    // TODO: this catrgories array will be obtained with a call to the server with pagination
+    categories = [
+        {
+            'name': 'Business',
+            'hexColor': '#00BFFF',
+            'imgUrl':
+                'https://auroracourses.blob.core.windows.net/categoryimages/6af3a663dd26940d279e3d3758d62669.png',
+            'createdAt': '2020-01-13T18:21:15.917Z',
+            'updatedAt': '2020-01-13T18:21:15.917Z',
+            'id': '5e1cb51be05ff40023656e55',
+        },
+        {
+            'name': 'Finance',
+            'hexColor': '#ffc107',
+            'imgUrl':
+                'https://auroracourses.blob.core.windows.net/categoryimages/6af3a663dd26940d279e3d3758d62669.png',
+            'createdAt': '2020-01-13T18:21:15.917Z',
+            'updatedAt': '2020-01-13T18:21:15.917Z',
+            'id': '5e1cb51be05ff40023656e56',
+        },
+        {
+            'name': 'Economy',
+            'hexColor': '#8bc34a',
+            'imgUrl':
+                'https://auroracourses.blob.core.windows.net/categoryimages/6af3a663dd26940d279e3d3758d62669.png',
+            'createdAt': '2020-01-13T18:21:15.917Z',
+            'updatedAt': '2020-01-13T18:21:15.917Z',
+            'id': '5e1cb51be05ff40023656e57',
+        },
+        {
+            'name': 'Accounting',
+            'hexColor': '#ff5722',
+            'imgUrl':
+                'https://auroracourses.blob.core.windows.net/categoryimages/6af3a663dd26940d279e3d3758d62669.png',
+            'createdAt': '2020-01-13T18:21:15.917Z',
+            'updatedAt': '2020-01-13T18:21:15.917Z',
+            'id': '5e1cb51be05ff40023656e58',
+        },
+        {
+            'name': 'Legal',
+            'hexColor': '#ff7ae5',
+            'imgUrl':
+                'https://auroracourses.blob.core.windows.net/categoryimages/6af3a663dd26940d279e3d3758d62669.png',
+            'createdAt': '2020-01-13T18:21:15.917Z',
+            'updatedAt': '2020-01-13T18:21:15.917Z',
+            'id': '5e1cb51be05ff40023656e59',
+        },
+    ];
+
     constructor() {}
 
     ngOnInit() {}

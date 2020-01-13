@@ -1,0 +1,36 @@
+.category-card-wrapper {
+    .category-card-container {
+        width: 230px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .upper {
+            width: 140px;
+            height: 140px;
+            border-radius: 75px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .image-container {
+                background-size: cover;
+                resize: both;
+                background-position-x: center;
+                background-position-y: center;
+                width: 125px;
+                height: 125px;
+                border-radius: 100px;
+            }
+        }
+        .lower {
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            .category-name {
+                font-family: 'Trebuchet MS', Helvetica, sans-serif;
+                color: #1b4568;
+                font-size: 20px;
+                font-weight: bold;
+            }
+        }
+    }
+}

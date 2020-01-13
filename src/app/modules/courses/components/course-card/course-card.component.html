@@ -1,9 +1,16 @@
 <div class="course-card-wrapper">
   <div class="course-card-container" [style.background]="'url(' + course.imgUrl + ')'">
     <div class="course-details">
-      <div>{{course.name}}</div>
-      <div>{{course.price}}</div>
-      <div>{{course.rating}}</div>
+      <div class="course-name-container">
+        <div>{{course.name}}</div>
+      </div>
+      <div class="price-rating-continer">
+        <div class="rating-container">
+          <i class="material-icons">star</i>
+          <div>{{course.rating}}</div>
+        </div>
+        <div>{{course.price | currency }}</div>
+      </div>
     </div>
   </div>
 </div>
