@@ -11,13 +11,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            box-shadow: rgba(0, 0, 0, 0.75) -2px 2px 5px 0px;
             .image-container {
                 background-size: cover;
                 resize: both;
                 background-position-x: center;
                 background-position-y: center;
-                width: 125px;
-                height: 125px;
+                width: 128px;
+                height: 128px;
                 border-radius: 100px;
             }
         }
@@ -28,7 +29,7 @@
             .category-name {
                 font-family: 'Trebuchet MS', Helvetica, sans-serif;
                 color: #1b4568;
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: bold;
             }
         }
