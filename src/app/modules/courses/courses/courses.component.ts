@@ -31,7 +31,15 @@ export class CoursesComponent implements OnInit {
       description:
         // tslint:disable-next-line: max-line-length
         'Financial Mathematics is the application of mathematical methods to financial problems. (Equivalent names sometimes used are quantitative finance, financial engineering, mathematical finance, and computational finance.) It draws on tools from probability, statistics, stochastic processes, and economic theory.',
-      category: 'Finance',
+      category: {
+        name: 'Finance',
+        hexColor: '#00BFFF',
+        imgUrl:
+          'https://auroracourses.blob.core.windows.net/categoryimages/6af3a663dd26940d279e3d3758d62669.png',
+        createdAt: '2020-01-13T18:21:15.917Z',
+        updatedAt: '2020-01-13T18:21:15.917Z',
+        id: '5e1cb51be05ff40023656e55',
+      },
       price: 125,
       discount: 0,
       overview:
@@ -68,7 +76,15 @@ export class CoursesComponent implements OnInit {
       description:
         // tslint:disable-next-line: max-line-length
         'Financial Mathematics is the application of mathematical methods to financial problems. (Equivalent names sometimes used are quantitative finance, financial engineering, mathematical finance, and computational finance.) It draws on tools from probability, statistics, stochastic processes, and economic theory.',
-      category: 'Finance',
+      category: {
+        name: 'Accounting',
+        hexColor: '#ff7ae5',
+        imgUrl:
+          'https://auroracourses.blob.core.windows.net/categoryimages/aa61e344ea7386c08fade32e77acffff.jpg',
+        createdAt: '2020-01-13T18:21:15.917Z',
+        updatedAt: '2020-01-13T18:21:15.917Z',
+        id: '5e1cb51be05ff40023656e58',
+      },
       price: 12,
       discount: 0,
       overview:
@@ -105,7 +121,15 @@ export class CoursesComponent implements OnInit {
       description:
         // tslint:disable-next-line: max-line-length
         'Financial Mathematics is the application of mathematical methods to financial problems. (Equivalent names sometimes used are quantitative finance, financial engineering, mathematical finance, and computational finance.) It draws on tools from probability, statistics, stochastic processes, and economic theory.',
-      category: 'Finance',
+      category: {
+        name: 'Finance',
+        hexColor: '#00BFFF',
+        imgUrl:
+          'https://auroracourses.blob.core.windows.net/categoryimages/6af3a663dd26940d279e3d3758d62669.png',
+        createdAt: '2020-01-13T18:21:15.917Z',
+        updatedAt: '2020-01-13T18:21:15.917Z',
+        id: '5e1cb51be05ff40023656e55',
+      },
       price: 110,
       discount: 0,
       overview:
@@ -142,7 +166,15 @@ export class CoursesComponent implements OnInit {
       description:
         // tslint:disable-next-line: max-line-length
         'Financial Mathematics is the application of mathematical methods to financial problems. (Equivalent names sometimes used are quantitative finance, financial engineering, mathematical finance, and computational finance.) It draws on tools from probability, statistics, stochastic processes, and economic theory.',
-      category: 'Finance',
+      category: {
+        name: 'Economy',
+        hexColor: '#ffc107',
+        imgUrl:
+          'https://auroracourses.blob.core.windows.net/categoryimages/ed1aaf16c28b653d0fcc1fccb9472879.jpg',
+        createdAt: '2020-01-13T18:21:15.917Z',
+        updatedAt: '2020-01-13T18:21:15.917Z',
+        id: '5e1cb51be05ff40023656e57',
+      },
       price: 65,
       discount: 0,
       overview:
@@ -179,7 +211,15 @@ export class CoursesComponent implements OnInit {
       description:
         // tslint:disable-next-line: max-line-length
         'Financial Mathematics is the application of mathematical methods to financial problems. (Equivalent names sometimes used are quantitative finance, financial engineering, mathematical finance, and computational finance.) It draws on tools from probability, statistics, stochastic processes, and economic theory.',
-      category: 'Finance',
+      category: {
+        name: 'Business',
+        hexColor: '#ff5722',
+        imgUrl:
+          'https://auroracourses.blob.core.windows.net/categoryimages/705851dcfab771036477382d35b3f1545.jpg',
+        createdAt: '2020-01-13T18:21:15.917Z',
+        updatedAt: '2020-01-13T18:21:15.917Z',
+        id: '5e1cb51be05ff40023656e56',
+      },
       price: 49,
       discount: 0,
       overview:
@@ -199,26 +239,26 @@ export class CoursesComponent implements OnInit {
   // TODO: this catrgories array will be obtained with a call to the server with pagination
   categories = [
     {
-      name: 'Business',
+      name: 'Finance',
       hexColor: '#00BFFF',
       imgUrl:
-        'https://auroracourses.blob.core.windows.net/categoryimages/705851dcfab771036477382d35b3f1545.jpg',
+        'https://auroracourses.blob.core.windows.net/categoryimages/6af3a663dd26940d279e3d3758d62669.png',
       createdAt: '2020-01-13T18:21:15.917Z',
       updatedAt: '2020-01-13T18:21:15.917Z',
       id: '5e1cb51be05ff40023656e55',
     },
     {
-      name: 'Finance',
-      hexColor: '#ffc107',
+      name: 'Business',
+      hexColor: '#ff5722',
       imgUrl:
-        'https://auroracourses.blob.core.windows.net/categoryimages/6af3a663dd26940d279e3d3758d62669.png',
+        'https://auroracourses.blob.core.windows.net/categoryimages/705851dcfab771036477382d35b3f1545.jpg',
       createdAt: '2020-01-13T18:21:15.917Z',
       updatedAt: '2020-01-13T18:21:15.917Z',
       id: '5e1cb51be05ff40023656e56',
     },
     {
       name: 'Economy',
-      hexColor: '#8bc34a',
+      hexColor: '#ffc107',
       imgUrl:
         'https://auroracourses.blob.core.windows.net/categoryimages/ed1aaf16c28b653d0fcc1fccb9472879.jpg',
       createdAt: '2020-01-13T18:21:15.917Z',
@@ -227,7 +267,7 @@ export class CoursesComponent implements OnInit {
     },
     {
       name: 'Accounting',
-      hexColor: '#ff5722',
+      hexColor: '#ff7ae5',
       imgUrl:
         'https://auroracourses.blob.core.windows.net/categoryimages/aa61e344ea7386c08fade32e77acffff.jpg',
       createdAt: '2020-01-13T18:21:15.917Z',
@@ -236,7 +276,7 @@ export class CoursesComponent implements OnInit {
     },
     {
       name: 'Legal',
-      hexColor: '#ff7ae5',
+      hexColor: '#8bc34a',
       imgUrl:
         'https://auroracourses.blob.core.windows.net/categoryimages/110eb1cfc97e12bb20244b9102fbcdeef8.jpg',
       createdAt: '2020-01-13T18:21:15.917Z',
@@ -269,7 +309,15 @@ export class CoursesComponent implements OnInit {
       description:
         // tslint:disable-next-line: max-line-length
         'Financial Mathematics is the application of mathematical methods to financial problems. (Equivalent names sometimes used are quantitative finance, financial engineering, mathematical finance, and computational finance.) It draws on tools from probability, statistics, stochastic processes, and economic theory.',
-      category: 'Finance',
+      category: {
+        name: 'Finance',
+        hexColor: '#00BFFF',
+        imgUrl:
+          'https://auroracourses.blob.core.windows.net/categoryimages/6af3a663dd26940d279e3d3758d62669.png',
+        createdAt: '2020-01-13T18:21:15.917Z',
+        updatedAt: '2020-01-13T18:21:15.917Z',
+        id: '5e1cb51be05ff40023656e55',
+      },
       price: 125,
       discount: 0,
       overview:
@@ -306,7 +354,15 @@ export class CoursesComponent implements OnInit {
       description:
         // tslint:disable-next-line: max-line-length
         'Financial Mathematics is the application of mathematical methods to financial problems. (Equivalent names sometimes used are quantitative finance, financial engineering, mathematical finance, and computational finance.) It draws on tools from probability, statistics, stochastic processes, and economic theory.',
-      category: 'Finance',
+      category: {
+        name: 'Accounting',
+        hexColor: '#ff7ae5',
+        imgUrl:
+          'https://auroracourses.blob.core.windows.net/categoryimages/aa61e344ea7386c08fade32e77acffff.jpg',
+        createdAt: '2020-01-13T18:21:15.917Z',
+        updatedAt: '2020-01-13T18:21:15.917Z',
+        id: '5e1cb51be05ff40023656e58',
+      },
       price: 12,
       discount: 0,
       overview:
@@ -343,7 +399,15 @@ export class CoursesComponent implements OnInit {
       description:
         // tslint:disable-next-line: max-line-length
         'Financial Mathematics is the application of mathematical methods to financial problems. (Equivalent names sometimes used are quantitative finance, financial engineering, mathematical finance, and computational finance.) It draws on tools from probability, statistics, stochastic processes, and economic theory.',
-      category: 'Finance',
+      category: {
+        name: 'Finance',
+        hexColor: '#00BFFF',
+        imgUrl:
+          'https://auroracourses.blob.core.windows.net/categoryimages/6af3a663dd26940d279e3d3758d62669.png',
+        createdAt: '2020-01-13T18:21:15.917Z',
+        updatedAt: '2020-01-13T18:21:15.917Z',
+        id: '5e1cb51be05ff40023656e55',
+      },
       price: 110,
       discount: 0,
       overview:
@@ -380,7 +444,15 @@ export class CoursesComponent implements OnInit {
       description:
         // tslint:disable-next-line: max-line-length
         'Financial Mathematics is the application of mathematical methods to financial problems. (Equivalent names sometimes used are quantitative finance, financial engineering, mathematical finance, and computational finance.) It draws on tools from probability, statistics, stochastic processes, and economic theory.',
-      category: 'Finance',
+      category: {
+        name: 'Economy',
+        hexColor: '#ffc107',
+        imgUrl:
+          'https://auroracourses.blob.core.windows.net/categoryimages/ed1aaf16c28b653d0fcc1fccb9472879.jpg',
+        createdAt: '2020-01-13T18:21:15.917Z',
+        updatedAt: '2020-01-13T18:21:15.917Z',
+        id: '5e1cb51be05ff40023656e57',
+      },
       price: 65,
       discount: 0,
       overview:
@@ -417,7 +489,15 @@ export class CoursesComponent implements OnInit {
       description:
         // tslint:disable-next-line: max-line-length
         'Financial Mathematics is the application of mathematical methods to financial problems. (Equivalent names sometimes used are quantitative finance, financial engineering, mathematical finance, and computational finance.) It draws on tools from probability, statistics, stochastic processes, and economic theory.',
-      category: 'Finance',
+      category: {
+        name: 'Business',
+        hexColor: '#ff5722',
+        imgUrl:
+          'https://auroracourses.blob.core.windows.net/categoryimages/705851dcfab771036477382d35b3f1545.jpg',
+        createdAt: '2020-01-13T18:21:15.917Z',
+        updatedAt: '2020-01-13T18:21:15.917Z',
+        id: '5e1cb51be05ff40023656e56',
+      },
       price: 49,
       discount: 0,
       overview:

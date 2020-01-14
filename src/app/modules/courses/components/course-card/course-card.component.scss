@@ -11,11 +11,20 @@
     resize: both;
     background-position-x: center;
     background-position-y: center;
+    position: relative;
+    .category-indicator {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      top: 10px;
+      left: 10px;
+      box-shadow: rgba(0, 0, 0, 0.75) 0px 0px 5px 0px;
+    }
     .course-details {
       background-color: rgba(0, 0, 0, 0.5);
       padding: 10px;
       color: white;
-      border-radius: 5px;
       border-bottom-right-radius: 5px;
       border-bottom-left-radius: 5px;
       display: flex;
