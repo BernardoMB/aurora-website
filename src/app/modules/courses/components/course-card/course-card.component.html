@@ -1,17 +1,24 @@
 <div class="course-card-wrapper">
   <div class="course-card-container" [style.backgroundImage]="'url(' + course.imgUrl + ')'">
-    <div class="category-indicator" [style.backgroundColor]="course.category.hexColor"></div>
-    <div class="course-details">
-      <div class="course-name-container">
-        <div>{{course.name}}</div>
+
+    <div class="gradient-overlay">
+      <div class="category-container">
+        <div class="category-indicator" [style.backgroundColor]="course.category.hexColor"></div>
+        <div class="category-name">{{course.category.name}}</div>
       </div>
-      <div class="price-rating-continer">
-        <div class="rating-container">
-          <i class="material-icons">star</i>
-          <div>{{course.rating}}</div>
+      <div class="course-details">
+        <div class="course-name-container">
+          <div>{{course.name}}</div>
         </div>
-        <div>{{course.price | currency }}</div>
+        <div class="price-rating-continer">
+          <div class="rating-container">
+            <i class="material-icons">star</i>
+            <div>{{course.rating}}</div>
+          </div>
+          <div>{{course.price | currency }}</div>
+        </div>
       </div>
     </div>
+
   </div>
 </div>

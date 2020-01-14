@@ -7,24 +7,26 @@ $break-large: 1290px;
   display: block;
   position: relative;
   z-index: 1010;
+
+  background: #f3f3f3;
   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#f3f3f3+0,ffffff+100 */
-  background: #f3f3f3; /* Old browsers */
+  /* background: #f3f3f3; // Old browsers
   background: -moz-linear-gradient(
     left,
     #f3f3f3 0%,
     #ffffff 100%
-  ); /* FF3.6-15 */
+  ); // FF3.6-15
   background: -webkit-linear-gradient(
     left,
     #f3f3f3 0%,
     #ffffff 100%
-  ); /* Chrome10-25,Safari5.1-6 */
+  ); // Chrome10-25,Safari5.1-6
   background: linear-gradient(
     to right,
     #f3f3f3 0%,
     #ffffff 100%
-  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3f3f3', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+  ); // W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3f3f3', endColorstr='#ffffff',GradientType=1 ); // IE6-9 */
 
   .header-inner {
     display: flex;

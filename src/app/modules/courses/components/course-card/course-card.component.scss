@@ -2,49 +2,79 @@
   .course-card-container {
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.75) -2px 2px 5px 0px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    height: 180px;
-    width: 230px;
     background-size: cover;
     resize: both;
     background-position-x: center;
     background-position-y: center;
-    position: relative;
-    .category-indicator {
-      position: absolute;
-      width: 10px;
-      height: 10px;
+    .gradient-overlay {
       border-radius: 5px;
-      top: 10px;
-      left: 10px;
-      box-shadow: rgba(0, 0, 0, 0.75) 0px 0px 5px 0px;
-    }
-    .course-details {
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 10px;
-      color: white;
-      border-bottom-right-radius: 5px;
-      border-bottom-left-radius: 5px;
       display: flex;
       flex-direction: column;
-      .course-name-container {
-        margin-bottom: 20px;
-      }
-      .price-rating-continer {
+      justify-content: space-between;
+      height: 180px;
+      width: 230px;
+      position: relative;
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,fbfbfb+50&0.4+0,0+100 */
+      background: -moz-linear-gradient(
+        top,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(251, 251, 251, 0.2) 50%,
+        rgba(251, 251, 251, 0) 100%
+      ); /* FF3.6-15 */
+      background: -webkit-linear-gradient(
+        top,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(251, 251, 251, 0.2) 50%,
+        rgba(251, 251, 251, 0) 100%
+      ); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(251, 251, 251, 0.2) 50%,
+        rgba(251, 251, 251, 0) 100%
+      ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#66000000', endColorstr='#00fbfbfb',GradientType=0 ); /* IE6-9 */
+      .category-container {
+        padding: 10px;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
         display: flex;
-        justify-content: space-between;
-        .rating-container {
+        align-items: center;
+        .category-indicator {
+          width: 10px;
+          height: 10px;
+          border-radius: 5px;
+        }
+        .category-name {
+          color: white;
+          margin-left: 10px;
+        }
+      }
+      .course-details {
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        color: white;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        .course-name-container {
+          margin-bottom: 20px;
+        }
+        .price-rating-continer {
           display: flex;
-          align-items: center;
-          div {
-            line-height: 1;
-          }
-          i {
-            color: goldenrod;
-            font-size: 18px;
-            margin-right: 5px;
+          justify-content: space-between;
+          .rating-container {
+            display: flex;
+            align-items: center;
+            div {
+              line-height: 1;
+            }
+            i {
+              color: goldenrod;
+              font-size: 18px;
+              margin-right: 5px;
+            }
           }
         }
       }
