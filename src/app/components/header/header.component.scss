@@ -1,29 +1,177 @@
+$break-small: 320px;
+$break-large: 1290px;
+
 .header {
-    background: #84f7d7;
-    box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1),
-        0 3px 1px 0 rgba(20, 23, 28, 0.1);
-    display: block;
+  box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1),
+    0 3px 1px 0 rgba(20, 23, 28, 0.1);
+  display: block;
+  position: relative;
+  z-index: 1010;
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#f3f3f3+0,ffffff+100 */
+  background: #f3f3f3; /* Old browsers */
+  background: -moz-linear-gradient(
+    left,
+    #f3f3f3 0%,
+    #ffffff 100%
+  ); /* FF3.6-15 */
+  background: -webkit-linear-gradient(
+    left,
+    #f3f3f3 0%,
+    #ffffff 100%
+  ); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f3f3f3 0%,
+    #ffffff 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3f3f3', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+
+  .header-inner {
+    display: flex;
+    justify-content: space-between;
+    background: inherit;
+    box-sizing: border-box;
+    height: 65px;
+    max-width: 1440px;
+    margin: auto;
+    padding: 0 20px;
     position: relative;
-    z-index: 1010;
-    .header_inner {
-        display: flex;
-        justify-content: space-between;
-        background: inherit;
-        box-sizing: border-box;
-        height: 65px;
-        max-width: 1440px;
-        margin: auto;
-        padding: 0 20px;
-        position: relative;
-        z-index: 1011;
-        .user-section {
-            position: relative;
-            .user-menu {
-                position: absolute;
-                right: 0px;
-                background-color: white;
-                cursor: pointer;
-            }
-        }
+    z-index: 1011;
+
+    .logotype-container {
+      margin: 10px 0px;
+      .logotype {
+        height: 100%;
+      }
+      @media screen and (max-width: $break-large) {
+        display: none;
+      }
     }
+    .logomark-container {
+      margin: 10px 0px;
+      .logomark {
+        height: 100%;
+      }
+      display: none;
+      @media screen and (max-width: $break-large) {
+        display: inherit;
+      }
+    }
+
+    .header-container {
+      display: flex;
+      font-family: 'Trebuchet MS', Helvetica, sans-serif;
+      color: #1f5e11;
+      font-size: 18px;
+
+      .navigation-links {
+        display: flex;
+        align-items: center;
+        padding: 0px 15px;
+        .nav-link {
+          list-style: none;
+          margin: 0px 10px;
+          a {
+            text-decoration: none;
+            position: relative;
+            &.active {
+              &:before {
+                content: '';
+                position: absolute;
+                z-index: -1;
+                width: 100%;
+                height: 3px;
+                bottom: -22px;
+                background-color: #eb7e00;
+              }
+            }
+            &:visited {
+              color: inherit;
+            }
+          }
+        }
+      }
+
+      .divider-container {
+        display: flex;
+        align-items: center;
+        margin: 0px 2px;
+        .divider {
+          height: 60%;
+          border-left: 1px solid #dedfe0;
+          margin: 0 8px;
+        }
+      }
+
+      .cart-container {
+        display: flex;
+        align-items: center;
+        margin: 0px 20px;
+      }
+
+      .user-section {
+        position: relative;
+        display: flex;
+        align-items: center;
+        .user-menu {
+          border-radius: 2px;
+          position: absolute;
+          padding: 10px;
+          top: 65px;
+          width: 100px;
+          border: 1px solid darkgrey;
+          right: 0px;
+          background-color: white;
+          cursor: pointer;
+        }
+      }
+
+      .register-section {
+        position: relative;
+        display: flex;
+        align-items: center;
+        font-size: 13px;
+        font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+        .login-button-container {
+          margin-right: 4px;
+          cursor: pointer;
+          .login-button {
+            display: inline-block;
+            font-weight: 600;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+            padding: 11px 12px;
+            font-size: 15px;
+            line-height: 1.35135;
+            border-radius: 2px;
+            user-select: none;
+
+            color: #686f7a;
+            background-color: #fff;
+            border: 1px solid #686f7a;
+          }
+        }
+        .signup-button-container {
+          cursor: pointer;
+          .signup-button {
+            display: inline-block;
+            font-weight: 600;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+            padding: 11px 12px;
+            font-size: 15px;
+            line-height: 1.35135;
+            border-radius: 2px;
+            user-select: none;
+
+            color: #fff;
+            background-color: #eb6c00;
+            border: 1px solid transparent;
+          }
+        }
+      }
+    }
+  }
 }

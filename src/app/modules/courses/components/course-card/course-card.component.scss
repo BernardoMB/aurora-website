@@ -1,40 +1,44 @@
 .course-card-wrapper {
-    .course-card-container {
-        border-radius: 5px;
-        box-shadow: rgba(0, 0, 0, 0.75) -2px 2px 5px 0px;
+  .course-card-container {
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.75) -2px 2px 5px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 180px;
+    width: 230px;
+    background-size: cover;
+    resize: both;
+    background-position-x: center;
+    background-position-y: center;
+    .course-details {
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      color: white;
+      border-radius: 5px;
+      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      .course-name-container {
+        margin-bottom: 20px;
+      }
+      .price-rating-continer {
         display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        height: 180px;
-        width: 230px;
-        .course-details {
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            color: white;
-            border-radius: 5px;
-            border-bottom-right-radius: 5px;
-            border-bottom-left-radius: 5px;
-            display: flex;
-            flex-direction: column;
-            .course-name-container {
-                margin-bottom: 20px;
-            }
-            .price-rating-continer {
-                display: flex;
-                justify-content: space-between;
-                .rating-container {
-                    display: flex;
-                    align-items: center;
-                    div {
-                        line-height: 1;
-                    }
-                    i {
-                        color: goldenrod;
-                        font-size: 18px;
-                        margin-right: 5px;
-                    }
-                }
-            }
+        justify-content: space-between;
+        .rating-container {
+          display: flex;
+          align-items: center;
+          div {
+            line-height: 1;
+          }
+          i {
+            color: goldenrod;
+            font-size: 18px;
+            margin-right: 5px;
+          }
         }
+      }
     }
+  }
 }

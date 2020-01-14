@@ -1,13 +1,16 @@
 <section class="courses-jumbotron-section">
   <div class="jumbotron-wrapper">
-    <div class="jumbotron-conatiner">
-      <div class="jumbotron-texts">
-        <div class="jumbotron-title">Courses</div>
-        <div class="jumbotron-description">Build your library for your career and personal growth</div>
+    <div class="jumbotron-wrapper-overlay">
+      <div class="jumbotron-conatiner">
+        <div class="jumbotron-texts">
+          <div class="jumbotron-title">Courses</div>
+          <div class="jumbotron-description">Build your library for your career and personal growth</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
 <section *ngIf="featuredCourses.length > 0" class="featured-courses-section">
   <div class="featured-courses-container">
     <div class="featured-title-container">
@@ -31,6 +34,34 @@
     <div class="categories-cards-container">
       <div class="category-card" *ngFor="let category of categories; let i = index">
         <app-category-card [category]="category"></app-category-card>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section *ngIf="featuredCourses.length > 0" class="featured-courses-section">
+  <div class="featured-courses-container">
+    <div class="featured-title-container">
+      <div class="featured-title">Rencently Added</div>
+      <a>View all</a>
+    </div>
+    <div class="featured-cards-container">
+      <div class="course-card" *ngFor="let course of recentCourses; let i = index">
+        <app-course-card [course]="course"></app-course-card>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section *ngIf="featuredCourses.length > 0" class="featured-courses-section">
+  <div class="featured-courses-container">
+    <div class="featured-title-container">
+      <div class="featured-title">Tending</div>
+      <a>View all</a>
+    </div>
+    <div class="featured-cards-container">
+      <div class="course-card" *ngFor="let course of recentCourses; let i = index">
+        <app-course-card [course]="course"></app-course-card>
       </div>
     </div>
   </div>

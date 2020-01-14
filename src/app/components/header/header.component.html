@@ -1,19 +1,56 @@
 <div class="header">
-  <div class="header_inner">
-    <a [routerLink]="['courses']" routerLinkActive="active">Learning</a>
-    <a routerLink="/news" routerLinkActive="active">News</a>
-    <a routerLink="/events" routerLinkActive="active">Events</a>
-    <a href="#contact" [class.active]="currentSection === 'contact'">Contact</a>
-    <a href="#invest" [class.active]="currentSection === 'invest'">Invest</a>
-    <div class="user-section" *ngIf="user" (mouseenter) ="showUserMenu = true" (mouseleave)="showUserMenu = false">
-      <div>{{user.username}}</div>
-      <div class="user-menu" *ngIf="showUserMenu">
-        <div (click)="onLogout()">Log out</div>
-      </div>
+  <div class="header-inner">
+    <!-- Logo container -->
+    <div class="logotype-container" routerLink="/">
+      <img class="logotype" src="/assets/img/logos/logotype.svg" alt="Invest Naija Logotype" />
     </div>
-    <div *ngIf="!user">
-      <button (click)="onLogin()">Login</button>
-      <button (click)="onRegister()">Register</button>
+    <div class="logomark-container" routerLink="/">
+      <img class="logomark" src="/assets/img/logos/logomark.svg" alt="Invest Naija Logotype" />
+    </div>
+
+    <!-- Buttons container -->
+    <div class="header-container">
+      <ul class="navigation-links">
+        <li class="nav-link">
+          <a routerLink="/courses" routerLinkActive="active" (click)="currentSection = undefined">Learning</a>
+        </li>
+        <li class="nav-link">
+          <a routerLink="/news" routerLinkActive="active" (click)="currentSection = undefined">News</a>
+        </li>
+        <li class="nav-link">
+          <a routerLink="/events" routerLinkActive="active" (click)="currentSection = undefined">Events</a>
+        </li>
+        <li class="nav-link">
+          <a href="#invest" [class.active]="currentSection === 'invest'">Invest</a>
+        </li>
+        <li class="nav-link">
+          <a href="#contact" [class.active]="currentSection === 'contact'">Contact</a>
+        </li>
+      </ul>
+
+      <div class="divider-container">
+        <div class="divider"></div>
+      </div>
+
+      <div class="cart-container">
+        <i class="material-icons">shopping_cart</i>
+      </div>
+
+      <div *ngIf="user" class="user-section" (mouseenter) ="showUserMenu = true" (mouseleave)="showUserMenu = false">
+        <div>{{user.username}}</div>
+        <div class="user-menu" *ngIf="showUserMenu">
+          <div (click)="onLogout()">Log out</div>
+        </div>
+      </div>
+      <div *ngIf="!user" class="register-section">
+        <div class="login-button-container">
+          <button class="login-button" (click)="onLogin()">Log In</button>
+        </div>
+        <div class="signup-button-container">
+          <button class="signup-button" (click)="onRegister()">Sign Up</button>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
