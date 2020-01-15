@@ -1,1 +1,30 @@
-<p>all-courses works!</p>
+<section class="courses-jumbotron-section">
+  <div class="jumbotron-wrapper">
+    <div class="jumbotron-wrapper-overlay">
+      <div class="jumbotron-conatiner">
+        <div class="jumbotron-texts">
+          <div class="jumbotron-title">
+            Top-rated courses for leading professionals
+          </div>
+          <div class="jumbotron-description">
+            Improve your skills and learn your way up in leading industries
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section *ngIf="courses.length > 0" class="featured-courses-section">
+  <div class="featured-courses-container">
+    <div class="featured-title-container">
+      <div class="featured-title">All Courses</div>
+      <a>View all</a>
+    </div>
+    <div class="featured-cards-container">
+      <div class="course-card" *ngFor="let course of courses; let i = index">
+        <app-course-card [course]="course"></app-course-card>
+      </div>
+    </div>
+  </div>
+</section>

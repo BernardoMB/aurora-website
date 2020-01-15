@@ -1,10 +1,10 @@
 <div class="header">
   <div class="header-inner">
     <!-- Logo container -->
-    <div class="logotype-container" routerLink="/">
+    <div class="logotype-container focus-outline" routerLink="/">
       <img class="logotype" src="/assets/img/logos/logotype.svg" alt="Invest Naija Logotype" />
     </div>
-    <div class="logomark-container" routerLink="/">
+    <div class="logomark-container focus-outline" routerLink="/">
       <img class="logomark" src="/assets/img/logos/logomark.svg" alt="Invest Naija Logotype" />
     </div>
 
@@ -12,19 +12,19 @@
     <div class="header-container">
       <ul class="navigation-links">
         <li class="nav-link">
-          <a routerLink="/courses" routerLinkActive="active" (click)="currentSection = undefined">Learning</a>
+          <a class="focus-outline" routerLink="/courses" routerLinkActive="active" (click)="currentSection = undefined">Learning</a>
         </li>
         <li class="nav-link">
-          <a routerLink="/news" routerLinkActive="active" (click)="currentSection = undefined">News</a>
+          <a class="focus-outline" routerLink="/news" routerLinkActive="active" (click)="currentSection = undefined">News</a>
         </li>
         <li class="nav-link">
-          <a routerLink="/events" routerLinkActive="active" (click)="currentSection = undefined">Events</a>
+          <a class="focus-outline" routerLink="/events" routerLinkActive="active" (click)="currentSection = undefined">Events</a>
         </li>
         <li class="nav-link">
-          <a href="#invest" [class.active]="currentSection === 'invest'">Invest</a>
+          <a class="focus-outline" href="#invest" [class.active]="currentSection === 'invest'">Invest</a>
         </li>
         <li class="nav-link">
-          <a href="#contact" [class.active]="currentSection === 'contact'">Contact</a>
+          <a class="focus-outline" href="#contact" [class.active]="currentSection === 'contact'">Contact</a>
         </li>
       </ul>
 
@@ -39,15 +39,15 @@
       <div *ngIf="user" class="user-section" (mouseenter) ="showUserMenu = true" (mouseleave)="showUserMenu = false">
         <div>{{user.username}}</div>
         <div class="user-menu" *ngIf="showUserMenu">
-          <div (click)="onLogout()">Log out</div>
+          <div class="focus-outline" (click)="onLogout()">Log out</div>
         </div>
       </div>
       <div *ngIf="!user" class="register-section">
         <div class="login-button-container">
-          <button class="login-button" (click)="onLogin()">Log In</button>
+          <button class="login-button focus-outline" (click)="onLogin()">Log In</button>
         </div>
         <div class="signup-button-container">
-          <button class="signup-button" (click)="onRegister()">Sign Up</button>
+          <button class="signup-button focus-outline" (click)="onRegister()">Sign Up</button>
         </div>
       </div>
 

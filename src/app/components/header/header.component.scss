@@ -1,5 +1,6 @@
 $break-small: 320px;
 $break-large: 1290px;
+$focus-border: 2px;
 
 .header {
   box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1),
@@ -151,10 +152,15 @@ $break-large: 1290px;
             line-height: 1.35135;
             border-radius: 2px;
             user-select: none;
+            cursor: pointer;
 
             color: #686f7a;
             background-color: #fff;
             border: 1px solid #686f7a;
+            &:hover {
+              color: #fff;
+              background-color: #1f5e11;
+            }
           }
         }
         .signup-button-container {
@@ -170,10 +176,14 @@ $break-large: 1290px;
             line-height: 1.35135;
             border-radius: 2px;
             user-select: none;
+            cursor: pointer;
 
             color: #fff;
             background-color: #eb6c00;
             border: 1px solid transparent;
+            &:hover {
+              background-color: #1f5e11;
+            }
           }
         }
       }

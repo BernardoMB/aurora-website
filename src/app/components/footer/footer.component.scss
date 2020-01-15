@@ -1,11 +1,9 @@
 .footer {
-  box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1),
-    0 3px 1px 0 rgba(20, 23, 28, 0.1);
+  border-top: 1px solid gainsboro;
   display: block;
   position: relative;
   z-index: 1010;
   background: #f3f3f3;
-  /* background: linear-gradient(to right, #f3f3f3 0%, #ffffff 100%); */
   .footer-inner {
     display: flex;
     flex-direction: column;
@@ -18,7 +16,6 @@
     padding-bottom: 10px;
     position: relative;
     z-index: 1011;
-
     .footer-container {
       display: flex;
       width: 100%;
@@ -34,6 +31,7 @@
           }
         }
         .phrase {
+          color: dimgray;
           margin-top: 20px;
           max-width: 300px;
           font-size: 14px;
@@ -81,27 +79,34 @@
             margin: 5px 0px;
             font-size: 14px;
             text-decoration: none;
+            &:hover {
+              text-decoration: underline;
+              color: #1f5e11;
+            }
           }
         }
       }
     }
+  }
+}
 
-    .kanto-studio-container {
-      display: flex;
-      justify-content: center;
-      padding-top: 10px;
-      color: dimgray;
-      width: 100%;
-      border-top: 1px solid gainsboro;
-      a {
-        text-decoration: none;
-        color: #30b9db;
-        cursor: pointer;
-        .kanto {
-          height: 13px;
-          margin-bottom: -2px;
-          margin-right: 3px;
-        }
+.bottom-section {
+  background: #f3f3f3;
+  border-top: 1px solid gainsboro;
+  .kanto-studio-container {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0px;
+    color: dimgray;
+    width: 100%;
+    a {
+      text-decoration: none;
+      color: #30b9db;
+      cursor: pointer;
+      .kanto {
+        height: 13px;
+        margin-bottom: -2px;
+        margin-right: 3px;
       }
     }
   }

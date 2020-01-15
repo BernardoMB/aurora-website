@@ -19,9 +19,9 @@ $aurora-website-warn: mat-palette($mat-red);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $aurora-website-theme: mat-light-theme(
-    $aurora-website-primary,
-    $aurora-website-accent,
-    $aurora-website-warn
+  $aurora-website-primary,
+  $aurora-website-accent,
+  $aurora-website-warn
 );
 
 // Include theme styles for core and each component used in your app.
@@ -33,10 +33,18 @@ $aurora-website-theme: mat-light-theme(
 
 html,
 body {
-    height: 100%;
-    background-color: #fafbfc;
+  height: 100%;
+  background-color: #fafbfc;
 }
 body {
-    margin: 0;
-    font-family: Roboto, 'Helvetica Neue', sans-serif;
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+$focus-outline-thickeness: 2px;
+.focus-outline {
+  &:focus {
+    outline: $focus-outline-thickeness solid greenyellow;
+    outline-style: dashed;
+  }
 }

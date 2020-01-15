@@ -1,7 +1,9 @@
 <div class="category-card-wrapper">
   <div class="category-card-container">
     <div class="upper" [style.backgroundColor]="category.hexColor">
-      <div class="image-container" [style.backgroundImage]="'url(' + category.imgUrl + ')'"></div>
+      <div class="image-container" [style.backgroundImage]="'url(' + category.imgUrl + ')'">
+        <div class="overlay"></div>
+      </div>
     </div>
     <div class="lower">
       <div class="category-name">
