@@ -1,0 +1,17 @@
+.lesson-card-wrapper {
+  display: flex;
+  flex-grow: 1;
+  .lesson-card-container {
+    display: flex;
+    flex-grow: 1;
+    background-color: white;
+    position: relative;
+    padding: 10px;
+    .lesson-type-container {
+      i {
+        font-size: 30px;
+        color: gray;
+      }
+    }
+  }
+}
