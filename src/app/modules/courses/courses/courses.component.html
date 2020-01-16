@@ -13,13 +13,13 @@
   </div>
 </section>
 
-<section *ngIf="featuredCourses.length > 0" class="featured-courses-section">
-  <div class="featured-courses-container">
-    <div class="featured-title-container">
-      <div class="featured-title">Featured</div>
+<section *ngIf="featuredCourses.length > 0" class="courses-section">
+  <div class="courses-container">
+    <div class="title-container">
+      <div class="title">Featured</div>
       <a>View all</a>
     </div>
-    <div class="featured-cards-container">
+    <div class="cards-container">
       <div
         class="course-card"
         *ngFor="let course of featuredCourses; let i = index"
@@ -51,13 +51,13 @@
 
 <div class="divider"></div>
 
-<section *ngIf="featuredCourses.length > 0" class="featured-courses-section">
-  <div class="featured-courses-container">
-    <div class="featured-title-container">
-      <div class="featured-title">Rencently Added</div>
+<section *ngIf="recentCourses.length > 0" class="courses-section">
+  <div class="courses-container">
+    <div class="title-container">
+      <div class="title">Rencently Added</div>
       <a>View all</a>
     </div>
-    <div class="featured-cards-container">
+    <div class="cards-container">
       <div
         class="course-card"
         *ngFor="let course of recentCourses; let i = index"
@@ -70,16 +70,16 @@
 
 <div class="divider"></div>
 
-<section *ngIf="featuredCourses.length > 0" class="featured-courses-section">
-  <div class="featured-courses-container">
-    <div class="featured-title-container">
-      <div class="featured-title">Trending</div>
+<section *ngIf="trendingCourses.length > 0" class="courses-section">
+  <div class="courses-container">
+    <div class="title-container">
+      <div class="title">Trending</div>
       <a>View all</a>
     </div>
-    <div class="featured-cards-container">
+    <div class="cards-container">
       <div
         class="course-card"
-        *ngFor="let course of recentCourses; let i = index"
+        *ngFor="let course of trendingCourses; let i = index"
       >
         <app-course-card [course]="course"></app-course-card>
       </div>
@@ -92,6 +92,8 @@
 <section class="buttons-section">
   <div class="buttons-container">
     <button class="focus-outline">My Courses</button>
-    <button class="focus-outline">All Courses</button>
+    <button class="focus-outline" [routerLink]="['/courses/all']">
+      All Courses
+    </button>
   </div>
 </section>

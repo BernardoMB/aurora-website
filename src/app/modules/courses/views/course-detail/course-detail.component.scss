@@ -1,0 +1,337 @@
+.course-jumbotron {
+  overflow: hidden;
+  .course-jumbotron-wrapper {
+    background-size: cover;
+    resize: both;
+    background-position-x: center;
+    background-position-y: center;
+    background-image: url('/assets/img/jumbotrons/courses-jumbotron.jpg');
+    .course-jumbotron-overlay {
+      background: linear-gradient(#29303b, #29303b, #29303b);
+      display: block;
+      position: relative;
+      $opacity: 0.1;
+      .course-jumbotron-container {
+        padding: 20px 20px;
+        max-width: 1180px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-sizing: border-box;
+        position: relative;
+        margin: auto;
+        $font-color: white;
+        $font-weight: 500;
+        .top-container {
+          display: flex;
+          justify-content: space-between;
+          .category-container {
+            display: flex;
+            align-items: center;
+            .category-indicator {
+              /* width: 56px;
+              height: 56px; */
+              width: 10px;
+              height: 10px;
+              border-radius: 56px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              box-shadow: rgba(0, 0, 0, 0.75) -2px 2px 5px 0px;
+              .image-container {
+                background-size: cover;
+                resize: both;
+                background-position-x: center;
+                background-position-y: center;
+                width: 50px;
+                height: 50px;
+                border-radius: 50px;
+                position: relative;
+                .overlay {
+                  width: 100%;
+                  height: 100%;
+                  border-radius: 100px;
+                  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,fbfbfb+29&0.4+0,0+100 */
+                  background: -moz-linear-gradient(
+                    top,
+                    rgba(0, 0, 0, 0.4) 0%,
+                    rgba(251, 251, 251, 0.28) 29%,
+                    rgba(251, 251, 251, 0) 100%
+                  ); /* FF3.6-15 */
+                  background: -webkit-linear-gradient(
+                    top,
+                    rgba(0, 0, 0, 0.4) 0%,
+                    rgba(251, 251, 251, 0.28) 29%,
+                    rgba(251, 251, 251, 0) 100%
+                  ); /* Chrome10-25,Safari5.1-6 */
+                  background: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0.4) 0%,
+                    rgba(251, 251, 251, 0.28) 29%,
+                    rgba(251, 251, 251, 0) 100%
+                  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#66000000', endColorstr='#00fbfbfb',GradientType=0 ); /* IE6-9 */
+                }
+              }
+            }
+            .category-name-container {
+              padding: 0px 10px;
+              display: flex;
+              align-items: center;
+              .category-name {
+                font-family: 'Trebuchet MS', 'Bree Serif', serif;
+                color: $font-color;
+                font-weight: bold;
+              }
+            }
+          }
+          .favorite-container {
+            .isFavorite {
+              display: flex;
+              justify-content: flex-end;
+              i {
+                color: hotpink;
+              }
+            }
+            .notFavorite {
+              display: flex;
+              justify-content: flex-end;
+              i {
+                color: hotpink;
+              }
+            }
+          }
+        }
+        .middle-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-top: -40px;
+          margin-bottom: -20px;
+          .course-image-section {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            .image-wrapper {
+              border-radius: 5px;
+              padding: 5px;
+              background-color: white;
+              border: 1px solid gainsboro;
+              .course-image-container {
+                background-size: cover;
+                resize: both;
+                background-position-x: center;
+                background-position-y: center;
+                .image-overlay {
+                  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+0,0+54 */
+                  background: -moz-linear-gradient(
+                    top,
+                    rgba(0, 0, 0, 0.65) 0%,
+                    rgba(0, 0, 0, 0) 54%,
+                    rgba(0, 0, 0, 0) 100%
+                  ); /* FF3.6-15 */
+                  background: -webkit-linear-gradient(
+                    top,
+                    rgba(0, 0, 0, 0.65) 0%,
+                    rgba(0, 0, 0, 0) 54%,
+                    rgba(0, 0, 0, 0) 100%
+                  ); /* Chrome10-25,Safari5.1-6 */
+                  background: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0.65) 0%,
+                    rgba(0, 0, 0, 0) 54%,
+                    rgba(0, 0, 0, 0) 100%
+                  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+                  width: 175px;
+                  height: 130px;
+                }
+              }
+            }
+          }
+          .course-name {
+            padding: 10px;
+            font-family: 'Open Sans';
+            font-size: 36px;
+            font-weight: 300;
+            line-height: 1.1;
+            color: $font-color;
+            margin-bottom: 20px;
+            text-align: center;
+            max-width: 520px;
+          }
+          .enroll-button-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            .enroll-button {
+              display: inline-block;
+              font-weight: 600;
+              text-align: center;
+              vertical-align: middle;
+              white-space: nowrap;
+              padding: 6px 30px;
+              font-size: 12px;
+              line-height: 1.35135;
+              border-radius: 20px;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+              cursor: pointer;
+              color: #fff;
+              background-color: #eb6c00;
+              border: 1px solid transparent;
+            }
+            .enrolled-indicator {
+              display: flex;
+              align-items: center;
+              font-weight: 600;
+              text-align: center;
+              vertical-align: middle;
+              white-space: nowrap;
+              padding: 6px 40px;
+              font-size: 12px;
+              line-height: 1.35135;
+              border-radius: 20px;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+              cursor: pointer;
+              color: #fff;
+              background-color: #eb6c00;
+              border: 1px solid transparent;
+              position: relative;
+              i {
+                position: absolute;
+                right: 6px;
+              }
+            }
+          }
+        }
+        .bottom-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          .price-container {
+            .free-container {
+              /* background-color: white; */
+              border-radius: 5px;
+              padding: 1px;
+              .free {
+                background-color: gold;
+                color: black;
+                border-radius: 5px;
+                border: 1px solid black;
+                padding: 1px 5px;
+                font-weight: bold;
+                font-size: 12px;
+              }
+            }
+            .price {
+              color: $font-color;
+              font-weight: $font-weight;
+              font-size: 20px;
+            }
+          }
+          .rating-container {
+            display: flex;
+            align-items: flex-end;
+            color: $font-color;
+            font-size: 20px;
+            font-weight: $font-weight;
+            div {
+              line-height: 1;
+            }
+            i {
+              color: goldenrod;
+              font-size: 26px;
+              margin-right: 5px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.tabs-section {
+  display: block;
+  position: relative;
+  // /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1f5e11+0,eb6c00+100 */
+  // background: rgb(31, 94, 17); /* Old browsers */
+  // background: -moz-linear-gradient(
+  //   45deg,
+  //   rgba(31, 94, 17, 1) 0%,
+  //   rgba(235, 108, 0, 1) 100%
+  // ); /* FF3.6-15 */
+  // background: -webkit-linear-gradient(
+  //   45deg,
+  //   rgba(31, 94, 17, 1) 0%,
+  //   rgba(235, 108, 0, 1) 100%
+  // ); /* Chrome10-25,Safari5.1-6 */
+  // background: linear-gradient(
+  //   45deg,
+  //   rgba(31, 94, 17, 1) 0%,
+  //   rgba(235, 108, 0, 1) 100%
+  // ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f5e11', endColorstr='#eb6c00',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  background-color: #f3f3f3;
+  .tabs-container {
+    padding: 20px 20px;
+    max-width: 1180px;
+    display: flex;
+    justify-content: space-around;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    margin: auto;
+    .tab-selector {
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+        'Lucida Sans', Arial, sans-serif;
+      color: #29303b;
+      position: relative;
+      font-weight: bold;
+      cursor: pointer;
+      &.active {
+        &:before {
+          content: '';
+          position: absolute;
+          width: 100%;
+          height: 3px;
+          bottom: -20px;
+          background-color: darkorange;
+        }
+      }
+      &:visited {
+        color: inherit;
+      }
+    }
+  }
+}
+
+.tab-content-section {
+  display: block;
+  position: relative;
+  .tab {
+    box-sizing: border-box;
+    overflow: hidden;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    max-width: 1180px;
+    padding: 20px 20px;
+    position: relative;
+  }
+  .tab-about {
+    .description-title {
+      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0 0 10px;
+      line-height: 1.43;
+      color: #29303b;
+    }
+  }
+}

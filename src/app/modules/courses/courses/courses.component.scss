@@ -53,24 +53,24 @@
   }
 }
 
-.featured-courses-section {
+.courses-section {
   display: block;
   position: relative;
-  .featured-courses-container {
+  .courses-container {
     padding: 40px 20px;
-    max-width: 1440px;
+    max-width: 1180px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     box-sizing: border-box;
     position: relative;
     margin: auto;
-    .featured-title-container {
+    .title-container {
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-family: 'Trebuchet MS', Helvetica, sans-serif;
-      .featured-title {
+      .title {
         color: #1b4568;
         font-size: 20px;
         font-weight: bold;
@@ -83,21 +83,21 @@
         cursor: pointer;
       }
     }
-    .featured-cards-container {
+    .cards-container {
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
       margin-top: 10px;
       .course-card {
         margin: 10px 0px;
-        margin-right: 20px;
+        margin-right: 15px;
       }
     }
   }
 
   .buttons-container {
     padding: 40px 20px;
-    max-width: 1440px;
+    max-width: 1180px;
     display: flex;
     justify-content: space-evenly;
     overflow: hidden;
@@ -132,7 +132,7 @@
   position: relative;
   .categories-container {
     padding: 40px 20px;
-    max-width: 1440px;
+    max-width: 1180px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -164,7 +164,7 @@
       margin-top: 20px;
       .category-card {
         margin: 10px 0px;
-        margin-right: 20px;
+        margin-right: 15px;
       }
     }
   }
@@ -181,7 +181,7 @@
   position: relative;
   .buttons-container {
     padding: 40px 20px;
-    max-width: 1440px;
+    max-width: 1180px;
     display: flex;
     justify-content: space-evenly;
     overflow: hidden;

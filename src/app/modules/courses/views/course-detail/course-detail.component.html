@@ -1,1 +1,121 @@
-<p>course-detail works!</p>
+<section class="course-jumbotron">
+  <div class="course-jumbotron-wrapper">
+    <div class="course-jumbotron-overlay">
+      <div class="course-jumbotron-container">
+        <div class="top-container">
+          <div class="category-container">
+            <div
+              class="category-indicator"
+              [style.backgroundColor]="course.category.hexColor"
+            >
+              <!-- <div
+                class="image-container"
+                [style.backgroundImage]="'url(' + course.category.imgUrl + ')'"
+              >
+                <div class="overlay"></div>
+              </div> -->
+            </div>
+            <div class="category-name-container">
+              <div class="category-name">{{ course.category.name }}</div>
+            </div>
+          </div>
+          <div class="favorite-container">
+            <div *ngIf="isFavorite" class="isFavorite">
+              <i class="material-icons">
+                favorite
+              </i>
+            </div>
+            <div *ngIf="!isFavorite" class="notFavorite">
+              <i class="material-icons">
+                favorite_border
+              </i>
+            </div>
+          </div>
+        </div>
+        <div class="middle-container">
+          <div class="course-image-section">
+            <div class="image-wrapper">
+              <div
+                class="course-image-container"
+                [style.backgroundImage]="'url(' + course.imgUrl + ')'"
+              >
+                <div class="image-overlay"></div>
+              </div>
+            </div>
+          </div>
+          <div class="course-name">{{ course.name }}</div>
+          <div class="enroll-button-container">
+            <button *ngIf="!enrolled" class="enroll-button">Enroll now</button>
+            <button *ngIf="enrolled" class="enrolled-indicator">
+              Enrolled
+              <i class="material-icons">
+                done
+              </i>
+            </button>
+          </div>
+        </div>
+        <div class="bottom-container">
+          <div class="price-container">
+            <div *ngIf="price === 0" class="free-container">
+              <div class="free">Free</div>
+            </div>
+            <div *ngIf="price > 0" class="price">
+              {{ price | currency: 'NGN':'symbol-narrow' }}
+            </div>
+          </div>
+          <div class="rating-container">
+            <i class="material-icons">star</i>
+            <div>{{ course.rating }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tabs-section">
+  <div class="tabs-container">
+    <a
+      class="tab-selector focus-outline verde"
+      [class.active]="currentTab === 'about'"
+      (click)="currentTab = 'about'"
+    >
+      About
+    </a>
+    <a
+      class="tab-selector focus-outline"
+      [class.active]="currentTab === 'lessons'"
+      (click)="currentTab = 'lessons'"
+    >
+      Lessons
+    </a>
+    <a
+      class="tab-selector focus-outline"
+      [class.active]="currentTab === 'reviews'"
+      (click)="currentTab = 'reviews'"
+    >
+      Reviews
+    </a>
+    <a
+      class="tab-selector focus-outline"
+      [class.active]="currentTab === 'certificate'"
+      (click)="currentTab = 'certificate'"
+    >
+      Certificate
+    </a>
+  </div>
+</section>
+
+<section class="tab-content-section">
+  <div class="tab-content-container">
+    <div *ngIf="currentTab === 'about'" class="tab tab-about">
+      <div class="description-title">Description</div>
+      <div [innerHTML]="course.overview"></div>
+    </div>
+    <div *ngIf="currentTab === 'lessons'" class="tab tab-lessons">
+      <div style="width: 50px; height: 50px; background-color: blue;"></div>
+    </div>
+    <div *ngIf="currentTab === 'reviews'" class="tab tab-reviews"></div>
+    <div *ngIf="currentTab === 'certificate'" class="tab tab-certificate"></div>
+  </div>
+</section>
