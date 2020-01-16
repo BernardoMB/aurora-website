@@ -16,10 +16,10 @@
         <div class="lesson-number">{{ lessonNumber }}</div>
         <div class="lesson-title">{{ lesson.title }}</div>
         <div *ngIf="lesson.type === 'VIDEO'" class="lesson-duration">
-          {{ lesson.duration }}
+          {{ lesson.fileDuration | readTime }}
         </div>
         <div *ngIf="lesson.type !== 'VIDEO'" class="lesson-readtime">
-          {{ lesson.readTime }}
+          {{ lesson.readTime | readTime }}
         </div>
       </div>
       <div class="description-container">

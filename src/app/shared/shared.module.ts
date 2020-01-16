@@ -8,6 +8,6 @@ import { ReadTimePipe } from './pipes/read-time.pipe';
   declarations: [ReadTimePipe],
   imports: [
     CommonModule
-  ]
+  ], exports: [ReadTimePipe]
 })
 export class SharedModule { }
