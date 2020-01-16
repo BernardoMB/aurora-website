@@ -334,4 +334,24 @@
       color: #29303b;
     }
   }
+  .tab-lessons {
+    .lessons-title {
+      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #29303b;
+    }
+    .lessons-container {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      background-color: #f3f3f3;
+      border: 1px solid gainsboro;
+      border-radius: 5px;
+      .lesson-card{
+        margin: 20px;
+      }
+    }
+  }
 }
