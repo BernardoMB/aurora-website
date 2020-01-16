@@ -14,45 +14,47 @@ import { DOCUMENT_PROVIDERS } from './providers/document.provider';
 import { AuthService } from './services/auth.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {
-    TokenInterceptor,
-    ErrorInterceptor,
+  TokenInterceptor,
+  ErrorInterceptor,
 } from './services/token.interceptor';
 import { MaterialModule } from './material.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HeaderComponent,
-        LandingComponent,
-        FooterComponent,
-        NotFoundComponent,
-    ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        HttpClientModule, // Making Http call within the app
-        MaterialModule,
-        AppRoutingModule, // <-- Routing modules should be imported in the correct order.c
-        RootStoreModule,
-    ],
-    providers: [
-        ...DOCUMENT_PROVIDERS, // For header sections logic
-        ...WINDOW_PROVIDERS, // For headers sections logic
-        CookieService, // Service to store and retreive cookies
-        AuthService, // Auth service is an app level service
-        {
-            // Interceptor
-            provide: HTTP_INTERCEPTORS,
-            useClass: TokenInterceptor,
-            multi: true,
-        },
-        {
-            // Interceptor
-            provide: HTTP_INTERCEPTORS,
-            useClass: ErrorInterceptor,
-            multi: true,
-        },
-    ],
-    bootstrap: [AppComponent],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    LandingComponent,
+    FooterComponent,
+    NotFoundComponent,
+  ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule, // Making Http call within the app
+    MaterialModule,
+    SharedModule,
+    AppRoutingModule, // <-- Routing modules should be imported in the correct order.c
+    RootStoreModule,
+  ],
+  providers: [
+    ...DOCUMENT_PROVIDERS, // For header sections logic
+    ...WINDOW_PROVIDERS, // For headers sections logic
+    CookieService, // Service to store and retreive cookies
+    AuthService, // Auth service is an app level service
+    {
+      // Interceptor
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+    {
+      // Interceptor
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -349,6 +349,8 @@
       background-color: #f3f3f3;
       border: 1px solid gainsboro;
       border-radius: 5px;
+      max-height: 402px;
+      overflow: auto;
       .lesson-card {
         margin: 20px;
       }

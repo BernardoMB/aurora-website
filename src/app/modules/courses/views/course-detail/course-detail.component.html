@@ -113,10 +113,16 @@
       <div [innerHTML]="course.overview"></div>
     </div>
     <div *ngIf="currentTab === 'lessons'" class="tab tab-lessons">
-      <div class="lessons-title">{{course.lessons.length}} lessons</div>
+      <div class="lessons-title">{{ course.lessons.length }} lessons</div>
       <div class="lessons-container">
-        <div class="lesson-card" *ngFor="let lesson of course.lessons; let i = index">
-          <app-lesson-card [lesson]="lesson"></app-lesson-card>
+        <div
+          class="lesson-card"
+          *ngFor="let lesson of course.lessons; let i = index"
+        >
+          <app-lesson-card
+            [lesson]="lesson"
+            [lessonNumber]="i + 1"
+          ></app-lesson-card>
         </div>
       </div>
     </div>
