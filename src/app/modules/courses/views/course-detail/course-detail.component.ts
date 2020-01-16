@@ -60,7 +60,7 @@ export class CourseDetailComponent implements OnInit {
         thumbnailsUrls: [],
         title: 'Lesson title',
         description: 'lesson summary',
-        type: 'ARTICLE',
+        type: 'DOCUMENT',
         course: '5deffd13ef2fd3002404263e',
         order: 3,
         documentUrl:
