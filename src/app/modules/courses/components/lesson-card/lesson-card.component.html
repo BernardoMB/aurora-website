@@ -13,17 +13,43 @@
     </div>
     <div class="video-details-container">
       <div class="lesson-title-container">
-        <div class="lesson-number">{{ lessonNumber }}</div>
-        <div class="lesson-title">{{ lesson.title }}</div>
-        <div *ngIf="lesson.type === 'VIDEO'" class="lesson-duration">
-          {{ lesson.fileDuration | readTime }}
+        <div class="left">
+          <div class="lesson-number">{{ lessonNumber }}</div>
+          <div class="lesson-title">{{ lesson.title }}</div>
         </div>
-        <div *ngIf="lesson.type !== 'VIDEO'" class="lesson-readtime">
-          {{ lesson.readTime | readTime }}
+        <div class="right">
+          <div *ngIf="lesson.type === 'VIDEO'" class="lesson-duration">
+            {{ lesson.fileDuration | readTime }}
+            <i class="material-icons">
+              access_time
+            </i>
+          </div>
+          <div *ngIf="lesson.type !== 'VIDEO'" class="lesson-readtime">
+            {{ lesson.readTime | readTime }}
+            <i class="material-icons">
+              menu_book
+            </i>
+          </div>
         </div>
       </div>
-      <div class="description-container">
-        <div class="description">{{ lesson.description }}</div>
+      <div class="description-container" [style.height]="height">
+        <div #description class="description">{{ lesson.description }}</div>
+      </div>
+      <div class="read-more-container">
+        <div
+          *ngIf="fixedHeight && showReadMoreButton"
+          class="read-more"
+          (click)="unSetHeight()"
+        >
+          Read more
+        </div>
+        <div
+          *ngIf="!fixedHeight && showReadMoreButton"
+          class="read-more"
+          (click)="setHeight()"
+        >
+          Show less
+        </div>
       </div>
     </div>
     <div class="navigate-container">

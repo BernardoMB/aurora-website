@@ -49,6 +49,7 @@ export class CourseDetailComponent implements OnInit {
         title: 'Risk and uncertainty',
         // tslint:disable-next-line: max-line-length
         description:
+          // tslint:disable-next-line: max-line-length
           'We will discuss risk and uncertainty in the context of decision making processes. How does one take decisions among alternatives when there is risk? What about uncertainty? Thus, we will build a model of decision making using the concept of “Expected Utility”. This concept will be an extension of utility theory we learn in economics.',
         type: 'ARTICLE',
         article: '<p>test</p>',
@@ -68,6 +69,7 @@ export class CourseDetailComponent implements OnInit {
         title: 'Measuring risk',
         // tslint:disable-next-line: max-line-length
         description:
+          // tslint:disable-next-line: max-line-length
           'We will develop the concept of risk using the notion of probability and financial consequences. Instruments for measuring risk and uncertainty and using them for decision making processes will be discussed. We will use statistical concepts, notion of frequency and severity of risk and above all, we will use the Law of Large Numbers.',
         type: 'VIDEO',
         course: '5deffd13ef2fd3002404263e',
@@ -90,7 +92,8 @@ export class CourseDetailComponent implements OnInit {
         title: 'Risk Management',
         // tslint:disable-next-line: max-line-length
         description:
-          'Economic success depends critically on correct risk management processes. We will study risk management via risk transfer through the system of insurance. We will study the mechanism through which risk transfer happens. Asymmetric information plays a crucial role. We will discuss: Identification, classification of risk, diversification through insurance and finance. In particular, we will examine: Moral hazard and adverse selection in the presence of asymmetric information.',
+          // tslint:disable-next-line: max-line-length
+          'Economic success depends critically on correct risk management processes. We will study risk management via risk transfer through the system of insurance. We will study the mechanism through which risk transfer happens. Asymmetric information plays a crucial role. We will discuss: Identification, classification of risk, diversification through insurance and finance. In particular, we will examine: Moral hazard and adverse selection in the presence of asymmetric information. Economic success depends critically on correct risk management processes. We will study risk management via risk transfer through the system of insurance.',
         type: 'DOCUMENT',
         course: '5deffd13ef2fd3002404263e',
         order: 3,
@@ -112,6 +115,7 @@ export class CourseDetailComponent implements OnInit {
         title: 'Insurance',
         // tslint:disable-next-line: max-line-length
         description:
+          // tslint:disable-next-line: max-line-length
           'Insurance works only when there are legal and contractual basis. We will take a first look at an insurance contract and analyze why the insurance clauses are there. Fundamental concepts like pure risk, insurable interest, indemnization, among others. Who are the major players?',
         type: 'VIDEO',
         course: '5deffd13ef2fd3002404263e',
@@ -138,6 +142,7 @@ export class CourseDetailComponent implements OnInit {
         title: 'Premiums, reserves and solvency',
         // tslint:disable-next-line: max-line-length
         description:
+          // tslint:disable-next-line: max-line-length
           'Three fundamental concepts will be discussed. Premiums can be seen as a cost. It can also be seen as an equilibrium concept in the market. Reserves have a very special place in insurance literature. Reserves policy determines the solvency of the company selling insurance.',
         type: 'VIDEO',
         course: '5deffd13ef2fd3002404263e',
@@ -160,6 +165,7 @@ export class CourseDetailComponent implements OnInit {
         title: 'Insurance marketing',
         // tslint:disable-next-line: max-line-length
         description:
+          // tslint:disable-next-line: max-line-length
           'Selling insurance is very special. How insurance is sold also affects the solvency of the company. Channels of distribution of insurance are unique compared with other services industry.',
         type: 'DOCUMENT',
         course: '5deffd13ef2fd3002404263e',

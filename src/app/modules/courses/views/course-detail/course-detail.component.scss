@@ -294,6 +294,7 @@
       position: relative;
       font-weight: bold;
       cursor: pointer;
+      text-decoration: none;
       &.active {
         &:before {
           content: '';
@@ -325,6 +326,7 @@
     position: relative;
   }
   .tab-about {
+    max-width: 800px;
     .description-title {
       font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
       font-size: 22px;
@@ -345,14 +347,14 @@
     .lessons-container {
       display: flex;
       flex-direction: column;
-      padding: 20px;
+      padding: 40px 60px;
       background-color: #f3f3f3;
       border: 1px solid gainsboro;
       border-radius: 5px;
-      max-height: 402px;
+      max-height: 400px;
       overflow: auto;
       .lesson-card {
-        margin: 20px;
+        margin-bottom: 40px;
       }
     }
   }

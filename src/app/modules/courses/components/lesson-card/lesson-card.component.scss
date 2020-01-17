@@ -14,6 +14,7 @@
     .lesson-type-container {
       display: flex;
       align-items: center;
+      padding: 0px 20px;
       i {
         font-size: 70px;
         color: lightgrey;
@@ -23,8 +24,8 @@
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      margin: 0px 20px;
       padding: 10px 0px;
+      position: relative;
       .lesson-title-container {
         display: flex;
         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
@@ -32,20 +33,54 @@
         font-weight: bold;
         color: #289e50;
         margin-bottom: 10px;
-        .lesson-number {
+        justify-content: space-between;
+        .left {
+          display: flex;
+          .lesson-number {
+          }
+          .lesson-title {
+            margin-left: 10px;
+          }
         }
-        .lesson-title {
-          margin-left: 10px;
+        .right {
+          .lesson-duration,
+          .lesson-readtime {
+            display: flex;
+            align-items: center;
+            i {
+              font-size: 20px;
+              margin-left: 5px;
+            }
+          }
         }
       }
       .description-container {
+        height: 66px;
+        overflow: hidden;
         .description {
+          color: gray;
+          font-size: 15px;
+        }
+      }
+      .read-more-container {
+        display: flex;
+        padding-top: 5px;
+        box-shadow: 0px 0px 4px 2px #ffffff;
+        height: 17px;
+        .read-more {
+          color: lightgray;
+          font-size: 14px;
+          cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+          }
         }
       }
     }
     .navigate-container {
       display: flex;
       align-items: center;
+      padding: 0px 20px;
       i {
         font-size: 70px;
         color: #1f5e11;
