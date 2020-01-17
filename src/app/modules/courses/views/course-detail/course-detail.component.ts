@@ -538,21 +538,32 @@ export class CourseDetailComponent implements OnInit {
 
   currentTab = 'about';
 
-  constructor(private router: Router) {}
-
-  ngOnInit() {
+  constructor(private router: Router) {
     this.router.events.subscribe(event => {
+      console.log('\n\n\n');
+      console.log('Navigation event', event);
+      console.log('\n\n\n');
       if (event instanceof NavigationEnd) {
         // Prevent scrolling if changed tab.
-
         const second = event.url.split('#')[1];
         if (second) {
+          console.log('\n\n\n');
+          console.log('Second', second);
+          console.log('\n\n\n');
           return;
         }
+        console.log('\n\n\n');
+        console.log('Second', second);
+        console.log('Scrolling...');
+        console.log('\n\n\n');
         window.scrollTo(0, 0);
       }
       return;
     });
+  }
+
+  ngOnInit() {
+    
 
     // TODO: The following behaviour should not be random, instead it should be computed with the info obtained from the server
     let num = Math.random();

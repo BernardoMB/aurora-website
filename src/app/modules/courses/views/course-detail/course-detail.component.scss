@@ -327,7 +327,7 @@
     position: relative;
   }
   .tab-about {
-    max-width: 800px;
+    max-width: 840px;
     color: grey;
     .description-title {
       font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
@@ -337,8 +337,15 @@
       line-height: 1.43;
       color: #29303b;
     }
+    .description-content {
+      padding: 20px;
+      border-radius: 5px;
+      background-color: white;
+      border: 1px solid gainsboro;
+    }
   }
   .tab-lessons, .tab-reviews {
+    max-width: 900px;
     .lessons-title, .reviews-title {
       font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
       font-size: 22px;

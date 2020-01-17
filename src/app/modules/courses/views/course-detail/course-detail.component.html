@@ -60,7 +60,7 @@
               <div class="free">Free</div>
             </div>
             <div *ngIf="price > 0" class="price">
-              {{ price | currency: 'NGN':'symbol-narrow' }}
+              {{ price | currency: 'NGN': 'symbol-narrow' }}
             </div>
           </div>
           <div class="rating-container">
@@ -122,7 +122,7 @@
   <div class="tab-content-container">
     <div *ngIf="currentTab === 'about'" class="tab tab-about">
       <div class="description-title">Description</div>
-      <div [innerHTML]="course.overview"></div>
+      <div class="description-content" [innerHTML]="course.overview"></div>
     </div>
     <div *ngIf="currentTab === 'lessons'" class="tab tab-lessons">
       <div class="lessons-title">{{ course.lessons.length }} lessons</div>
