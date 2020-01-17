@@ -80,6 +80,8 @@
       [class.active]="currentTab === 'about'"
       (click)="currentTab = 'about'"
       tabindex="0"
+      [routerLink]="['./']"
+      fragment="about"
     >
       About
     </a>
@@ -88,6 +90,8 @@
       [class.active]="currentTab === 'lessons'"
       (click)="currentTab = 'lessons'"
       tabindex="0"
+      [routerLink]="['./']"
+      fragment="lessons"
     >
       Lessons
     </a>
@@ -96,6 +100,8 @@
       [class.active]="currentTab === 'reviews'"
       (click)="currentTab = 'reviews'"
       tabindex="0"
+      [routerLink]="['./']"
+      fragment="reviews"
     >
       Reviews
     </a>
@@ -104,6 +110,8 @@
       [class.active]="currentTab === 'certificate'"
       (click)="currentTab = 'certificate'"
       tabindex="0"
+      [routerLink]="['./']"
+      fragment="certificate"
     >
       Certificate
     </a>

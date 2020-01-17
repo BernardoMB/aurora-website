@@ -245,6 +245,9 @@ export class CourseDetailComponent implements OnInit {
 
   ngOnInit() {
     this.router.events.subscribe(evt => {
+      console.log('\n\n\n');
+      console.log(evt);
+      console.log('\n\n\n');
       if (!(evt instanceof NavigationEnd)) {
         return;
       }
