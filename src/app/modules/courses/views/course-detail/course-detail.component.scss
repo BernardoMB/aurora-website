@@ -337,15 +337,15 @@
       color: #29303b;
     }
   }
-  .tab-lessons {
-    .lessons-title {
+  .tab-lessons, .tab-reviews {
+    .lessons-title, .reviews-title {
       font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
       font-size: 22px;
       font-weight: 600;
       margin-bottom: 20px;
       color: #29303b;
     }
-    .lessons-container {
+    .lessons-container, .reviews-container {
       display: flex;
       flex-direction: column;
       padding: 40px 60px;
@@ -354,7 +354,7 @@
       border-radius: 5px;
       max-height: 400px;
       overflow: auto;
-      .lesson-card {
+      .lesson-card, .review-card {
         margin-bottom: 40px;
       }
     }

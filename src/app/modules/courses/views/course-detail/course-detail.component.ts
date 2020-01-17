@@ -17,7 +17,76 @@ export class CourseDetailComponent implements OnInit {
       'money',
       'interest',
     ],
-    reviews: ['5e192b2ce05ff40023656e54'],
+    reviews: [
+      {
+        user: {
+          profilePicMiniUrl: 'https://auroracourses.blob.core.windows.net/coursesimages/a4c9130109ce4918fca3cedc9e78541039.jpg'
+        },
+        course: '5e212c4d3357dd2c109ee2cf',
+        review: 'El curso esta muy básico. Certainly enjoying the course so far, crystal clear explanations. Looking forward for more!',
+        rating: 3.8,
+        createdAt: '2020-01-17T03:54:16.656Z',
+        updatedAt: '2020-01-17T03:54:16.656Z',
+        id: '5e212fe83497412ef81950d7'
+      },
+      {
+        user: {
+          profilePicMiniUrl: 'https://auroracourses.blob.core.windows.net/coursesimages/6ab175d926dc4442b956ce100aa6da1084.jpg'
+        },
+        course: '5e212c4d3357dd2c109ee2cf',
+        review: 'Principios de un largo camino...',
+        rating: 5,
+        createdAt: '2020-01-17T03:54:16.656Z',
+        updatedAt: '2020-01-17T03:54:16.656Z',
+        id: '5e212fe83497412ef81950d7'
+      },
+      {
+        user: {
+          profilePicMiniUrl: 'https://auroracourses.blob.core.windows.net/coursesimages/b3a4717d145cf356144df1769317b449.jpg'
+        },
+        course: '5e212c4d3357dd2c109ee2cf',
+        // tslint:disable-next-line: max-line-length
+        review: 'No profundiso sufienciente en los temas. For the kind of study I am most interested in, I would say that the teacher glosses over key math concepts and focuses on the intuition behind it. I respect this approach since the class is more oriented towards the 20 Case Studies. Overall, I very much appreciate the fluidity of the lessons and the wide range of topics covered.',
+        rating: 4.5,
+        createdAt: '2020-01-17T03:54:16.656Z',
+        updatedAt: '2020-01-17T03:54:16.656Z',
+        id: '5e212fe83497412ef81950d7'
+      },
+      {
+        user: {
+          profilePicMiniUrl: 'https://auroracourses.blob.core.windows.net/coursesimages/24d219cd38f84810fb847f1d39d5e608.jpg'
+        },
+        course: '5e212c4d3357dd2c109ee2cf',
+        review: 'Gracias! Pasé mi materia (:',
+        rating: 4.8,
+        createdAt: '2020-01-17T03:54:16.656Z',
+        updatedAt: '2020-01-17T03:54:16.656Z',
+        id: '5e212fe83497412ef81950d7'
+      },
+      {
+        user: {
+          profilePicMiniUrl: 'https://auroracourses.blob.core.windows.net/coursesimages/455973f31bf285d388abb76383f9c92f.jpg'
+        },
+        course: '5e212c4d3357dd2c109ee2cf',
+        review: 'El peor curso que visto en mi vida',
+        rating: 1.1,
+        createdAt: '2020-01-17T03:54:16.656Z',
+        updatedAt: '2020-01-17T03:54:16.656Z',
+        id: '5e212fe83497412ef81950d7'
+      },
+      {
+        user: {
+          profilePicMiniUrl: 'https://auroracourses.blob.core.windows.net/coursesimages/0af6514c9802815b71179732b699e7ae.jpg'
+        },
+        course: '5e212c4d3357dd2c109ee2cf',
+        // tslint:disable-next-line: max-line-length
+        review: `Excellent overview of the key topic areas of ML. Course is supported by plenty of practical examples that provide hands-on experience and reinforce learning with the types of problems one is likely to encounter in the world. Some of the lessons are jerky due to jumping quickly in and out of different slides. Slower transitions or a more calculated approach would soften these sometimes hard edges. It is pretty different in format, from others. The appraoch taken here is an end-to-end hands-on project execution, while introducing the concepts. A learner with some prior knowledge will definitely feel at home and get to witness the thought process that happens, while executing a real-time project.`,
+        rating: 4,
+        createdAt: '2020-01-17T03:54:16.656Z',
+        updatedAt: '2020-01-17T03:54:16.656Z',
+        id: '5e212fe83497412ef81950d7'
+      },
+    ],
     enrolledUsers: [
       '5e192b00e05ff40023656e53',
       '5e192b00e05ff40023656e54',
@@ -229,7 +298,7 @@ export class CourseDetailComponent implements OnInit {
       'https://auroracourses.blob.core.windows.net/coursesimages/edb35a58af75eea72a8091158eaf0b37.png',
     rating: 4.6,
     totalRating: 4,
-    totalReviews: 1,
+    totalReviews: 5,
     id: '5e1924a6e05ff40023656e8f',
   };
 
@@ -244,14 +313,17 @@ export class CourseDetailComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    this.router.events.subscribe(evt => {
-      console.log('\n\n\n');
-      console.log(evt);
-      console.log('\n\n\n');
-      if (!(evt instanceof NavigationEnd)) {
-        return;
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        // Prevent scrolling if changed tab.
+
+        const second = event.url.split('#')[1];
+        if (second) {
+          return;
+        }
+        window.scrollTo(0, 0);
       }
-      window.scrollTo(0, 0);
+      return;
     });
 
     // TODO: The following behaviour should not be random, instead it should be computed with the info obtained from the server

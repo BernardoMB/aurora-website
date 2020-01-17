@@ -1,0 +1,45 @@
+<div class="review-card-wrapper">
+  <div class="review-card-container">
+    <div class="review-type-container">
+      <div class="profile-pic-container" [style.backgroundImage]="'url(' + review.user.profilePicMiniUrl + ')'"></div>
+    </div>
+    <div class="review-details-container">
+      <div class="review-title-container">
+        <div class="left">
+          <div class="review-title">
+            <!-- {{ review.user.name }} {{ review.user.middleName }} -->
+            Firstname Middlename
+          </div>
+        </div>
+        <div class="right">
+
+        </div>
+      </div>
+      <div class="description-container" [style.height]="height">
+        <div #description class="description">{{ review.review }}</div>
+      </div>
+      <div class="read-more-container">
+        <div
+          *ngIf="fixedHeight && showReadMoreButton"
+          class="read-more"
+          (click)="unSetHeight()"
+        >
+          Read more
+        </div>
+        <div
+          *ngIf="!fixedHeight && showReadMoreButton"
+          class="read-more"
+          (click)="setHeight()"
+        >
+          Show less
+        </div>
+      </div>
+    </div>
+    <div class="navigate-container">
+      <div class="rating-container">
+        <i class="material-icons">star</i>
+        <div>{{review.rating}}</div>
+      </div>
+    </div>
+  </div>
+</div>

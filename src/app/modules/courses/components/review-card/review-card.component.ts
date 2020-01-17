@@ -1,20 +1,13 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  AfterViewInit,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 
 @Component({
-  selector: 'app-lesson-card',
-  templateUrl: './lesson-card.component.html',
-  styleUrls: ['./lesson-card.component.scss'],
+  selector: 'app-review-card',
+  templateUrl: './review-card.component.html',
+  styleUrls: ['./review-card.component.scss']
 })
-export class LessonCardComponent implements OnInit, AfterViewInit {
-  @Input() lesson;
-  @Input() lessonNumber;
+export class ReviewCardComponent implements OnInit, AfterViewInit {
+  @Input() review;
+  @Input() reviewNumber;
   @ViewChild('description', { static: false }) el: ElementRef;
 
   height = '66px';
