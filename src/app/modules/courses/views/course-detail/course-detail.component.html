@@ -157,3 +157,22 @@
     </div>
   </div>
 </section>
+
+<div class="divider"></div>
+
+<section *ngIf="relatedCourses.length > 0" class="courses-section">
+  <div class="courses-container">
+    <div class="title-container">
+      <div class="title">You might also be interested in</div>
+      <a>View all</a>
+    </div>
+    <div class="cards-container">
+      <div
+        class="course-card"
+        *ngFor="let course of relatedCourses; let i = index"
+      >
+        <app-course-card [course]="course"></app-course-card>
+      </div>
+    </div>
+  </div>
+</section>
