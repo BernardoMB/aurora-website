@@ -60,7 +60,7 @@
               <div class="free">Free</div>
             </div>
             <div *ngIf="price > 0" class="price">
-              {{ price | currency: 'NGN': 'symbol-narrow' }}
+              {{ price | currency: 'NGN':'symbol-narrow' }}
             </div>
           </div>
           <div class="rating-container">
@@ -106,6 +106,7 @@
       Reviews
     </a>
     <a
+      *ngIf="showCertificateTab"
       class="tab-selector focus-outline"
       [class.active]="currentTab === 'certificate'"
       (click)="currentTab = 'certificate'"
@@ -120,10 +121,12 @@
 
 <section class="tab-content-section">
   <div class="tab-content-container">
+    <!-- About tab content -->
     <div *ngIf="currentTab === 'about'" class="tab tab-about">
       <div class="description-title">Description</div>
       <div class="description-content" [innerHTML]="course.overview"></div>
     </div>
+    <!-- Lessons tab content -->
     <div *ngIf="currentTab === 'lessons'" class="tab tab-lessons">
       <div class="lessons-title">{{ course.lessons.length }} lessons</div>
       <div class="lessons-container">
@@ -138,6 +141,7 @@
         </div>
       </div>
     </div>
+    <!-- Reviews tab content -->
     <div *ngIf="currentTab === 'reviews'" class="tab tab-reviews">
       <div class="reviews-title">{{ course.totalReviews }} reviews</div>
       <div class="reviews-container">
@@ -152,7 +156,11 @@
         </div>
       </div>
     </div>
-    <div *ngIf="currentTab === 'certificate'" class="tab tab-certificate">
+    <!-- Certificate tab content -->
+    <div
+      *ngIf="currentTab === 'certificate' && showCertificateTab"
+      class="tab tab-certificate"
+    >
       <div style="width: 50px; height: 50px; background-color: blue;"></div>
     </div>
   </div>

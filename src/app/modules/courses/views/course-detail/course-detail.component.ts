@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { Store, select } from '@ngrx/store';
+import { State } from '../../../../store/state';
+import { User } from '../../../../shared/models/user.model';
+import { selectAuthUser } from '../../../../store/auth/auth.selectors';
 
 @Component({
   selector: 'app-course-detail',
@@ -7,6 +11,9 @@ import { Router, NavigationEnd } from '@angular/router';
   styleUrls: ['./course-detail.component.scss'],
 })
 export class CourseDetailComponent implements OnInit {
+  user: User;
+  showCertificateTab = false;
+
   course = {
     public: true,
     labels: [
@@ -20,63 +27,71 @@ export class CourseDetailComponent implements OnInit {
     reviews: [
       {
         user: {
-          profilePicMiniUrl: 'https://auroracourses.blob.core.windows.net/coursesimages/a4c9130109ce4918fca3cedc9e78541039.jpg'
+          profilePicMiniUrl:
+            'https://auroracourses.blob.core.windows.net/coursesimages/a4c9130109ce4918fca3cedc9e78541039.jpg',
         },
         course: '5e212c4d3357dd2c109ee2cf',
-        review: 'El curso esta muy básico. Certainly enjoying the course so far, crystal clear explanations. Looking forward for more!',
+        review:
+          'El curso esta muy básico. Certainly enjoying the course so far, crystal clear explanations. Looking forward for more!',
         rating: 3.8,
         createdAt: '2020-01-17T03:54:16.656Z',
         updatedAt: '2020-01-17T03:54:16.656Z',
-        id: '5e212fe83497412ef81950d7'
+        id: '5e212fe83497412ef81950d7',
       },
       {
         user: {
-          profilePicMiniUrl: 'https://auroracourses.blob.core.windows.net/coursesimages/6ab175d926dc4442b956ce100aa6da1084.jpg'
+          profilePicMiniUrl:
+            'https://auroracourses.blob.core.windows.net/coursesimages/6ab175d926dc4442b956ce100aa6da1084.jpg',
         },
         course: '5e212c4d3357dd2c109ee2cf',
         review: 'Principios de un largo camino...',
         rating: 5,
         createdAt: '2020-01-17T03:54:16.656Z',
         updatedAt: '2020-01-17T03:54:16.656Z',
-        id: '5e212fe83497412ef81950d7'
+        id: '5e212fe83497412ef81950d7',
       },
       {
         user: {
-          profilePicMiniUrl: 'https://auroracourses.blob.core.windows.net/coursesimages/b3a4717d145cf356144df1769317b449.jpg'
+          profilePicMiniUrl:
+            'https://auroracourses.blob.core.windows.net/coursesimages/b3a4717d145cf356144df1769317b449.jpg',
         },
         course: '5e212c4d3357dd2c109ee2cf',
         // tslint:disable-next-line: max-line-length
-        review: 'No profundiso sufienciente en los temas. For the kind of study I am most interested in, I would say that the teacher glosses over key math concepts and focuses on the intuition behind it. I respect this approach since the class is more oriented towards the 20 Case Studies. Overall, I very much appreciate the fluidity of the lessons and the wide range of topics covered.',
+        review:
+          'No profundiso sufienciente en los temas. For the kind of study I am most interested in, I would say that the teacher glosses over key math concepts and focuses on the intuition behind it. I respect this approach since the class is more oriented towards the 20 Case Studies. Overall, I very much appreciate the fluidity of the lessons and the wide range of topics covered.',
         rating: 4.5,
         createdAt: '2020-01-17T03:54:16.656Z',
         updatedAt: '2020-01-17T03:54:16.656Z',
-        id: '5e212fe83497412ef81950d7'
+        id: '5e212fe83497412ef81950d7',
       },
       {
         user: {
-          profilePicMiniUrl: 'https://auroracourses.blob.core.windows.net/coursesimages/24d219cd38f84810fb847f1d39d5e608.jpg'
+          profilePicMiniUrl:
+            'https://auroracourses.blob.core.windows.net/coursesimages/24d219cd38f84810fb847f1d39d5e608.jpg',
         },
         course: '5e212c4d3357dd2c109ee2cf',
         review: 'Gracias! Pasé mi materia (:',
         rating: 4.8,
         createdAt: '2020-01-17T03:54:16.656Z',
         updatedAt: '2020-01-17T03:54:16.656Z',
-        id: '5e212fe83497412ef81950d7'
+        id: '5e212fe83497412ef81950d7',
       },
       {
         user: {
-          profilePicMiniUrl: 'https://auroracourses.blob.core.windows.net/coursesimages/455973f31bf285d388abb76383f9c92f.jpg'
+          profilePicMiniUrl:
+            'https://auroracourses.blob.core.windows.net/coursesimages/455973f31bf285d388abb76383f9c92f.jpg',
         },
         course: '5e212c4d3357dd2c109ee2cf',
         review: 'El peor curso que visto en mi vida',
         rating: 1.1,
         createdAt: '2020-01-17T03:54:16.656Z',
         updatedAt: '2020-01-17T03:54:16.656Z',
-        id: '5e212fe83497412ef81950d7'
+        id: '5e212fe83497412ef81950d7',
       },
       {
         user: {
-          profilePicMiniUrl: 'https://auroracourses.blob.core.windows.net/coursesimages/0af6514c9802815b71179732b699e7ae.jpg'
+          profilePicMiniUrl:
+            'https://auroracourses.blob.core.windows.net/coursesimages/0af6514c9802815b71179732b699e7ae.jpg',
         },
         course: '5e212c4d3357dd2c109ee2cf',
         // tslint:disable-next-line: max-line-length
@@ -84,7 +99,7 @@ export class CourseDetailComponent implements OnInit {
         rating: 4,
         createdAt: '2020-01-17T03:54:16.656Z',
         updatedAt: '2020-01-17T03:54:16.656Z',
-        id: '5e212fe83497412ef81950d7'
+        id: '5e212fe83497412ef81950d7',
       },
     ],
     enrolledUsers: [
@@ -538,7 +553,7 @@ export class CourseDetailComponent implements OnInit {
 
   currentTab = 'about';
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private store: Store<State>) {
     this.router.events.subscribe(event => {
       console.log('\n\n\n');
       console.log('Navigation event', event);
@@ -563,7 +578,15 @@ export class CourseDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+    this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
+      if (user) {
+        this.user = user;
+        this.showCertificateTab = true;
+      } else {
+        this.user = undefined;
+        this.showCertificateTab = false;
+      }
+    });
 
     // TODO: The following behaviour should not be random, instead it should be computed with the info obtained from the server
     let num = Math.random();

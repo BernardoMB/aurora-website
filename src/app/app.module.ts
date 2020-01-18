@@ -19,6 +19,8 @@ import {
 } from './services/token.interceptor';
 import { MaterialModule } from './material.module';
 import { SharedModule } from './shared/shared.module';
+import { LoginFormComponent } from './components/login-form/login-form.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,11 +29,14 @@ import { SharedModule } from './shared/shared.module';
     LandingComponent,
     FooterComponent,
     NotFoundComponent,
+    LoginFormComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule, // Making Http call within the app
+    FormsModule,
+    ReactiveFormsModule,
     MaterialModule,
     SharedModule,
     AppRoutingModule, // <-- Routing modules should be imported in the correct order.c
@@ -55,6 +60,7 @@ import { SharedModule } from './shared/shared.module';
       multi: true,
     },
   ],
+  entryComponents: [LoginFormComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
