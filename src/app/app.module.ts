@@ -21,6 +21,7 @@ import { MaterialModule } from './material.module';
 import { SharedModule } from './shared/shared.module';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SignupFormComponent } from './components/signup-form/signup-form.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FooterComponent,
     NotFoundComponent,
     LoginFormComponent,
+    SignupFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,7 +62,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
       multi: true,
     },
   ],
-  entryComponents: [LoginFormComponent],
+  entryComponents: [LoginFormComponent, SignupFormComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

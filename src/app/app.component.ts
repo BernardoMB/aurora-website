@@ -3,13 +3,14 @@ import { RouterOutlet } from '@angular/router';
 import { slideInAnimation } from './animations';
 import { CookieService } from 'ngx-cookie-service';
 import { Store, select } from '@ngrx/store';
-import { login, loginWithToken, logout } from './store/auth/auth.actions';
+import { loginWithToken, logout } from './store/auth/auth.actions';
 import { log } from './shared/utils';
 import { User } from './shared/models/user.model';
 import { selectAuthUser } from './store/auth/auth.selectors';
 import { State } from './store/state';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { LoginFormComponent } from './components/login-form/login-form.component';
+import { SignupFormComponent } from './components/signup-form/signup-form.component';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit {
     private cookieService: CookieService,
     private store: Store<State>,
     private loginDialog: MatDialog,
+    private signupDialog: MatDialog,
   ) {}
 
   getAnimationData(outlet: RouterOutlet) {
@@ -52,12 +54,18 @@ export class AppComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'custom-mat-dialog-container';
-    this.loginDialog.open(LoginFormComponent, dialogConfig);
-
-    log('AppComponent: Dispatching login action');
-    this.store.dispatch(
-      login({ username: 'kevinislas', password: 'Qawsed123' }),
-    );
+    dialogConfig.backdropClass = 'custom-modal-backdrop';
+    let loginDialogRef;
+    let signupDialogRef;
+    loginDialogRef = this.loginDialog.open(LoginFormComponent, dialogConfig);
+    loginDialogRef.afterClosed().subscribe(result => {
+      if (result && result.showSignUpModalOnClose) {
+        signupDialogRef = this.signupDialog.open(
+          SignupFormComponent,
+          dialogConfig,
+        );
+      }
+    });
   }
 
   onLogout() {

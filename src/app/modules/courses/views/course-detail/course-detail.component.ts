@@ -555,22 +555,13 @@ export class CourseDetailComponent implements OnInit {
 
   constructor(private router: Router, private store: Store<State>) {
     this.router.events.subscribe(event => {
-      console.log('\n\n\n');
-      console.log('Navigation event', event);
-      console.log('\n\n\n');
+      console.log('Navigation event:', event);
       if (event instanceof NavigationEnd) {
         // Prevent scrolling if changed tab.
         const second = event.url.split('#')[1];
         if (second) {
-          console.log('\n\n\n');
-          console.log('Second', second);
-          console.log('\n\n\n');
           return;
         }
-        console.log('\n\n\n');
-        console.log('Second', second);
-        console.log('Scrolling...');
-        console.log('\n\n\n');
         window.scrollTo(0, 0);
       }
       return;

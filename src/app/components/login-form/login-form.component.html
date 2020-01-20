@@ -3,7 +3,7 @@
     <div class="modal-title" style="margin-right: 20px;">
       Log In to Your Invest Naija Account.
     </div>
-    <i class="material-icons">clear</i>
+    <i class="material-icons" (click)="onClose()">clear</i>
   </div>
   <div class="login-indicator">
     <i class="material-icons">
@@ -11,26 +11,59 @@
     </i>
   </div>
   <div class="welcome-phrase">Welcome to Invest Naija!</div>
-  <div class="credential-field">
-    <mat-form-field appearance="outline">
-      <mat-label>Username or email</mat-label>
-      <input matInput placeholder="Username or email" />
-      <mat-icon matSuffix>person</mat-icon>
-    </mat-form-field>
-  </div>
-  <div class="credential-field">
-    <mat-form-field appearance="outline">
-      <mat-label>Password</mat-label>
-      <input matInput placeholder="Placeholder" />
-      <mat-icon matSuffix>lock</mat-icon>
-    </mat-form-field>
-  </div>
-  <div class="login-button-container">
-    <button class="login-button focus-outline" (click)="onLogin()">
-      Log In
-    </button>
-  </div>
+
+  <form [formGroup]="loginForm">
+    <div class="credential-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Username or email</mat-label>
+        <input
+          matInput
+          placeholder="Username or email"
+          formControlName="email"
+          autofocus
+          required
+        />
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div class="credential-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          placeholder="Placeholder"
+          formControlName="password"
+          [type]="hide ? 'password' : 'text'"
+          required
+        />
+        <!-- <mat-icon matSuffix>lock</mat-icon> -->
+        <mat-icon style="cursor:pointer;" matSuffix (click)="hide = !hide">
+          {{ hide ? 'visibility' : 'visibility_off' }}</mat-icon
+        >
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="errorMessage">
+      <div class="alert-message">
+        {{ errorMessage }}
+      </div>
+    </div>
+
+    <div class="login-button-container">
+      <button class="login-button focus-outline" (click)="onSubmit()">
+        Log In
+      </button>
+    </div>
+  </form>
+
   <div class="signup-phrase">
-    Don't have an account? <a (click)="onSignup()">Sign up</a>
+    Don't have an account?
+    <a
+      tabindex="0"
+      class="focus-outline"
+      [mat-dialog-close]="{ showSignUpModalOnClose: true }"
+      >Sign up</a
+    >
   </div>
 </div>

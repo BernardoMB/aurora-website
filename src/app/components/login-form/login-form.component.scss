@@ -1,46 +1,97 @@
 .modal-container {
-  display: flex; flex-direction: column; align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
   .modal-header {
-    display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid gainsboro; width: 100%; padding-bottom: 24px; margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid gainsboro;
+    width: 100%;
+    padding-bottom: 24px;
+    margin: 20px 0px;
     .modal-title {
+      margin: 0px 20px;
+      color: gray;
       margin-right: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    i {
+      margin-right: 20px;
+      cursor: pointer;
+      color: #1f5e11;
+      &:hover {
+        color: darkorange;
+      }
     }
   }
   .login-indicator {
-    display: flex; justify-content: center; align-items: center; width: 30px; height: 30px; border: 2px solid grey; padding: 10px; border-radius: 50px; margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border: 2px solid gray;
+    padding: 10px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    i {
+      color: grey;
+    }
   }
   .welcome-phrase {
     margin-bottom: 20px;
   }
-  .login-button-container {
-    margin-bottom: 20px;
-    cursor: pointer;
-    .login-button {
-      display: inline-block;
-      font-weight: 600;
-      text-align: center;
-      vertical-align: middle;
-      white-space: nowrap;
-      padding: 11px 12px;
-      font-size: 15px;
-      line-height: 1.35135;
-      border-radius: 2px;
-      user-select: none;
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    mat-icon {
+      color: grey;
+    }
+    .alert-message {
+      margin-bottom: 22px;
+      color: #721c24;
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.25rem;
+    }
+    .login-button-container {
+      margin-bottom: 20px;
       cursor: pointer;
-      color: #fff;
-      background-color: #eb6c00;
-      border: 1px solid transparent;
-      &:hover {
-        background-color: #1f5e11;
+      .login-button {
+        display: inline-block;
+        font-weight: 600;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+        padding: 11px 25px;
+        font-size: 15px;
+        line-height: 1.35135;
+        border-radius: 2px;
+        user-select: none;
+        cursor: pointer;
+        color: #fff;
+        background-color: #eb6c00;
+        border: 1px solid transparent;
+        &:hover {
+          background-color: #1f5e11;
+        }
       }
     }
   }
   .signup-phrase {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    a {
+      color: #289e50;
+      cursor: pointer;
+      font-weight: 500;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }
-
-
-
-
-
