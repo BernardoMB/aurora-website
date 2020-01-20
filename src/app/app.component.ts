@@ -77,4 +77,16 @@ export class AppComponent implements OnInit {
     // TODO: Open register modal.
     console.log('Should open register modal');
   }
+
+  onViewProfile() {
+    alert('implement this function');
+  }
+
+  onViewShoppingKart() {
+    if (this.user) {
+      alert('Redirect to shopping cart view');
+    } else {
+      this.onLogin();
+    }
+  }
 }

@@ -37,6 +37,8 @@ export class HeaderComponent implements OnInit {
   @Output() login: EventEmitter<void> = new EventEmitter();
   @Output() logout: EventEmitter<void> = new EventEmitter();
   @Output() register: EventEmitter<void> = new EventEmitter();
+  @Output() viewProfile: EventEmitter<void> = new EventEmitter();
+  @Output() viewShoppingKart: EventEmitter<void> = new EventEmitter();
   private document: Document;
   private window: Window;
   onLandingPage: boolean;
@@ -134,7 +136,10 @@ export class HeaderComponent implements OnInit {
   }
 
   onViewProfile() {
-    // TODO: implement this function
-    alert('Implement this function');
+    this.viewProfile.emit();
+  }
+
+  onViewShoppingKart() {
+    this.viewShoppingKart.emit();
   }
 }
