@@ -49,9 +49,10 @@ export class AppComponent implements OnInit {
   }
 
   onLogin() {
-    this.loginDialog.open(LoginFormComponent, {
-      panelClass: 'custom-mat-dialog-container',
-    });
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
+    this.loginDialog.open(LoginFormComponent, dialogConfig);
 
     log('AppComponent: Dispatching login action');
     this.store.dispatch(
