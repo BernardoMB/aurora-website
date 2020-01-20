@@ -1,21 +1,21 @@
-<div style="display: flex; flex-direction: column; align-items: center;">
+<div class="modal-container" style="display: flex; flex-direction: column; align-items: center;">
   <div
-    style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid gainsboro; width: 100%; padding-bottom: 24px; margin-bottom: 20px;"
+    class="modal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid gainsboro; width: 100%; padding-bottom: 24px; margin-bottom: 20px;"
   >
-    <div style="margin-right: 20px;">Log In to Your Invest Naija Account.</div>
+    <div class="modal-title" style="margin-right: 20px;">Log In to Your Invest Naija Account.</div>
     <i class="material-icons">
       clear
     </i>
   </div>
   <div
-    style="display: flex; justify-content: center; align-items: center; width: 30px; height: 30px; border: 2px solid grey; padding: 10px; border-radius: 50px; margin-bottom: 20px;"
+    class="login-indicator"style="display: flex; justify-content: center; align-items: center; width: 30px; height: 30px; border: 2px solid grey; padding: 10px; border-radius: 50px; margin-bottom: 20px;"
   >
     <i class="material-icons">
       person
     </i>
   </div>
-  <div style="margin-bottom: 20px;">Welcome to Invest Naija!</div>
-  <div>
+  <div class="welcome-phrase" style="margin-bottom: 20px;">Welcome to Invest Naija!</div>
+  <div class="credential-field">
     <mat-form-field appearance="outline">
       <mat-label>Username or email</mat-label>
       <input matInput placeholder="Username or email" />
@@ -23,7 +23,7 @@
       <!-- <mat-hint>Hint for entering the username or email</mat-hint> -->
     </mat-form-field>
   </div>
-  <div>
+  <div class="credential-field">
     <mat-form-field appearance="outline">
       <mat-label>Password</mat-label>
       <input matInput placeholder="Placeholder" />
@@ -36,7 +36,7 @@
       Log In
     </button>
   </div>
-  <div style="margin-bottom: 20px;">
+  <div class="signup-phrase" style="margin-bottom: 20px;">
     Don't have an account? <a (click)="onSignup()">Sign up</a>
   </div>
 </div>
