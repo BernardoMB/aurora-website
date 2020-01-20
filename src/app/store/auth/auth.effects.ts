@@ -3,18 +3,18 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, exhaustMap, catchError, tap } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import {
-    login,
-    loginSuccess,
-    loginFailure,
-    getUserInfoSuccess,
-    getUserInfoFailure,
-    getUserInfo,
-    signup,
-    loginWithToken,
-    loginWithTokenSuccess,
-    loginWithTokenFailure,
-    logout,
-    signupFailure,
+  login,
+  loginSuccess,
+  loginFailure,
+  getUserInfoSuccess,
+  getUserInfoFailure,
+  getUserInfo,
+  signup,
+  loginWithToken,
+  loginWithTokenSuccess,
+  loginWithTokenFailure,
+  logout,
+  signupFailure,
 } from './auth.actions';
 import { of } from 'rxjs';
 import { GetUserDto } from '../../shared/dtos/get-user.dto';
@@ -30,124 +30,137 @@ import { HttpErrorResponse } from '@angular/common/http';
  */
 @Injectable()
 export class AuthEffects {
-    loginEffect$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(login),
-            exhaustMap(action =>
-                this.authService.signin(action.username, action.password).pipe(
-                    map((responseBody: { accessToken: string }) => {
-                        this.cookieService.set(
-                            'userToken',
-                            responseBody.accessToken,
-                        );
-                        return loginSuccess();
-                    }),
-                    catchError((errorResponse: HttpErrorResponse) => {
-                      log('Catched error from service:', errorResponse);
-                      log('Dispatching login failure action');
-                      return of(loginFailure({ error: errorResponse, message: errorResponse.error.message }));
-                    }),
-                ),
-            ),
+  loginEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(login),
+      exhaustMap(action =>
+        this.authService.signin(action.username, action.password).pipe(
+          map((responseBody: { accessToken: string }) => {
+            this.cookieService.set('userToken', responseBody.accessToken);
+            return loginSuccess();
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            log('Catched error from service:', errorResponse);
+            log('Dispatching login failure action');
+            return of(
+              loginFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            );
+          }),
         ),
-    );
+      ),
+    ),
+  );
 
-    loginSuccessEffect$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(loginSuccess),
-            exhaustMap(action =>
-                this.authService.getUserInfo().pipe(
-                    map((responseBody: GetUserDto) =>
-                        getUserInfoSuccess({
-                            id: responseBody.id,
-                            email: responseBody.email,
-                            username: responseBody.username,
-                            emailVerified: responseBody.emailVerified,
-                        }),
-                    ),
-                    catchError(error => of(getUserInfoFailure({ error }))),
-                ),
-            ),
+  loginSuccessEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loginSuccess),
+      exhaustMap(action =>
+        this.authService.getUserInfo().pipe(
+          map((responseBody: GetUserDto) =>
+            getUserInfoSuccess({
+              id: responseBody.id,
+              email: responseBody.email,
+              username: responseBody.username,
+              emailVerified: responseBody.emailVerified,
+              name: responseBody.name,
+              lastName: responseBody.lastName,
+            }),
+          ),
+          catchError(error => of(getUserInfoFailure({ error }))),
         ),
-    );
+      ),
+    ),
+  );
 
-    getUserInfoEffect$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(getUserInfo),
-            exhaustMap(action =>
-                this.authService.getUserInfo().pipe(
-                    map((responseBody: GetUserDto) =>
-                        getUserInfoSuccess({
-                            id: responseBody.id,
-                            email: responseBody.email,
-                            username: responseBody.username,
-                            emailVerified: responseBody.emailVerified,
-                        }),
-                    ),
-                    catchError((errorResponse: HttpErrorResponse) =>
-                      of(loginFailure({ error: errorResponse, message: errorResponse.error.message }))
-                    ),
-                ),
+  getUserInfoEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getUserInfo),
+      exhaustMap(action =>
+        this.authService.getUserInfo().pipe(
+          map((responseBody: GetUserDto) => {
+            return getUserInfoSuccess({
+              id: responseBody.id,
+              email: responseBody.email,
+              username: responseBody.username,
+              emailVerified: responseBody.emailVerified,
+              name: responseBody.name,
+              lastName: responseBody.lastName,
+            });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              loginFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
             ),
+          ),
         ),
-    );
+      ),
+    ),
+  );
 
-    signupEffect$ = createEffect(
-        () =>
-            this.actions$.pipe(
-                ofType(signup),
-                exhaustMap(action =>
-                    this.authService
-                        .signup(action)
-                        .pipe(catchError(error => of(signupFailure({ error })))),
-                ),
-            ),
-        { dispatch: false },
-    );
-
-    loginWithTokenEffect$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(loginWithToken),
-            exhaustMap(action =>
-                this.authService.signinWithToken().pipe(
-                    map(() => loginWithTokenSuccess()),
-                    catchError(error => of(loginWithTokenFailure({ error }))),
-                ),
-            ),
+  signupEffect$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(signup),
+        exhaustMap(action =>
+          this.authService
+            .signup(action)
+            .pipe(catchError(error => of(signupFailure({ error })))),
         ),
-    );
+      ),
+    { dispatch: false },
+  );
 
-    loginWithTokenSuccessEffect$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(loginWithTokenSuccess),
-            exhaustMap(action =>
-                this.authService.getUserInfo().pipe(
-                    map((responseBody: GetUserDto) =>
-                        getUserInfoSuccess({
-                            id: responseBody.id,
-                            email: responseBody.email,
-                            username: responseBody.username,
-                            emailVerified: responseBody.emailVerified,
-                        })
-                    ),
-                    catchError(error => of(getUserInfoFailure({ error }))),
-                ),
-            ),
+  loginWithTokenEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loginWithToken),
+      exhaustMap(action =>
+        this.authService.signinWithToken().pipe(
+          map(() => loginWithTokenSuccess()),
+          catchError(error => of(loginWithTokenFailure({ error }))),
         ),
-    );
+      ),
+    ),
+  );
 
-    logoutEffect$ = createEffect(
-        () =>
-            this.actions$.pipe(
-                ofType(logout),
-                tap(action => this.cookieService.delete('userToken')),
-            ),
-        { dispatch: false },
-    );
+  loginWithTokenSuccessEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loginWithTokenSuccess),
+      exhaustMap(action =>
+        this.authService.getUserInfo().pipe(
+          map((responseBody: GetUserDto) =>
+            getUserInfoSuccess({
+              id: responseBody.id,
+              email: responseBody.email,
+              username: responseBody.username,
+              emailVerified: responseBody.emailVerified,
+              name: responseBody.name,
+              lastName: responseBody.lastName,
+            }),
+          ),
+          catchError(error => of(getUserInfoFailure({ error }))),
+        ),
+      ),
+    ),
+  );
 
-    constructor(
-        private actions$: Actions,
-        private authService: AuthService,
-        private cookieService: CookieService,
-    ) {}
+  logoutEffect$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(logout),
+        tap(action => this.cookieService.delete('userToken')),
+      ),
+    { dispatch: false },
+  );
+
+  constructor(
+    private actions$: Actions,
+    private authService: AuthService,
+    private cookieService: CookieService,
+  ) {}
 }

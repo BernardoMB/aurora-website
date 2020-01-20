@@ -60,9 +60,11 @@
       border-radius: 0.25rem;
     }
     .login-button-container {
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+      width: 100%;
       cursor: pointer;
       .login-button {
+        width: 100%;
         display: inline-block;
         font-weight: 600;
         text-align: center;

@@ -72,15 +72,63 @@
         <i class="material-icons">shopping_cart</i>
       </div>
 
-      <div
-        *ngIf="user"
-        class="user-section"
-        (mouseenter)="showUserMenu = true"
-        (mouseleave)="showUserMenu = false"
-      >
-        <div>{{ user.username }}</div>
-        <div class="user-menu" *ngIf="showUserMenu">
-          <div class="focus-outline" (click)="onLogout()">Log out</div>
+      <div *ngIf="user" class="user-section">
+        <div
+          class="user-name-container focus-outline"
+          (mouseenter)="showUserMenu = true"
+          (mouseleave)="showUserMenu = false"
+          (focus)="showUserMenu = true"
+          tabindex="0"
+        >
+          {{ user.username }}
+          <div class="user-menu-wrapper" *ngIf="showUserMenu">
+            <div class="user-menu-separator"></div>
+            <div class="user-menu">
+              <div
+                class="user-details-container focus-outline"
+                tabindex="0"
+                (keyup.enter)="onViewProfile()"
+                (click)="onViewProfile()"
+              >
+                <div class="profile-pic-container">
+                  <i class="material-icons">
+                    person
+                  </i>
+                </div>
+                <div class="user-names-container">
+                  <div class="user-names">
+                    {{ user.name }} {{ user.lastName }}
+                  </div>
+                  <div class="user-email">{{ user.email }}</div>
+                </div>
+              </div>
+              <div
+                class="menu-section focus-outline"
+                tabindex="0"
+                (click)="onViewMayCourses()"
+                (keyup.enter)="onViewMayCourses()"
+              >
+                My Courses
+              </div>
+              <div class="menu-separator"></div>
+              <div
+                class="menu-section focus-outline"
+                (click)="onHelp()"
+                tabindex="0"
+                (keyup.enter)="onHelp()"
+              >
+                Help
+              </div>
+              <div
+                class="menu-section focus-outline"
+                (click)="onLogout()"
+                tabindex="0"
+                (keyup.enter)="onLogout()"
+              >
+                Log out
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div *ngIf="!user" class="register-section">

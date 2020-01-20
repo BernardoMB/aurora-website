@@ -25,7 +25,6 @@ export class AuthService {
       username,
       password,
     });
-    // TODO: store access token cookie.
   }
 
   getUserInfo(): Observable<GetUserDto> {

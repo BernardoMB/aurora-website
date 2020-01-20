@@ -124,4 +124,17 @@ export class HeaderComponent implements OnInit {
   onRegister() {
     this.register.emit();
   }
+
+  onViewMayCourses() {
+    // TODO: implement this function
+  }
+
+  onHelp() {
+    // TODO: implement this function
+  }
+
+  onViewProfile() {
+    // TODO: implement this function
+    alert('Implement this function');
+  }
 }
