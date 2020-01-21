@@ -143,6 +143,23 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+// Change autocomplete styles in WebKit
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: 1px dashed greenyellow;
+  -webkit-text-fill-color: #1f5e11;
+  -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 // Custom classes
 
 $focus-outline-thickeness: 2px;
@@ -161,4 +178,8 @@ $focus-outline-thickeness: 2px;
 
 .custom-modal-backdrop {
   background: rgba(black, 0.54);
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #408e2d;
 }

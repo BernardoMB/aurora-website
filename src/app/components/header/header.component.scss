@@ -7,7 +7,7 @@ $focus-border: 2px;
     0 3px 1px 0 rgba(20, 23, 28, 0.1);
   display: block;
   position: relative;
-  z-index: 1010;
+  z-index: 1;
   background: #f3f3f3;
   .header-inner {
     display: flex;
@@ -19,7 +19,7 @@ $focus-border: 2px;
     margin: auto;
     padding: 0 20px;
     position: relative;
-    z-index: 1011;
+    z-index: 1  ;
     .logotype-container {
       margin: 10px 0px;
       .logotype {
@@ -93,7 +93,7 @@ $focus-border: 2px;
           cursor: pointer;
           &:hover {
             color: #408e2d;
-          } 
+          }
         }
       }
       .user-section {
@@ -187,6 +187,7 @@ $focus-border: 2px;
           .login-button {
             display: inline-block;
             font-weight: 600;
+            font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
             text-align: center;
             vertical-align: middle;
             white-space: nowrap;
@@ -211,6 +212,7 @@ $focus-border: 2px;
           .signup-button {
             display: inline-block;
             font-weight: 600;
+            font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
             text-align: center;
             vertical-align: middle;
             white-space: nowrap;
@@ -220,7 +222,6 @@ $focus-border: 2px;
             border-radius: 2px;
             user-select: none;
             cursor: pointer;
-
             color: #fff;
             background-color: #eb6c00;
             border: 1px solid transparent;

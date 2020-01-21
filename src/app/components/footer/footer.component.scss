@@ -2,7 +2,7 @@
   border-top: 1px solid gainsboro;
   display: block;
   position: relative;
-  z-index: 1010;
+  z-index: 1;
   background: #f3f3f3;
   .footer-inner {
     display: flex;
@@ -15,7 +15,7 @@
     padding: 40px 20px;
     padding-bottom: 10px;
     position: relative;
-    z-index: 1011;
+    z-index: 1;
     .footer-container {
       display: flex;
       width: 100%;
