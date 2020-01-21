@@ -69,6 +69,9 @@ $focus-border: 2px;
             &:visited {
               color: inherit;
             }
+            &:hover {
+              color: #408e2d;
+            }
           }
         }
       }
@@ -86,6 +89,12 @@ $focus-border: 2px;
         display: flex;
         align-items: center;
         margin: 0px 20px;
+        i {
+          cursor: pointer;
+          &:hover {
+            color: #408e2d;
+          } 
+        }
       }
       .user-section {
         position: relative;
@@ -95,13 +104,20 @@ $focus-border: 2px;
         justify-content: flex-end;
         .user-name-container {
           position: relative;
+          &:hover {
+            color: #408e2d;
+          }
           .user-menu-wrapper {
             position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
             top: 0px;
             right: 0px;
             .user-menu-separator {
               width: 1px;
               height: 43px;
+              z-index: -10;
             }
             .user-menu {
               display: flex;

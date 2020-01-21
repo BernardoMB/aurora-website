@@ -37,6 +37,8 @@ export class AuthEffects {
         this.authService.signin(action.username, action.password).pipe(
           map((responseBody: { accessToken: string }) => {
             this.cookieService.set('userToken', responseBody.accessToken);
+            // TODO: use environment variables below
+            // this.cookieService.set('userToken', responseBody.accessToken, undefined, '/', 'http://localhost:4200', true, 'Strict');
             return loginSuccess();
           }),
           catchError((errorResponse: HttpErrorResponse) => {
@@ -67,6 +69,7 @@ export class AuthEffects {
               emailVerified: responseBody.emailVerified,
               name: responseBody.name,
               lastName: responseBody.lastName,
+              purchasedCourses: responseBody.purchasedCourses
             }),
           ),
           catchError(error => of(getUserInfoFailure({ error }))),
@@ -88,6 +91,7 @@ export class AuthEffects {
               emailVerified: responseBody.emailVerified,
               name: responseBody.name,
               lastName: responseBody.lastName,
+              purchasedCourses: responseBody.purchasedCourses
             });
           }),
           catchError((errorResponse: HttpErrorResponse) =>
@@ -141,6 +145,7 @@ export class AuthEffects {
               emailVerified: responseBody.emailVerified,
               name: responseBody.name,
               lastName: responseBody.lastName,
+              purchasedCourses: responseBody.purchasedCourses
             }),
           ),
           catchError(error => of(getUserInfoFailure({ error }))),

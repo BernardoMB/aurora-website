@@ -53,6 +53,8 @@ export class TokenInterceptor implements HttpInterceptor {
             log('Authorization header is present');
             const incomingUserToken = authorizationHeader.split(' ')[1];
             this.cookieService.set('userToken', incomingUserToken);
+            // TODO: use environment variables below
+            // this.cookieService.set('userToken', incomingUserToken, undefined, '/', 'http://localhost:4200', true, 'Strict');
           }
         }
         return event;
