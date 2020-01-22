@@ -61,17 +61,18 @@ export class AuthEffects {
       ofType(loginSuccess),
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
-          map((responseBody: GetUserDto) =>
-            getUserInfoSuccess({
+          map((responseBody: GetUserDto) => {
+            log('loginSuccessEffect:', responseBody);
+            return getUserInfoSuccess({
               id: responseBody.id,
               email: responseBody.email,
               username: responseBody.username,
               emailVerified: responseBody.emailVerified,
               name: responseBody.name,
               lastName: responseBody.lastName,
-              purchasedCourses: responseBody.purchasedCourses
-            }),
-          ),
+              purchasedCourses: responseBody.purchasedCourses,
+            });
+          }),
           catchError(error => of(getUserInfoFailure({ error }))),
         ),
       ),
@@ -84,6 +85,7 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
           map((responseBody: GetUserDto) => {
+            log('loginSuccessEffect:', responseBody);
             return getUserInfoSuccess({
               id: responseBody.id,
               email: responseBody.email,
@@ -91,7 +93,7 @@ export class AuthEffects {
               emailVerified: responseBody.emailVerified,
               name: responseBody.name,
               lastName: responseBody.lastName,
-              purchasedCourses: responseBody.purchasedCourses
+              purchasedCourses: responseBody.purchasedCourses,
             });
           }),
           catchError((errorResponse: HttpErrorResponse) =>
@@ -137,17 +139,18 @@ export class AuthEffects {
       ofType(loginWithTokenSuccess),
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
-          map((responseBody: GetUserDto) =>
-            getUserInfoSuccess({
+          map((responseBody: GetUserDto) => {
+            log('loginSuccessEffect:', responseBody);
+            return getUserInfoSuccess({
               id: responseBody.id,
               email: responseBody.email,
               username: responseBody.username,
               emailVerified: responseBody.emailVerified,
               name: responseBody.name,
               lastName: responseBody.lastName,
-              purchasedCourses: responseBody.purchasedCourses
-            }),
-          ),
+              purchasedCourses: responseBody.purchasedCourses,
+            });
+          }),
           catchError(error => of(getUserInfoFailure({ error }))),
         ),
       ),

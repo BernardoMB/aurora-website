@@ -29,7 +29,9 @@ export class AuthService {
 
   getUserInfo(): Observable<GetUserDto> {
     log('Auth service: Getting user info');
-    const url = 'http://localhost:3000/v1/auth/user/me?populate=purchasedCourses,favoriteCourses,wishList,likedArticlesdislikedArticles,eventSubscriptions,courses,archivedCourses';
+    // tslint:disable-next-line: max-line-length
+    const url =
+      'http://localhost:3000/v1/auth/user/me?populate=purchasedCourses,favoriteCourses,wishList,likedArticlesdislikedArticles,eventSubscriptions,courses,archivedCourses';
     return this.http.get<GetUserDto>(url);
   }
 
