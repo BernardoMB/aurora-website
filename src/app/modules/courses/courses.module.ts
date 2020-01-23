@@ -16,6 +16,7 @@ import { LessonCardComponent } from './components/lesson-card/lesson-card.compon
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReviewCardComponent } from './components/review-card/review-card.component';
 import { CoursesService } from './services/courses.service';
+import { AmpPlayerComponent } from './components/amp-player/amp-player.component';
 
 @NgModule({
     declarations: [
@@ -31,6 +32,7 @@ import { CoursesService } from './services/courses.service';
         CategoryCardComponent,
         LessonCardComponent,
         ReviewCardComponent,
+        AmpPlayerComponent,
     ],
     imports: [CommonModule, CoursesRoutingModule, SharedModule],
     providers: [CoursesService]
