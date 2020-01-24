@@ -1,29 +1,43 @@
 <div class="course-card-wrapper">
-  <div class="course-card-container" [style.backgroundImage]="'url(' + course.imgUrl + ')'">
-
-    <div class="gradient-overlay focus-outline" [routerLink]="['/courses', '1']">
+  <div
+    class="course-card-container"
+    [style.backgroundImage]="'url(' + course.imgUrl + ')'"
+  >
+    <div
+      class="gradient-overlay focus-outline"
+      [routerLink]="['/courses', '1']"
+    >
       <div class="category-container">
-        <div class="category-indicator" [style.backgroundColor]="course.category.hexColor"></div>
-        <div class="category-name">{{course.category.name}}</div>
+        <div
+          class="category-indicator"
+          [style.backgroundColor]="course.category.hexColor"
+        ></div>
+        <div class="category-name">{{ course.category.name }}</div>
       </div>
       <div class="course-details">
         <div class="course-name-container">
-          <div class="course-name focus-outline" [routerLink]="['/courses', '1']">{{course.name}}</div>
+          <div
+            class="course-name focus-outline"
+            [routerLink]="['/courses', '1']"
+          >
+            {{ course.name }}
+          </div>
         </div>
         <div class="price-rating-continer">
           <div class="rating-container">
             <i class="material-icons">star</i>
-            <div>{{course.rating}}</div>
+            <div>{{ course.rating }}</div>
           </div>
           <div class="price-container">
             <div *ngIf="course.price === 0" class="free-container">
               <div class="free">Free</div>
             </div>
-            <div *ngIf="course.price > 0" class="price">{{course.price | currency:"NGN":"symbol-narrow" }}</div>
+            <div *ngIf="course.price > 0" class="price">
+              {{ course.price | currency: 'NGN':'symbol-narrow' }}
+            </div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </div>

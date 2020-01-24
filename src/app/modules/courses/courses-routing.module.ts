@@ -13,6 +13,9 @@ import { CartComponent } from './views/cart/cart.component';
 const routes: Routes = [
   { path: '', component: CoursesComponent, data: { animation: 'courses' } },
   { path: 'all', component: AllCoursesComponent },
+  { path: 'cart', component: CartComponent },
+  { path: 'categories/:id', component: CourseCategoryDetailComponent },
+  { path: 'categories', component: CourseCategoriesComponent },
   {
     path: ':id/learn', // <-- this route should implement a route guard
     component: LearnComponent,
@@ -23,9 +26,6 @@ const routes: Routes = [
     component: CourseDetailComponent,
     data: { animation: 'course' },
   },
-  { path: 'categories/:id', component: CourseCategoryDetailComponent },
-  { path: 'categories', component: CourseCategoriesComponent },
-  { path: 'cart', component: CartComponent },
 ];
 
 @NgModule({

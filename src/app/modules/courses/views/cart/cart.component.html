@@ -1,1 +1,88 @@
-<p>cart works!</p>
+<section class="cart-view-header">
+  <div class="cart-view-header-container">
+    <h1 class="title">Shopping Cart</h1>
+  </div>
+</section>
+
+<section class="cart-section">
+  <div class="cart-container">
+    <div class="cart-counter">{{ cart.length }} Courses in Cart</div>
+    <div *ngIf="cart.length > 0" class="shopping-container">
+      <div class="courses-list">
+        <div *ngFor="let course of cart; let i = index" class="course-item">
+          <div
+            class="course-image"
+            [style.backgroundImage]="'url(' + course.imgUrl + ')'"
+          ></div>
+          <div class="course-details">
+            <div class="course-name">{{ course.name }}</div>
+            <div class="category-container">
+              <div
+                class="category-color-indicator"
+                [style.backgroundColor]="course.category.hexColor"
+              ></div>
+              <div class="category-name">{{ course.category.name }}</div>
+            </div>
+          </div>
+          <div class="action-items">
+            <a
+              class="focus-outline"
+              tabindex="0"
+              (click)="removeCourseFromCart(course.id)"
+              (keyup.enter)="removeCourseFromCart(course.id)"
+              >Remove</a
+            >
+          </div>
+          <div class="price-container">
+            <div class="price">
+              {{
+                course.price * (1 - course.discount)
+                  | currency: 'NGN':'symbol-narrow'
+              }}<i class="material-icons">
+                local_offer
+              </i>
+            </div>
+            <div *ngIf="course.discount > 0" class="discount-container">
+              <div class="list-price">
+                {{ course.price | currency: 'NGN':'symbol-narrow' }}
+              </div>
+              <div class="discount">{{ course.discount * 100 }}% off</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="checkout-card">
+        <div class="total-label">Total:</div>
+        <div class="total">{{ total | currency: 'NGN':'symbol-narrow' }}</div>
+        <div *ngIf="total !== subtotal" class="subtotal">
+          {{ subtotal | currency: 'NGN':'symbol-narrow' }}
+        </div>
+        <button class="checkout-button">Checkout</button>
+      </div>
+    </div>
+    <div *ngIf="cart.length === 0" class="empty-container">
+      <div class="empty-card">
+        <i class="material-icons">shopping_cart</i>
+        <div class="shopping-phrase">
+          Your cart is empty. Courses you want to buy will appear here!
+        </div>
+        <button class="keep-shopping-button focus-outline">
+          Keep shopping
+        </button>
+      </div>
+    </div>
+
+    <div class="title-container">
+      <div class="title">Rencently wishlisted</div>
+      <a>View all</a>
+    </div>
+    <div *ngIf="wishList.length > 0" class="cards-container">
+      <div class="course-card" *ngFor="let course of wishList; let i = index">
+        <app-course-card [course]="course"></app-course-card>
+      </div>
+    </div>
+    <div *ngIf="wishList.length === 0" class="empty-wishlist-phrase">
+      You haven't added any courses to you wishlist.
+    </div>
+  </div>
+</section>
