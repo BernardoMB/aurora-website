@@ -15,7 +15,10 @@ const routes: Routes = [
   { path: 'all', component: AllCoursesComponent },
   { path: 'cart', component: CartComponent },
   { path: 'categories/:id', component: CourseCategoryDetailComponent },
-  { path: 'categories', component: CourseCategoriesComponent },
+  /**
+   * // This can be implemented later without any regards
+   *  { path: 'categories', component: CourseCategoriesComponent },
+   */
   {
     path: ':id/learn', // <-- this route should implement a route guard
     component: LearnComponent,

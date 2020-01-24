@@ -1,0 +1,195 @@
+.category-jumbotron-section {
+  overflow: hidden;
+  .jumbotron-wrapper {
+    background-size: cover;
+    resize: both;
+    background-position-x: center;
+    background-position-y: center;
+    background-image: url('/assets/img/jumbotrons/courses-all-jumbotron.jpg');
+    .jumbotron-wrapper-overlay {
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#134c00+0,4c2300+100&0.4+0,0.4+100 */
+
+      // Gradient option 1
+      background: -moz-linear-gradient(
+        left,
+        rgba(19, 76, 0, 0.4) 0%,
+        rgba(76, 35, 0, 0.4) 100%
+      ); // FF3.6-15
+      background: -webkit-linear-gradient(
+        left,
+        rgba(19, 76, 0, 0.4) 0%,
+        rgba(76, 35, 0, 0.4) 100%
+      ); // Chrome10-25,Safari5.1-6
+      background: linear-gradient(
+        to right,
+        rgba(19, 76, 0, 0.4) 0%,
+        rgba(76, 35, 0, 0.4) 100%
+      ); // W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#66134c00', endColorstr='#664c2300',GradientType=1 ); // IE6-9
+
+      // Gradient option 2
+      /* background: -moz-linear-gradient(
+        left,
+        rgba(76, 35, 0, 0.4) 0%,
+        rgba(76, 35, 0, 0.4) 58%,
+        rgba(19, 76, 0, 0.4) 100%
+      ); // FF3.6-15
+      background: -webkit-linear-gradient(
+        left,
+        rgba(76, 35, 0, 0.4) 0%,
+        rgba(76, 35, 0, 0.4) 58%,
+        rgba(19, 76, 0, 0.4) 100%
+      ); // Chrome10-25,Safari5.1-6
+      background: linear-gradient(
+        to right,
+        rgba(76, 35, 0, 0.4) 0%,
+        rgba(76, 35, 0, 0.4) 58%,
+        rgba(19, 76, 0, 0.4) 100%
+      ); // W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#664c2300', endColorstr='#66134c00',GradientType=1 ); // IE6-9 */
+
+      .jumbotron-conatiner {
+        background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 280px;
+        .jumbotron-texts {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          font-family: 'Open Sans';
+          color: white;
+          .jumbotron-title {
+            font-size: 36px;
+            font-weight: 300;
+            line-height: 1.1;
+          }
+          .jumbotron-description {
+            margin-top: 14px;
+            font-size: 18px;
+            font-weight: lighter;
+            line-height: 1.1;
+          }
+        }
+      }
+    }
+  }
+}
+
+.courses-section {
+  display: block;
+  position: relative;
+  .courses-container {
+    padding: 40px 20px;
+    max-width: 1180px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    margin: auto;
+    .title-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Trebuchet MS', Helvetica, sans-serif;
+      .title {
+        color: #1b4568;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      a {
+        margin-right: 20px;
+        font-size: 18px;
+        color: darkgray;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+    .cards-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      .course-card {
+        margin: 10px 0px;
+        margin-right: 15px;
+      }
+    }
+  }
+
+  .buttons-container {
+    padding: 40px 20px;
+    max-width: 1180px;
+    display: flex;
+    justify-content: space-evenly;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    margin: auto;
+    button {
+      display: inline-block;
+      font-weight: 600;
+      text-align: center;
+      vertical-align: middle;
+      white-space: nowrap;
+      padding: 11px 12px;
+      font-size: 15px;
+      line-height: 1.35135;
+      border-radius: 2px;
+      user-select: none;
+      cursor: pointer;
+
+      color: #fff;
+      background-color: #eb6c00;
+      border: 1px solid transparent;
+      &:hover {
+        background-color: #1f5e11;
+      }
+    }
+  }
+}
+
+.category-courses-section {
+  display: block;
+  position: relative;
+  .featured-courses-container {
+    padding: 40px 20px;
+    max-width: 1180px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    margin: auto;
+    .featured-title-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Trebuchet MS', Helvetica, sans-serif;
+      .featured-title {
+        color: #1b4568;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      a {
+        margin-right: 20px;
+        font-size: 18px;
+        color: darkgray;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+    .featured-cards-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      .course-card {
+        margin: 10px 0px;
+        margin-right: 15px;
+      }
+    }
+  }
+}
