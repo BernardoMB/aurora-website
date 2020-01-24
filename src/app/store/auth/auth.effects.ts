@@ -161,7 +161,10 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(logout),
-        tap(action => this.cookieService.delete('userToken')),
+        tap(action => {
+          log('Deleteing usertToken cookie...');
+          this.cookieService.delete('userToken');
+        }),
       ),
     { dispatch: false },
   );
