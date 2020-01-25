@@ -6,132 +6,198 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./news.component.scss'],
 })
 export class NewsComponent implements OnInit {
+  featuredArticles = [
+    {
+      comments: [],
+      likes: [],
+      dislikes: [],
+      title: 'Switzerland’s drone delivery program to resume after crashes',
+      subtitle: 'Flights will resume on January 27th',
+      description: 'Some description',
+      type: 'InternalArticle',
+      data:
+        // tslint:disable-next-line: max-line-length
+        '<p>A Switzerland drone delivery service run by the Swiss Post is set to resume on January 27th, following a&nbsp;<a href="https://www.theverge.com/2019/8/2/20751383/swiss-drone-crash-delivery-program-suspended-matternet-post-hospital-samples" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;">suspension of the program in August 2019</a>&nbsp;after two drone crashes, including one where the drone’s parachute malfunctioned.</p><p><br></p><p>In that time, Swiss Post and Matternet — the US company that operates the drone fleet — set up an “independent board of experienced aviation specialists” to&nbsp;<a href="https://www.post.ch/en/about-us/media/press-releases/2020/experts-issue-a-good-report-for-swiss-post-and-matternet-drones-to-take-off-again" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;">review the companies’ safety procedures and operations</a>&nbsp;and provide suggestions for improvements.</p><p><br></p><p>“Swiss Post and Matternet maintain high safety standards and a high level of safety awareness. The processes that were examined were at a high standard even before the incidents,” according to&nbsp;<a href="https://www.zhaw.ch/en/about-us/person/guil/" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;">Michel Guillaume</a>, one of the members of the review board. “There are no reasons why flight operations should not be resumed.”</p><p>As part of the review, the board is recommending that Swiss Post and Matternet make four changes to their operations:</p><ol><li>Matternet should implement the new safety recommendations set by the Federal Office of Civil Aviation (FOCA) and the Swiss Transportation Safety Investigation Board (STSB) following the previous crashes</li><li>Establishment of an independent oversight body for safety-related processes before the end of March 2020</li><li>Swiss Post given more control over the actual drone operations (which are currently run by Matternet), including the ability to audit Matternet’s drone operations</li><li>Improved safety protocols for Matternet, including the hiring of a dedicated head of safety</li></ol><p><br></p><p>The two companies are already working on implementing these suggestions: Matternet has already implemented the safety recommendations and hired a head of safety, and the review board will continue to advise the companies on their drone policies in the future. The two companies have also spent time since the accident in May 2019 running over 2,000 test flights in Switzerland on improved drones that should be less prone to failure.</p><p>The Swiss delivery program has been&nbsp;<a href="https://www.theverge.com/2017/9/20/16325084/matternet-autonomous-drone-network-switzerland" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;">running in Switzerland since 2017</a>, with Swiss Post claiming that the drones allow for lab samples such as blood tests to be flown between hospital facilities and labs up to 45 minutes faster than traditional transportation.</p><p><br></p><p><strong><em>Correction:</em></strong><em>&nbsp;The drone accident in May was a parachute malfunction; this article original stated that the parachute failed to deploy.</em></p><p><br></p><p><em><span class="ql-cursor"></span></em></p>',
+      readTime: '10',
+      imgUrl:
+        'https://auroracourses.blob.core.windows.net/articleimages/93648024109f710a310a42ad6c4729e9a77.jpg',
+      createdAt: '2020-01-24T19:20:44.448Z',
+      updatedAt: '2020-01-24T19:20:44.448Z',
+      id: '5e2b438c900b920023730fec',
+    },
+    {
+      comments: [],
+      likes: [],
+      dislikes: [],
+      title:
+        'David Cicilline: Tech companies are too big, and we’ve allowed them to exercise monopoly power.',
+      subtitle: 'A conversation on The Vergecast',
+      description: 'Some description',
+      type: 'InternalArticle',
+      data:
+        // tslint:disable-next-line: max-line-length
+        '<p>Last week,&nbsp;<a href="https://www.theverge.com/2020/1/21/21070812/sonos-tile-basecamp-popsocket-congressional-hearing-amazon-google-apple-competition" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;">the House Antitrust Subcommittee held a unique hearing</a>&nbsp;where executives from Sonos, Tile, Basecamp, and PopSockets laid out the challenges of working and competing with big tech companies like Apple, Google, and Amazon. It felt like a turning point in the conversation about big tech platforms and the power they have over competition, something PopSockets CEO David Barnett called “bullying with a smile.”</p><p>“Help us Congress, you’re our only hope,” said Basecamp’s David Heinemeier-Hansson. It was like that.</p><p>But the hearing was just one part of a lengthy Antitrust Subcommittee investigation into the competitiveness of digital markets led by Chairman David Cicilline (D-RI) that’s been going on for some time — a bipartisan investigation that’s about to conclude with a report and recommendations for new laws and regulations that govern how big tech platforms work. Cicilline joined&nbsp;<em>Verge</em>&nbsp;senior reporter Adi Robertson and editor-in-chief Nilay Patel for a special interview episode of&nbsp;<em>The Vergecast</em>&nbsp;this week where he talked about what he’s learned and how he plans to tackle the big platform monopolies.</p><p><em>The following excerpt has been lightly edited for clarity and length.</em></p><p><strong>So we’re talking while opening arguments of impeachment are going on in the Senate. It seems like there’s just a lot of polarization in the world. But I was watching the [antitrust] hearing, and I was struck that there seems to be at least a bipartisan consensus on the problem, if not the substance.</strong></p><p>You know, when we launched the investigation, that was done in a bipartisan way with the full support of the ranking member, the Republican leader on the Judiciary Committee as well as the ranking member of the subcommittee, [Rep. Jim] Sensenbrenner.</p><p>So the investigation has been thoroughly bipartisan and in a very real way. Our staffs are working closely together. And I think you’re right. I don’t know that we’ll have agreement on every single proposal or a recommendation that the final report makes, but I think there’s broad recognition from Republicans and Democrats that this market is not functioning properly, that there is a significant absence of competition and strong evidence of anti-competitive behavior by the dominant platforms. And I think there is a real understanding and expectation that we’re going to do something about this as a Congress. The American people are expecting us to. So it’s been very bipartisan. I hope it will stay that way.</p><p><strong>One of the striking things from the hearing last week was how different the accusations against each of these companies was. How much do you think the same remedy is going to work for Google and Apple and Facebook and Amazon?</strong></p><p>That’s a great question. We’ve been very careful in this investigation to solicit information from the platforms, both in testimony and in documents relevant to the way those platforms are operating, because I think they’re not all the same, and their behavior has been different in many respects.</p><p>So I think we’re going to look at solutions that provide a response broadly to the marketplace. There are some issues where I think there have been very serious concerns by a particular company in this area or this particular company in that area. But I think this is very much about the marketplace generally, and you will not see recommendations that are specific to a company, just like the investigation is not about a company, it’s really about the marketplace broadly. And so I hope the suggestions we develop, both in terms of legislation and in terms of proposed regulations, will address the marketplace broadly, but obviously respond to a number of different activities that we’ve seen throughout the investigation.</p><p><strong>Do you think that you can craft a single framework that’s going to address the whole spread of problems from that hearing?</strong></p><p>Yes, I do. The goal is to create competition, to protect competition in that digital marketplace so that when Amazon says “give us back money for selling your product at a lower cost,” people have an opportunity to think about another platform because that other platform will have had an opportunity to grow and be successful and enter the marketplace. So competition in each of these examples is the solution, and making sure that we’re promoting competition and protecting folks from a whole range of discriminatory behavior or bullying. I think you can imagine a number of ideas. I would just say you can’t engage in behavior that does X, Y or Z that would apply broadly to all of the large digital platforms.</p><p><strong>That’s a pretty classic conception of a behavioral remedy. “You can’t do this.” We’re going to say you can’t do it. You’re forbidden from doing it. But there was a lot of talk about, especially with Amazon, the platforms self-dealing, cutting themselves better deals, selling their own products.</strong></p><p><strong>I&nbsp;</strong><a href="https://www.theverge.com/2019/3/9/18257965/elizabeth-warren-break-up-apple-monopoly-antitrust" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;"><strong>spoke to Sen. Elizabeth Warren (D-MA) last year</strong></a><strong>, and she said you can’t just do basic behavioral solutions. You’ve got to do a structural solution. And that’s why she was proposing breakups. Do you agree with her on that?</strong></p><p>First of all, I think it’s hard. Congress has certain powers, and breaking up companies is actually not one of them.</p><p>So while we may have made a mistake by allowing some of these companies to get as large as they have — in fact, we&nbsp;<em>have</em>&nbsp;made a mistake. I think we should have had much more rigorous antitrust enforcement that would have prevented a number of these companies from getting as big as they are. That’s a problem.</p><p>And so I think what we have to figure out now is: are there ways to require a retrospective review of some transactions? There’s no way to ensure that if the transaction is approved based on a set of expectations, that you then have an option to go and see if those expectations were bad or something different happened and learn from that. But I think it’s harder for Congress to think about enacting a statute that breaks up companies.</p><p class="ql-align-center"><br></p><p>But I do think that the other suggestion that Sen. Warren has made is a really interesting one and something I think about a lot: the notion of “You can be either a platform or you can be a manufacturer or a producer of services, but you can’t do both.” Sort of the Glass-Steagall of the internet. It’s kind of an interesting idea because people go to a platform thinking, somehow, when they do a search, there’s some neutral way that evidence is reviewed, and you’re provided with a result from that search.</p><p>Well, we know that that is not the case, the way items get into the Amazon buy box. And Amazon used its own private label to promote it or promotes its own goods. It creates sort of an inherent conflict. You know, you’re both a platform and a manufacturer of goods. And so it’s kind of an interesting idea to think: should you at least separate out those functions and say you can be one or the other, but you can’t be both?</p><p>I think these companies are too big, and we’ve allowed them to exercise monopoly power. We have to figure out how to correct that. I’m looking at kind of what are the current antitrust tools that are available to antitrust enforcers, and how we might use those to promote competition. But there is not a mechanism that I can think of that would allow us, as Congress, to go and break up a particular company. I think we can do a lot of things to correct the absence of competition in that space. Everything is on the table, in my view. But I have to think long and hard about how we could, in a congressional enactment, actually break up a company.</p><p><strong>I’ve had a bunch of Microsoft executives from the ‘90s tweeting me all day about how Microsoft’s antitrust suit didn’t actually accomplish anything. And really, the question that they keep asking is: what shouldn’t you be able to integrate?</strong></p><p><strong>So Tile was at the hearing. They built tracking products. We don’t know yet, but Apple is rumored to be building a tracking product. Apple’s products will obviously have greater access to the operating system of the iPhone than Tile’s product. Should that kind of conduct be prohibited? Should Apple have to have open APIs, which was part of the Microsoft consent decree?</strong></p><p>I would have to think about the example you gave. But certainly if, in that example, Apple makes it much more difficult for people to access the Tile product using their software and ... they constantly get reminders [asking], “Do you want to continue this service?” or constantly prodding them to have to answer a prompt. And that creates the kind of friction that ensures that their competitor doesn’t really have access to the marketplace. Or if they do, it’s short-lived.</p><p>I think what we have to look at is if the behavior of the company can fairly be described as anti-competitive. Are they using their market dominance to make it impossible for a competitor to enter the marketplace and survive, and as a result, leading to a reduction of innovation, a reduction of choices for consumers, maybe ultimately increasing costs? They’re only able to do that because they have so much market dominance.</p><p>How do we deal with the reality that these four large technology platforms are so big and control so much of the market? That they can, with a change of an algorithm, make it more difficult to access their software, make it almost impossible for a competitor to survive? That’s not good for the economy. It’s not good for consumer choices. It’s not good for innovation, and it’s not good for competition.</p><p><strong>I’m curious about your view of the Microsoft / Netscape enforcement action, which seems to be the shadow over all of this. Did it work? Did it not work? Did just knocking Microsoft back a little bit create the environment for Google to emerge? There are multiple interpretations of what happened.</strong></p><p>I don’t think there’s any question it worked. I don’t think there’s any question that made space for an enormous amount of additional innovation and competition, just pursuing the enforcement action itself, not the consent decree.</p><p><strong>Are you hoping for a similar result here? Are you hoping to take it one step further?</strong></p><p>This is not an investigation that results in an enforcement action investigation.</p><p>Congress is the only place that has the ability to actually change the statutes and update the laws and put proposed regulations in place that actually fix this marketplace. So unlike an enforcement action that focuses on the behavior — a single company gets directed to do a single thing — our work is much broader. And it is actually more significant because if we do it right, we can get this digital marketplace working properly. And that will benefit consumers. It will benefit the next great company that’s going to come down the pike because competition was possible.</p><p><strong>But if you write a bunch of new laws and regulations, and then you staff an agency with creative, enthusiastic people who want to do it, you’re going to result in a bunch more enforcement actions, presumably.</strong></p><p>Correct. Or much better behavior by digital platforms.</p>',
+      readTime: '1800',
+      imgUrl:
+        'https://auroracourses.blob.core.windows.net/articleimages/4d49b2d815fba891cda593f310ef7457f.jpg',
+      createdAt: '2020-01-24T21:08:42.429Z',
+      updatedAt: '2020-01-24T21:08:42.429Z',
+      id: '5e2b5cda900b920023730fed',
+    },
+    {
+      comments: [],
+      likes: [],
+      dislikes: [],
+      title:
+        'Read the report that concluded Saudi Arabia hacked Jeff Bezos’ phone',
+      subtitle: 'Here’s the full report from FTI Consulting',
+      description: 'Some description',
+      type: 'InternalArticle',
+      data:
+        // tslint:disable-next-line: max-line-length
+        '<p>This week,&nbsp;<em>The Guardian</em>&nbsp;posted a huge story reporting that Saudi Arabia hacked Jeff Bezos’ phone in May 2018 after he received a message from Saudi Arabia’s Crown Prince Mohammed bin Salman. A report published by the security forensics firm FTI Consulting concluded with “medium to high confidence” that was the case.</p><p>If you want to read the report yourself, you can do so&nbsp;<a href="https://www.documentcloud.org/documents/6668313-FTI-Report-into-Jeff-Bezos-Phone-Hack.html#document/p1" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;">right here</a>,&nbsp;<a href="https://www.vice.com/en_us/article/v74v34/saudi-arabia-hacked-jeff-bezos-phone-technical-report" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;">thanks to&nbsp;<em>Vice</em></a>, which obtained the report in its entirety exclusively on Wednesday.</p><p><span style="background-color: rgb(255, 255, 255); color: rgb(66, 66, 66);">Some security professionals don’t think that FTI went far enough with its analysis,&nbsp;</span><a href="https://www.cyberscoop.com/jeff-bezos-mbs-hack-fti-report-questions/" target="_blank" style="background-color: rgb(255, 255, 255); color: rgb(226, 18, 122);">as reported by&nbsp;<em>CyberScoop</em></a><span style="background-color: rgb(255, 255, 255); color: rgb(66, 66, 66);">. Facebook’s former chief security officer Alex Stamos, for example, said that there was “no smoking gun” in the report. Some researchers said that FTI should have been able to analyze the encrypted file that the crown prince sent Bezos which reportedly hacked his phone. And one said he didn’t see evidence in the report to suggest that Bezos’ phone was hacked.</span></p><p><span style="background-color: rgb(255, 255, 255); color: rgb(66, 66, 66);"><span class="ql-cursor">﻿</span>Right now, this is a story with a lot of twists and turns, but I highly recommend reading my colleague Casey Newton’s&nbsp;</span><a href="https://www.theverge.com/interface/2020/1/23/21076975/mbs-whatsapp-jeff-bezos-boris-johnson-hacking" target="_blank" style="background-color: rgb(255, 255, 255); color: rgb(226, 18, 122);">analysis of the situation</a><span style="background-color: rgb(255, 255, 255); color: rgb(66, 66, 66);">, where he gives the salient advice to never open a WhatsApp message from the crown prince of Saudi Arabia.</span></p>',
+      readTime: '1800',
+      imgUrl:
+        'https://auroracourses.blob.core.windows.net/articleimages/32b9ae480e7544f5fc88e03185defbe6.jpg',
+      createdAt: '2020-01-24T21:16:11.778Z',
+      updatedAt: '2020-01-24T21:16:11.778Z',
+      id: '5e2b5e9b900b920023730fee',
+    },
+    {
+      comments: [],
+      likes: [],
+      dislikes: [],
+      title:
+        'Seattle is the first area in the US where residents can vote via smartphones',
+      subtitle:
+        'King County, Washington residents will be able to vote from their phones for an upcoming board of supervisors election',
+      description: 'Some description',
+      type: 'ExternalArticle',
+      readTime: '1800',
+      externalUrl:
+        'https://www.theverge.com/2020/1/22/21077358/seattle-king-county-smartphone-voting-mobile-supervisors-board-election',
+      imgUrl:
+        'https://auroracourses.blob.core.windows.net/articleimages/133d63b6eb8d92e0410df84d6e2b1ce5e.jpg',
+      createdAt: '2020-01-24T21:30:09.712Z',
+      updatedAt: '2020-01-24T21:30:09.712Z',
+      id: '5e2b61e1900b920023730fef',
+    },
+  ];
+
   articles = [
-    [
-      {
-        comments: [
-          {
-            user: '5deabdd1671319082c534e2f',
-            article: '5df018703a76e82bb008d87b',
-            text: 'Esta muy chido',
-            createdAt: '2019-12-10T22:18:54.063Z',
-            updatedAt: '2019-12-10T22:18:54.063Z',
-            id: '5df019cea955730b8cd764df',
-          },
-          {
-            user: '5deabdd1671319082c534e2f',
-            article: '5df018703a76e82bb008d87b',
-            text: 'Esta muy chido',
-            createdAt: '2019-12-10T22:19:40.173Z',
-            updatedAt: '2019-12-10T22:19:40.173Z',
-            id: '5df019fca99f9a2ab859f634',
-          },
-          {
-            user: '5deabdd1671319082c534e2f',
-            article: '5df018703a76e82bb008d87b',
-            text: 'Esta muy chido',
-            createdAt: '2019-12-10T22:19:44.464Z',
-            updatedAt: '2019-12-10T22:19:44.464Z',
-            id: '5df01a00a99f9a2ab859f635',
-          },
-          {
-            user: '5deabdd1671319082c534e2f',
-            article: '5df018703a76e82bb008d87b',
-            text: 'Esta muy chido',
-            createdAt: '2019-12-10T22:19:45.145Z',
-            updatedAt: '2019-12-10T22:19:45.145Z',
-            id: '5df01a01a99f9a2ab859f636',
-          },
-          {
-            user: '5deabdd1671319082c534e2f',
-            article: '5df018703a76e82bb008d87b',
-            text: 'Esta muy chido',
-            createdAt: '2019-12-10T22:19:45.860Z',
-            updatedAt: '2019-12-10T22:19:45.860Z',
-            id: '5df01a01a99f9a2ab859f637',
-          },
-        ],
-        likes: ['5df79d445d58f147c4c38d12'],
-        dislikes: [],
-        title: 'Some title',
-        subtitle: 'Some subtitle',
-        description: 'Some description',
-        type: 'InternalArticle',
-        data: '## Some markdown \n data\\n - Some item\\n - Some other item\\n',
-        readTime: '10 min',
-        imgUrl:
-          'https://auroracourses.blob.core.windows.net/articleimages/9d0738d2ac7b89b762910633c0010d10495.png',
-        createdAt: '2019-12-10T22:13:04.624Z',
-        updatedAt: '2019-12-16T15:05:40.636Z',
-        totalLikes: 1,
-        id: '5df018703a76e82bb008d87b',
-      },
-      {
-        comments: [],
-        likes: [],
-        dislikes: ['5df79dd15d58f147c4c38d16'],
-        title: 'Some title',
-        subtitle: 'Some subtitle',
-        description: 'Some description',
-        type: 'InternalArticle',
-        data: '## Some markdown \n data\\n - Some item\\n - Some other item\\n',
-        readTime: '10 min',
-        imgUrl:
-          'https://auroracourses.blob.core.windows.net/articleimages/4af71a6b6ee8e95254dc5dc2496a908f.png',
-        createdAt: '2019-12-16T15:07:37.569Z',
-        updatedAt: '2019-12-16T15:08:01.093Z',
-        totalLikes: 0,
-        id: '5df79db95d58f147c4c38d14',
-      },
-      {
-        comments: [],
-        likes: [],
-        dislikes: [],
-        title: 'Some title',
-        subtitle: 'Some subtitle',
-        description: 'Some description',
-        type: 'InternalArticle',
-        data: '## Some markdown \n data\\n - Some item\\n - Some other item\\n',
-        readTime: '10 min',
-        imgUrl:
-          'https://auroracourses.blob.core.windows.net/articleimages/91710be36cb7310d237e186694b9c8e147.png',
-        createdAt: '2019-12-16T21:21:24.772Z',
-        updatedAt: '2019-12-16T21:21:24.772Z',
-        id: '5df7f5543ced0105407a5f8d',
-      },
-      {
-        comments: [],
-        likes: [],
-        dislikes: [],
-        title: 'Some title',
-        subtitle: 'Some subtitle',
-        description: 'Some description',
-        type: 'InternalArticle',
-        data: '## Some markdown \n data\\n - Some item\\n - Some other item\\n',
-        readTime: '10 min',
-        imgUrl:
-          'https://auroracourses.blob.core.windows.net/articleimages/4b12e607a1c8d88e784eabf2fa8a7892.png',
-        createdAt: '2019-12-16T21:22:03.671Z',
-        updatedAt: '2019-12-16T21:22:03.671Z',
-        id: '5df7f57bdf4bc208c880a0fa',
-      },
-      {
-        comments: [],
-        likes: [],
-        dislikes: [],
-        title: 'Some title',
-        subtitle: 'Some subtitle',
-        description: 'Some description',
-        type: 'InternalArticle',
-        data: '## Some markdown \n data\\n - Some item\\n - Some other item\\n',
-        readTime: '10 min',
-        imgUrl:
-          'https://auroracourses.blob.core.windows.net/articleimages/4814d9ab010d7c56109ba16a4bb7663c9b.png',
-        createdAt: '2019-12-16T21:23:05.398Z',
-        updatedAt: '2019-12-16T21:23:05.398Z',
-        id: '5df7f5b93a0eab396c456dd3',
-      },
-    ],
+    {
+      comments: [],
+      likes: [],
+      dislikes: [],
+      title: 'Switzerland’s drone delivery program to resume after crashes',
+      subtitle: 'Flights will resume on January 27th',
+      description: 'Some description',
+      type: 'InternalArticle',
+      data:
+        // tslint:disable-next-line: max-line-length
+        '<p>A Switzerland drone delivery service run by the Swiss Post is set to resume on January 27th, following a&nbsp;<a href="https://www.theverge.com/2019/8/2/20751383/swiss-drone-crash-delivery-program-suspended-matternet-post-hospital-samples" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;">suspension of the program in August 2019</a>&nbsp;after two drone crashes, including one where the drone’s parachute malfunctioned.</p><p><br></p><p>In that time, Swiss Post and Matternet — the US company that operates the drone fleet — set up an “independent board of experienced aviation specialists” to&nbsp;<a href="https://www.post.ch/en/about-us/media/press-releases/2020/experts-issue-a-good-report-for-swiss-post-and-matternet-drones-to-take-off-again" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;">review the companies’ safety procedures and operations</a>&nbsp;and provide suggestions for improvements.</p><p><br></p><p>“Swiss Post and Matternet maintain high safety standards and a high level of safety awareness. The processes that were examined were at a high standard even before the incidents,” according to&nbsp;<a href="https://www.zhaw.ch/en/about-us/person/guil/" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;">Michel Guillaume</a>, one of the members of the review board. “There are no reasons why flight operations should not be resumed.”</p><p>As part of the review, the board is recommending that Swiss Post and Matternet make four changes to their operations:</p><ol><li>Matternet should implement the new safety recommendations set by the Federal Office of Civil Aviation (FOCA) and the Swiss Transportation Safety Investigation Board (STSB) following the previous crashes</li><li>Establishment of an independent oversight body for safety-related processes before the end of March 2020</li><li>Swiss Post given more control over the actual drone operations (which are currently run by Matternet), including the ability to audit Matternet’s drone operations</li><li>Improved safety protocols for Matternet, including the hiring of a dedicated head of safety</li></ol><p><br></p><p>The two companies are already working on implementing these suggestions: Matternet has already implemented the safety recommendations and hired a head of safety, and the review board will continue to advise the companies on their drone policies in the future. The two companies have also spent time since the accident in May 2019 running over 2,000 test flights in Switzerland on improved drones that should be less prone to failure.</p><p>The Swiss delivery program has been&nbsp;<a href="https://www.theverge.com/2017/9/20/16325084/matternet-autonomous-drone-network-switzerland" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;">running in Switzerland since 2017</a>, with Swiss Post claiming that the drones allow for lab samples such as blood tests to be flown between hospital facilities and labs up to 45 minutes faster than traditional transportation.</p><p><br></p><p><strong><em>Correction:</em></strong><em>&nbsp;The drone accident in May was a parachute malfunction; this article original stated that the parachute failed to deploy.</em></p><p><br></p><p><em><span class="ql-cursor"></span></em></p>',
+      readTime: '10',
+      imgUrl:
+        'https://auroracourses.blob.core.windows.net/articleimages/93648024109f710a310a42ad6c4729e9a77.jpg',
+      createdAt: '2020-01-24T19:20:44.448Z',
+      updatedAt: '2020-01-24T19:20:44.448Z',
+      id: '5e2b438c900b920023730fec',
+    },
+    {
+      comments: [],
+      likes: [],
+      dislikes: [],
+      title:
+        'David Cicilline: Tech companies are too big, and we’ve allowed them to exercise monopoly power.',
+      subtitle: 'A conversation on The Vergecast',
+      description: 'Some description',
+      type: 'InternalArticle',
+      data:
+        // tslint:disable-next-line: max-line-length
+        '<p>Last week,&nbsp;<a href="https://www.theverge.com/2020/1/21/21070812/sonos-tile-basecamp-popsocket-congressional-hearing-amazon-google-apple-competition" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;">the House Antitrust Subcommittee held a unique hearing</a>&nbsp;where executives from Sonos, Tile, Basecamp, and PopSockets laid out the challenges of working and competing with big tech companies like Apple, Google, and Amazon. It felt like a turning point in the conversation about big tech platforms and the power they have over competition, something PopSockets CEO David Barnett called “bullying with a smile.”</p><p>“Help us Congress, you’re our only hope,” said Basecamp’s David Heinemeier-Hansson. It was like that.</p><p>But the hearing was just one part of a lengthy Antitrust Subcommittee investigation into the competitiveness of digital markets led by Chairman David Cicilline (D-RI) that’s been going on for some time — a bipartisan investigation that’s about to conclude with a report and recommendations for new laws and regulations that govern how big tech platforms work. Cicilline joined&nbsp;<em>Verge</em>&nbsp;senior reporter Adi Robertson and editor-in-chief Nilay Patel for a special interview episode of&nbsp;<em>The Vergecast</em>&nbsp;this week where he talked about what he’s learned and how he plans to tackle the big platform monopolies.</p><p><em>The following excerpt has been lightly edited for clarity and length.</em></p><p><strong>So we’re talking while opening arguments of impeachment are going on in the Senate. It seems like there’s just a lot of polarization in the world. But I was watching the [antitrust] hearing, and I was struck that there seems to be at least a bipartisan consensus on the problem, if not the substance.</strong></p><p>You know, when we launched the investigation, that was done in a bipartisan way with the full support of the ranking member, the Republican leader on the Judiciary Committee as well as the ranking member of the subcommittee, [Rep. Jim] Sensenbrenner.</p><p>So the investigation has been thoroughly bipartisan and in a very real way. Our staffs are working closely together. And I think you’re right. I don’t know that we’ll have agreement on every single proposal or a recommendation that the final report makes, but I think there’s broad recognition from Republicans and Democrats that this market is not functioning properly, that there is a significant absence of competition and strong evidence of anti-competitive behavior by the dominant platforms. And I think there is a real understanding and expectation that we’re going to do something about this as a Congress. The American people are expecting us to. So it’s been very bipartisan. I hope it will stay that way.</p><p><strong>One of the striking things from the hearing last week was how different the accusations against each of these companies was. How much do you think the same remedy is going to work for Google and Apple and Facebook and Amazon?</strong></p><p>That’s a great question. We’ve been very careful in this investigation to solicit information from the platforms, both in testimony and in documents relevant to the way those platforms are operating, because I think they’re not all the same, and their behavior has been different in many respects.</p><p>So I think we’re going to look at solutions that provide a response broadly to the marketplace. There are some issues where I think there have been very serious concerns by a particular company in this area or this particular company in that area. But I think this is very much about the marketplace generally, and you will not see recommendations that are specific to a company, just like the investigation is not about a company, it’s really about the marketplace broadly. And so I hope the suggestions we develop, both in terms of legislation and in terms of proposed regulations, will address the marketplace broadly, but obviously respond to a number of different activities that we’ve seen throughout the investigation.</p><p><strong>Do you think that you can craft a single framework that’s going to address the whole spread of problems from that hearing?</strong></p><p>Yes, I do. The goal is to create competition, to protect competition in that digital marketplace so that when Amazon says “give us back money for selling your product at a lower cost,” people have an opportunity to think about another platform because that other platform will have had an opportunity to grow and be successful and enter the marketplace. So competition in each of these examples is the solution, and making sure that we’re promoting competition and protecting folks from a whole range of discriminatory behavior or bullying. I think you can imagine a number of ideas. I would just say you can’t engage in behavior that does X, Y or Z that would apply broadly to all of the large digital platforms.</p><p><strong>That’s a pretty classic conception of a behavioral remedy. “You can’t do this.” We’re going to say you can’t do it. You’re forbidden from doing it. But there was a lot of talk about, especially with Amazon, the platforms self-dealing, cutting themselves better deals, selling their own products.</strong></p><p><strong>I&nbsp;</strong><a href="https://www.theverge.com/2019/3/9/18257965/elizabeth-warren-break-up-apple-monopoly-antitrust" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;"><strong>spoke to Sen. Elizabeth Warren (D-MA) last year</strong></a><strong>, and she said you can’t just do basic behavioral solutions. You’ve got to do a structural solution. And that’s why she was proposing breakups. Do you agree with her on that?</strong></p><p>First of all, I think it’s hard. Congress has certain powers, and breaking up companies is actually not one of them.</p><p>So while we may have made a mistake by allowing some of these companies to get as large as they have — in fact, we&nbsp;<em>have</em>&nbsp;made a mistake. I think we should have had much more rigorous antitrust enforcement that would have prevented a number of these companies from getting as big as they are. That’s a problem.</p><p>And so I think what we have to figure out now is: are there ways to require a retrospective review of some transactions? There’s no way to ensure that if the transaction is approved based on a set of expectations, that you then have an option to go and see if those expectations were bad or something different happened and learn from that. But I think it’s harder for Congress to think about enacting a statute that breaks up companies.</p><p class="ql-align-center"><br></p><p>But I do think that the other suggestion that Sen. Warren has made is a really interesting one and something I think about a lot: the notion of “You can be either a platform or you can be a manufacturer or a producer of services, but you can’t do both.” Sort of the Glass-Steagall of the internet. It’s kind of an interesting idea because people go to a platform thinking, somehow, when they do a search, there’s some neutral way that evidence is reviewed, and you’re provided with a result from that search.</p><p>Well, we know that that is not the case, the way items get into the Amazon buy box. And Amazon used its own private label to promote it or promotes its own goods. It creates sort of an inherent conflict. You know, you’re both a platform and a manufacturer of goods. And so it’s kind of an interesting idea to think: should you at least separate out those functions and say you can be one or the other, but you can’t be both?</p><p>I think these companies are too big, and we’ve allowed them to exercise monopoly power. We have to figure out how to correct that. I’m looking at kind of what are the current antitrust tools that are available to antitrust enforcers, and how we might use those to promote competition. But there is not a mechanism that I can think of that would allow us, as Congress, to go and break up a particular company. I think we can do a lot of things to correct the absence of competition in that space. Everything is on the table, in my view. But I have to think long and hard about how we could, in a congressional enactment, actually break up a company.</p><p><strong>I’ve had a bunch of Microsoft executives from the ‘90s tweeting me all day about how Microsoft’s antitrust suit didn’t actually accomplish anything. And really, the question that they keep asking is: what shouldn’t you be able to integrate?</strong></p><p><strong>So Tile was at the hearing. They built tracking products. We don’t know yet, but Apple is rumored to be building a tracking product. Apple’s products will obviously have greater access to the operating system of the iPhone than Tile’s product. Should that kind of conduct be prohibited? Should Apple have to have open APIs, which was part of the Microsoft consent decree?</strong></p><p>I would have to think about the example you gave. But certainly if, in that example, Apple makes it much more difficult for people to access the Tile product using their software and ... they constantly get reminders [asking], “Do you want to continue this service?” or constantly prodding them to have to answer a prompt. And that creates the kind of friction that ensures that their competitor doesn’t really have access to the marketplace. Or if they do, it’s short-lived.</p><p>I think what we have to look at is if the behavior of the company can fairly be described as anti-competitive. Are they using their market dominance to make it impossible for a competitor to enter the marketplace and survive, and as a result, leading to a reduction of innovation, a reduction of choices for consumers, maybe ultimately increasing costs? They’re only able to do that because they have so much market dominance.</p><p>How do we deal with the reality that these four large technology platforms are so big and control so much of the market? That they can, with a change of an algorithm, make it more difficult to access their software, make it almost impossible for a competitor to survive? That’s not good for the economy. It’s not good for consumer choices. It’s not good for innovation, and it’s not good for competition.</p><p><strong>I’m curious about your view of the Microsoft / Netscape enforcement action, which seems to be the shadow over all of this. Did it work? Did it not work? Did just knocking Microsoft back a little bit create the environment for Google to emerge? There are multiple interpretations of what happened.</strong></p><p>I don’t think there’s any question it worked. I don’t think there’s any question that made space for an enormous amount of additional innovation and competition, just pursuing the enforcement action itself, not the consent decree.</p><p><strong>Are you hoping for a similar result here? Are you hoping to take it one step further?</strong></p><p>This is not an investigation that results in an enforcement action investigation.</p><p>Congress is the only place that has the ability to actually change the statutes and update the laws and put proposed regulations in place that actually fix this marketplace. So unlike an enforcement action that focuses on the behavior — a single company gets directed to do a single thing — our work is much broader. And it is actually more significant because if we do it right, we can get this digital marketplace working properly. And that will benefit consumers. It will benefit the next great company that’s going to come down the pike because competition was possible.</p><p><strong>But if you write a bunch of new laws and regulations, and then you staff an agency with creative, enthusiastic people who want to do it, you’re going to result in a bunch more enforcement actions, presumably.</strong></p><p>Correct. Or much better behavior by digital platforms.</p>',
+      readTime: '1800',
+      imgUrl:
+        'https://auroracourses.blob.core.windows.net/articleimages/4d49b2d815fba891cda593f310ef7457f.jpg',
+      createdAt: '2020-01-24T21:08:42.429Z',
+      updatedAt: '2020-01-24T21:08:42.429Z',
+      id: '5e2b5cda900b920023730fed',
+    },
+    {
+      comments: [],
+      likes: [],
+      dislikes: [],
+      title:
+        'Read the report that concluded Saudi Arabia hacked Jeff Bezos’ phone',
+      subtitle: 'Here’s the full report from FTI Consulting',
+      description: 'Some description',
+      type: 'InternalArticle',
+      data:
+        // tslint:disable-next-line: max-line-length
+        '<p>This week,&nbsp;<em>The Guardian</em>&nbsp;posted a huge story reporting that Saudi Arabia hacked Jeff Bezos’ phone in May 2018 after he received a message from Saudi Arabia’s Crown Prince Mohammed bin Salman. A report published by the security forensics firm FTI Consulting concluded with “medium to high confidence” that was the case.</p><p>If you want to read the report yourself, you can do so&nbsp;<a href="https://www.documentcloud.org/documents/6668313-FTI-Report-into-Jeff-Bezos-Phone-Hack.html#document/p1" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;">right here</a>,&nbsp;<a href="https://www.vice.com/en_us/article/v74v34/saudi-arabia-hacked-jeff-bezos-phone-technical-report" target="_blank" style="color: rgb(226, 18, 122); background-color: transparent;">thanks to&nbsp;<em>Vice</em></a>, which obtained the report in its entirety exclusively on Wednesday.</p><p><span style="background-color: rgb(255, 255, 255); color: rgb(66, 66, 66);">Some security professionals don’t think that FTI went far enough with its analysis,&nbsp;</span><a href="https://www.cyberscoop.com/jeff-bezos-mbs-hack-fti-report-questions/" target="_blank" style="background-color: rgb(255, 255, 255); color: rgb(226, 18, 122);">as reported by&nbsp;<em>CyberScoop</em></a><span style="background-color: rgb(255, 255, 255); color: rgb(66, 66, 66);">. Facebook’s former chief security officer Alex Stamos, for example, said that there was “no smoking gun” in the report. Some researchers said that FTI should have been able to analyze the encrypted file that the crown prince sent Bezos which reportedly hacked his phone. And one said he didn’t see evidence in the report to suggest that Bezos’ phone was hacked.</span></p><p><span style="background-color: rgb(255, 255, 255); color: rgb(66, 66, 66);"><span class="ql-cursor">﻿</span>Right now, this is a story with a lot of twists and turns, but I highly recommend reading my colleague Casey Newton’s&nbsp;</span><a href="https://www.theverge.com/interface/2020/1/23/21076975/mbs-whatsapp-jeff-bezos-boris-johnson-hacking" target="_blank" style="background-color: rgb(255, 255, 255); color: rgb(226, 18, 122);">analysis of the situation</a><span style="background-color: rgb(255, 255, 255); color: rgb(66, 66, 66);">, where he gives the salient advice to never open a WhatsApp message from the crown prince of Saudi Arabia.</span></p>',
+      readTime: '1800',
+      imgUrl:
+        'https://auroracourses.blob.core.windows.net/articleimages/32b9ae480e7544f5fc88e03185defbe6.jpg',
+      createdAt: '2020-01-24T21:16:11.778Z',
+      updatedAt: '2020-01-24T21:16:11.778Z',
+      id: '5e2b5e9b900b920023730fee',
+    },
+    {
+      comments: [],
+      likes: [],
+      dislikes: [],
+      title:
+        'Seattle is the first area in the US where residents can vote via smartphones',
+      subtitle:
+        'King County, Washington residents will be able to vote from their phones for an upcoming board of supervisors election',
+      description: 'Some description',
+      type: 'ExternalArticle',
+      readTime: '1800',
+      externalUrl:
+        'https://www.theverge.com/2020/1/22/21077358/seattle-king-county-smartphone-voting-mobile-supervisors-board-election',
+      imgUrl:
+        'https://auroracourses.blob.core.windows.net/articleimages/133d63b6eb8d92e0410df84d6e2b1ce5e.jpg',
+      createdAt: '2020-01-24T21:30:09.712Z',
+      updatedAt: '2020-01-24T21:30:09.712Z',
+      id: '5e2b61e1900b920023730fef',
+    },
+    {
+      comments: [],
+      likes: [],
+      dislikes: [],
+      title:
+        'Bernie Sanders thanks popular Facebook teen meme group for endorsement',
+      subtitle:
+        'NUMTOT stands for New Urbanist Memes for Transit-Oriented Teens',
+      description: 'Some description',
+      type: 'ExternalArticle',
+      readTime: '1800',
+      externalUrl:
+        'https://www.theverge.com/2020/1/16/21069382/bernie-sanders-numtot-endorsement-facebook-meme-transit-election',
+      imgUrl:
+        'https://auroracourses.blob.core.windows.net/articleimages/127b3c642a8102e810c610c90c6685ed607.jpg',
+      createdAt: '2020-01-24T21:33:55.921Z',
+      updatedAt: '2020-01-24T21:33:55.921Z',
+      id: '5e2b62c3900b920023730ff0',
+    },
+    {
+      comments: [],
+      likes: [],
+      dislikes: [],
+      title:
+        'SpaceX will destroy one of its rockets in the pursuit of safety this weekend',
+      subtitle: 'The company is demonstrating how it will handle a failure',
+      description: 'Some description',
+      type: 'InternalArticle',
+      data:
+        // tslint:disable-next-line: max-line-length
+        '<p><strong style="color: rgb(66, 66, 66);"><em>Update Saturday 18th, 8:14AM ET:&nbsp;</em></strong><em style="color: rgb(66, 66, 66);">The attempt has been&nbsp;</em><a href="https://twitter.com/SpaceX/status/1218473546772430848" target="_blank" style="color: rgb(226, 18, 122);"><em>rescheduled</em></a><em style="color: rgb(66, 66, 66);">&nbsp;due to sustained winds and rough seas. It’s now scheduled for a six-hour test window starting at 8:00AM ET on Sunday January 19th.</em></p><p><br></p><p>Early Saturday morning, SpaceX plans to launch a Falcon 9 rocket from Florida that will most likely break apart in midair just a few minutes after takeoff. The rocket’s demise is part of a planned test flight that’s supposed to demonstrate SpaceX’s ability to handle a catastrophic failure of one of its vehicles. If the test goes well, SpaceX will be closer than ever to putting people on its Falcon 9 rocket for the first time this year.</p><p><a href="https://www.nasa.gov/feature/spacex-nasa-gear-up-for-in-flight-abort-demonstration" target="_blank" style="color: rgb(226, 18, 122);">Known as the in-flight abort test</a>, this is one of the last major milestones that SpaceX must meet as part of NASA’s Commercial Crew program. It’s a government initiative aimed at developing new American-made spacecraft to launch NASA astronauts from the US once again. For the last six years, SpaceX has been developing a new capsule called the Crew Dragon for the program, designed to fly on top of the company’s Falcon 9 rocket and transport NASA astronauts to and from the International Space Station. As part of the development process, SpaceX has had to do a number of demonstrations to show that its vehicle is both safe and capable of doing the job.</p><p><br></p><p><span style="color: rgb(66, 66, 66);">Saturday’s test is all about showcasing SpaceX’s backup plan in the rare event that a trip to the ISS starts to go south. Let’s say one of SpaceX’s Falcon 9 rockets starts to break apart during the ascent to space. NASA wants to know that its astronauts riding inside the Crew Dragon can still be brought home safely, despite a malfunctioning rocket.</span></p><p><br></p><p>To save passengers during an emergency, SpaceX designed its Crew Dragon with an escape system. Embedded within the outer hull of the capsule are eight thrusters, called SuperDraco engines. If some kind of issue arises during flight, it will trigger the thrusters to fire. The engines will then carry the Crew Dragon up and away from the dangerous rocket. Once the capsule is far enough away, the Crew Dragon will deploy its four parachutes, and lower itself down gently into the Atlantic Ocean, where the crew will await rescue.</p><p>SpaceX has tested its emergency thrusters before, but this will be the first time the company tries the entire escape process midflight. About a minute and a half after the Falcon 9 launches, the Crew Dragon’s SuperDraco engines will fire and the capsule will separate from the rocket. At the same time, the Falcon 9’s main engines will stop firing, and the rocket will eventually fall back to Earth. As the Crew Dragon attempts a gentle landing in the ocean, the Falcon 9 will be torn apart as it descends into the water. The timing of the breakup depends on how windy it is on Saturday, as well as other factors like the rocket’s position, according to NASA. SpaceX has assembled a team of people to recover the debris from the rocket when the test is over. The Falcon 9 that’s meeting its end has already been to space and back three times before, making this fourth trip its last.</p><p><br></p><p>All in all, it could provide for a spectacular show on the ground for those in Cape Canaveral, Florida, where the test is taking place. At a minute and a half after launch, the Falcon 9 won’t terribly far from its launch site at NASA’s Kennedy Space Center, so it’s possible the rocket’s destruction will be seen by bystanders near the launch area. In fact, a popular beach that many attend to watch rockets launch from the Cape will be closed, due to the slightest concern that debris might land there.</p><p>Even though no people will be on board the Crew Dragon during this test, SpaceX will send its recovery boat to meet the capsule, just as it would if there was an actual emergency. SpaceX has its own boat with a helicopter landing pad, designed to recover the Crew Dragon whenever it lands in the ocean — either when it returns from the ISS normally or during an emergency scenario. The Air Force will also be helping SpaceX out with these recovery efforts.</p><p><br></p><p><em>NASA AND SPACEX WILL BE WATCHING THIS TEST CLOSELY</em></p><p><br></p><p>NASA and SpaceX will be watching this test closely, especially since the emergency abort system on the Crew Dragon has been problematic in the past. In April,&nbsp;<a href="https://www.theverge.com/2019/4/25/18515952/spacex-crew-dragon-explosion-nasa-investigation" target="_blank" style="color: rgb(226, 18, 122);">a test version of SpaceX’s Crew Dragon exploded in Florida</a>&nbsp;during testing of the SuperDraco engines. The company had been igniting the engines in a series of burns, and a leaky valve caused a chain reaction of events that led the vehicle to burst apart. SpaceX investigated the failure for months and ultimately made a few design changes in the system. And in November, the company successfully fired up the SuperDracos on the Crew Dragon capsule set to fly on Saturday, showing that they worked as expected. Still, nerves will be high this weekend as both NASA and SpaceX witness how the system performs in a simulated emergency scenario.</p><p><br></p><p><span style="color: rgb(66, 66, 66);">If all goes well, then the next flight milestone for SpaceX is to put people on board the Crew Dragon. Two NASA astronauts, Bob Behnken and Doug Hurley, are slated to be the first passengers in the Crew Dragon, tasked with flying to the station for a quick, two-week stay. If&nbsp;</span><em style="color: rgb(66, 66, 66);">that</em><span style="color: rgb(66, 66, 66);">&nbsp;flight goes well, then NASA will eventually certify the Crew Dragon to do routine crewed flights to the ISS and back.</span></p><p><br></p><p>The schedule for that crewed flight hasn’t been nailed down yet, as there is still a lot of work to do once this in-flight abort test is complete. SpaceX CEO Elon Musk noted that the Crew Dragon that will carry Behnken and Hurley could arrive at Cape Canaveral in February, but that it could take a few more months to do all the necessary processing and tests before the astronauts can fly.</p><p>Figuring out the date of that crewed flight will be a major moment for both SpaceX and NASA. Since the retirement of the Space Shuttle in 2011, all of NASA’s astronauts have been flying on Russia’s Soyuz rocket to get to the ISS. The first crewed flight for the Commercial Crew program will return human spaceflight to American soil once again. Additionally, NASA astronauts have long launched on government-owned vehicles, but SpaceX’s Crew Dragon is a commercially developed spacecraft. When people ride on board, it may be the first time that a private capsule transports people to orbit.</p><p><br></p><p><em>IF ALL GOES WELL, THEN THE NEXT FLIGHT MILESTONE FOR SPACEX IS TO PUT PEOPLE ON BOARD</em></p><p><em><span class="ql-cursor">﻿</span></em></p><p>Of course, rival company Boeing might get there first. Boeing is also part of the Commercial Crew program and has been developing its own crew capsule called the CST-100 Starliner. That vehicle made its debut flight to space in December, though&nbsp;<a href="https://www.theverge.com/2019/12/20/21031243/boeing-cst-100-starliner-oft-launch-failure-orbit" target="_blank" style="color: rgb(226, 18, 122);">a glitch during the mission prevented the Starliner from reaching the space station</a>&nbsp;like it was supposed to. It’s possible the company&nbsp;<a href="https://www.theverge.com/2020/1/7/21055743/nasa-boeing-cst-100-starliner-independent-investigation-team-launch-mishap" target="_blank" style="color: rgb(226, 18, 122);">may have to do another uncrewed flight test</a>&nbsp;because of the mishap. But even with the glitch, Boeing is&nbsp;<em>also</em>&nbsp;nearing its first crewed test which will carry two NASA astronauts and a Boeing astronaut to the station.</p><p>Which crewed mission happens first still depends on how schedules play out this year, and the Commercial Crew program is fairly notorious for delays. But both SpaceX and Boeing are closer than ever to flying people in their vehicles, and Saturday’s launch will be a big thing to remove from SpaceX’s to-do list.</p><p>The in-flight abort is scheduled to get underway at 8AM ET on Saturday, though SpaceX has a four-hour window to do the test. So far, weather is looking pretty great, with a 90 percent chance of good conditions. NASA plans to do a pre-launch briefing at 1PM ET on Friday, January 17th, with live coverage starting at 7:45AM ET. Check back then to see SpaceX’s Falcon 9 rocket get destroyed on purpose.</p>',
+      readTime: '1800',
+      imgUrl:
+        'https://auroracourses.blob.core.windows.net/articleimages/4cd3b1065e8fbff68c7c3941a5f5044ec.jpg',
+      createdAt: '2020-01-24T21:39:34.591Z',
+      updatedAt: '2020-01-24T21:39:34.591Z',
+      id: '5e2b6416900b920023730ff1',
+    },
   ];
 
   constructor() {}

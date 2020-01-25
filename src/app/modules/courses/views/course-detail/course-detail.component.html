@@ -38,7 +38,9 @@
           </div>
           <div class="course-name">{{ course.name }}</div>
           <div class="enroll-button-container">
-            <button *ngIf="!enrolled" class="enroll-button">Enroll now</button>
+            <button *ngIf="!enrolled" class="enroll-button focus-outline">
+              Enroll now
+            </button>
             <button *ngIf="enrolled" class="enrolled-indicator" disabled="true">
               Enrolled
               <i class="material-icons">

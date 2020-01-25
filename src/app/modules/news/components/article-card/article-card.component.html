@@ -1,0 +1,16 @@
+<div class="card-container">
+  <div class="image-container">
+    <img [src]="article.imgUrl" alt="Article image" />
+  </div>
+  <div class="date">
+    <span class="day">{{ day }}</span
+    ><span class="month">{{ month }}</span>
+  </div>
+  <i class="ion-film-marker"></i>
+  <div class="fig-caption">
+    <h3>{{ article.title }}</h3>
+    <p>{{ article.subtitle }}</p>
+    <button class="focus-outline">Read More</button>
+  </div>
+  <a class="focus-outline" tabindex="0" [routerLink]="['./', article.id]"></a>
+</div>
