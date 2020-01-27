@@ -216,7 +216,7 @@
         max-height: 1084px;
         position: relative;
         .lesson-container {
-          padding: 20px;
+          padding: 15px 20px;
           display: flex;
           flex-direction: row-reverse;
           border-bottom: 1px solid gainsboro;
@@ -253,6 +253,10 @@
                   color: #29303b;
                   text-decoration: none;
                 }
+                &.active {
+                  /* background-color: red; */
+                  color: #f18d02;
+                }
               }
             }
             .type-duration-container {
@@ -268,6 +272,9 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                i {
+                  font-size: 20px;
+                }
               }
               .duration {
                 margin-left: 10px;
