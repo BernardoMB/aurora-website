@@ -20,12 +20,14 @@
       transform: rotateY(90deg);
       transition-delay: 0s;
     }
-    i {
+    .past-time {
       transform: rotateY(0);
       transition-delay: 0.2s;
     }
-    button {
-      background-color: #1f5e11;
+    .fig-caption {
+      button {
+        background-color: #1f5e11;
+      }
     }
   }
   * {
@@ -43,7 +45,7 @@
     }
   }
   .date,
-  i {
+  .past-time {
     background-color: #357d24;
     top: 25px;
     color: #fff;
@@ -67,7 +69,7 @@
       background-color: rgba(0, 0, 0, 0.1);
     }
   }
-  i {
+  .past-time {
     line-height: 60px;
     font-size: 30px;
     transform: rotateY(-90deg);
