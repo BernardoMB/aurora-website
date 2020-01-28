@@ -1,12 +1,1 @@
-<app-header
-  [user]="user"
-  (login)="onLogin()"
-  (logout)="onLogout()"
-  (register)="onRegister()"
-  (viewProfile)="onViewProfile()"
-  (viewShoppingKart)="onViewShoppingKart()"
-></app-header>
-<div [@routeAnimation]="getAnimationData(routerOutlet)">
-  <router-outlet #routerOutlet="outlet"></router-outlet>
-</div>
-<app-footer></app-footer>
+<router-outlet #routerOutlet="outlet"></router-outlet>
