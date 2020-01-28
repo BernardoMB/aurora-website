@@ -59,6 +59,7 @@ export class TokenInterceptor implements HttpInterceptor {
             if (pastToken) {
               this.cookieService.delete('userToken');
             }
+            this.cookieService.delete('userToken');
             this.cookieService.set('userToken', incomingUserToken);
             // TODO: use environment variables below to change cookie handling
             // this.cookieService.set('userToken', incomingUserToken, undefined, '/', 'http://localhost:4200', true, 'Strict');
@@ -79,10 +80,10 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError(error => {
-        log('ErrorInterceptor: Response interceptor catched error!');
+        console.log('ErrorInterceptor: Response interceptor catched error!');
         if (error instanceof HttpErrorResponse && error.status === 401) {
-          log('ErrorInterceptor: Response status is 401 (unauthorized)');
-          log('ErrorInterceptor: Removeing userToken');
+          console.log('ErrorInterceptor: Response status is 401 (unauthorized)');
+          console.log('ErrorInterceptor: Removeing userToken');
           this.cookieService.delete('userToken');
           /**
            * No redirecting is need

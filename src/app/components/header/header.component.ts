@@ -50,6 +50,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   currentSection = '';
   routerSubscription: Subscription;
   private history = [];
+  showCategories = false;
   categories: Category[];
 
   constructor(
@@ -66,6 +67,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         return event instanceof NavigationEnd;
       })
     ).subscribe((event: NavigationEnd) => {
+      this.showCategories = false;
       this.history = [...this.history, event.urlAfterRedirects];
       if (event.id === 1 && this.route.firstChild.snapshot.url[0].path === 'courses') {
         this.getCategories();
@@ -146,13 +148,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getCategories() {
-    this.coursesService.getCategories().pipe(
-      tap((categories: Category[]) => {
-        if (categories) {
-          this.categories = categories;
-        }
-      })
-    );
+    this.coursesService.getCategories().subscribe((categories: Category[]) => {
+      if (categories) {
+        console.log('CATEGORIES', categories);
+        this.categories = categories;
+        this.showCategories = true;
+      }
+    });
   }
 
   onLogin() {
