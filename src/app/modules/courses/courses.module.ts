@@ -15,6 +15,8 @@ import { CategoryCardComponent } from './components/category-card/category-card.
 import { LessonCardComponent } from './components/lesson-card/lesson-card.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReviewCardComponent } from './components/review-card/review-card.component';
+import { CoursesService } from './services/courses.service';
+import { AmpPlayerComponent } from './components/amp-player/amp-player.component';
 
 @NgModule({
     declarations: [
@@ -30,7 +32,9 @@ import { ReviewCardComponent } from './components/review-card/review-card.compon
         CategoryCardComponent,
         LessonCardComponent,
         ReviewCardComponent,
+        AmpPlayerComponent,
     ],
     imports: [CommonModule, CoursesRoutingModule, SharedModule],
+    providers: [CoursesService]
 })
 export class CoursesModule {}

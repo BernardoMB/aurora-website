@@ -1,0 +1,10 @@
+.player-container {
+  background-color: #14171c;
+  display: flex;
+  justify-content: center;
+  .player-wrapper {
+    flex-grow: 1;
+    height: 60vh;
+    min-height: 420px;
+  }
+}

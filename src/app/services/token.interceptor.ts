@@ -47,12 +47,21 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
+          console.log('Manipulating response object');
           const response = event;
           const authorizationHeader = response.headers.get('Authorization');
           if (authorizationHeader) {
             log('Authorization header is present');
             const incomingUserToken = authorizationHeader.split(' ')[1];
+            console.log('Refreshing token');
+            // Refresh bearer token
+            const pastToken = this.cookieService.get('userToken');
+            if (pastToken) {
+              this.cookieService.delete('userToken');
+            }
             this.cookieService.set('userToken', incomingUserToken);
+            // TODO: use environment variables below to change cookie handling
+            // this.cookieService.set('userToken', incomingUserToken, undefined, '/', 'http://localhost:4200', true, 'Strict');
           }
         }
         return event;

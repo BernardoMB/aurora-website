@@ -37,6 +37,8 @@ export class AuthEffects {
         this.authService.signin(action.username, action.password).pipe(
           map((responseBody: { accessToken: string }) => {
             this.cookieService.set('userToken', responseBody.accessToken);
+            // TODO: use environment variables below
+            // this.cookieService.set('userToken', responseBody.accessToken, undefined, '/', 'http://localhost:4200', true, 'Strict');
             return loginSuccess();
           }),
           catchError((errorResponse: HttpErrorResponse) => {
@@ -59,16 +61,18 @@ export class AuthEffects {
       ofType(loginSuccess),
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
-          map((responseBody: GetUserDto) =>
-            getUserInfoSuccess({
+          map((responseBody: GetUserDto) => {
+            log('loginSuccessEffect:', responseBody);
+            return getUserInfoSuccess({
               id: responseBody.id,
               email: responseBody.email,
               username: responseBody.username,
               emailVerified: responseBody.emailVerified,
               name: responseBody.name,
               lastName: responseBody.lastName,
-            }),
-          ),
+              purchasedCourses: responseBody.purchasedCourses,
+            });
+          }),
           catchError(error => of(getUserInfoFailure({ error }))),
         ),
       ),
@@ -81,6 +85,7 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
           map((responseBody: GetUserDto) => {
+            log('loginSuccessEffect:', responseBody);
             return getUserInfoSuccess({
               id: responseBody.id,
               email: responseBody.email,
@@ -88,6 +93,7 @@ export class AuthEffects {
               emailVerified: responseBody.emailVerified,
               name: responseBody.name,
               lastName: responseBody.lastName,
+              purchasedCourses: responseBody.purchasedCourses,
             });
           }),
           catchError((errorResponse: HttpErrorResponse) =>
@@ -133,16 +139,18 @@ export class AuthEffects {
       ofType(loginWithTokenSuccess),
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
-          map((responseBody: GetUserDto) =>
-            getUserInfoSuccess({
+          map((responseBody: GetUserDto) => {
+            log('loginSuccessEffect:', responseBody);
+            return getUserInfoSuccess({
               id: responseBody.id,
               email: responseBody.email,
               username: responseBody.username,
               emailVerified: responseBody.emailVerified,
               name: responseBody.name,
               lastName: responseBody.lastName,
-            }),
-          ),
+              purchasedCourses: responseBody.purchasedCourses,
+            });
+          }),
           catchError(error => of(getUserInfoFailure({ error }))),
         ),
       ),
@@ -153,7 +161,10 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(logout),
-        tap(action => this.cookieService.delete('userToken')),
+        tap(action => {
+          log('Deleteing usertToken cookie...');
+          this.cookieService.delete('userToken');
+        }),
       ),
     { dispatch: false },
   );

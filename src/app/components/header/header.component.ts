@@ -6,13 +6,16 @@ import {
   Output,
   Inject,
   PLATFORM_ID,
+  OnDestroy,
 } from '@angular/core';
 import { WindowRef } from '../../providers/window.provider';
 import { DocumentRef } from '../../providers/document.provider';
-import { isPlatformBrowser } from '@angular/common';
-import { of, fromEvent } from 'rxjs';
-import { map, pairwise, switchMap, throttleTime } from 'rxjs/operators';
+import { isPlatformBrowser, Location } from '@angular/common';
+import { of, fromEvent, Subscription, Observable } from 'rxjs';
+import { map, pairwise, switchMap, throttleTime, filter } from 'rxjs/operators';
 import { User } from '../../shared/models/user.model';
+import { Route, ActivatedRoute, Router, NavigationEnd, Event, RoutesRecognized, RouterState, UrlSegment } from '@angular/router';
+import { log } from '../../shared/utils';
 
 /**
  * The header of the application.
@@ -25,7 +28,7 @@ import { User } from '../../shared/models/user.model';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   usor: User = undefined;
   @Input() set user(user: User) {
     this.usor = user || undefined;
@@ -44,13 +47,36 @@ export class HeaderComponent implements OnInit {
   onLandingPage: boolean;
   loggedIn: boolean;
   currentSection = '';
+  routerSubscription: Subscription;
+  private history = [];
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
     @Inject(WindowRef) private windowRef: WindowRef,
     @Inject(DocumentRef) private documentRef: DocumentRef,
+    private router: Router,
+    private readonly route: ActivatedRoute,
   ) {
     this.loggedIn = false;
+
+    this.router.events.pipe(
+      filter((event: Event) => {
+        return event instanceof NavigationEnd;
+      })
+    ).subscribe((event: NavigationEnd) => {
+      this.history = [...this.history, event.urlAfterRedirects];
+      console.log('Event Id:', event.id);
+      if (event.id === 1 && this.route.firstChild.snapshot.url[0].path === 'courses') {
+        console.log('FETCH CATEGORIES!');
+      }
+      if (event.id !== 1) {
+        const previousPath = this.history[this.history.length - 2];
+        console.log('previousPath', previousPath);
+        if (!previousPath.includes('courses')) {
+          console.log('FETCH CATEGORIES!');
+        }
+      }
+    });
   }
 
   ngOnInit() {
@@ -113,6 +139,10 @@ export class HeaderComponent implements OnInit {
         });
     }
     // #endregion sections logic
+  }
+
+  ngOnDestroy() {
+    // TODO: unsubscribe router subscription
   }
 
   onLogin() {

@@ -1,3 +1,5 @@
+import { Course } from '../models/course.model';
+
 export interface GetUserDto {
     favoriteCourses: Array<string>;
     wishList: Array<string>;
@@ -23,6 +25,6 @@ export interface GetUserDto {
     secretAnswer: string;
     createdAt: Date;
     updatedAt: Date;
-    purchasedCourses: Array<{ progress: Array<string>; course: string }>;
+    purchasedCourses: Array<{ progress: Array<string>; course: Course }>;
     id: string;
 }

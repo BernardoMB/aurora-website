@@ -3,25 +3,24 @@
   flex-direction: column;
   align-items: center;
   position: relative;
+  font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+  color: #29303b;
   .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid gainsboro;
     width: 100%;
+    margin: 24px 0px;
     padding-bottom: 24px;
-    margin: 20px 0px;
     .modal-title {
-      margin: 0px 20px;
-      color: gray;
-      margin-right: 20px;
-      font-size: 14px;
-      font-weight: 500;
+      margin: 0px 24px;
+      font-size: 15px;
+      font-weight: 600;
     }
     i {
-      margin-right: 20px;
+      margin-right: 24px;
       cursor: pointer;
-      color: #1f5e11;
       &:hover {
         color: darkorange;
       }
@@ -31,15 +30,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 30px;
-    height: 30px;
-    border: 2px solid gray;
-    padding: 10px;
+    width: 50px;
+    height: 50px;
     border-radius: 50px;
-    margin-bottom: 20px;
-    i {
-      color: grey;
-    }
+    border: 2px solid;
+    margin-bottom: 10px;
   }
   .welcome-phrase {
     margin-bottom: 20px;
@@ -48,16 +43,24 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    .credential-field {
+      mat-icon {
+        margin-left: 10px;
+      }
+    }
     mat-icon {
       color: grey;
     }
     .alert-message {
+      width: 100%;
       margin-bottom: 22px;
       color: #721c24;
       background-color: #f8d7da;
       border: 1px solid #f5c6cb;
-      padding: 0.75rem 1.25rem;
+      padding: 0.75rem 0px;
       border-radius: 0.25rem;
+      text-align: center;
     }
     .login-button-container {
       margin-bottom: 30px;

@@ -28,8 +28,18 @@
           <a class="link focus-outline" routerLink="/courses">Learning</a>
           <a class="link focus-outline" routerLink="/news">News</a>
           <a class="link focus-outline" routerLink="/events">Events</a>
-          <a class="link focus-outline" href="#invest">Invest</a>
-          <a class="link focus-outline" href="#contact">Contact us</a>
+          <a
+            class="link focus-outline"
+            [routerLink]="['/invest']"
+            fragment="contact"
+            >Invest</a
+          >
+          <a
+            class="link focus-outline"
+            [routerLink]="['/contact']"
+            fragment="contact"
+            >Contact us</a
+          >
         </div>
       </div>
     </div>

@@ -22,6 +22,7 @@ import { SharedModule } from './shared/shared.module';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
+import { MainComponent } from './components/main/main.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SignupFormComponent } from './components/signup-form/signup-form.compon
     NotFoundComponent,
     LoginFormComponent,
     SignupFormComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +62,7 @@ import { SignupFormComponent } from './components/signup-form/signup-form.compon
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true,
-    },
+    }
   ],
   entryComponents: [LoginFormComponent, SignupFormComponent],
   bootstrap: [AppComponent],

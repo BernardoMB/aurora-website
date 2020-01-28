@@ -1,13 +1,20 @@
 <div class="category-card-wrapper">
   <div class="category-card-container">
     <div class="upper" [style.backgroundColor]="category.hexColor">
-      <div class="image-container" [style.backgroundImage]="'url(' + category.imgUrl + ')'">
+      <div
+        class="image-container"
+        [style.backgroundImage]="'url(' + category.imgUrl + ')'"
+      >
         <div class="overlay"></div>
       </div>
     </div>
     <div class="lower">
+      <div
+        class="category-indicator"
+        [style.backgroundColor]="category.hexColor"
+      ></div>
       <div class="category-name">
-        {{category.name}}
+        {{ category.name }}
       </div>
     </div>
   </div>

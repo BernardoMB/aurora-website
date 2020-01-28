@@ -49,7 +49,8 @@
         <li class="nav-link">
           <a
             class="focus-outline"
-            href="#invest"
+            [routerLink]="['/home']"
+            fragment="invest"
             [class.active]="currentSection === 'invest'"
             >Invest</a
           >
@@ -57,7 +58,8 @@
         <li class="nav-link">
           <a
             class="focus-outline"
-            href="#contact"
+            [routerLink]="['/home']"
+            fragment="contact"
             [class.active]="currentSection === 'contact'"
             >Contact</a
           >

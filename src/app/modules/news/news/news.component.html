@@ -1,1 +1,49 @@
-<p>news works!</p>
+<section class="lerning-header">
+  <div class="header-container">
+    <div class="course-title">News</div>
+  </div>
+</section>
+
+<section class="courses-section">
+  <div class="courses-container">
+    <div class="cards">
+      <div *ngFor="let article of featuredArticles" class="card content">
+        <div class="card-content">
+          <div class="card-img">
+            <img [src]="article.imgUrl" alt="Article image" />
+          </div>
+          <div class="date">
+            <span class="day">26</span>
+            <span class="month">jan</span>
+          </div>
+          <div class="card-caption">
+            <div class="card-title">
+              {{ article.title }}
+            </div>
+            <div class="card-subtitle">
+              <a class="read-more">
+                read more
+              </a>
+                    <!-- <div class="subtitle">
+                      {{ article.subtitle }}
+                    </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section *ngIf="articles.length > 0" class="featured-courses-section">
+  <div class="featured-courses-container">
+    <div class="featured-title-container">
+      <div class="featured-title">Older news</div>
+    </div>
+    <div class="featured-cards-container">
+      <div class="course-card" *ngFor="let article of articles; let i = index">
+        <app-article-card [article]="article"></app-article-card>
+      </div>
+    </div>
+  </div>
+</section>

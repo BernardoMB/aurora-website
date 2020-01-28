@@ -1,3 +1,5 @@
+import { Course } from './course.model';
+
 export class User {
   id?: string;
   email?: string;
@@ -5,4 +7,5 @@ export class User {
   emailVerified?: boolean;
   name?: string;
   lastName?: string;
+  purchasedCourses?: Array<{ progress: string[], course: Course }>;
 }

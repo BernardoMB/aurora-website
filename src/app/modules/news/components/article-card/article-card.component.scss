@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,600,700,800');
+
+.card-container {
+  position: relative;
+  width: 100%;
+  min-width: 220px;
+  max-width: 310px;
+  background-color: #ffffff;
+  box-shadow: rgba(0, 0, 0, 0.2) 8px 6px 20px 0px;
+  // Font
+  text-align: left;
+  font-family: 'Raleway', Arial, sans-serif;
+  color: #000000;
+  font-size: 16px;
+  &:hover {
+    img {
+      transform: scale(1.1);
+    }
+    .date {
+      transform: rotateY(90deg);
+      transition-delay: 0s;
+    }
+    .past-time {
+      transform: rotateY(0);
+      transition-delay: 0.2s;
+    }
+    .fig-caption {
+      button {
+        background-color: #1f5e11;
+      }
+    }
+  }
+  * {
+    // Apply to all elements
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+  }
+  .image-container {
+    overflow: hidden;
+    img {
+      max-width: 100%;
+      vertical-align: top;
+      transform-origin: 50% 100%;
+      transition: all 0.4s ease;
+    }
+  }
+  .date,
+  .past-time {
+    background-color: #357d24;
+    top: 25px;
+    color: #fff;
+    left: 25px;
+    min-height: 60px;
+    min-width: 60px;
+    position: absolute;
+    text-align: center;
+  }
+  .date {
+    transition-delay: 0.2s;
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    span {
+      display: block;
+      line-height: 30px;
+    }
+    .month {
+      font-size: 16px;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+  .past-time {
+    line-height: 60px;
+    font-size: 30px;
+    transform: rotateY(-90deg);
+    transition-delay: 0s;
+  }
+  .fig-caption {
+    padding: 25px;
+    position: relative;
+    h3,
+    p {
+      margin: 0;
+      padding: 0;
+    }
+    h3 {
+      /* font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif; */
+      margin-bottom: 10px;
+      display: inline-block;
+      font-weight: 600;
+      color: #333333;
+      text-transform: uppercase;
+    }
+    p {
+      font-size: 0.8em;
+      margin-bottom: 20px;
+      line-height: 1.6em;
+    }
+    button {
+      /* font-family: 'Trebuchet MS', Helvetica, sans-serif; */
+      border: medium none;
+      padding: 10px 20px;
+      background-color: #357d24;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-size: 0.8em;
+    }
+  }
+  a {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    z-index: 1;
+    transition: none;
+  }
+}
