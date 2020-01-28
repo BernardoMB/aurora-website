@@ -6,6 +6,7 @@ import {
   Output,
   Inject,
   PLATFORM_ID,
+  OnDestroy,
 } from '@angular/core';
 import { WindowRef } from '../../providers/window.provider';
 import { DocumentRef } from '../../providers/document.provider';
@@ -27,7 +28,7 @@ import { log } from '../../shared/utils';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   usor: User = undefined;
   @Input() set user(user: User) {
     this.usor = user || undefined;
@@ -46,6 +47,8 @@ export class HeaderComponent implements OnInit {
   onLandingPage: boolean;
   loggedIn: boolean;
   currentSection = '';
+  routerSubscription: Subscription;
+  private history = [];
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -55,13 +58,23 @@ export class HeaderComponent implements OnInit {
     private readonly route: ActivatedRoute,
   ) {
     this.loggedIn = false;
+
     this.router.events.pipe(
       filter((event: Event) => {
         return event instanceof NavigationEnd;
       })
     ).subscribe((event: NavigationEnd) => {
-      console.log(this.route.firstChild.snapshot.url[0].path);
-      // TODO: dispatch get categories actions
+      this.history = [...this.history, event.urlAfterRedirects];
+      console.log('Event Id:', event.id);
+      if (event.id === 1 && this.route.firstChild.snapshot.url[0].path === 'courses') {
+        console.log('FETCH CATEGORIES!');
+      }
+      if (event.id !== 1) {
+        const previousPath = this.history[this.history.length - 2];
+        if (!previousPath.includes('courses')) {
+          console.log('FETCH CATEGORIES!');
+        }
+      }
     });
   }
 
@@ -125,6 +138,10 @@ export class HeaderComponent implements OnInit {
         });
     }
     // #endregion sections logic
+  }
+
+  ngOnDestroy() {
+    // TODO: unsubscribe router subscription
   }
 
   onLogin() {

@@ -58,7 +58,8 @@ export class CourseDetailComponent implements OnInit {
         course: '5e212c4d3357dd2c109ee2cf',
         // tslint:disable-next-line: max-line-length
         review:
-          'No profundiso sufienciente en los temas. For the kind of study I am most interested in, I would say that the teacher glosses over key math concepts and focuses on the intuition behind it. I respect this approach since the class is more oriented towards the 20 Case Studies. Overall, I very much appreciate the fluidity of the lessons and the wide range of topics covered.',
+          // tslint:disable-next-line: max-line-length
+          'No profundizó sufienciente en los temas. For the kind of study I am most interested in, I would say that the teacher glosses over key math concepts and focuses on the intuition behind it. I respect this approach since the class is more oriented towards the 20 Case Studies. Overall, I very much appreciate the fluidity of the lessons and the wide range of topics covered.',
         rating: 4.5,
         createdAt: '2020-01-17T03:54:16.656Z',
         updatedAt: '2020-01-17T03:54:16.656Z',
@@ -555,7 +556,7 @@ export class CourseDetailComponent implements OnInit {
 
   constructor(private router: Router, private store: Store<State>) {
     this.router.events.subscribe(event => {
-      console.log('Navigation event:', event);
+      /* console.log('Navigation event:', event); */
       if (event instanceof NavigationEnd) {
         // Prevent scrolling if changed tab.
         const second = event.url.split('#')[1];
