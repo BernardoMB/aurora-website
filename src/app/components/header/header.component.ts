@@ -71,6 +71,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
       if (event.id !== 1) {
         const previousPath = this.history[this.history.length - 2];
+        console.log('previousPath', previousPath);
         if (!previousPath.includes('courses')) {
           console.log('FETCH CATEGORIES!');
         }
