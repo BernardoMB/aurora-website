@@ -8,7 +8,7 @@ $focus-border: 2px;
   display: block;
   position: relative;
   z-index: 1;
-  background: #f3f3f3;
+  background: #fff;
   .header-inner {
     display: flex;
     justify-content: space-between;
@@ -38,6 +38,10 @@ $focus-border: 2px;
       @media screen and (max-width: $break-large) {
         display: inherit;
       }
+    }
+    .category-menu-button-container {
+      display: flex;
+      align-items: center;
     }
     .header-container {
       display: flex;

@@ -16,6 +16,17 @@
       />
     </div>
 
+    <div class="category-menu-button-container">
+      <button class="category-menu-button" [matMenuTriggerFor]="categoriesMenu">
+        <i class="material-icons">apps</i>
+        Categories
+      </button>
+      <mat-menu #categoriesMenu="matMenu">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+    </div>
+
     <!-- Buttons container -->
     <div class="header-container">
       <ul class="navigation-links">

@@ -10,12 +10,13 @@ import {
 } from '@angular/core';
 import { WindowRef } from '../../providers/window.provider';
 import { DocumentRef } from '../../providers/document.provider';
-import { isPlatformBrowser, Location } from '@angular/common';
-import { of, fromEvent, Subscription, Observable } from 'rxjs';
-import { map, pairwise, switchMap, throttleTime, filter } from 'rxjs/operators';
+import { isPlatformBrowser } from '@angular/common';
+import { of, fromEvent, Subscription } from 'rxjs';
+import { map, pairwise, switchMap, throttleTime, filter, tap } from 'rxjs/operators';
 import { User } from '../../shared/models/user.model';
-import { Route, ActivatedRoute, Router, NavigationEnd, Event, RoutesRecognized, RouterState, UrlSegment } from '@angular/router';
-import { log } from '../../shared/utils';
+import { ActivatedRoute, Router, NavigationEnd, Event } from '@angular/router';
+import { Category } from 'src/app/shared/models/category.model';
+import { CoursesService } from 'src/app/modules/courses/services/courses.service';
 
 /**
  * The header of the application.
@@ -49,6 +50,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   currentSection = '';
   routerSubscription: Subscription;
   private history = [];
+  categories: Category[];
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -56,24 +58,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
     @Inject(DocumentRef) private documentRef: DocumentRef,
     private router: Router,
     private readonly route: ActivatedRoute,
+    private coursesService: CoursesService
   ) {
     this.loggedIn = false;
-
-    this.router.events.pipe(
+    this.routerSubscription = this.router.events.pipe(
       filter((event: Event) => {
         return event instanceof NavigationEnd;
       })
     ).subscribe((event: NavigationEnd) => {
       this.history = [...this.history, event.urlAfterRedirects];
-      console.log('Event Id:', event.id);
       if (event.id === 1 && this.route.firstChild.snapshot.url[0].path === 'courses') {
-        console.log('FETCH CATEGORIES!');
+        this.getCategories();
       }
-      if (event.id !== 1) {
+      if (event.id !== 1 && this.route.firstChild.snapshot.url[0].path === 'courses') {
         const previousPath = this.history[this.history.length - 2];
-        console.log('previousPath', previousPath);
         if (!previousPath.includes('courses')) {
-          console.log('FETCH CATEGORIES!');
+          this.getCategories();
         }
       }
     });
@@ -142,7 +142,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // TODO: unsubscribe router subscription
+    this.routerSubscription.unsubscribe();
+  }
+
+  getCategories() {
+    this.coursesService.getCategories().pipe(
+      tap((categories: Category[]) => {
+        if (categories) {
+          this.categories = categories;
+        }
+      })
+    );
   }
 
   onLogin() {
