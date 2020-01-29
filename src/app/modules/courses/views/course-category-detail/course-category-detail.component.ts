@@ -20,6 +20,8 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
     id: '5e1cb51be05ff40023656e56',
   }; */
 
+  imgUrl = 'https://auroracourses.blob.core.windows.net/categoryimages/705851dcfab771036477382d35b3f1545.jpg';
+
   // Category featured courses
   featuredCourses = [
     {

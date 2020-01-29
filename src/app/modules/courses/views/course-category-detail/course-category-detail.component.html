@@ -1,9 +1,9 @@
-<section class="category-jumbotron-section">
-  <div class="jumbotron-wrapper">
+<section class="category-jumbotron-section" *ngIf="category">
+  <div class="jumbotron-wrapper" [style.backgroundImage]="'url(' + category.imgUrl + ')'">
     <div class="jumbotron-wrapper-overlay">
       <div class="jumbotron-conatiner">
         <div class="jumbotron-texts">
-          <div class="jumbotron-title" *ngIf="category">{{ category.name }} Courses</div>
+          <div class="jumbotron-title">{{ category.name }} Courses</div>
           <div class="jumbotron-description">
             Improve your skills and learn your way up in leading industries
           </div>
