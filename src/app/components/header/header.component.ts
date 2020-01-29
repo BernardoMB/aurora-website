@@ -68,7 +68,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
       })
     ).subscribe((event: NavigationEnd) => {
       this.showCategories = false;
-      this.history = [...this.history, event.urlAfterRedirects];
+      // #region History of routes
+      /**
+       * Uncomment the code below if the header cares for
+       * the previous route requested
+       */
+      /* this.history = [...this.history, event.urlAfterRedirects];
       if (event.id === 1 && this.route.firstChild.snapshot.url[0].path === 'courses') {
         this.getCategories();
       }
@@ -77,6 +82,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
         if (!previousPath.includes('courses')) {
           this.getCategories();
         }
+      } */
+      // #endregion
+      if (this.route.firstChild.snapshot.url[0].path === 'courses') {
+        this.showCategories = true;
+        this.getCategories();
       }
     });
   }
@@ -150,7 +160,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   getCategories() {
     this.coursesService.getCategories().subscribe((categories: Category[]) => {
       if (categories) {
-        console.log('CATEGORIES', categories);
         this.categories = categories;
         this.showCategories = true;
       }

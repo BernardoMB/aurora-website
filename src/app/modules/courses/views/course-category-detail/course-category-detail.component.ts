@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
+import { CoursesService } from '../../services/courses.service';
+import { Category } from 'src/app/shared/models/category.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-course-category-detail',
   templateUrl: './course-category-detail.component.html',
   styleUrls: ['./course-category-detail.component.scss'],
 })
-export class CourseCategoryDetailComponent implements OnInit {
-  category = {
+export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
+  /* category = {
     name: 'Business',
     hexColor: '#ff5722',
     imgUrl:
@@ -14,7 +18,7 @@ export class CourseCategoryDetailComponent implements OnInit {
     createdAt: '2020-01-13T18:21:15.917Z',
     updatedAt: '2020-01-13T18:21:15.917Z',
     id: '5e1cb51be05ff40023656e56',
-  };
+  }; */
 
   // Category featured courses
   featuredCourses = [
@@ -563,7 +567,32 @@ export class CourseCategoryDetailComponent implements OnInit {
     },
   ];
 
-  constructor() {}
+  categorySubscription: Subscription;
+  category: Category;
+
+  constructor(
+    private router: Router,
+    private readonly route: ActivatedRoute,
+    private coursesService: CoursesService
+  ) {
+    this.route.url.subscribe((url: UrlSegment[]) => {
+      const id = url[1].path;
+      this.getCategory(id);
+    });
+  }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.categorySubscription.unsubscribe();
+  }
+
+  getCategory(categoryId: string) {
+    this.categorySubscription =  this.coursesService.getCategory(categoryId).subscribe((category: Category) => {
+      if (category) {
+        console.log('Category', category);
+        this.category = category;
+      }
+    });
+  }
 }

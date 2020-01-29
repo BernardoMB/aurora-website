@@ -29,3 +29,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Postman collection
 
 https://www.getpostman.com/collections/86501829d7d45ac17cb3
+
+## TODOS:
+
+- Add course Categories to store for more efficiency usign NgRx Entity

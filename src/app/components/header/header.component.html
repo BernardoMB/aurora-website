@@ -15,7 +15,6 @@
         alt="Invest Naija Logotype"
       />
     </div>
-
     <div class="header-left">
       <button *ngIf="showCategories" class="category-menu-button focus-outline" [matMenuTriggerFor]="categoriesMenu">
         <i class="material-icons">apps</i>
@@ -24,15 +23,19 @@
         </div>
       </button>
       <mat-menu #categoriesMenu="matMenu">
-        <div class="category-container" *ngFor="let category of categories; let i = index">
+        <div
+          *ngFor="let category of categories; let i = index"
+          class="category-container focus-outline"
+          tabindex="0"
+          [routerLink]="['/courses/categories', category.id]"
+          routerLinkActive="active"
+        >
+          <i class="material-icons category-material-icon">{{category.materialIcon}}</i>
           <div class="category-name">{{category.name}}</div>
-          <i class="material-icons">
-            chevron_right
-          </i>
+          <i class="material-icons arrow">chevron_right</i>
         </div>
       </mat-menu>
     </div>
-
     <div class="header-right">
       <div class="header-container">
         <ul class="navigation-links">
@@ -170,6 +173,5 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>

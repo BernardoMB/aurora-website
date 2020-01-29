@@ -27,4 +27,10 @@ export class CoursesService {
     return this.http.get<Array<Category>>(url);
   }
 
+  getCategory(categoryId: string): Observable<Category> {
+    console.log(`Courses service: getting category with id ${categoryId}`);
+    const url = `http://localhost:3000/v1/categories/${categoryId}`;
+    return this.http.get<Category>(url);
+  }
+
 }

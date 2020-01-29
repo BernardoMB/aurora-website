@@ -39,8 +39,6 @@ $focus-border: 2px;
         display: inherit;
       }
     }
-
-
     .header-left {
       flex: 1;
       min-width: 1px;
@@ -69,11 +67,6 @@ $focus-border: 2px;
         }
       }
     }
-
-
-
-
-
     .header-right {
       display: flex;
       align-items: center;
@@ -286,10 +279,18 @@ $focus-border: 2px;
     color: #56ae40;
     background-color: rgb(238, 238, 238);
   }
+  &.active {
+    color: #56ae40;
+    background-color: rgb(238, 238, 238);
+  }
+
+  .category-material-icon {
+    margin-right: 10px;
+  }
   .category-name {
     flex-grow: 1;
   }
-  i {
+  .arrow {
     margin-left: 10px;
   }
 }

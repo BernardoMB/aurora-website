@@ -3,7 +3,7 @@
     <div class="jumbotron-wrapper-overlay">
       <div class="jumbotron-conatiner">
         <div class="jumbotron-texts">
-          <div class="jumbotron-title">{{ category.name }} Courses</div>
+          <div class="jumbotron-title" *ngIf="category">{{ category.name }} Courses</div>
           <div class="jumbotron-description">
             Improve your skills and learn your way up in leading industries
           </div>
@@ -33,7 +33,7 @@
 <section *ngIf="categoryCourses.length > 0" class="category-courses-section">
   <div class="featured-courses-container">
     <div class="featured-title-container">
-      <div class="featured-title">All {{ category.name }} Courses</div>
+      <div class="featured-title" *ngIf="category">All {{ category.name }} Courses</div>
       <a>View all</a>
     </div>
     <div class="featured-cards-container">
