@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  host: 'https://mainserver.azurewebsites.net',
+  apiVersion: 'v1'
 };

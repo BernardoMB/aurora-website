@@ -5,11 +5,14 @@ import { log } from '../shared/utils';
 import { User } from '../shared/models/user.model';
 import { GetUserDto } from '../shared/dtos/get-user.dto';
 import { SignupDto } from '../shared/dtos/signup.dto';
+import { environment } from '../../environments/environment';
 
 // TODO: standardize the use of environment variables for requests urls.
 @Injectable()
 export class AuthService {
   private BASE_URL = 'http://localhost:1337';
+  host = environment.host;
+  apiVersion = environment.apiVersion;
 
   constructor(private http: HttpClient) {}
 
@@ -20,7 +23,7 @@ export class AuthService {
 
   signin(username: string, password: string): Observable<any> {
     log('Auth service: Loging in sending credentials');
-    const url = 'http://localhost:3000/v1/auth/signin';
+    const url = `${this.host}/${this.apiVersion}/auth/signin`;
     return this.http.post<{ accessToken: string }>(url, {
       username,
       password,
@@ -31,7 +34,7 @@ export class AuthService {
     log('Auth service: Getting user info');
     const url =
     // tslint:disable-next-line: max-line-length
-    'http://localhost:3000/v1/auth/user/me?populate=purchasedCourses,favoriteCourses,wishList,likedArticlesdislikedArticles,eventSubscriptions,courses,archivedCourses';
+    `${this.host}/${this.apiVersion}/auth/user/me?populate=purchasedCourses,favoriteCourses,wishList,likedArticlesdislikedArticles,eventSubscriptions,courses,archivedCourses`;
     return this.http.get<GetUserDto>(url);
   }
 

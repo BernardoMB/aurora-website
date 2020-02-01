@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
 import { CoursesService } from '../../services/courses.service';
 import { Category } from 'src/app/shared/models/category.model';
 import { Subscription } from 'rxjs';
+import { Course } from '../../../../shared/models/course.model';
 
 @Component({
   selector: 'app-course-category-detail',
@@ -10,6 +11,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./course-category-detail.component.scss'],
 })
 export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
+
+  // * Fake data commented out:
+
   /* category = {
     name: 'Business',
     hexColor: '#ff5722',
@@ -20,10 +24,10 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
     id: '5e1cb51be05ff40023656e56',
   }; */
 
-  imgUrl = 'https://auroracourses.blob.core.windows.net/categoryimages/705851dcfab771036477382d35b3f1545.jpg';
+  /* imgUrl = 'https://auroracourses.blob.core.windows.net/categoryimages/705851dcfab771036477382d35b3f1545.jpg'; */
 
-  // Category featured courses
-  featuredCourses = [
+  // Category featured coursesn from category
+  /* featuredCourses = [
     {
       public: true,
       labels: [
@@ -294,9 +298,9 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
       totalReviews: 1,
       id: '5e1924a6e05ff4002365613f',
     },
-  ];
+  ]; */
 
-  categoryCourses = [
+  /* categoryCourses = [
     {
       public: true,
       labels: [
@@ -567,10 +571,14 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
       totalReviews: 1,
       id: '5e1924a6e05ff4002365613f',
     },
-  ];
+  ]; */
 
   categorySubscription: Subscription;
   category: Category;
+  featuredCoursesSubscription: Subscription;
+  featuredCourses: Course[];
+  categoryCoursesSubscription: Subscription;
+  categoryCourses: Course[];
 
   constructor(
     private router: Router,
@@ -580,6 +588,8 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
     this.route.url.subscribe((url: UrlSegment[]) => {
       const id = url[1].path;
       this.getCategory(id);
+      this.getFeaturedCourses(id);
+      this.getCategoryCourses(id);
     });
   }
 
@@ -587,6 +597,8 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.categorySubscription.unsubscribe();
+    this.featuredCoursesSubscription.unsubscribe();
+    this.categoryCoursesSubscription.unsubscribe();
   }
 
   getCategory(categoryId: string) {
@@ -594,6 +606,24 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
       if (category) {
         console.log('Category', category);
         this.category = category;
+      }
+    });
+  }
+
+  getFeaturedCourses(categoryId: string) {
+    this.featuredCoursesSubscription =  this.coursesService.getCategoryFeaturedCourses(categoryId).subscribe((courses: Array<Course>) => {
+      if (courses) {
+        console.log('Featured courses', courses);
+        this.featuredCourses = courses;
+      }
+    });
+  }
+
+  getCategoryCourses(categoryId: string) {
+    this.categoryCoursesSubscription =  this.coursesService.getCategoryCourses(categoryId).subscribe((courses: Array<Course>) => {
+      if (courses) {
+        console.log('Category courses', courses);
+        this.categoryCourses = courses;
       }
     });
   }
