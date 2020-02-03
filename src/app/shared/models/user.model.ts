@@ -8,4 +8,5 @@ export class User {
   name?: string;
   lastName?: string;
   purchasedCourses?: Array<{ progress: string[], course: Course }>;
+  cart?: Course[];
 }

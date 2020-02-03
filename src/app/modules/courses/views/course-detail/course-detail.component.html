@@ -38,18 +38,19 @@
           </div>
           <div class="course-name">{{ course.name }}</div>
           <div class="buttons-container">
-            <button *ngIf="!enrolled" class="enroll-button focus-outline" (click)="onAddToCart()">Add to cart <i class="material-icons">add_shopping_cart</i></button>
+            <button *ngIf="!enrolled && !showGoToCart" class="enroll-button focus-outline" (click)="onAddToCart(course.id)">Add to cart <i class="material-icons">add_shopping_cart</i></button>
+            <button *ngIf="!enrolled && showGoToCart" class="enroll-button focus-outline" [routerLink]="['/courses/cart']">Go to cart <i class="material-icons">shopping_cart</i></button>
             <button *ngIf="!enrolled" class="buy-now-button focus-outline" (click)="onBuyNow()">Buy now</button>
             <button *ngIf="enrolled" class="enroll-button" disabled="true">Enrolled <i class="material-icons">done</i></button>
           </div>
         </div>
         <div class="bottom-container">
           <div class="price-container">
-            <div *ngIf="price === 0" class="free-container">
+            <div *ngIf="course.price === 0" class="free-container">
               <div class="free">Free</div>
             </div>
-            <div *ngIf="price > 0" class="price">
-              {{ price | currency: 'NGN':'symbol-narrow' }}
+            <div *ngIf="course.price > 0" class="price">
+              {{ course.price | currency: 'NGN':'symbol-narrow' }}
             </div>
           </div>
           <div *ngIf="course.rating" class="rating-container">

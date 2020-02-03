@@ -2,6 +2,7 @@ import { Course } from '../models/course.model';
 
 export interface GetUserDto {
     favoriteCourses: Array<string>;
+    cart: Array<any>;
     wishList: Array<string>;
     likedArticles: Array<string>;
     dislikedArticles: Array<string>;

@@ -15,12 +15,17 @@ import {
   loginWithTokenFailure,
   logout,
   signupFailure,
+  addCourseToCart,
+  addCourseToCartSuccess,
 } from './auth.actions';
 import { of } from 'rxjs';
 import { GetUserDto } from '../../shared/dtos/get-user.dto';
 import { CookieService } from 'ngx-cookie-service';
 import { log } from '../../shared/utils';
 import { HttpErrorResponse } from '@angular/common/http';
+import { User } from '../../shared/models/user.model';
+import { Course } from '../../shared/models/course.model';
+import { addCoursetoCartFailure } from '../courses/courses.actions';
 
 /**
  * Authentication effects
@@ -86,7 +91,7 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
           map((responseBody: GetUserDto) => {
-            log('loginSuccessEffect:', responseBody);
+            log('getUserInfoEffect$:', responseBody);
             return getUserInfoSuccess({
               id: responseBody.id,
               email: responseBody.email,
@@ -95,6 +100,7 @@ export class AuthEffects {
               name: responseBody.name,
               lastName: responseBody.lastName,
               purchasedCourses: responseBody.purchasedCourses,
+              cart: responseBody.cart
             });
           }),
           catchError((errorResponse: HttpErrorResponse) =>
@@ -168,6 +174,28 @@ export class AuthEffects {
         }),
       ),
     { dispatch: false },
+  );
+
+  addCourseToCartEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addCourseToCart),
+      exhaustMap(action =>
+        this.authService.addCoursetoShoppingCart(action.courseId, action.userId).pipe(
+          map((responseBody: Course) => {
+            log('addCourseToCartEffect$:', responseBody);
+            return addCourseToCartSuccess(responseBody);
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              addCoursetoCartFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   constructor(

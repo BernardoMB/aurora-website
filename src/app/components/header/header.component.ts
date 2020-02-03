@@ -7,6 +7,7 @@ import {
   Inject,
   PLATFORM_ID,
   OnDestroy,
+  ViewChild,
 } from '@angular/core';
 import { WindowRef } from '../../providers/window.provider';
 import { DocumentRef } from '../../providers/document.provider';
@@ -17,6 +18,10 @@ import { User } from '../../shared/models/user.model';
 import { ActivatedRoute, Router, NavigationEnd, Event } from '@angular/router';
 import { Category } from 'src/app/shared/models/category.model';
 import { CoursesService } from 'src/app/modules/courses/services/courses.service';
+import { Store, select } from '@ngrx/store';
+import { AuthState } from '../../store/auth/auth.state';
+import { selectAuthCart } from '../../store/auth/auth.selectors';
+import { MatMenuTrigger } from '@angular/material';
 
 /**
  * The header of the application.
@@ -30,12 +35,13 @@ import { CoursesService } from 'src/app/modules/courses/services/courses.service
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  usor: User = undefined;
+  @ViewChild(MatMenuTrigger, { static: true }) cartMenuTrigger: MatMenuTrigger;
+  usr: User = undefined;
   @Input() set user(user: User) {
-    this.usor = user || undefined;
+    this.usr = user || undefined;
   }
   get user() {
-    return this.usor;
+    return this.usr;
   }
   showUserMenu = false;
   @Output() login: EventEmitter<void> = new EventEmitter();
@@ -49,9 +55,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   loggedIn: boolean;
   currentSection = '';
   routerSubscription: Subscription;
-  private history = [];
   showCategories = false;
   categories: Category[];
+  cart: any[];
+  private history = [];
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -59,7 +66,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     @Inject(DocumentRef) private documentRef: DocumentRef,
     private router: Router,
     private readonly route: ActivatedRoute,
-    private coursesService: CoursesService
+    private coursesService: CoursesService,
+    private authStore: Store<AuthState>,
   ) {
     this.loggedIn = false;
     this.routerSubscription = this.router.events.pipe(
@@ -151,6 +159,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
         });
     }
     // #endregion sections logic
+    this.authStore.pipe(select(selectAuthCart)).subscribe((cart: any[]) => {
+      if (cart) {
+        this.cart = cart;
+      }
+    });
   }
 
   ngOnDestroy() {

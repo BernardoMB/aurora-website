@@ -2,6 +2,7 @@ import * as AuthActions from './auth.actions';
 import { createReducer, on, Action } from '@ngrx/store';
 import { initialAuthState, AuthState } from './auth.state';
 import { User } from '../../shared/models/user.model';
+import { Course } from '../../shared/models/course.model';
 
 export const authFeatureKey = 'auth';
 
@@ -35,6 +36,32 @@ const authReducer = createReducer(
     errorMessage: 'Session is no longer valid.',
   })),
   on(AuthActions.logout, () => initialAuthState),
+  on(AuthActions.addCourseToCartSuccess, (state: AuthState, course: Course) => {
+    if (state.user) {
+      return {
+        ...state,
+        user: {
+          ...(state.user),
+          cart: [
+            ...(state.user.cart),
+            course
+          ]
+        },
+        cart: [
+          ...(state.cart),
+          course
+        ]
+      };
+    } else {
+      return {
+        ...state,
+        cart: [
+          ...(state.cart),
+          course
+        ]
+      };
+    }
+  })
 );
 
 export function reducer(state: AuthState | undefined, action: Action) {

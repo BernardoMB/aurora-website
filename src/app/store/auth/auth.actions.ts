@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { User } from '../../shared/models/user.model';
 import { SignupDto } from '../../shared/dtos/signup.dto';
 import { GetUserDto } from '../../shared/dtos/get-user.dto';
+import { Course } from '../../shared/models/course.model';
 
 export const login = createAction(
     '[Auth] Login',
@@ -50,3 +51,11 @@ export const loginWithTokenFailure = createAction(
 export const logout = createAction('[Auth] Logout');
 export const logoutSuccess = createAction('[Auth] LogoutSuccess');
 export const logoutFailure = createAction('[Auth] LogoutFailure');
+
+export const addCourseToCart = createAction('[Auth] AddCourseToCart', props<{courseId: string, userId: string}>());
+export const addCourseToCartSuccess = createAction('[Auth] AddCourseToCartSuccess', props<Course>());
+export const addCourseToCartFailure = createAction('[Auth] AddCourseToCartFailure', props<{ error: any; message: string }>());
+
+export const addCourseToCartNoAuth = createAction('[Auth] AddCourseToCartNoAuth', props<{courseId: string}>());
+export const addCourseToCartNoAuthSuccess = createAction('[Auth] AddCourseToCartNoAuthSuccess', props<Course>());
+export const addCourseToCartNoAuthFailure = createAction('[Auth] AddCourseToCartNoAuthFailure', props<{}>());

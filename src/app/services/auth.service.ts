@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { log } from '../shared/utils';
 import { User } from '../shared/models/user.model';
 import { GetUserDto } from '../shared/dtos/get-user.dto';
 import { SignupDto } from '../shared/dtos/signup.dto';
 import { environment } from '../../environments/environment';
+import { Course } from '../shared/models/course.model';
 
 // TODO: standardize the use of environment variables for requests urls.
 @Injectable()
@@ -52,5 +52,12 @@ export class AuthService {
     this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url = 'http://localhost:3000/v1/auth/signinWithToken';
     return this.http.post(url, {});
+  }
+
+  addCoursetoShoppingCart(courseId: string, userId: string): Observable<Course> {
+    console.log('Auth service: Adding course to cart');
+    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
+    const url = `http://localhost:3000/v1/users/${userId}/cart/${courseId}`;
+    return this.http.post<Course>(url, {});
   }
 }

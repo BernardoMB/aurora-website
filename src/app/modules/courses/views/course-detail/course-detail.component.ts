@@ -3,13 +3,14 @@ import { Router, NavigationEnd, ActivatedRoute, UrlSegment } from '@angular/rout
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
 import { User } from '../../../../shared/models/user.model';
-import { selectAuthUser } from '../../../../store/auth/auth.selectors';
+import { selectAuthUser, selectAuthIsAuthenticated, selectAuthState, selectAuthCart } from '../../../../store/auth/auth.selectors';
 import { CoursesService } from '../../services/courses.service';
 import { Subscription } from 'rxjs';
 import { Course } from '../../../../shared/models/course.model';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
 import { SignupFormComponent } from '../../../../components/signup-form/signup-form.component';
+import { addCourseToCart, addCourseToCartNoAuthSuccess, addCourseToCartSuccess } from '../../../../store/auth/auth.actions';
 
 @Component({
   selector: 'app-course-detail',
@@ -17,8 +18,6 @@ import { SignupFormComponent } from '../../../../components/signup-form/signup-f
   styleUrls: ['./course-detail.component.scss'],
 })
 export class CourseDetailComponent implements OnInit, OnDestroy {
-
-
   /* course = {
     public: true,
     labels: [
@@ -553,16 +552,15 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   // TODO: this should be computed from the info obtained from the server
   isFavorite: boolean;
-  /* enrolled: boolean; */
-  // TODO: this should be computed from the info obtained from the server
-  price: number;
 
   currentTab = 'about';
   showCertificateTab = false;
   userSubscription: Subscription;
   user: User;
   courseSubscription: Subscription;
+  isAuthenticated = false;
   course: Course;
+  showGoToCart = false;
   get enrolled() {
     if (this.user && this.course) {
       if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
@@ -609,17 +607,11 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         this.showCertificateTab = false;
       }
     });
-
-    let num = Math.random();
-
-    /* // TODO: The following behaviour should not be random, instead it should be computed with the info obtained from the server
-    this.isFavorite = num > 0.5 ? true : false;
-    num = Math.random();
-    this.enrolled = num > 0.5 ? true : false; */
-
-    // TODO: The following behaviour should not be random, instead it should be computed with the info obtained from the server
-    num = Math.random();
-    this.price = num * (0 - 100) + 100;
+    this.store.pipe(select(selectAuthIsAuthenticated)).subscribe((isAuthenticated: boolean) => {
+      if (isAuthenticated) {
+        this.isAuthenticated = isAuthenticated;
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -630,8 +622,26 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     this.courseSubscription = this.coursesService.getCourse(courseId).subscribe((course: Course) => {
       if (course) {
         this.course = course;
+        this.store.pipe(select(selectAuthCart)).subscribe((cart: any[]) => {
+          if (cart) {
+            if (cart.length > 0) {
+              cart.map((el: Course) => {
+                return el.id;
+              }).indexOf(course.id) !== -1 ? this.showGoToCart = true : this.showGoToCart = false;
+            }
+          }
+        });
       }
     });
+  }
+
+  onAddToCart(courseId: string) {
+    console.log('Adding to cart');
+    if (this.isAuthenticated) {
+      this.store.dispatch(addCourseToCart({ courseId, userId: this.user.id }));
+    } else {
+      this.store.dispatch(addCourseToCartSuccess(this.course));
+    }
   }
 
   onBuyNow() {

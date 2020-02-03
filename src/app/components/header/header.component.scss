@@ -120,12 +120,34 @@ $focus-border: 2px;
         .cart-container {
           display: flex;
           align-items: center;
+          flex-direction: column;
+          justify-content: center;
           margin: 0px 20px;
+          position: relative;
           i {
             cursor: pointer;
             &:hover {
               color: #408e2d;
             }
+          }
+          .cart-count-indicator {
+            width: 17px;
+            height: 17px;
+            border-radius: 10px;
+            position: absolute;
+            top: 10px;
+            right: -5px;
+            font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            vertical-align: middle;
+            text-align: center;
+            color: white;
+            background-color: #ec5252;
           }
         }
         .user-section {
