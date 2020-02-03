@@ -1,20 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, NavigationEnd, ActivatedRoute, UrlSegment } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
 import { User } from '../../../../shared/models/user.model';
 import { selectAuthUser } from '../../../../store/auth/auth.selectors';
+import { CoursesService } from '../../services/courses.service';
+import { Subscription } from 'rxjs';
+import { Course } from '../../../../shared/models/course.model';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
+import { SignupFormComponent } from '../../../../components/signup-form/signup-form.component';
 
 @Component({
   selector: 'app-course-detail',
   templateUrl: './course-detail.component.html',
   styleUrls: ['./course-detail.component.scss'],
 })
-export class CourseDetailComponent implements OnInit {
-  user: User;
-  showCertificateTab = false;
+export class CourseDetailComponent implements OnInit, OnDestroy {
 
-  course = {
+
+  /* course = {
     public: true,
     labels: [
       'finance',
@@ -316,7 +321,7 @@ export class CourseDetailComponent implements OnInit {
     totalRating: 4,
     totalReviews: 5,
     id: '5e1924a6e05ff40023656e8f',
-  };
+  }; */
 
   relatedCourses = [
     {
@@ -548,13 +553,33 @@ export class CourseDetailComponent implements OnInit {
 
   // TODO: this should be computed from the info obtained from the server
   isFavorite: boolean;
-  enrolled: boolean;
+  /* enrolled: boolean; */
   // TODO: this should be computed from the info obtained from the server
   price: number;
 
   currentTab = 'about';
+  showCertificateTab = false;
+  userSubscription: Subscription;
+  user: User;
+  courseSubscription: Subscription;
+  course: Course;
+  get enrolled() {
+    if (this.user && this.course) {
+      if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-  constructor(private router: Router, private store: Store<State>) {
+  constructor(
+    private router: Router,
+    private store: Store<State>,
+    private readonly route: ActivatedRoute,
+    private coursesService: CoursesService,
+    private loginDialog: MatDialog,
+    private signupDialog: MatDialog
+  ) {
     this.router.events.subscribe(event => {
       /* console.log('Navigation event:', event); */
       if (event instanceof NavigationEnd) {
@@ -566,6 +591,11 @@ export class CourseDetailComponent implements OnInit {
         window.scrollTo(0, 0);
       }
       return;
+    });
+
+    this.route.url.subscribe((url: UrlSegment[]) => {
+      const courseId = url[0].path;
+      this.getCourse(courseId);
     });
   }
 
@@ -580,14 +610,54 @@ export class CourseDetailComponent implements OnInit {
       }
     });
 
-    // TODO: The following behaviour should not be random, instead it should be computed with the info obtained from the server
     let num = Math.random();
+
+    /* // TODO: The following behaviour should not be random, instead it should be computed with the info obtained from the server
     this.isFavorite = num > 0.5 ? true : false;
     num = Math.random();
-    this.enrolled = num > 0.5 ? true : false;
+    this.enrolled = num > 0.5 ? true : false; */
 
     // TODO: The following behaviour should not be random, instead it should be computed with the info obtained from the server
     num = Math.random();
     this.price = num * (0 - 100) + 100;
   }
+
+  ngOnDestroy() {
+    this.courseSubscription.unsubscribe();
+  }
+
+  getCourse(courseId: string) {
+    this.courseSubscription = this.coursesService.getCourse(courseId).subscribe((course: Course) => {
+      if (course) {
+        this.course = course;
+      }
+    });
+  }
+
+  onBuyNow() {
+    if (this.user) {
+      alert('Redirect courses/cart/checkout/express/course/:courseId');
+    } else {
+      // There is no logged in user
+      // TODO: Pass the following message to the modal: Please login to purchase this course
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.panelClass = 'custom-mat-dialog-container';
+      dialogConfig.backdropClass = 'custom-modal-backdrop';
+      let loginDialogRef;
+      let signupDialogRef;
+      loginDialogRef = this.loginDialog.open(LoginFormComponent, dialogConfig);
+      loginDialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          if (result.showSignUpModalOnClose) {
+            signupDialogRef = this.signupDialog.open(SignupFormComponent, dialogConfig);
+          }
+          if (result.userIsLoggedIn) {
+            alert('Redirect courses/cart/checkout/express/course/:courseId')
+          }
+        }
+      });
+    }
+  }
+
 }

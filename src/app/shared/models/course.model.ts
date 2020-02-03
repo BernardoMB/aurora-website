@@ -1,3 +1,5 @@
+import { Category } from './category.model';
+
 export interface Course {
     labels: string[];
     reviews: string[];
@@ -6,7 +8,8 @@ export interface Course {
     lessons: string[];
     name: string;
     description: string;
-    category: string;
+    category: any; // type any because of population
+    rating: number;
     price: number;
     discount: number;
     overview: string;

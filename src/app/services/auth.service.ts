@@ -22,7 +22,8 @@ export class AuthService {
   }
 
   signin(username: string, password: string): Observable<any> {
-    log('Auth service: Loging in sending credentials');
+    console.log('Auth service: Loging in sending credentials');
+    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url = `${this.host}/${this.apiVersion}/auth/signin`;
     return this.http.post<{ accessToken: string }>(url, {
       username,
@@ -31,7 +32,8 @@ export class AuthService {
   }
 
   getUserInfo(): Observable<GetUserDto> {
-    log('Auth service: Getting user info');
+    console.log('Auth service: Getting user info');
+    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url =
     // tslint:disable-next-line: max-line-length
     `${this.host}/${this.apiVersion}/auth/user/me?populate=purchasedCourses,favoriteCourses,wishList,likedArticlesdislikedArticles,eventSubscriptions,courses,archivedCourses`;
@@ -39,15 +41,15 @@ export class AuthService {
   }
 
   signup(signupDto: SignupDto): Observable<User> {
-    // console.log('Auth service: Registering a user sending signup dto');
-    log('Auth service: Registering a user sending signup dto');
+    console.log('Auth service: Registering a user sending signup dto');
+    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url = 'http://localhost:3000/v1/auth/signup';
     return this.http.post<User>(url, signupDto);
   }
 
   signinWithToken(): Observable<any> {
-    // console.log('Auth service: Loging in sending user token');
-    log('Auth service: Loging in sending user token');
+    console.log('Auth service: Loging in sending user token');
+    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url = 'http://localhost:3000/v1/auth/signinWithToken';
     return this.http.post(url, {});
   }

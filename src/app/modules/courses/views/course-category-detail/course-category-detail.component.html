@@ -13,36 +13,40 @@
   </div>
 </section>
 
-<section *ngIf="featuredCourses.length > 0" class="courses-section">
-  <div class="courses-container">
-    <div class="title-container">
-      <div class="title">Featured</div>
-      <a>View all</a>
-    </div>
-    <div class="cards-container">
-      <div
-        class="course-card"
-        *ngFor="let course of featuredCourses; let i = index"
-      >
-        <app-course-card [course]="course"></app-course-card>
+<div *ngIf="featuredCourses">
+  <section *ngIf="featuredCourses.length > 0" class="courses-section">
+    <div class="courses-container">
+      <div class="title-container">
+        <div class="title">Featured</div>
+        <a>View all</a>
+      </div>
+      <div class="cards-container">
+        <div
+          class="course-card"
+          *ngFor="let course of featuredCourses; let i = index"
+        >
+          <app-course-card [course]="course"></app-course-card>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
-<section *ngIf="categoryCourses.length > 0" class="category-courses-section">
-  <div class="featured-courses-container">
-    <div class="featured-title-container">
-      <div class="featured-title" *ngIf="category">All {{ category.name }} Courses</div>
-      <a>View all</a>
-    </div>
-    <div class="featured-cards-container">
-      <div
-        class="course-card"
-        *ngFor="let course of categoryCourses; let i = index"
-      >
-        <app-course-card [course]="course"></app-course-card>
+<div *ngIf="categoryCourses">
+  <section *ngIf="categoryCourses.length > 0" class="category-courses-section">
+    <div class="featured-courses-container">
+      <div class="featured-title-container">
+        <div class="featured-title" *ngIf="category">All {{ category.name }} Courses</div>
+        <a>View all</a>
+      </div>
+      <div class="featured-cards-container">
+        <div
+          class="course-card"
+          *ngFor="let course of categoryCourses; let i = index"
+        >
+          <app-course-card [course]="course"></app-course-card>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>

@@ -1,7 +1,7 @@
 <section class="course-jumbotron">
   <div class="course-jumbotron-wrapper">
     <div class="course-jumbotron-overlay">
-      <div class="course-jumbotron-container">
+      <div  *ngIf="course" class="course-jumbotron-container">
         <div class="top-container">
           <div class="category-container">
             <div
@@ -37,16 +37,10 @@
             </div>
           </div>
           <div class="course-name">{{ course.name }}</div>
-          <div class="enroll-button-container">
-            <button *ngIf="!enrolled" class="enroll-button focus-outline">
-              Enroll now
-            </button>
-            <button *ngIf="enrolled" class="enrolled-indicator" disabled="true">
-              Enrolled
-              <i class="material-icons">
-                done
-              </i>
-            </button>
+          <div class="buttons-container">
+            <button *ngIf="!enrolled" class="enroll-button focus-outline" (click)="onAddToCart()">Add to cart <i class="material-icons">add_shopping_cart</i></button>
+            <button *ngIf="!enrolled" class="buy-now-button focus-outline" (click)="onBuyNow()">Buy now</button>
+            <button *ngIf="enrolled" class="enroll-button" disabled="true">Enrolled <i class="material-icons">done</i></button>
           </div>
         </div>
         <div class="bottom-container">
@@ -58,7 +52,7 @@
               {{ price | currency: 'NGN':'symbol-narrow' }}
             </div>
           </div>
-          <div class="rating-container">
+          <div *ngIf="course.rating" class="rating-container">
             <i class="material-icons">star</i>
             <div>{{ course.rating }}</div>
           </div>
@@ -115,10 +109,10 @@
 </section>
 
 <section class="tab-content-section">
-  <div class="tab-content-container">
+  <div *ngIf="course" class="tab-content-container">
     <!-- About tab content -->
     <div *ngIf="currentTab === 'about'" class="tab tab-about">
-      <div class="description-title">Description</div>
+      <div class="description-title">Course overview</div>
       <div class="description-content" [innerHTML]="course.overview"></div>
     </div>
     <!-- Lessons tab content -->

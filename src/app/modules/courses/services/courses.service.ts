@@ -19,35 +19,45 @@ export class CoursesService {
     skip: number, // for pagination
     limit: number // for pagination
   ): Observable<Array<Course>> {
-    log('Coureses service: getting featured courses');
+    console.log('Coureses service: getting featured courses');
     const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}`;
     return this.http.get<Array<Course>>(url);
   }
 
   getCategories(): Observable<Array<Category>> {
-    log('Coureses service: getting categories');
+    console.log('Coureses service: getting categories');
+    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url = `${this.host}/${this.apiVersion}/categories`;
     return this.http.get<Array<Category>>(url);
   }
 
   getCategory(categoryId: string): Observable<Category> {
     console.log(`Courses service: getting category with id ${categoryId}`);
+    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url = `${this.host}/${this.apiVersion}/categories/${categoryId}`;
     return this.http.get<Category>(url);
   }
 
   getCategoryFeaturedCourses(categoryId: string): Observable<Array<Course>> {
     console.log(`Courses service: getting featured courses of category with id ${categoryId}`);
+    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url = `${this.host}/${this.apiVersion}/courses/public?category=${categoryId}`;
     return this.http.get<Array<Course>>(url);
   }
 
   getCategoryCourses(categoryId: string): Observable<Array<Course>> {
     // TODO: This endpoint must never be called without pagination.
-    // TODO: Incorporate pagination when calling this endpoint.
     console.log(`Courses service: getting featured courses of category with id ${categoryId}`);
+    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url = `${this.host}/${this.apiVersion}/courses/public?category=${categoryId}`;
     return this.http.get<Array<Course>>(url);
+  }
+
+  getCourse(courseId: string): Observable<Course> {
+    console.log(`Courses service: getting course with id ${courseId}`);
+    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
+    const url = `${this.host}/${this.apiVersion}/courses/${courseId}?populate=category`;
+    return this.http.get<Course>(url);
   }
 
 }

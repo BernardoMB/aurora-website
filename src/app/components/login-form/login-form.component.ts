@@ -42,10 +42,9 @@ export class LoginFormComponent implements OnInit {
   ngOnInit() {
     this.getAuthState.subscribe(state => {
       this.errorMessage = state.errorMessage;
-      console.log('Error message', this.errorMessage);
       if (state.user) {
         // Close modal
-        this.dialogRef.close();
+        this.dialogRef.close({ userIsLoggedIn: true });
       }
     });
   }
