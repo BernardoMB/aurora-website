@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { State } from '../../../../store/state';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   // TODO: this info shpould come from the back end
   cart = [
     {
@@ -481,12 +484,18 @@ export class CartComponent implements OnInit {
     return total;
   }
 
-  constructor() {
-    /* this.cart = [];
-    this.wishList = []; */
+  cartSubscription: Subscription;
+
+  constructor(private store: Store<State>) {
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+  }
+
+  ngOnDestroy() {
+    this.cartSubscription.unsubscribe();
+  }
 
   removeCourseFromCart(courseId: string) {
     alert('Dispatch remove course from cart action!');
