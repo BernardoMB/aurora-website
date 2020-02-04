@@ -11,11 +11,13 @@
       <div class="courses-list">
         <div *ngFor="let course of cart; let i = index" class="course-item">
           <div
-            class="course-image"
+            class="course-image focus-outline"
+            tabindex="0"
+            [routerLink]="['/courses', course.id]"
             [style.backgroundImage]="'url(' + course.imgUrl + ')'"
           ></div>
           <div class="course-details">
-            <div class="course-name">{{ course.name }}</div>
+            <div class="course-name focus-outline" tabindex="0" [routerLink]="['/courses', course.id]">{{ course.name }}</div>
             <div class="category-container">
               <div
                 class="category-color-indicator"
@@ -66,7 +68,7 @@
         <div class="shopping-phrase">
           Your cart is empty. Courses you want to buy will appear here!
         </div>
-        <button class="keep-shopping-button focus-outline">
+        <button class="keep-shopping-button focus-outline" [routerLink]="['/courses']">
           Keep shopping
         </button>
       </div>

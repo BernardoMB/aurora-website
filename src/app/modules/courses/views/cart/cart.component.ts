@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { State } from '../../../../store/state';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { selectAuthCart } from '../../../../store/auth/auth.selectors';
+import { Course } from '../../../../shared/models/course.model';
 
 @Component({
   selector: 'app-cart',
@@ -10,7 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class CartComponent implements OnInit, OnDestroy {
   // TODO: this info shpould come from the back end
-  cart = [
+  /* cart = [
     {
       public: true,
       labels: [
@@ -326,7 +328,7 @@ export class CartComponent implements OnInit, OnDestroy {
       totalReviews: 1,
       id: '5e1924a6e05ff4002365612f',
     },
-  ];
+  ]; */
 
   wishList = [
     {
@@ -470,27 +472,37 @@ export class CartComponent implements OnInit, OnDestroy {
 
   get subtotal() {
     let subtotal = 0;
-    this.cart.forEach(course => {
-      subtotal = subtotal + course.price;
-    });
-    return subtotal;
+    if (this.cart) {
+      this.cart.forEach(course => {
+        subtotal = subtotal + course.price;
+      });
+      return subtotal;
+    }
+    return 0;
   }
-
   get total() {
     let total = 0;
-    this.cart.forEach(course => {
-      total = total + course.price * (1 - course.discount);
-    });
-    return total;
+    if (this.cart) {
+      this.cart.forEach(course => {
+        total = total + course.price * (1 - course.discount);
+      });
+      return total;
+    }
+    return 0;
   }
 
   cartSubscription: Subscription;
+  cart: Course[];
 
   constructor(private store: Store<State>) {
   }
 
   ngOnInit() {
-
+    this.cartSubscription = this.store.pipe(select(selectAuthCart)).subscribe((cart: Course[]) => {
+      if (cart) {
+        this.cart = cart;
+      }
+    });
   }
 
   ngOnDestroy() {

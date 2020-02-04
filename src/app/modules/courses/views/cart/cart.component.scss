@@ -61,6 +61,21 @@
             resize: both;
             background-position-x: center;
             background-position-y: center;
+            position: relative;
+            cursor: pointer;
+            &:after {
+              content: '';
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: 0;
+              right: 0;
+            }
+            &:hover {
+              &:after {
+                background-color: rgba($color: #000000, $alpha: 0.3);
+              }
+            }
           }
           .course-details {
             flex-grow: 1;
@@ -72,6 +87,10 @@
               font-weight: 700;
               font-family: open sans, helvetica neue, Helvetica, Arial,
                 sans-serif;
+              cursor: pointer;
+                &:hover {
+                  text-decoration: underline;
+                }
             }
             .category-container {
               display: flex;

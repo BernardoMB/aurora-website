@@ -148,6 +148,7 @@ $focus-border: 2px;
             text-align: center;
             color: white;
             background-color: #ec5252;
+            cursor: pointer;
           }
         }
         .user-section {
@@ -314,5 +315,146 @@ $focus-border: 2px;
   }
   .arrow {
     margin-left: 10px;
+  }
+}
+
+.empty-cart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-size: 13px;
+  font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+  .keep-shopping {
+    margin-top: 20px;
+    font-weight: 700;
+    a {
+      cursor: pointer;
+      color: #1f5e11;
+      text-decoration: none;
+      &:visited {
+        cursor: pointer;
+        color: #1f5e11;
+        text-decoration: none;
+      }
+      &:hover {
+        color: #408e2d;
+      }
+    }
+  }
+}
+
+.courses-container {
+  .course-item {
+    display: flex;
+    padding: 10px 20px;
+    &:hover {
+      background-color: #f2f3f5;
+    }
+    .course-image {
+      width: 80px;
+      height: 60px;
+      background-size: cover;
+      resize: both;
+      background-position-x: center;
+      background-position-y: center;
+      position: relative;
+      cursor: pointer;
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+      &:hover {
+        &:after {
+          background-color: rgba($color: #000000, $alpha: 0.3);
+        }
+      }
+    }
+    .course-details {
+      display: flex;
+      flex-direction: column;
+      margin-left: 20px;
+      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      .course-name {
+        max-width: 220px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        color: #505763;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      .course-prices {
+        display: flex;
+        .final-price {
+          margin-right: 20px;
+          color: #eb6c00;
+          font-weight: 600;
+        }
+        .original-price {
+          text-decoration: line-through;
+          color: #686f7a;
+        }
+      }
+    }
+  }
+  .menu-footer {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    background-color: #f2f3f5;
+    .total-container {
+      display: flex;
+      margin-bottom: 10px;
+      font-size: 15px;
+      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      .label {
+        color: #686f7a;
+        margin-right: 20px;
+      }
+      .total {
+        margin-right: 20px;
+        color: #29303b;
+        font-weight: 600;
+      }
+      .subtotal {
+        text-decoration: line-through;
+        color: #686f7a;
+      }
+    }
+    .cart-button {
+      display: inline-block;
+      font-weight: 600;
+      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      text-align: center;
+      vertical-align: middle;
+      white-space: nowrap;
+      padding: 11px 12px;
+      font-size: 15px;
+      line-height: 1.35135;
+      border-radius: 2px;
+      user-select: none;
+      cursor: pointer;
+      color: #fff;
+      background-color: #1f5e11;
+      border: 1px solid transparent;
+      &:hover {
+        background-color: #eb6c00;
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .mat-menu-panel {
+    max-width: 400px !important;
   }
 }

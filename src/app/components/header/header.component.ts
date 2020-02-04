@@ -25,7 +25,6 @@ import { MatMenuTrigger } from '@angular/material';
 
 /**
  * The header of the application.
- * This is a dummy component.
  *
  * @export
  */
@@ -55,10 +54,32 @@ export class HeaderComponent implements OnInit, OnDestroy {
   loggedIn: boolean;
   currentSection = '';
   routerSubscription: Subscription;
+  cartSubscription: Subscription;
   showCategories = false;
   categories: Category[];
   cart: any[];
+  showGoToCartButton = true;
   private history = [];
+  get subtotal() {
+    let subtotal = 0;
+    if (this.cart) {
+      this.cart.forEach(course => {
+        subtotal = subtotal + course.price;
+      });
+      return subtotal;
+    }
+    return 0;
+  }
+  get total() {
+    let total = 0;
+    if (this.cart) {
+      this.cart.forEach(course => {
+        total = total + course.price * (1 - course.discount);
+      });
+      return total;
+    }
+    return 0;
+  }
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -95,6 +116,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (this.route.firstChild.snapshot.url[0].path === 'courses') {
         this.showCategories = true;
         this.getCategories();
+      }
+      // The following code hides the Go to cart button from the cart menu if the
+      // user is already in the cart view
+      if (this.route.firstChild.firstChild) {
+        if (this.route.firstChild.firstChild.snapshot.url[0]) {
+          if (this.route.firstChild.firstChild.snapshot.url[0].path === 'cart') {
+            this.showGoToCartButton = false;
+          }
+        }
       }
     });
   }
@@ -159,7 +189,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         });
     }
     // #endregion sections logic
-    this.authStore.pipe(select(selectAuthCart)).subscribe((cart: any[]) => {
+    this.cartSubscription = this.authStore.pipe(select(selectAuthCart)).subscribe((cart: any[]) => {
       if (cart) {
         this.cart = cart;
       }
@@ -168,6 +198,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
+    this.cartSubscription.unsubscribe();
   }
 
   getCategories() {
