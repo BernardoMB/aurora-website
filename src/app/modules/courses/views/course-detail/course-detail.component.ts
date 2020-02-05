@@ -10,7 +10,8 @@ import { Course } from '../../../../shared/models/course.model';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
 import { SignupFormComponent } from '../../../../components/signup-form/signup-form.component';
-import { addCourseToCart, addCourseToCartNoAuthSuccess, addCourseToCartSuccess } from '../../../../store/auth/auth.actions';
+import { addCourseToCart, addCourseToCartNoAuthSuccess, addCourseToCartSuccess, pushCourseToCarts } from '../../../../store/auth/auth.actions';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-course-detail',
@@ -576,7 +577,8 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private coursesService: CoursesService,
     private loginDialog: MatDialog,
-    private signupDialog: MatDialog
+    private signupDialog: MatDialog,
+    private cookieService: CookieService
   ) {
     this.router.events.subscribe(event => {
       /* console.log('Navigation event:', event); */
@@ -636,11 +638,18 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   }
 
   onAddToCart(courseId: string) {
-    console.log('Adding to cart');
     if (this.isAuthenticated) {
       this.store.dispatch(addCourseToCart({ courseId, userId: this.user.id }));
     } else {
-      this.store.dispatch(addCourseToCartSuccess(this.course));
+      let courseIds: string[] = [];
+      const cartCookie: string = this.cookieService.get('cartCookie');
+      if (cartCookie) {
+        courseIds = JSON.parse(cartCookie);
+      }
+      courseIds.push(this.course.id);
+      this.cookieService.delete('cartCookie');
+      this.cookieService.set('cartCookie', JSON.stringify(courseIds));
+      this.store.dispatch(pushCourseToCarts(this.course));
     }
   }
 

@@ -10,11 +10,13 @@ export interface AuthState {
     errorMessage: string | null;
     // Cart
     cart: Course[];
+    cart2: Course[]; // <-- auxiliary cart
 }
 
 export const initialAuthState: AuthState = {
     isAuthenticated: false,
     user: null,
     errorMessage: null,
-    cart: []
+    cart: [],
+    cart2: []
 };

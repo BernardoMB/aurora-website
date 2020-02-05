@@ -6,6 +6,9 @@ import { selectAuthCart, selectAuthUser, selectAuthIsAuthenticated, selectAuthSt
 import { Course } from '../../../../shared/models/course.model';
 import { User } from '../../../../shared/models/user.model';
 import { AuthState } from '../../../../store/auth/auth.state';
+import { removeCourseFromCart } from '../../../../store/courses/courses.actions';
+import { CookieService } from 'ngx-cookie-service';
+import { pullCourseFromCarts } from '../../../../store/auth/auth.actions';
 
 @Component({
   selector: 'app-cart',
@@ -499,7 +502,7 @@ export class CartComponent implements OnInit, OnDestroy {
   user: User;
   isAuthenticated: boolean;
 
-  constructor(private store: Store<State>) {
+  constructor(private store: Store<State>, private cookieService: CookieService) {
   }
 
   ngOnInit() {
@@ -523,8 +526,20 @@ export class CartComponent implements OnInit, OnDestroy {
     this.authStateSubcription.unsubscribe();
   }
 
-  removeCourseFromCart(courseId: string) {
-    alert('Dispatch remove course from cart action!');
+  onRemoveCourseFromCart(course: Course) {
+    if (this.isAuthenticated) {
+      this.store.dispatch(removeCourseFromCart(course));
+    } else {
+      let courseIds: string[] = [];
+      const cartCookie: string = this.cookieService.get('cartCookie');
+      if (cartCookie) {
+        courseIds = JSON.parse(cartCookie);
+      }
+      const newCourseIds = courseIds.filter((id: string) => id !== course.id);
+      this.cookieService.delete('cartCookie');
+      this.cookieService.set('cartCookie', JSON.stringify(newCourseIds));
+      this.store.dispatch(pullCourseFromCarts(course));
+    }
   }
 
   onCheckout() {

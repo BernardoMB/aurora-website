@@ -23,7 +23,7 @@ export class AuthService {
 
   signin(username: string, password: string): Observable<any> {
     console.log('Auth service: Loging in sending credentials');
-    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
+    // this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url = `${this.host}/${this.apiVersion}/auth/signin`;
     return this.http.post<{ accessToken: string }>(url, {
       username,
@@ -33,7 +33,7 @@ export class AuthService {
 
   getUserInfo(): Observable<GetUserDto> {
     console.log('Auth service: Getting user info');
-    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
+    // this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url =
     // tslint:disable-next-line: max-line-length
     `${this.host}/${this.apiVersion}/auth/user/me?populate=purchasedCourses,favoriteCourses,wishList,likedArticlesdislikedArticles,eventSubscriptions,courses,archivedCourses`;
@@ -42,22 +42,36 @@ export class AuthService {
 
   signup(signupDto: SignupDto): Observable<User> {
     console.log('Auth service: Registering a user sending signup dto');
-    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
+    // this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url = 'http://localhost:3000/v1/auth/signup';
     return this.http.post<User>(url, signupDto);
   }
 
   signinWithToken(): Observable<any> {
     console.log('Auth service: Loging in sending user token');
-    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
+    // this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url = 'http://localhost:3000/v1/auth/signinWithToken';
     return this.http.post(url, {});
   }
 
   addCoursetoShoppingCart(courseId: string, userId: string): Observable<Course> {
     console.log('Auth service: Adding course to cart');
-    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
+    // this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url = `http://localhost:3000/v1/users/${userId}/cart/${courseId}`;
     return this.http.post<Course>(url, {});
+  }
+
+  removeCourseFromShoppingCart(courseId: string, userId: string): Observable<Course> {
+    console.log('Auth service: Adding course to cart');
+    // this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
+    const url = `http://localhost:3000/v1/users/${userId}/cart/${courseId}`;
+    return this.http.delete<Course>(url, {});
+  }
+
+  addCoursesToShoppingCart(courses: Course[]): Observable<User> {
+    console.log('Auth service: Adding courses to user shooping cart');
+    // this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
+    const url = `http://localhost:3000/v1/users/me/cart/courses`;
+    return this.http.post<User>(url, { courses });
   }
 }

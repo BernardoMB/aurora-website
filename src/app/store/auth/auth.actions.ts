@@ -56,6 +56,21 @@ export const addCourseToCart = createAction('[Auth] AddCourseToCart', props<{cou
 export const addCourseToCartSuccess = createAction('[Auth] AddCourseToCartSuccess', props<Course>());
 export const addCourseToCartFailure = createAction('[Auth] AddCourseToCartFailure', props<{ error: any; message: string }>());
 
+export const removeCourseFromCart = createAction('[Auth] RemoveCourseFromCart', props<{courseId: string, userId: string}>());
+export const removeCourseFromCartSuccess = createAction('[Auth] RemoveCourseFromCartSuccess', props<Course>());
+export const removeCourseFromCartFailure = createAction('[Auth] RemoveCourseFromCartFailure', props<{ error: any; message: string }>());
+
 export const addCourseToCartNoAuth = createAction('[Auth] AddCourseToCartNoAuth', props<{courseId: string}>());
 export const addCourseToCartNoAuthSuccess = createAction('[Auth] AddCourseToCartNoAuthSuccess', props<Course>());
 export const addCourseToCartNoAuthFailure = createAction('[Auth] AddCourseToCartNoAuthFailure', props<{}>());
+
+export const addCoursesToCart = createAction('[Auth] AddCoursesToCart', props<{courses: Course[]}>());
+export const addCoursesToCartSuccess = createAction('[Auth] AddCoursesToCartSuccess', props<User>());
+export const addCoursesToCartFailure = createAction('[Auth] AddCoursesToCartFailure', props<{ error: any; message: string }>()); // TODO: Error handling
+
+export const getCoursesFrommCookies = createAction('[Auth] GetCoursesFromCookies', props<{courseIds: string[]}>());
+export const getCoursesFrommCookiesSuccess = createAction('[Auth] GetCoursesFromCookiesSuccess', props<{courses: Course[]}>());
+export const getCoursesFrommCookiesFailure = createAction('[Auth] GetCoursesFromCookiesFailure', props<{ error: any; message: string }>()); // TODO: Error handling
+
+export const pushCourseToCarts = createAction('[Auth] PushCourseToCarts', props<Course>());
+export const pullCourseFromCarts = createAction('[Auth] PullCourseFromCarts', props<Course>());
