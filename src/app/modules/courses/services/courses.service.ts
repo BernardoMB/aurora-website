@@ -20,7 +20,15 @@ export class CoursesService {
     limit: number // for pagination
   ): Observable<Array<Course>> {
     console.log('Coureses service: getting featured courses');
+    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}`;
+    return this.http.get<Array<Course>>(url);
+  }
+
+  getRecentCourses(skip: number, limit: number): Observable<Array<Course>> {
+    console.log('Coureses service: getting recent courses');
+    this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
+    const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&sort=-createdAt`;
     return this.http.get<Array<Course>>(url);
   }
 

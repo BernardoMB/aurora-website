@@ -13,7 +13,7 @@
   </div>
 </section>
 
-<section *ngIf="featuredCourses.length > 0" class="courses-section">
+<section *ngIf="featuredCourses && featuredCourses.length > 0" class="courses-section">
   <div class="courses-container">
     <div class="title-container">
       <div class="title">Featured</div>
@@ -32,7 +32,7 @@
 
 <div class="divider"></div>
 
-<section *ngIf="categories.length > 0" class="categories-section">
+<section *ngIf="categories && categories.length > 0" class="categories-section">
   <div class="categories-container">
     <div class="categories-title-container">
       <div class="categories-title">Categories</div>
@@ -51,7 +51,7 @@
 
 <div class="divider"></div>
 
-<section *ngIf="recentCourses.length > 0" class="courses-section">
+<section *ngIf="recentCourses && recentCourses.length > 0" class="courses-section">
   <div class="courses-container">
     <div class="title-container">
       <div class="title">Rencently Added</div>
@@ -70,7 +70,7 @@
 
 <div class="divider"></div>
 
-<section *ngIf="trendingCourses.length > 0" class="courses-section">
+<section *ngIf="trendingCourses && trendingCourses.length > 0" class="courses-section">
   <div class="courses-container">
     <div class="title-container">
       <div class="title">Trending</div>

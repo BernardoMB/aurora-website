@@ -2,8 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { State } from '../../../../store/state';
 import { Store, select } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { selectAuthCart } from '../../../../store/auth/auth.selectors';
+import { selectAuthCart, selectAuthUser, selectAuthIsAuthenticated, selectAuthState } from '../../../../store/auth/auth.selectors';
 import { Course } from '../../../../shared/models/course.model';
+import { User } from '../../../../shared/models/user.model';
+import { AuthState } from '../../../../store/auth/auth.state';
 
 @Component({
   selector: 'app-cart',
@@ -493,6 +495,9 @@ export class CartComponent implements OnInit, OnDestroy {
 
   cartSubscription: Subscription;
   cart: Course[];
+  authStateSubcription: Subscription;
+  user: User;
+  isAuthenticated: boolean;
 
   constructor(private store: Store<State>) {
   }
@@ -503,13 +508,30 @@ export class CartComponent implements OnInit, OnDestroy {
         this.cart = cart;
       }
     });
+    this.authStateSubcription = this.store.pipe(select(selectAuthState)).subscribe((authState: AuthState) => {
+      if (authState.user) {
+        this.user = authState.user;
+      }
+      if (authState.isAuthenticated) {
+        this.isAuthenticated = authState.isAuthenticated;
+      }
+    });
   }
 
   ngOnDestroy() {
     this.cartSubscription.unsubscribe();
+    this.authStateSubcription.unsubscribe();
   }
 
   removeCourseFromCart(courseId: string) {
     alert('Dispatch remove course from cart action!');
+  }
+
+  onCheckout() {
+    if (this.isAuthenticated) {
+      alert('Implement functionality');
+    } else {
+
+    }
   }
 }

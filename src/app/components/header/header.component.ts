@@ -59,7 +59,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   categories: Category[];
   cart: any[];
   showGoToCartButton = true;
-  private history = [];
+  private routeHistory = [];
   get subtotal() {
     let subtotal = 0;
     if (this.cart) {
@@ -96,13 +96,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
         return event instanceof NavigationEnd;
       })
     ).subscribe((event: NavigationEnd) => {
-      this.showCategories = false;
       // #region History of routes
       /**
        * Uncomment the code below if the header cares for
        * the previous route requested
        */
-      /* this.history = [...this.history, event.urlAfterRedirects];
+      /* this.routeHistory = [...this.routeHistory, event.urlAfterRedirects];
       if (event.id === 1 && this.route.firstChild.snapshot.url[0].path === 'courses') {
         this.getCategories();
       }
@@ -113,12 +112,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       } */
       // #endregion
+      this.showCategories = false; // <-- default ui state
       if (this.route.firstChild.snapshot.url[0].path === 'courses') {
         this.showCategories = true;
         this.getCategories();
       }
       // The following code hides the Go to cart button from the cart menu if the
       // user is already in the cart view
+      this.showGoToCartButton = true; // <-- default ui state
       if (this.route.firstChild.firstChild) {
         if (this.route.firstChild.firstChild.snapshot.url[0]) {
           if (this.route.firstChild.firstChild.snapshot.url[0].path === 'cart') {

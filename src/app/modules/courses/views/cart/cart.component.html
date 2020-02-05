@@ -59,7 +59,7 @@
         <div *ngIf="total !== subtotal" class="subtotal">
           {{ subtotal | currency: 'NGN':'symbol-narrow' }}
         </div>
-        <button class="checkout-button">Checkout</button>
+        <button class="checkout-button focus-outline" (click)="onCheckout()">Checkout</button>
       </div>
     </div>
     <div *ngIf="cart.length === 0" class="empty-container">
