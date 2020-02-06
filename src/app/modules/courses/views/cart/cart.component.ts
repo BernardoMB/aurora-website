@@ -6,9 +6,8 @@ import { selectAuthCart, selectAuthUser, selectAuthIsAuthenticated, selectAuthSt
 import { Course } from '../../../../shared/models/course.model';
 import { User } from '../../../../shared/models/user.model';
 import { AuthState } from '../../../../store/auth/auth.state';
-import { removeCourseFromCart } from '../../../../store/courses/courses.actions';
 import { CookieService } from 'ngx-cookie-service';
-import { pullCourseFromCarts } from '../../../../store/auth/auth.actions';
+import { pullCourseFromCarts, removeCourseFromCart } from '../../../../store/auth/auth.actions';
 
 @Component({
   selector: 'app-cart',
@@ -495,7 +494,6 @@ export class CartComponent implements OnInit, OnDestroy {
     }
     return 0;
   }
-
   cartSubscription: Subscription;
   cart: Course[];
   authStateSubcription: Subscription;
@@ -514,9 +512,13 @@ export class CartComponent implements OnInit, OnDestroy {
     this.authStateSubcription = this.store.pipe(select(selectAuthState)).subscribe((authState: AuthState) => {
       if (authState.user) {
         this.user = authState.user;
+      } else {
+        this.user = undefined;
       }
       if (authState.isAuthenticated) {
         this.isAuthenticated = authState.isAuthenticated;
+      } else {
+        this.isAuthenticated = false;
       }
     });
   }
@@ -528,7 +530,8 @@ export class CartComponent implements OnInit, OnDestroy {
 
   onRemoveCourseFromCart(course: Course) {
     if (this.isAuthenticated) {
-      this.store.dispatch(removeCourseFromCart(course));
+      this.store.dispatch(removeCourseFromCart({ courseId: course.id, userId: this.user.id }));
+      // this.store.dispatch(addCourseToCart({ courseId, userId: this.user.id }));
     } else {
       let courseIds: string[] = [];
       const cartCookie: string = this.cookieService.get('cartCookie');

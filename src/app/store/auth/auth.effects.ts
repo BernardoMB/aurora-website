@@ -73,17 +73,8 @@ export class AuthEffects {
       ofType(loginSuccess),
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
-          map((responseBody: GetUserDto) => {
-            log('loginSuccessEffect:', responseBody);
-            return getUserInfoSuccess({
-              id: responseBody.id,
-              email: responseBody.email,
-              username: responseBody.username,
-              emailVerified: responseBody.emailVerified,
-              name: responseBody.name,
-              lastName: responseBody.lastName,
-              purchasedCourses: responseBody.purchasedCourses,
-            });
+          map((responseBody: User) => {
+            return getUserInfoSuccess(responseBody);
           }),
           catchError(error => of(getUserInfoFailure({ error }))),
         ),
@@ -96,18 +87,8 @@ export class AuthEffects {
       ofType(getUserInfo),
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
-          map((responseBody: GetUserDto) => {
-            log('getUserInfoEffect$:', responseBody);
-            return getUserInfoSuccess({
-              id: responseBody.id,
-              email: responseBody.email,
-              username: responseBody.username,
-              emailVerified: responseBody.emailVerified,
-              name: responseBody.name,
-              lastName: responseBody.lastName,
-              purchasedCourses: responseBody.purchasedCourses,
-              cart: responseBody.cart
-            });
+          map((responseBody: User) => {
+            return getUserInfoSuccess(responseBody);
           }),
           catchError((errorResponse: HttpErrorResponse) =>
             of(
@@ -161,17 +142,9 @@ export class AuthEffects {
       ofType(loginWithTokenSuccess),
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
-          map((responseBody: GetUserDto) => {
+          map((responseBody: User) => {
             log('loginSuccessEffect:', responseBody);
-            return getUserInfoSuccess({
-              id: responseBody.id,
-              email: responseBody.email,
-              username: responseBody.username,
-              emailVerified: responseBody.emailVerified,
-              name: responseBody.name,
-              lastName: responseBody.lastName,
-              purchasedCourses: responseBody.purchasedCourses,
-            });
+            return getUserInfoSuccess(responseBody);
           }),
           catchError(error => of(getUserInfoFailure({ error }))),
         ),
@@ -197,7 +170,6 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.addCoursetoShoppingCart(action.courseId, action.userId).pipe(
           map((responseBody: Course) => {
-            log('addCourseToCartEffect$:', responseBody);
             return addCourseToCartSuccess(responseBody);
           }),
           catchError((errorResponse: HttpErrorResponse) =>
@@ -213,7 +185,7 @@ export class AuthEffects {
     ),
   );
 
-  removeCoursefromCartEffect$ = createEffect(() =>
+  removeCourseFromCartEffect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(removeCourseFromCart),
       exhaustMap(action =>

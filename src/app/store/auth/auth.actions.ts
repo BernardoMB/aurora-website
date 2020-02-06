@@ -4,49 +4,25 @@ import { SignupDto } from '../../shared/dtos/signup.dto';
 import { GetUserDto } from '../../shared/dtos/get-user.dto';
 import { Course } from '../../shared/models/course.model';
 
-export const login = createAction(
-    '[Auth] Login',
-    props<{ username: string; password: string }>(),
-);
-export const loginSuccess = createAction('[Auth] LoginSuccess');
-export const loginFailure = createAction(
-    '[Auth] LoginFailure',
-    props<{ error: any; message: string }>(),
-);
-
-export const getUserInfo = createAction(
-    '[Auth] GetUserInfo',
-    props<{ token: string }>(),
-);
-export const getUserInfoSuccess = createAction(
-    '[Auth] GetUserInfoSuccess',
-    props<User>(),
-);
-export const getUserInfoFailure = createAction(
-    '[Auth] GetUserInfoFailure',
-    props<{ error: any }>(),
-);
-
-export const signup = createAction('[Auth] Signup', props<SignupDto>());
-export const signupSuccess = createAction(
-    '[Auth] SignupSuccess',
-    props<GetUserDto>(),
-);
-export const signupFailure = createAction(
-    '[Auth] SignupFailure',
-    props<{ error: any }>(),
-);
+// TODO: Error handling
 
 export const getStatus = createAction('[Auth] GetStatus', props<{}>());
 
+export const login = createAction('[Auth] Login', props<{ username: string; password: string }>());
+export const loginSuccess = createAction('[Auth] LoginSuccess');
+export const loginFailure = createAction('[Auth] LoginFailure', props<{ error: any; message: string }>(),);
+
+export const getUserInfo = createAction('[Auth] GetUserInfo', props<{ token: string }>());
+export const getUserInfoSuccess = createAction('[Auth] GetUserInfoSuccess', props<User>(),);
+export const getUserInfoFailure = createAction('[Auth] GetUserInfoFailure', props<{ error: any }>());
+
+export const signup = createAction('[Auth] Signup', props<SignupDto>());
+export const signupSuccess = createAction('[Auth] SignupSuccess', props<GetUserDto>());
+export const signupFailure = createAction('[Auth] SignupFailure', props<{ error: any }>());
+
 export const loginWithToken = createAction('[Auth] LoginWithToken');
-export const loginWithTokenSuccess = createAction(
-    '[Auth] LoginWithTokenSuccess',
-);
-export const loginWithTokenFailure = createAction(
-    '[Auth] LoginWithTokenSuccess',
-    props<{ error: any }>(),
-);
+export const loginWithTokenSuccess = createAction('[Auth] LoginWithTokenSuccess');
+export const loginWithTokenFailure = createAction('[Auth] LoginWithTokenSuccess', props<{ error: any }>());
 
 export const logout = createAction('[Auth] Logout');
 export const logoutSuccess = createAction('[Auth] LogoutSuccess');
@@ -66,11 +42,11 @@ export const addCourseToCartNoAuthFailure = createAction('[Auth] AddCourseToCart
 
 export const addCoursesToCart = createAction('[Auth] AddCoursesToCart', props<{courses: Course[]}>());
 export const addCoursesToCartSuccess = createAction('[Auth] AddCoursesToCartSuccess', props<User>());
-export const addCoursesToCartFailure = createAction('[Auth] AddCoursesToCartFailure', props<{ error: any; message: string }>()); // TODO: Error handling
+export const addCoursesToCartFailure = createAction('[Auth] AddCoursesToCartFailure', props<{ error: any; message: string }>());
 
 export const getCoursesFrommCookies = createAction('[Auth] GetCoursesFromCookies', props<{courseIds: string[]}>());
 export const getCoursesFrommCookiesSuccess = createAction('[Auth] GetCoursesFromCookiesSuccess', props<{courses: Course[]}>());
-export const getCoursesFrommCookiesFailure = createAction('[Auth] GetCoursesFromCookiesFailure', props<{ error: any; message: string }>()); // TODO: Error handling
+export const getCoursesFrommCookiesFailure = createAction('[Auth] GetCoursesFromCookiesFailure', props<{ error: any; message: string }>());
 
 export const pushCourseToCarts = createAction('[Auth] PushCourseToCarts', props<Course>());
 export const pullCourseFromCarts = createAction('[Auth] PullCourseFromCarts', props<Course>());

@@ -31,13 +31,13 @@ export class AuthService {
     });
   }
 
-  getUserInfo(): Observable<GetUserDto> {
+  getUserInfo(): Observable<User> {
     console.log('Auth service: Getting user info');
     // this.host = `https://mainserver.azurewebsites.net`; // TODO: delete this line
     const url =
     // tslint:disable-next-line: max-line-length
-    `${this.host}/${this.apiVersion}/auth/user/me?populate=purchasedCourses,favoriteCourses,wishList,likedArticlesdislikedArticles,eventSubscriptions,courses,archivedCourses`;
-    return this.http.get<GetUserDto>(url);
+    `${this.host}/${this.apiVersion}/auth/user/me?populate=purchasedCourses,favoriteCourses,wishList,likedArticlesdislikedArticles,eventSubscriptions,courses,archivedCourses,cart`;
+    return this.http.get<User>(url);
   }
 
   signup(signupDto: SignupDto): Observable<User> {
