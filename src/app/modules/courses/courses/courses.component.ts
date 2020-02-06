@@ -13,7 +13,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
   featuredCoursesSubscription: Subscription;
   featuredCourses: Course[];
   categoriesSubscription: Subscription;
-  categories: Category[];
+  topCategories: Category[];
+  featuredCategories: Category[];
   recentCoursesubscription: Subscription;
   recentCourses: Course[];
   trendingCoursesSubscription: Subscription;
@@ -28,8 +29,10 @@ export class CoursesComponent implements OnInit, OnDestroy {
       }
     });
     this.categoriesSubscription = this.coursesService.getCategories().subscribe((categories: Category[]) => {
+      // TODO: Add featured courses into the model and incorporate functionality properly into thee front-end.
       if (categories) {
-        this.categories = categories;
+        this.topCategories = categories.slice(0, 5);
+        this.featuredCategories = categories.slice(4, 12);
       }
     });
     this.recentCoursesubscription = this.coursesService.getRecentCourses(0, 6).subscribe((recentCourses: Course[]) => {
