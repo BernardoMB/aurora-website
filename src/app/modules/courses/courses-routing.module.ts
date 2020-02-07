@@ -7,11 +7,16 @@ import { CourseDetailComponent } from './views/course-detail/course-detail.compo
 import { LessonComponent } from './views/lesson/lesson.component';
 import { LearnComponent } from './views/learn/learn.component';
 import { CartComponent } from './views/cart/cart.component';
+import { ExpressCheckoutComponent } from './views/express-checkout/express-checkout.component';
+import { CheckoutComponent } from './views/checkout/checkout.component';
+import { CheckoutGuard } from './guards/checkout.guard';
 
 /* courses/  */
 const routes: Routes = [
   { path: '', component: CoursesComponent, data: { animation: 'courses' } },
   { path: 'all', component: AllCoursesComponent },
+  { path: 'cart/checkout/express/course/:courseId', component: ExpressCheckoutComponent, canActivate: [CheckoutGuard] },
+  { path: 'cart/checkout', component: CheckoutComponent, canActivate: [CheckoutGuard] },
   { path: 'cart', component: CartComponent },
   { path: 'categories/:id', component: CourseCategoryDetailComponent },
   /**

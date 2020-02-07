@@ -30,6 +30,14 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 https://www.getpostman.com/collections/86501829d7d45ac17cb3
 
+## Cart
+
+To see how cart functionality works see Bernardo's OneNote notes
+
 ## TODOS:
 
 - Add course Categories to store for more efficiency usign NgRx Entity
+- Implement auth guards on the following routes:
+  * my courses
+  * checkout
+- Implement propper redirections when the user logs out

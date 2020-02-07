@@ -48,9 +48,7 @@ export class AuthEffects {
         this.authService.signin(action.username, action.password).pipe(
           map((responseBody: { accessToken: string }) => {
             this.cookieService.delete('userToken');
-            this.cookieService.set('userToken', responseBody.accessToken);
-            // TODO: use environment variables below
-            // this.cookieService.set('userToken', responseBody.accessToken, undefined, '/', 'http://localhost:4200', true, 'Strict');
+            this.cookieService.set('userToken', responseBody.accessToken, null, '/');
             return loginSuccess();
           }),
           catchError((errorResponse: HttpErrorResponse) => {

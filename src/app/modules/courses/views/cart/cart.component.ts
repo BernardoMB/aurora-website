@@ -2,12 +2,16 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { State } from '../../../../store/state';
 import { Store, select } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { selectAuthCart, selectAuthUser, selectAuthIsAuthenticated, selectAuthState } from '../../../../store/auth/auth.selectors';
+import { selectAuthCart, selectAuthState } from '../../../../store/auth/auth.selectors';
 import { Course } from '../../../../shared/models/course.model';
 import { User } from '../../../../shared/models/user.model';
 import { AuthState } from '../../../../store/auth/auth.state';
 import { CookieService } from 'ngx-cookie-service';
 import { pullCourseFromCarts, removeCourseFromCart } from '../../../../store/auth/auth.actions';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
+import { SignupFormComponent } from '../../../../components/signup-form/signup-form.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -500,7 +504,13 @@ export class CartComponent implements OnInit, OnDestroy {
   user: User;
   isAuthenticated: boolean;
 
-  constructor(private store: Store<State>, private cookieService: CookieService) {
+  constructor(
+    private store: Store<State>,
+    private cookieService: CookieService,
+    private loginDialog: MatDialog,
+    private signupDialog: MatDialog,
+    private router: Router
+  ) {
   }
 
   ngOnInit() {
@@ -531,7 +541,6 @@ export class CartComponent implements OnInit, OnDestroy {
   onRemoveCourseFromCart(course: Course) {
     if (this.isAuthenticated) {
       this.store.dispatch(removeCourseFromCart({ courseId: course.id, userId: this.user.id }));
-      // this.store.dispatch(addCourseToCart({ courseId, userId: this.user.id }));
     } else {
       let courseIds: string[] = [];
       const cartCookie: string = this.cookieService.get('cartCookie');
@@ -547,9 +556,27 @@ export class CartComponent implements OnInit, OnDestroy {
 
   onCheckout() {
     if (this.isAuthenticated) {
-      alert('Implement functionality');
+      /* alert('Redirect courses/cart/checkout/'); */
+      this.router.navigate(['./courses/cart/checkout']);
     } else {
-
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.panelClass = 'custom-mat-dialog-container';
+      dialogConfig.backdropClass = 'custom-modal-backdrop';
+      let loginDialogRef;
+      let signupDialogRef;
+      loginDialogRef = this.loginDialog.open(LoginFormComponent, dialogConfig);
+      loginDialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          if (result.showSignUpModalOnClose) {
+            signupDialogRef = this.signupDialog.open(SignupFormComponent, dialogConfig);
+          }
+          if (this.isAuthenticated) {
+            /* alert('Redirect courses/cart/checkout/'); */
+            this.router.navigate(['./courses/cart/checkout']);
+          }
+        }
+      });
     }
   }
 }

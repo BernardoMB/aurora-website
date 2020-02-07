@@ -17,6 +17,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ReviewCardComponent } from './components/review-card/review-card.component';
 import { CoursesService } from './services/courses.service';
 import { AmpPlayerComponent } from './components/amp-player/amp-player.component';
+import { ExpressCheckoutComponent } from './views/express-checkout/express-checkout.component';
+import { CheckoutComponent } from './views/checkout/checkout.component';
+import { CheckoutGuard } from './guards/checkout.guard';
 
 @NgModule({
     declarations: [
@@ -33,8 +36,10 @@ import { AmpPlayerComponent } from './components/amp-player/amp-player.component
         LessonCardComponent,
         ReviewCardComponent,
         AmpPlayerComponent,
+        ExpressCheckoutComponent,
+        CheckoutComponent,
     ],
     imports: [CommonModule, CoursesRoutingModule, SharedModule],
-    providers: [CoursesService]
+    providers: [CoursesService, CheckoutGuard]
 })
 export class CoursesModule {}

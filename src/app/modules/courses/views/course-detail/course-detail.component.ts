@@ -357,11 +357,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   }
 
   onBuyNow() {
-    if (this.user) {
+    if (this.isAuthenticated) {
       alert('Redirect courses/cart/checkout/express/course/:courseId');
     } else {
-      // There is no logged in user
-      // TODO: Pass the following message to the modal: Please login to purchase this course
       const dialogConfig = new MatDialogConfig();
       dialogConfig.autoFocus = true;
       dialogConfig.panelClass = 'custom-mat-dialog-container';
@@ -374,8 +372,8 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           if (result.showSignUpModalOnClose) {
             signupDialogRef = this.signupDialog.open(SignupFormComponent, dialogConfig);
           }
-          if (result.userIsLoggedIn) {
-            alert('Redirect courses/cart/checkout/express/course/:courseId')
+          if (this.isAuthenticated) {
+            alert('Redirect courses/cart/checkout/express/course/:courseId');
           }
         }
       });

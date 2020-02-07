@@ -60,9 +60,7 @@ export class TokenInterceptor implements HttpInterceptor {
               this.cookieService.delete('userToken');
             }
             this.cookieService.delete('userToken');
-            this.cookieService.set('userToken', incomingUserToken);
-            // TODO: use environment variables below to change cookie handling
-            // this.cookieService.set('userToken', incomingUserToken, undefined, '/', 'http://localhost:4200', true, 'Strict');
+            this.cookieService.set('userToken', incomingUserToken, null, '/');
           }
         }
         return event;
