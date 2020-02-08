@@ -57,9 +57,9 @@ export class TokenInterceptor implements HttpInterceptor {
             // Refresh bearer token
             const pastToken = this.cookieService.get('userToken');
             if (pastToken) {
-              this.cookieService.delete('userToken');
+              this.cookieService.delete('userToken', '/');
             }
-            this.cookieService.delete('userToken');
+            this.cookieService.delete('userToken', '/');
             this.cookieService.set('userToken', incomingUserToken, null, '/');
           }
         }
@@ -82,7 +82,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (error instanceof HttpErrorResponse && error.status === 401) {
           console.log('ErrorInterceptor: Response status is 401 (unauthorized)');
           console.log('ErrorInterceptor: Removeing userToken');
-          this.cookieService.delete('userToken');
+          this.cookieService.delete('userToken', '/');
           /**
            * No redirecting is need
            * // log('ErrorInterceptor: Redirecting to login page');

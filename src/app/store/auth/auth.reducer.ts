@@ -59,18 +59,11 @@ const authReducer = createReducer(
   on(AuthActions.removeCourseFromCartSuccess, (state: AuthState, course: Course) => {
     console.log('EXECUTING REDUCER');
     const newUserCart = state.user.cart.filter((el: Course) => {
-      console.log(el);
-      console.log(course);
       return el.id !== course.id;
     });
     const newCart = state.cart.filter((el: Course) => {
-      console.log(el);
-      console.log(course);
       return el.id !== course.id;
     });
-
-    console.log(state.cart.length);
-    console.log(newCart.length);
     return {
       ...state,
       user: {
@@ -125,6 +118,14 @@ const authReducer = createReducer(
       ...state,
       cart: newCart,
       cart2: newCart2
+    };
+  }),
+  on(AuthActions.purchaseCartSuccess, (state: AuthState, user: User) => {
+    return {
+      ...state,
+      user,
+      cart: [],
+      cart2: []
     };
   }),
 );

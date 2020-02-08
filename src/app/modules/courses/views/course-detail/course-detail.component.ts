@@ -358,7 +358,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   onBuyNow() {
     if (this.isAuthenticated) {
-      alert('Redirect courses/cart/checkout/express/course/:courseId');
+      this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
     } else {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.autoFocus = true;
@@ -373,7 +373,17 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
             signupDialogRef = this.signupDialog.open(SignupFormComponent, dialogConfig);
           }
           if (this.isAuthenticated) {
-            alert('Redirect courses/cart/checkout/express/course/:courseId');
+            let index = 0;
+            let found = false;
+            while (index < this.user.courses.length && !found) {
+                if (this.user.courses[index].id === this.course.id) {
+                    found = true;
+                }
+                index++;
+            }
+            if (!found) {
+              this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
+            }
           }
         }
       });

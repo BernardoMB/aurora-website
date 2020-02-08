@@ -13,7 +13,7 @@ import { WindowRef } from '../../providers/window.provider';
 import { DocumentRef } from '../../providers/document.provider';
 import { isPlatformBrowser } from '@angular/common';
 import { of, fromEvent, Subscription } from 'rxjs';
-import { map, pairwise, switchMap, throttleTime, filter, tap } from 'rxjs/operators';
+import { map, pairwise, switchMap, throttleTime, filter } from 'rxjs/operators';
 import { User } from '../../shared/models/user.model';
 import { ActivatedRoute, Router, NavigationEnd, Event } from '@angular/router';
 import { Category } from 'src/app/shared/models/category.model';
@@ -35,6 +35,7 @@ import { MatMenuTrigger } from '@angular/material';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger, { static: true }) cartMenuTrigger: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger, { static: true }) userMenuTrigger: MatMenuTrigger;
   usr: User = undefined;
   @Input() set user(user: User) {
     this.usr = user || undefined;
@@ -42,7 +43,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   get user() {
     return this.usr;
   }
-  showUserMenu = false;
   @Output() login: EventEmitter<void> = new EventEmitter();
   @Output() logout: EventEmitter<void> = new EventEmitter();
   @Output() register: EventEmitter<void> = new EventEmitter();
@@ -122,8 +122,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.showGoToCartButton = true; // <-- default ui state
       if (this.route.firstChild.firstChild) {
         if (this.route.firstChild.firstChild.snapshot.url[0]) {
+          console.log('URL', this.route.firstChild.firstChild.snapshot.url);
           if (this.route.firstChild.firstChild.snapshot.url[0].path === 'cart') {
             this.showGoToCartButton = false;
+          }
+          if (this.route.firstChild.firstChild.snapshot.url[1]) {
+            this.showGoToCartButton = true;
           }
         }
       }
@@ -217,6 +221,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onLogout() {
     this.logout.emit();
+  }
+
+  onGoToCourse(courseId: string) {
+    this.router.navigate(['/courses', courseId]);
   }
 
   onRegister() {

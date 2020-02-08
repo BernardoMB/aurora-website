@@ -92,7 +92,7 @@
           <i class="material-icons focus-outline" tabindex="0" #cartMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="cartMenu" (keyup.enter)="cartMenuTrigger.openMenu()">shopping_cart</i>
           <div *ngIf="cart && cart.length > 0" class="cart-count-indicator" #cartMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="cartMenu" (keyup.enter)="cartMenuTrigger.openMenu()">{{ cart.length }}</div>
           <mat-menu #cartMenu="matMenu">
-            <div *ngIf="cart.length === 0">
+            <div *ngIf="!cart || cart.length === 0">
               <div class="empty-cart-container">
                 <div>Your cart is empty.</div>
                 <div class="keep-shopping">
@@ -102,10 +102,19 @@
             </div>
             <div *ngIf="cart.length > 0">
               <div class="courses-container">
-                <div *ngFor="let course of cart" class="course-item focus-outline" tabindex="0" [routerLink]="['/courses', course.id]">
-                  <div class="course-image focus-outline" [style.backgroundImage]="'url(' + course.imgUrl + ')'" tabindex="0" [routerLink]="['/courses', course.id]"></div>
+                <div
+                  *ngFor="let course of cart"
+                  class="course-item focus-outline"
+                  tabindex="0"
+                  (click)="onGoToCourse(course.id)"
+                >
+                  <div
+                    class="course-image"
+                    [style.backgroundImage]="'url(' + course.imgUrl + ')'"
+                  >
+                  </div>
                   <div class="course-details">
-                    <div class="course-name focus-outline" tabindex="0" [routerLink]="['/courses', course.id]">{{course.name}}</div>
+                    <div class="course-name">{{course.name}}</div>
                     <div class="course-prices">
                       <div class="final-price">{{ course.price * (1 - course.discount ) | currency: 'NGN':'symbol-narrow' }}</div>
                       <div class="original-price" *ngIf="course.discount > 0">{{ course.price | currency: 'NGN':'symbol-narrow' }}</div>
@@ -129,61 +138,60 @@
         <div *ngIf="user" class="user-section">
           <div
             class="user-name-container focus-outline"
-            (mouseenter)="showUserMenu = true"
-            (mouseleave)="showUserMenu = false"
-            (focus)="showUserMenu = true"
             tabindex="0"
+            #userMenuTrigger="matMenuTrigger"
+            [matMenuTriggerFor]="userMenu"
+            (keyup.enter)="userMenuTrigger.openMenu()"
           >
             {{ user.username }}
-            <div class="user-menu-wrapper" *ngIf="showUserMenu">
-              <div class="user-menu-separator"></div>
-              <div class="user-menu">
-                <div
-                  class="user-details-container focus-outline"
-                  tabindex="0"
-                  (keyup.enter)="onViewProfile()"
-                  (click)="onViewProfile()"
-                >
-                  <div class="profile-pic-container">
-                    <i class="material-icons">
-                      person
-                    </i>
+          </div>
+          <mat-menu #userMenu="matMenu">
+            <div class="user-menu">
+              <div
+                class="user-details-container focus-outline"
+                tabindex="0"
+                (keyup.enter)="onViewProfile()"
+                (click)="onViewProfile()"
+              >
+                <div class="profile-pic-container">
+                  <i class="material-icons">
+                    person
+                  </i>
+                </div>
+                <div class="user-names-container">
+                  <div class="user-names">
+                    {{ user.name }} {{ user.lastName }}
                   </div>
-                  <div class="user-names-container">
-                    <div class="user-names">
-                      {{ user.name }} {{ user.lastName }}
-                    </div>
-                    <div class="user-email">{{ user.email }}</div>
-                  </div>
-                </div>
-                <div
-                  class="menu-section focus-outline"
-                  tabindex="0"
-                  (click)="onViewMayCourses()"
-                  (keyup.enter)="onViewMayCourses()"
-                >
-                  My Courses
-                </div>
-                <div class="menu-separator"></div>
-                <div
-                  class="menu-section focus-outline"
-                  (click)="onHelp()"
-                  tabindex="0"
-                  (keyup.enter)="onHelp()"
-                >
-                  Help
-                </div>
-                <div
-                  class="menu-section focus-outline"
-                  (click)="onLogout()"
-                  tabindex="0"
-                  (keyup.enter)="onLogout()"
-                >
-                  Log out
+                  <div class="user-email">{{ user.email }}</div>
                 </div>
               </div>
+              <div
+                class="menu-section focus-outline"
+                tabindex="0"
+                (click)="onViewMayCourses()"
+                (keyup.enter)="onViewMayCourses()"
+              >
+                My Courses
+              </div>
+              <div class="menu-separator"></div>
+              <div
+                class="menu-section focus-outline"
+                (click)="onHelp()"
+                tabindex="0"
+                (keyup.enter)="onHelp()"
+              >
+                Help
+              </div>
+              <div
+                class="menu-section focus-outline"
+                (click)="onLogout()"
+                tabindex="0"
+                (keyup.enter)="onLogout()"
+              >
+                Log out
+              </div>
             </div>
-          </div>
+          </mat-menu>
         </div>
         <div *ngIf="!user" class="register-section">
           <div class="login-button-container">

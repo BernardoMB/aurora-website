@@ -24,6 +24,9 @@ import {
   removeCourseFromCartFailure,
   addCourseToCartFailure,
   removeCourseFromCart,
+  purchaseCartSuccess,
+  purchaseCartFailure,
+  purchaseCart,
 } from './auth.actions';
 import { of } from 'rxjs';
 import { GetUserDto } from '../../shared/dtos/get-user.dto';
@@ -47,7 +50,7 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.signin(action.username, action.password).pipe(
           map((responseBody: { accessToken: string }) => {
-            this.cookieService.delete('userToken');
+            this.cookieService.delete('userToken', '/');
             this.cookieService.set('userToken', responseBody.accessToken, null, '/');
             return loginSuccess();
           }),
@@ -156,7 +159,7 @@ export class AuthEffects {
         ofType(logout),
         tap(action => {
           log('Deleteing usertToken cookie...');
-          this.cookieService.delete('userToken');
+          this.cookieService.delete('userToken', '/');
         }),
       ),
     { dispatch: false },
@@ -232,6 +235,27 @@ export class AuthEffects {
         this.cookieService.delete('cartCookie');
       }),
     ), { dispatch: false }
+  );
+
+  purchaseCoursesEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(purchaseCart),
+      exhaustMap(action =>
+        this.authService.purchaseCart(action.courses, action.userId).pipe(
+          map((responseBody: User) => {
+            return purchaseCartSuccess(responseBody);
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              purchaseCartFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   constructor(

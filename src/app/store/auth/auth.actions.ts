@@ -50,3 +50,7 @@ export const getCoursesFrommCookiesFailure = createAction('[Auth] GetCoursesFrom
 
 export const pushCourseToCarts = createAction('[Auth] PushCourseToCarts', props<Course>());
 export const pullCourseFromCarts = createAction('[Auth] PullCourseFromCarts', props<Course>());
+
+export const purchaseCart = createAction('[Auth] PurchaseCart', props<{courses: string[], userId: string}>());
+export const purchaseCartSuccess = createAction('[Auth] PurchaseCartSuccess', props<User>());
+export const purchaseCartFailure = createAction('[Auth] PurchaseCartFailure', props<{ error: any; message: string }>());

@@ -348,6 +348,7 @@ $focus-border: 2px;
   .course-item {
     display: flex;
     padding: 10px 20px;
+    outline-offset: -2px;
     &:hover {
       background-color: #f2f3f5;
     }
@@ -407,6 +408,7 @@ $focus-border: 2px;
     }
   }
   .menu-footer {
+    margin-top: 10px;
     padding: 10px 20px;
     display: flex;
     flex-direction: column;
@@ -450,6 +452,57 @@ $focus-border: 2px;
         background-color: #eb6c00;
       }
     }
+  }
+}
+
+.user-menu {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: rgb(90, 90, 90);
+  position: relative;
+  .user-details-container {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    &:hover,
+    &:focus {
+      background-color: #f2f3f5;
+    }
+    .profile-pic-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 50px;
+      border: 1px solid grey;
+      border-radius: 50px;
+    }
+    .user-names-container {
+      display: flex;
+      flex-direction: column;
+      margin-left: 10px;
+      /* .user-names {
+      } */
+      .user-email {
+        color: grey;
+        font-size: 14px;
+      }
+    }
+  }
+  .menu-section {
+    cursor: pointer;
+    padding: 10px 20px;
+    &:hover,
+    &:focus {
+      background-color: #f2f3f5;
+    }
+  }
+  .menu-separator {
+    height: 1px;
+    background-color: gainsboro;
+    margin: 3px 20px;
   }
 }
 

@@ -5,7 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { AuthState } from '../../../../store/auth/auth.state';
 import { selectAuthCart, selectAuthIsAuthenticated, selectAuthUser } from '../../../../store/auth/auth.selectors';
 import { Router } from '@angular/router';
-import { removeCourseFromCart } from '../../../../store/auth/auth.actions';
+import { removeCourseFromCart, purchaseCart } from '../../../../store/auth/auth.actions';
 import { User } from '../../../../shared/models/user.model';
 
 @Component({
@@ -76,7 +76,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   onCompletePayment() {
-    alert('Implement payment');
+    const courseIds = this.cart.map((course: Course) => course.id);
+    this.store.dispatch(purchaseCart({ courses: courseIds, userId: this.user.id }));
   }
 
   onRemoveCourseFromCart(course: Course) {
