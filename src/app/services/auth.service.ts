@@ -73,4 +73,10 @@ export class AuthService {
     const url = `${this.host}/${this.apiVersion}/users/${userId}/purchasedCourses`;
     return this.http.post<User>(url, { courses });
   }
+
+  purchaseCourse(course: string, userId: string): Observable<Course> {
+    console.log('Auth service: Adding courses to user shooping cart');
+    const url = `${this.host}/${this.apiVersion}/courses/${course}/purchase`;
+    return this.http.post<Course>(url, {});
+  }
 }

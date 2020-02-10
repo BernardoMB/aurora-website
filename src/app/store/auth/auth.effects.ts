@@ -27,6 +27,9 @@ import {
   purchaseCartSuccess,
   purchaseCartFailure,
   purchaseCart,
+  purchaseCourse,
+  purchaseCourseSuccess,
+  purchasecourseFailure,
 } from './auth.actions';
 import { of } from 'rxjs';
 import { GetUserDto } from '../../shared/dtos/get-user.dto';
@@ -35,6 +38,7 @@ import { log } from '../../shared/utils';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from '../../shared/models/user.model';
 import { Course } from '../../shared/models/course.model';
+import { Router } from '@angular/router';
 
 /**
  * Authentication effects
@@ -238,16 +242,37 @@ export class AuthEffects {
   );
 
   purchaseCoursesEffect$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(purchaseCart),
+    exhaustMap(action =>
+      this.authService.purchaseCart(action.courses, action.userId).pipe(
+        map((responseBody: User) => {
+          return purchaseCartSuccess(responseBody);
+        }),
+        catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              purchaseCartFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+              ),
+          ),
+          ),
+      ),
+      ),
+  );
+
+  purchaseCourseEffect$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(purchaseCart),
+      ofType(purchaseCourse),
       exhaustMap(action =>
-        this.authService.purchaseCart(action.courses, action.userId).pipe(
-          map((responseBody: User) => {
-            return purchaseCartSuccess(responseBody);
+        this.authService.purchaseCourse(action.course, action.userId).pipe(
+          map((responseBody: Course) => {
+            return purchaseCourseSuccess(responseBody);
           }),
           catchError((errorResponse: HttpErrorResponse) =>
             of(
-              purchaseCartFailure({
+              purchasecourseFailure({
                 error: errorResponse,
                 message: errorResponse.error.message,
               }),
@@ -258,9 +283,20 @@ export class AuthEffects {
     ),
   );
 
+  purchaseCourseSuccessEffect$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(purchaseCourseSuccess),
+    tap(action => {
+      // Navigate to course detail view once purchased
+      this.router.navigate(['/courses', action.id]);
+    }),
+    ), { dispatch: false }
+  );
+
   constructor(
     private actions$: Actions,
     private authService: AuthService,
     private cookieService: CookieService,
+    private router: Router
   ) {}
 }

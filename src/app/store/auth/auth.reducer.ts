@@ -128,6 +128,25 @@ const authReducer = createReducer(
       cart2: []
     };
   }),
+  on(AuthActions.purchaseCourseSuccess, (state: AuthState, course: Course) => {
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        courses: [
+          ...(state.user.courses),
+          course
+        ],
+        purchasedCourses: [
+          ...(state.user.purchasedCourses),
+          {
+            course,
+            progress: []
+          }
+        ]
+      },
+    };
+  }),
 );
 
 export function reducer(state: AuthState | undefined, action: Action) {

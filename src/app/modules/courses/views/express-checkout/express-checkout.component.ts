@@ -6,7 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { AuthState } from '../../../../store/auth/auth.state';
 import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
 import { selectAuthIsAuthenticated, selectAuthUser, selectAuthCart } from '../../../../store/auth/auth.selectors';
-import { purchaseCart, removeCourseFromCart } from '../../../../store/auth/auth.actions';
+import { purchaseCart, removeCourseFromCart, purchaseCourse } from '../../../../store/auth/auth.actions';
 import { CoursesService } from '../../services/courses.service';
 
 @Component({
@@ -74,8 +74,7 @@ export class ExpressCheckoutComponent implements OnInit, OnDestroy {
   }
 
   onCompletePayment() {
-    alert('Implement this functionality');
-    /* this.store.dispatch(purchaseCourse({ courses: courseIds, userId: this.user.id })); */
+    this.store.dispatch(purchaseCourse({ course: this.course.id, userId: this.user.id }));
   }
 
   onRemoveFromOrder(course: Course) {
