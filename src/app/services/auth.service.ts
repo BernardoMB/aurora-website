@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../shared/models/user.model';
-import { GetUserDto } from '../shared/dtos/get-user.dto';
 import { SignupDto } from '../shared/dtos/signup.dto';
 import { environment } from '../../environments/environment';
 import { Course } from '../shared/models/course.model';

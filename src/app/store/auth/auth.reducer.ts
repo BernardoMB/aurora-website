@@ -17,12 +17,12 @@ const authReducer = createReducer(
     ...state,
     errorMessage: message,
   })),
-  on(AuthActions.getUserInfoSuccess, (state: AuthState, user: User) => {
+  on(AuthActions.getUserInfoSuccess, (state: AuthState, payload: { user: User }) => {
     return {
       ...state,
       isAuthenticated: true,
-      user,
-      cart: user.cart
+      user: payload.user,
+      cart: payload.user.cart
     };
   }),
   on(AuthActions.signupFailure, (state: AuthState, { error }) => ({
@@ -38,7 +38,7 @@ const authReducer = createReducer(
     errorMessage: 'Session is no longer valid.',
   })),
   on(AuthActions.logout, () => initialAuthState),
-  on(AuthActions.addCourseToCartSuccess, (state: AuthState, course: Course) => {
+  on(AuthActions.addCourseToCartSuccess, (state: AuthState, payload: { course: Course }) => {
     if (state.user) {
       return {
         ...state,
@@ -46,23 +46,23 @@ const authReducer = createReducer(
           ...(state.user),
           cart: [
             ...(state.user.cart),
-            course
+            payload.course
           ]
         },
         cart: [
           ...(state.cart),
-          course
+          payload.course
         ]
       };
     }
   }),
-  on(AuthActions.removeCourseFromCartSuccess, (state: AuthState, course: Course) => {
+  on(AuthActions.removeCourseFromCartSuccess, (state: AuthState, payload: { course: Course }) => {
     console.log('EXECUTING REDUCER');
     const newUserCart = state.user.cart.filter((el: Course) => {
-      return el.id !== course.id;
+      return el.id !== payload.course.id;
     });
     const newCart = state.cart.filter((el: Course) => {
-      return el.id !== course.id;
+      return el.id !== payload.course.id;
     });
     return {
       ...state,
@@ -73,14 +73,14 @@ const authReducer = createReducer(
       cart: newCart
     };
   }),
-  on(AuthActions.addCoursesToCartSuccess, (state: AuthState, user: User) => {
+  on(AuthActions.addCoursesToCartSuccess, (state: AuthState, payload: { user: User }) => {
     return {
       ...state,
       user: {
-        ...user
+        ...(payload.user)
       },
       cart2: [],
-      cart: user.cart
+      cart: payload.user.cart
     }
   }),
   on(AuthActions.getCoursesFrommCookiesSuccess, (state: AuthState, payload: {courses: Course[]} ) => {
@@ -90,18 +90,18 @@ const authReducer = createReducer(
       cart2: [...(state.cart2), ...(payload.courses)]
     }
   }),
-  on(AuthActions.pushCourseToCarts, (state: AuthState, course: Course) => {
+  on(AuthActions.pushCourseToCarts, (state: AuthState, payload: { course: Course }) => {
     return {
       ...state,
-      cart: [...(state.cart), course],
-      cart2: [...(state.cart2), course]
+      cart: [...(state.cart), payload.course],
+      cart2: [...(state.cart2), payload.course]
     };
   }),
-  on(AuthActions.removeCourseFromCartSuccess, (state: AuthState, course: Course) => {
+  on(AuthActions.removeCourseFromCartSuccess, (state: AuthState, payload: { course: Course }) => {
     const userCart = state.user.cart;
-    const newUserCart = userCart.filter((el: Course) => el.id !== course.id);
+    const newUserCart = userCart.filter((el: Course) => el.id !== payload.course.id);
     const cart = state.cart;
-    const newCart = cart.filter((el: Course) => el.id !== course.id);
+    const newCart = cart.filter((el: Course) => el.id !== payload.course.id);
     return {
       ...state,
       user: {
@@ -111,9 +111,9 @@ const authReducer = createReducer(
       cart: newCart
     };
   }),
-  on(AuthActions.pullCourseFromCarts, (state: AuthState, course: Course) => {
-    const newCart = state.cart.filter((el: Course) => el.id !== course.id);
-    const newCart2 = state.cart2.filter((el: Course) => el.id !== course.id);
+  on(AuthActions.pullCourseFromCarts, (state: AuthState, payload: { course: Course }) => {
+    const newCart = state.cart.filter((el: Course) => el.id !== payload.course.id);
+    const newCart2 = state.cart2.filter((el: Course) => el.id !== payload.course.id);
     return {
       ...state,
       cart: newCart,
@@ -128,19 +128,19 @@ const authReducer = createReducer(
       cart2: []
     };
   }),
-  on(AuthActions.purchaseCourseSuccess, (state: AuthState, course: Course) => {
+  on(AuthActions.purchaseCourseSuccess, (state: AuthState, payload: { course: Course }) => {
     return {
       ...state,
       user: {
         ...(state.user),
         courses: [
           ...(state.user.courses),
-          course
+          payload.course
         ],
         purchasedCourses: [
           ...(state.user.purchasedCourses),
           {
-            course,
+            course: payload.course,
             progress: []
           }
         ]

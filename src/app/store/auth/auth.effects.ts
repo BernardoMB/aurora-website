@@ -32,7 +32,6 @@ import {
   purchasecourseFailure,
 } from './auth.actions';
 import { of } from 'rxjs';
-import { GetUserDto } from '../../shared/dtos/get-user.dto';
 import { CookieService } from 'ngx-cookie-service';
 import { log } from '../../shared/utils';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -59,8 +58,6 @@ export class AuthEffects {
             return loginSuccess();
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            log('Catched error from service:', errorResponse);
-            log('Dispatching login failure action');
             return of(
               loginFailure({
                 error: errorResponse,
@@ -79,7 +76,7 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
           map((responseBody: User) => {
-            return getUserInfoSuccess(responseBody);
+            return getUserInfoSuccess({ user: responseBody });
           }),
           catchError(error => of(getUserInfoFailure({ error }))),
         ),
@@ -93,7 +90,7 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
           map((responseBody: User) => {
-            return getUserInfoSuccess(responseBody);
+            return getUserInfoSuccess({ user: responseBody });
           }),
           catchError((errorResponse: HttpErrorResponse) =>
             of(
@@ -149,7 +146,7 @@ export class AuthEffects {
         this.authService.getUserInfo().pipe(
           map((responseBody: User) => {
             log('loginSuccessEffect:', responseBody);
-            return getUserInfoSuccess(responseBody);
+            return getUserInfoSuccess({ user: responseBody });
           }),
           catchError(error => of(getUserInfoFailure({ error }))),
         ),
@@ -175,7 +172,7 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.addCoursetoShoppingCart(action.courseId, action.userId).pipe(
           map((responseBody: Course) => {
-            return addCourseToCartSuccess(responseBody);
+            return addCourseToCartSuccess({ course: responseBody});
           }),
           catchError((errorResponse: HttpErrorResponse) =>
             of(
@@ -196,7 +193,7 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.removeCourseFromShoppingCart(action.courseId, action.userId).pipe(
           map((responseBody: Course) => {
-            return removeCourseFromCartSuccess(responseBody);
+            return removeCourseFromCartSuccess({ course: responseBody });
           }),
           catchError((errorResponse: HttpErrorResponse) =>
             of(
@@ -217,7 +214,7 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.addCoursesToShoppingCart(action.courses).pipe(
           map((responseBody: User) => {
-            return addCoursesToCartSuccess(responseBody);
+            return addCoursesToCartSuccess({ user: responseBody });
           }),
           catchError((errorResponse: HttpErrorResponse) =>
             of(
@@ -268,7 +265,7 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.purchaseCourse(action.course, action.userId).pipe(
           map((responseBody: Course) => {
-            return purchaseCourseSuccess(responseBody);
+            return purchaseCourseSuccess({ course: responseBody });
           }),
           catchError((errorResponse: HttpErrorResponse) =>
             of(
@@ -288,7 +285,7 @@ export class AuthEffects {
     ofType(purchaseCourseSuccess),
     tap(action => {
       // Navigate to course detail view once purchased
-      this.router.navigate(['/courses', action.id]);
+      this.router.navigate(['/courses', action.course.id]);
     }),
     ), { dispatch: false }
   );

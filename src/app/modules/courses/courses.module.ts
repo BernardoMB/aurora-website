@@ -20,6 +20,11 @@ import { AmpPlayerComponent } from './components/amp-player/amp-player.component
 import { ExpressCheckoutComponent } from './views/express-checkout/express-checkout.component';
 import { CheckoutComponent } from './views/checkout/checkout.component';
 import { CheckoutGuard } from './guards/checkout.guard';
+import { MyCoursesComponent } from './views/my-courses/my-courses.component';
+import { AllMyCoursesComponent } from './views/all-my-courses/all-my-courses.component';
+import { WishlistComponent } from './views/wishlist/wishlist.component';
+import { ArchivedComponent } from './views/archived/archived.component';
+import { FavoriteComponent } from './views/favorite/favorite.component';
 
 @NgModule({
     declarations: [
@@ -38,6 +43,11 @@ import { CheckoutGuard } from './guards/checkout.guard';
         AmpPlayerComponent,
         ExpressCheckoutComponent,
         CheckoutComponent,
+        MyCoursesComponent,
+        AllMyCoursesComponent,
+        WishlistComponent,
+        ArchivedComponent,
+        FavoriteComponent,
     ],
     imports: [CommonModule, CoursesRoutingModule, SharedModule],
     providers: [CoursesService, CheckoutGuard]

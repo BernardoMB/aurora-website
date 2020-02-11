@@ -10,6 +10,11 @@ import { CartComponent } from './views/cart/cart.component';
 import { ExpressCheckoutComponent } from './views/express-checkout/express-checkout.component';
 import { CheckoutComponent } from './views/checkout/checkout.component';
 import { CheckoutGuard } from './guards/checkout.guard';
+import { MyCoursesComponent } from './views/my-courses/my-courses.component';
+import { AllMyCoursesComponent } from './views/all-my-courses/all-my-courses.component';
+import { WishlistComponent } from './views/wishlist/wishlist.component';
+import { ArchivedComponent } from './views/archived/archived.component';
+import { FavoriteComponent } from './views/favorite/favorite.component';
 
 /* courses/  */
 const routes: Routes = [
@@ -23,6 +28,17 @@ const routes: Routes = [
    * // This can be implemented later without any regards
    *  { path: 'categories', component: CourseCategoriesComponent },
    */
+  {
+    path: 'my-courses', // <-- this route should implement a route guard
+    component: MyCoursesComponent, canActivate: [CheckoutGuard],
+    children: [
+      { path: '', redirectTo: 'learning', pathMatch: 'full' },
+      { path: 'learning', component: AllMyCoursesComponent },
+      { path: 'favorite', component:  FavoriteComponent},
+      { path: 'wishlist', component:  WishlistComponent},
+      { path: 'archived', component:  ArchivedComponent},
+    ],
+  },
   {
     path: ':id/learn', // <-- this route should implement a route guard
     component: LearnComponent,

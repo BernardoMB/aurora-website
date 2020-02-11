@@ -550,7 +550,7 @@ export class CartComponent implements OnInit, OnDestroy {
       const newCourseIds = courseIds.filter((id: string) => id !== course.id);
       this.cookieService.delete('cartCookie');
       this.cookieService.set('cartCookie', JSON.stringify(newCourseIds));
-      this.store.dispatch(pullCourseFromCarts(course));
+      this.store.dispatch(pullCourseFromCarts({ course }));
     }
   }
 

@@ -1,0 +1,45 @@
+<section class="lerning-header">
+  <div class="header-container">
+    <div class="course-title">My Courses</div>
+    <div class="tabs-container">
+      <a
+        class="tab-selector focus-outline"
+        (click)="currentTab = 'all-courses'"
+        tabindex="0"
+        routerLinkActive="active"
+        [routerLink]="['./learning']"
+      >
+        All courses
+      </a>
+      <a
+        class="tab-selector focus-outline"
+        (click)="currentTab = 'favorite'"
+        tabindex="0"
+        routerLinkActive="active"
+        [routerLink]="['./favorite']"
+      >
+        Favorite
+      </a>
+      <a
+        class="tab-selector focus-outline"
+        (click)="currentTab = 'wishlist'"
+        tabindex="0"
+        routerLinkActive="active"
+        [routerLink]="['./wishlist']"
+      >
+        Wishlist
+      </a>
+      <a
+        class="tab-selector focus-outline"
+        (click)="currentTab = 'archived'"
+        tabindex="0"
+        routerLinkActive="active"
+        [routerLink]="['./archived']"
+      >
+        Archived
+      </a>
+    </div>
+  </div>
+</section>
+
+<router-outlet></router-outlet>

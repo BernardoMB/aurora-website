@@ -352,7 +352,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       courseIds.push(this.course.id);
       this.cookieService.delete('cartCookie');
       this.cookieService.set('cartCookie', JSON.stringify(courseIds));
-      this.store.dispatch(pushCourseToCarts(this.course));
+      this.store.dispatch(pushCourseToCarts({ course: this.course }));
     }
   }
 
