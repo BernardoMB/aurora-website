@@ -129,6 +129,10 @@ const authReducer = createReducer(
     };
   }),
   on(AuthActions.purchaseCourseSuccess, (state: AuthState, payload: { course: Course }) => {
+    // Pull out the just purchased course from all carts
+    const cart = state.cart.filter(el => el.id !== payload.course.id);
+    const cart2 = state.cart2.filter(el => el.id !== payload.course.id);
+    const userCart = state.user.cart.filter(el => el.id !== payload.course.id);
     return {
       ...state,
       user: {
@@ -143,8 +147,11 @@ const authReducer = createReducer(
             course: payload.course,
             progress: []
           }
-        ]
+        ],
+        cart: userCart
       },
+      cart,
+      cart2
     };
   }),
 );

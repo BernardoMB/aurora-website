@@ -34,7 +34,7 @@ export class ArchivedComponent implements OnInit, OnDestroy {
         this.isAuthenticated = true;
       } else  {
         this.isAuthenticated = false;
-        this.router.navigate(['/courses/cart']);
+        this.router.navigate(['/courses']);
       }
     });
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
