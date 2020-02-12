@@ -231,10 +231,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.register.emit();
   }
 
-  onViewMayCourses() {
-    // TODO: implement this function
-  }
-
   onHelp() {
     // TODO: implement this function
   }

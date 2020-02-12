@@ -1,1 +1,25 @@
-<p>favorite works!</p>
+<section class="featured-courses-section">
+  <div class="featured-courses-container">
+    <div class="featured-title-container">
+      <div class="featured-title">Your favorite courses</div>
+    </div>
+    <div *ngIf="courses && courses.length > 0" class="featured-cards-container">
+      <div class="course-card" *ngFor="let course of courses; let i = index">
+        <app-course-card [course]="course"></app-course-card>
+      </div>
+    </div>
+    <div *ngIf="!courses || courses.length === 0" class="empty-container">
+      <div class="empty-card">
+        <i class="material-icons">inbox</i>
+        <div class="shopping-phrase">
+          You don't have any favorite courses. Courses you love will appear here!
+        </div>
+        <button class="keep-shopping-button focus-outline" [routerLink]="['/courses']">
+          Shop Now
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TODO: Show something in case there are no coures owned by the user -->

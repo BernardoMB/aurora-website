@@ -9,14 +9,13 @@ import { Course } from '../shared/models/course.model';
 // TODO: standardize the use of environment variables for requests urls.
 @Injectable()
 export class AuthService {
-  private BASE_URL = 'http://localhost:1337';
   host = environment.host;
   apiVersion = environment.apiVersion;
 
   constructor(private http: HttpClient) {}
 
   getStatus(): Observable<any> {
-    const url = `${this.BASE_URL}/status`;
+    const url = `${this.host}/status`;
     return this.http.get<any>(url);
   }
 
@@ -33,7 +32,7 @@ export class AuthService {
     console.log('Auth service: Getting user info');
     const url =
     // tslint:disable-next-line: max-line-length
-    `${this.host}/${this.apiVersion}/auth/user/me?populate=purchasedCourses,favoriteCourses,wishList,likedArticlesdislikedArticles,eventSubscriptions,courses,archivedCourses,cart`;
+    `${this.host}/${this.apiVersion}/auth/user/me?populate=cart`;
     return this.http.get<User>(url);
   }
 
