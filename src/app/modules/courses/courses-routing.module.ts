@@ -15,6 +15,7 @@ import { AllMyCoursesComponent } from './views/all-my-courses/all-my-courses.com
 import { WishlistComponent } from './views/wishlist/wishlist.component';
 import { ArchivedComponent } from './views/archived/archived.component';
 import { FavoriteComponent } from './views/favorite/favorite.component';
+import { LearningGuard } from './guards/learning.guard';
 
 /* courses/  */
 const routes: Routes = [
@@ -40,8 +41,9 @@ const routes: Routes = [
     ],
   },
   {
-    path: ':id/learn', // <-- this route should implement a route guard
+    path: ':id/learn',
     component: LearnComponent,
+    canActivate: [LearningGuard],
     children: [
       { path: 'lesson/:id', component: LessonComponent }
     ],

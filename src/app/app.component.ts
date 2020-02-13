@@ -49,6 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (user) {
         this.user = user;
         this.cart2Subscription = this.store.pipe(select(selectAuthCart2)).subscribe((cart2: Course[]) => {
+          // cart2 is where courses are stored when they are added into the the cart withoud being logged in
           if (cart2 && cart2.length > 0 && this.user) {
             this.store.dispatch(addCoursesToCart({courses: cart2}));
           }

@@ -122,7 +122,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.showGoToCartButton = true; // <-- default ui state
       if (this.route.firstChild.firstChild) {
         if (this.route.firstChild.firstChild.snapshot.url[0]) {
-          console.log('URL', this.route.firstChild.firstChild.snapshot.url);
+          // console.log('URL', this.route.firstChild.firstChild.snapshot.url);
           if (this.route.firstChild.firstChild.snapshot.url[0].path === 'cart') {
             this.showGoToCartButton = false;
           }
@@ -224,6 +224,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onGoToCourse(courseId: string) {
+    console.log(`Header component: Redirecting to /courses/${courseId}`);
     this.router.navigate(['/courses', courseId]);
   }
 

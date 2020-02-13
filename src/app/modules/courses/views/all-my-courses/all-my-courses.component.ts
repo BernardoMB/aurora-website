@@ -33,7 +33,9 @@ export class AllMyCoursesComponent implements OnInit, OnDestroy {
         this.isAuthenticated = true;
       } else  {
         this.isAuthenticated = false;
-        this.router.navigate(['/courses/cart']);
+
+        console.log('AllMyCoursesComponent: Authenticated state is false. Redirecting to /courses');
+        this.router.navigate(['/courses']);
       }
     });
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {

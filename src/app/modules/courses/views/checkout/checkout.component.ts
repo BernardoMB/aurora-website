@@ -52,6 +52,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.isAuthenticated = true;
       } else  {
         this.isAuthenticated = false;
+        console.log('CheckoutComponent: Authenticated state is false. Redirecting to /courses/cart');
         this.router.navigate(['/courses/cart']);
       }
     });
@@ -64,6 +65,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       if (courses && courses.length > 0) {
         this.cart = courses;
       } else {
+        console.log('CheckoutComponent: No courses in order. Redirecting to /courses/cart');
         this.router.navigate(['/courses/cart']);
       }
     });

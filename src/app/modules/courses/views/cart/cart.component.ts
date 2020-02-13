@@ -557,6 +557,7 @@ export class CartComponent implements OnInit, OnDestroy {
   onCheckout() {
     if (this.isAuthenticated) {
       /* alert('Redirect courses/cart/checkout/'); */
+      console.log('CartComponent: Authenticated state is true. Navigating to /courses/cart/checkout');
       this.router.navigate(['./courses/cart/checkout']);
     } else {
       const dialogConfig = new MatDialogConfig();
@@ -573,6 +574,7 @@ export class CartComponent implements OnInit, OnDestroy {
           }
           if (this.isAuthenticated) {
             /* alert('Redirect courses/cart/checkout/'); */
+            console.log('CartComponent: Authenticated state is true. Navigating to /courses/cart/checkout');
             this.router.navigate(['./courses/cart/checkout']);
           }
         }

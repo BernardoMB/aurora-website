@@ -3,13 +3,14 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { AuthState } from '../../../store/auth/auth.state';
 import { Store, select } from '@ngrx/store';
-import { selectAuthIsAuthenticated } from '../../../store/auth/auth.selectors';
+import { selectAuthIsAuthenticated, selectAuthUser } from '../../../store/auth/auth.selectors';
 import { CookieService } from 'ngx-cookie-service';
+import { User } from '../../../shared/models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CheckoutGuard implements CanActivate {
+export class LearningGuard implements CanActivate {
   isAutehnticated: boolean;
 
   constructor(
@@ -30,17 +31,22 @@ export class CheckoutGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.isAutehnticated) {
+    console.log('Activated route snapshot', next);
+    console.log('Router state snapshot', state);
+    return true;
+    /* if (this.isAutehnticated) {
+      this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
+
+      });
       return true;
     }
     const userToken = this.cookieService.get('userToken');
     if (userToken) {
       return true;
     } else {
-      console.log('Checkout guard: Redirecting to /courses');
-      this.router.navigate(['/courses']);
+      this.router.navigate(['/courses/cart']);
       return false;
-    }
+    } */
   }
 
 }

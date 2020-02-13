@@ -285,6 +285,7 @@ export class AuthEffects {
     ofType(purchaseCourseSuccess),
     tap(action => {
       // Navigate to course detail view once purchased
+      console.log(`purchaseCourseSuccessEffect: Redirecting to /courses`);
       this.router.navigate(['/courses', action.course.id]);
     }),
     ), { dispatch: false }

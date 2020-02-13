@@ -25,6 +25,7 @@ import { AllMyCoursesComponent } from './views/all-my-courses/all-my-courses.com
 import { WishlistComponent } from './views/wishlist/wishlist.component';
 import { ArchivedComponent } from './views/archived/archived.component';
 import { FavoriteComponent } from './views/favorite/favorite.component';
+import { LearningGuard } from './guards/learning.guard';
 
 @NgModule({
     declarations: [
@@ -50,6 +51,6 @@ import { FavoriteComponent } from './views/favorite/favorite.component';
         FavoriteComponent,
     ],
     imports: [CommonModule, CoursesRoutingModule, SharedModule],
-    providers: [CoursesService, CheckoutGuard]
+    providers: [CoursesService, CheckoutGuard, LearningGuard]
 })
 export class CoursesModule {}

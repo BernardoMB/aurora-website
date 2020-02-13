@@ -22,7 +22,7 @@ export const signupFailure = createAction('[Auth] SignupFailure', props<{ error:
 // No need to pass token as every request gets intercepted and gets the found token injected
 export const loginWithToken = createAction('[Auth] LoginWithToken');
 export const loginWithTokenSuccess = createAction('[Auth] LoginWithTokenSuccess');
-export const loginWithTokenFailure = createAction('[Auth] LoginWithTokenSuccess', props<{ error: any }>());
+export const loginWithTokenFailure = createAction('[Auth] LoginWithTokenFailure', props<{ error: any }>());
 
 export const logout = createAction('[Auth] Logout');
 export const logoutSuccess = createAction('[Auth] LogoutSuccess');

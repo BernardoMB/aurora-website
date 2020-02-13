@@ -291,6 +291,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     });
 
     this.route.url.subscribe((url: UrlSegment[]) => {
+      console.log('Course detail component: Url:', url);
       const courseId = url[0].path;
       this.getCourse(courseId);
     });
@@ -358,6 +359,8 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   onBuyNow() {
     if (this.isAuthenticated) {
+      // tslint:disable-next-line: max-line-length
+      console.log(`CourseDetailComponent: Authenticated state is true, Redirecting to /courses/cart/checkout/express/course/${this.course.id}`);
       this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
     } else {
       const dialogConfig = new MatDialogConfig();
@@ -382,6 +385,8 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
                 index++;
             }
             if (!found) {
+              // tslint:disable-next-line: max-line-length
+              console.log(`CourseDetailComponent: Authenticated state is true, Redirecting to /courses/cart/checkout/express/course/${this.course.id}`);
               this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
             }
           }

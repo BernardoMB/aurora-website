@@ -33,6 +33,7 @@ export class FavoriteComponent implements OnInit, OnDestroy {
         this.isAuthenticated = true;
       } else  {
         this.isAuthenticated = false;
+        console.log('FavoriteComponent: Authenticated state is false. Redirecting to /courses');
         this.router.navigate(['/courses']);
       }
     });

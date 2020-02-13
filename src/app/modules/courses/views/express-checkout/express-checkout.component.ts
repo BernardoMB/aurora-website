@@ -47,6 +47,7 @@ export class ExpressCheckoutComponent implements OnInit, OnDestroy {
         this.isAuthenticated = true;
       } else  {
         this.isAuthenticated = false;
+        console.log('ExpressCheckoutComponent: Authenticated state is false. Redirecting to /courses/cart');
         this.router.navigate(['/courses/cart']);
       }
     });
@@ -78,6 +79,7 @@ export class ExpressCheckoutComponent implements OnInit, OnDestroy {
   }
 
   onRemoveFromOrder(course: Course) {
+    console.log(`ExpressCheckoutComponent: Removed course from order. Redirecting to /courses/${this.course.id}`);
     this.router.navigate([`/courses/${this.course.id}`]);
   }
 }

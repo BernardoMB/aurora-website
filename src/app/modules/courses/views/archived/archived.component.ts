@@ -34,6 +34,7 @@ export class ArchivedComponent implements OnInit, OnDestroy {
         this.isAuthenticated = true;
       } else  {
         this.isAuthenticated = false;
+        console.log('ArchivedComponent: Authenticated state is false. Redirecting to /courses');
         this.router.navigate(['/courses']);
       }
     });
