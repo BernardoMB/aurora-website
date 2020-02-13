@@ -69,25 +69,25 @@ export class CoursesService {
   }
 
   getUserCourses(skip: number, limit: number): Observable<Course[]> {
-    console.log('Courses service: getting user courses with pagination');
+    console.log('Courses service: Getting user courses with pagination');
     const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}`;
     return this.http.get<Course[]>(url);
   }
 
   getUserFavoriteCourses(skip: number, limit: number): Observable<Course[]> {
-    console.log('Courses service: getting user courses with pagination');
+    console.log('Courses service: Getting user favorite courses with pagination');
     const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=favoriteCourses`;
     return this.http.get<Course[]>(url);
   }
 
   getUserWishlistCourses(skip: number, limit: number): Observable<Course[]> {
-    console.log('Courses service: getting user courses with pagination');
+    console.log('Courses service: Getting user wishlist courses with pagination');
     const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=wishList`;
     return this.http.get<Course[]>(url);
   }
 
   getUserArchivedCourses(skip: number, limit: number): Observable<Course[]> {
-    console.log('Courses service: getting user courses with pagination');
+    console.log('Courses service: Getting user archived courses with pagination');
     const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=archivedCourses`;
     return this.http.get<Course[]>(url);
   }

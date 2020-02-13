@@ -43,6 +43,7 @@ export class FavoriteComponent implements OnInit, OnDestroy {
       }
     });
     this.coursesSubscription = this.coursesService.getUserFavoriteCourses(0, 12).subscribe((courses: Course[]) => {
+      console.log('FAVORITE COURSES', courses);
       if (courses && courses.length > 0) {
         this.courses = courses;
       }

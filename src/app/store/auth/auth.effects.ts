@@ -161,6 +161,8 @@ export class AuthEffects {
         tap(action => {
           log('Deleteing usertToken cookie...');
           this.cookieService.delete('userToken', '/');
+          console.log('AuthEffects: logoutEffect$: Redirecting to landing page ("/")');
+          this.router.navigate(['/']);
         }),
       ),
     { dispatch: false },

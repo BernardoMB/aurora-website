@@ -379,7 +379,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
             let index = 0;
             let found = false;
             while (index < this.user.courses.length && !found) {
-                if (this.user.courses[index].id === this.course.id) {
+                if (this.user.courses[index] === this.course.id) {
                     found = true;
                 }
                 index++;

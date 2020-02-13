@@ -139,12 +139,12 @@ const authReducer = createReducer(
         ...(state.user),
         courses: [
           ...(state.user.courses),
-          payload.course
+          payload.course.id
         ],
         purchasedCourses: [
           ...(state.user.purchasedCourses),
           {
-            course: payload.course,
+            course: payload.course.id,
             progress: []
           }
         ],

@@ -7,7 +7,7 @@ export class User {
   emailVerified?: boolean;
   name?: string;
   lastName?: string;
-  purchasedCourses?: Array<{ progress: string[], course: Course }>;
+  purchasedCourses?: Array<{ progress: string[], course: string }>;
   cart?: Course[];
-  courses?: Course[];
+  courses?: string[];
 }
