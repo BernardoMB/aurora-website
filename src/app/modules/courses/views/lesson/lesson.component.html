@@ -23,7 +23,8 @@
       <div>{{ lesson.readTime | readTime }}</div>
       <i class="material-icons">menu_book</i>
     </div>
-    <button class="download-button">Download</button>
+    <button class="download-button focus-outline" (click)="downloadFile()">Download</button>
+    <a #downloadLink style="display: none;"></a>
   </div>
 </div>
 
