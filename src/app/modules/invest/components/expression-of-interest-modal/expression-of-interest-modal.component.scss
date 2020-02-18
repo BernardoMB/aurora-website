@@ -1,0 +1,36 @@
+$aurora-blue: #3b6483;
+$aurora-green: #1f5e11;
+$link-blue: #0276e8;
+
+h1 {
+  color: $aurora-blue;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+div[mat-dialog-content] {
+  max-height: 400px;
+}
+
+div[mat-dialog-actions] {
+  justify-content: space-between;
+}
+
+.confirm {
+  display: flex;
+  align-items: center;
+  .right {
+    padding: 8px;
+    margin-left: 16px;
+    color: gray;
+    text-justify: auto;
+    a {
+      color: $link-blue;
+
+      text-decoration: none;
+      text-transform: none;
+    }
+  }
+}

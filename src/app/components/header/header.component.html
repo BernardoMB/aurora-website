@@ -16,7 +16,11 @@
       />
     </div>
     <div class="header-left">
-      <button *ngIf="showCategories" class="category-menu-button focus-outline" [matMenuTriggerFor]="categoriesMenu" >
+      <button
+        *ngIf="showCategories"
+        class="category-menu-button focus-outline"
+        [matMenuTriggerFor]="categoriesMenu"
+      >
         <i class="material-icons">apps</i>
         <div style="padding-top: 1px;">
           Categories
@@ -30,8 +34,10 @@
           [routerLink]="['/courses/categories', category.id]"
           routerLinkActive="active"
         >
-          <i class="material-icons category-material-icon">{{category.materialIcon}}</i>
-          <div class="category-name">{{category.name}}</div>
+          <i class="material-icons category-material-icon">{{
+            category.materialIcon
+          }}</i>
+          <div class="category-name">{{ category.name }}</div>
           <i class="material-icons arrow">chevron_right</i>
         </div>
       </mat-menu>
@@ -69,9 +75,8 @@
           <li class="nav-link">
             <a
               class="focus-outline"
-              [routerLink]="['/home']"
-              fragment="invest"
-              [class.active]="currentSection === 'invest'"
+              routerLink="/invest"
+              routerLinkActive="active"
               >Invest</a
             >
           </li>
@@ -89,14 +94,34 @@
           <div class="divider"></div>
         </div>
         <div class="cart-container">
-          <i class="material-icons focus-outline" tabindex="0" #cartMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="cartMenu" (keyup.enter)="cartMenuTrigger.openMenu()">shopping_cart</i>
-          <div *ngIf="cart && cart.length > 0" class="cart-count-indicator" #cartMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="cartMenu" (keyup.enter)="cartMenuTrigger.openMenu()">{{ cart.length }}</div>
+          <i
+            class="material-icons focus-outline"
+            tabindex="0"
+            #cartMenuTrigger="matMenuTrigger"
+            [matMenuTriggerFor]="cartMenu"
+            (keyup.enter)="cartMenuTrigger.openMenu()"
+            >shopping_cart</i
+          >
+          <div
+            *ngIf="cart && cart.length > 0"
+            class="cart-count-indicator"
+            #cartMenuTrigger="matMenuTrigger"
+            [matMenuTriggerFor]="cartMenu"
+            (keyup.enter)="cartMenuTrigger.openMenu()"
+          >
+            {{ cart.length }}
+          </div>
           <mat-menu #cartMenu="matMenu">
             <div *ngIf="!cart || cart.length === 0">
               <div class="empty-cart-container">
                 <div>Your cart is empty.</div>
                 <div class="keep-shopping">
-                  <a class="focus-outline" [routerLink]="['/courses']" tabindex="0">Keep shopping</a>
+                  <a
+                    class="focus-outline"
+                    [routerLink]="['/courses']"
+                    tabindex="0"
+                    >Keep shopping</a
+                  >
                 </div>
               </div>
             </div>
@@ -111,25 +136,39 @@
                   <div
                     class="course-image"
                     [style.backgroundImage]="'url(' + course.imgUrl + ')'"
-                  >
-                  </div>
+                  ></div>
                   <div class="course-details">
-                    <div class="course-name">{{course.name}}</div>
+                    <div class="course-name">{{ course.name }}</div>
                     <div class="course-prices">
-                      <div class="final-price">{{ course.price * (1 - course.discount ) | currency: 'NGN':'symbol-narrow' }}</div>
-                      <div class="original-price" *ngIf="course.discount > 0">{{ course.price | currency: 'NGN':'symbol-narrow' }}</div>
+                      <div class="final-price">
+                        {{
+                          course.price * (1 - course.discount)
+                            | currency: 'NGN':'symbol-narrow'
+                        }}
+                      </div>
+                      <div class="original-price" *ngIf="course.discount > 0">
+                        {{ course.price | currency: 'NGN':'symbol-narrow' }}
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div class="menu-footer">
                   <div class="total-container">
-                    <div class="label">Total: </div>
-                    <div class="total">{{ total | currency: 'NGN':'symbol-narrow' }}</div>
+                    <div class="label">Total:</div>
+                    <div class="total">
+                      {{ total | currency: 'NGN':'symbol-narrow' }}
+                    </div>
                     <div class="subtotal" *ngIf="total !== subtotal">
                       {{ subtotal | currency: 'NGN':'symbol-narrow' }}
                     </div>
                   </div>
-                  <button class="cart-button focus-outline" *ngIf="showGoToCartButton" [routerLink]="['/courses/cart']">Go to cart</button>
+                  <button
+                    class="cart-button focus-outline"
+                    *ngIf="showGoToCartButton"
+                    [routerLink]="['/courses/cart']"
+                  >
+                    Go to cart
+                  </button>
                 </div>
               </div>
             </div>

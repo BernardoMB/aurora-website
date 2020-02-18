@@ -1,0 +1,71 @@
+<form [formGroup]="ipoBuyForm">
+  <h1 mat-dialog-title>IPO Transaction</h1>
+  <div>
+    <mat-tab-group [dynamicHeight]="true">
+      <mat-tab label="Expression of interest">
+        <div class="review">
+          <app-expression-of-interest-review
+            [expressionOfInterest]="data?.transaction?.extra"
+          ></app-expression-of-interest-review>
+        </div>
+      </mat-tab>
+      <mat-tab label="Buy">
+        <div class="buy">
+          <div class="result">
+            <h3>IPO</h3>
+            <p class="selection">
+              {{ data.transaction.extra?.availableIPOs }}
+            </p>
+          </div>
+          <div class="result">
+            <h3>Shares available</h3>
+            <p class="selection">
+              {{ sharesAvailable }}
+            </p>
+          </div>
+          <div class="result">
+            <h3>Cost per share</h3>
+            <p class="selection">
+              {{ costPerShare | currency: '₦' }}
+            </p>
+          </div>
+          <mat-form-field>
+            <mat-label>Shares desired</mat-label>
+            <input matInput formControlName="desiredShares" type="number" />
+          </mat-form-field>
+          <div class="amount">
+            <h3>Total amount to pay for the desired shares</h3>
+            <p>
+              {{ amountToPay | currency: '₦' }}
+            </p>
+          </div>
+          <div class="confirm">
+            <div class="left">
+              <mat-checkbox
+                [formControlName]="'prospectusChecked'"
+              ></mat-checkbox>
+            </div>
+            <div class="right">
+              Please read the prospectus and check the box when you are finished
+              to continue.
+            </div>
+          </div>
+        </div>
+        <div mat-dialog-actions>
+          <button mat-button [mat-dialog-close]="" color="accent">
+            Cancel
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="!ipoBuyForm.valid"
+            (click)="onSubmit()"
+            cdkFocusInitial
+          >
+            Continue
+          </button>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</form>
