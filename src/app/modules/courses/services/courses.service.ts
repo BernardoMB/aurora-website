@@ -44,6 +44,7 @@ export class CoursesService {
   }
 
   getCategoryFeaturedCourses(categoryId: string): Observable<Array<Course>> {
+    // TODO: Add the featured filter
     console.log(`Courses service: Getting featured courses of category with id ${categoryId}`);
     const url = `${this.host}/${this.apiVersion}/courses/public?category=${categoryId}`;
     return this.http.get<Array<Course>>(url);
@@ -58,7 +59,7 @@ export class CoursesService {
 
   getCourse(courseId: string): Observable<Course> {
     console.log(`Courses service: Getting course with id ${courseId}`);
-    const url = `${this.host}/${this.apiVersion}/courses/${courseId}?populate=category`;
+    const url = `${this.host}/${this.apiVersion}/courses/${courseId}?populate=category,lessons,reviews`;
     return this.http.get<Course>(url);
   }
 

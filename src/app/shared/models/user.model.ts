@@ -1,5 +1,10 @@
 import { Course } from './course.model';
 
+export interface IPurchasedCourse {
+  progress: string[];
+  course: string;
+}
+
 export class User {
   id?: string;
   email?: string;
@@ -7,7 +12,7 @@ export class User {
   emailVerified?: boolean;
   name?: string;
   lastName?: string;
-  purchasedCourses?: Array<{ progress: string[], course: string }>;
+  purchasedCourses?: IPurchasedCourse[];
   cart?: Course[];
   courses?: string[];
 }

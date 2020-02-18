@@ -51,3 +51,13 @@ To see how cart functionality works see Bernardo's OneNote notes
   * logged in
   * not logged in
   * logged in and invalid token
+- Implement safe navigation. Here is an example: 
+  ```html
+  <h2>{{contact?.name}}</h2>
+  <dl>
+    <dt>Phone</dt>
+    <dd>{{contact?.phone}}</dd>
+    <dt>Website</dt>
+    <dd>{{contact?.website}}</dd>
+  </dl>
+  ```

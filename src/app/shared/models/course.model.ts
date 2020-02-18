@@ -5,7 +5,7 @@ export interface Course {
     reviews: string[];
     enrolledUsers: string[];
     featured: boolean;
-    lessons: string[];
+    lessons: string[] | any[]; // type array of any because of population
     name: string;
     description: string;
     category: any; // type any because of population
@@ -17,4 +17,5 @@ export interface Course {
     updatedAt: Date;
     imgUrl: string;
     id: string;
+    totalReviews: number;
 }

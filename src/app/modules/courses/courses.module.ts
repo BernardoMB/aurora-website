@@ -26,6 +26,8 @@ import { WishlistComponent } from './views/wishlist/wishlist.component';
 import { ArchivedComponent } from './views/archived/archived.component';
 import { FavoriteComponent } from './views/favorite/favorite.component';
 import { LearningGuard } from './guards/learning.guard';
+import { LessonsService } from './services/lessons.service';
+import { LessonResolver } from './resolvers/lesson-resolver.service';
 
 @NgModule({
     declarations: [
@@ -51,6 +53,12 @@ import { LearningGuard } from './guards/learning.guard';
         FavoriteComponent,
     ],
     imports: [CommonModule, CoursesRoutingModule, SharedModule],
-    providers: [CoursesService, CheckoutGuard, LearningGuard]
+    providers: [
+      CoursesService,
+      CheckoutGuard,
+      LearningGuard,
+      LessonsService,
+      LessonResolver
+    ]
 })
 export class CoursesModule {}

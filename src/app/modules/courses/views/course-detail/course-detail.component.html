@@ -133,7 +133,8 @@
     </div>
     <!-- Reviews tab content -->
     <div *ngIf="currentTab === 'reviews'" class="tab tab-reviews">
-      <div class="reviews-title">{{ course.totalReviews }} reviews</div>
+      <div *ngIf="course.totalReviews" class="reviews-title">{{ course.totalReviews }} reviews</div>
+      <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="reviews-title">0 reviews</div>
       <div class="reviews-container">
         <div
           class="review-card"
@@ -158,7 +159,7 @@
 
 <div class="divider"></div>
 
-<section *ngIf="relatedCourses.length > 0" class="courses-section">
+<section *ngIf="relatedCourses && relatedCourses.length > 0" class="courses-section">
   <div class="courses-container">
     <div class="title-container">
       <div class="title">You might also be interested in</div>

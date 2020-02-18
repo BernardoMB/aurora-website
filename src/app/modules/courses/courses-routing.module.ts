@@ -16,6 +16,8 @@ import { WishlistComponent } from './views/wishlist/wishlist.component';
 import { ArchivedComponent } from './views/archived/archived.component';
 import { FavoriteComponent } from './views/favorite/favorite.component';
 import { LearningGuard } from './guards/learning.guard';
+import { LessonResolver } from './resolvers/lesson-resolver.service';
+import { LessonsService } from './services/lessons.service';
 
 /* courses/  */
 const routes: Routes = [
@@ -45,7 +47,7 @@ const routes: Routes = [
     component: LearnComponent,
     canActivate: [LearningGuard],
     children: [
-      { path: 'lesson/:id', component: LessonComponent }
+      { path: 'lesson/:id', component: LessonComponent, resolve: { lesson: LessonResolver } }
     ],
   },
   {

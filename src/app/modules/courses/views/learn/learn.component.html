@@ -1,6 +1,6 @@
 <section class="lerning-header">
   <div class="header-container">
-    <div class="course-title">{{ course.name }}</div>
+    <div *ngIf="course" class="course-title">{{ course.name }}</div>
   </div>
 </section>
 
@@ -51,7 +51,7 @@
       <!-- About tab content -->
       <div *ngIf="currentTab === 'about'" class="tab tab-about">
         <div class="description-title">Description</div>
-        <div class="description-content" [innerHTML]="course.overview"></div>
+        <div *ngIf="course" class="description-content" [innerHTML]="course.overview"></div>
       </div>
       <!-- Lessons tab content -->
       <div *ngIf="currentTab === 'lessons'" class="tab tab-lessons">
@@ -92,7 +92,7 @@
   <div class="sidebar-container">
     <div class="sidebar">
       <div class="sidebar-header">Course content</div>
-      <div class="lesson-card-container">
+      <div *ngIf="course && course.lessons && course.lessons.length > 0" class="lesson-card-container">
         <div *ngFor="let lesson of course.lessons; let i = index">
           <div class="lesson-container">
             <div class="left">
@@ -117,7 +117,7 @@
                     subject
                   </i>
                   <i *ngIf="lesson.type === 'VIDEO'" class="material-icons">
-                    movie
+                    play_circle_outline
                   </i>
                 </div>
                 <div class="duration">
@@ -144,7 +144,7 @@
   </div>
 </div>
 
-<section *ngIf="relatedCourses.length > 0" class="courses-section">
+<section *ngIf="relatedCourses && relatedCourses.length > 0" class="courses-section">
   <div class="courses-container">
     <div class="title-container">
       <div class="title">You might also be interested in</div>
