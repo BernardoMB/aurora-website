@@ -200,3 +200,7 @@ $focus-outline-thickeness: 2px;
 .mat-form-field-appearance-outline .mat-form-field-outline-thick {
   color: #408e2d;
 }
+
+.mat-tab-body-content {
+  overflow-y: hidden !important;
+}

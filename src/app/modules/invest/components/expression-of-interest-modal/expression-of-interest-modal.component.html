@@ -1,0 +1,106 @@
+<form [formGroup]="expressionOfInterestForm">
+  <h1 mat-dialog-title>IPO Transaction</h1>
+  <div mat-dialog-content *ngIf="stage === 0">
+    <mat-form-field>
+      <mat-label>Available IPOs</mat-label>
+      <mat-select formControlName="availableIPOs">
+        <mat-option [value]="'West National Inc.'">
+          West National Inc.
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Surname</mat-label>
+      <input matInput formControlName="surname" type="text" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Firstname</mat-label>
+      <input matInput formControlName="firstName" type="text" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Middle name</mat-label>
+      <input matInput formControlName="middleName" type="text" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Address</mat-label>
+      <input matInput formControlName="address" type="text" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Phonenumber</mat-label>
+      <input matInput formControlName="phoneNumber" type="text" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Bank name</mat-label>
+      <input matInput formControlName="bankName" type="text" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Bank account number</mat-label>
+      <input matInput formControlName="bankAccountNumber" type="text" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>How much are you willing to invest?</mat-label>
+      <mat-select formControlName="availableInvestment">
+        <mat-option
+          *ngFor="let amountToInvest of amountsToInvest"
+          [value]="amountToInvest"
+        >
+          {{ amountToInvest }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-content class="results" *ngIf="stage === 1">
+    <app-expression-of-interest-review
+      [expressionOfInterest]="expressionOfInterestForm.value"
+    >
+    </app-expression-of-interest-review>
+    <div class="confirm">
+      <div class="left">
+        <mat-checkbox [formControl]="confirmFormControl"></mat-checkbox>
+      </div>
+      <div class="right">
+        Please read our
+        <a href="https://www.chapelhilldenham.com/" target="_blank"
+          >Terms and Conditions</a
+        >
+        and check the box when you are finished to continue.
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button *ngIf="stage === 0" [mat-dialog-close]="" color="accent">
+      Cancel
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!expressionOfInterestForm.valid"
+      *ngIf="stage === 0"
+      (click)="stage = 1"
+      cdkFocusInitial
+    >
+      Continue
+    </button>
+    <button
+      mat-raised-button
+      *ngIf="stage === 1"
+      (click)="stage = 0"
+      color="accent"
+    >
+      Back
+    </button>
+    <button
+      mat-raised-button
+      *ngIf="stage === 1"
+      (click)="onSubmit()"
+      color="primary"
+      [disabled]="!confirmFormControl.valid"
+    >
+      Continue
+    </button>
+  </div>
+</form>

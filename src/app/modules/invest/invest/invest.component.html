@@ -1,0 +1,43 @@
+<section class="container">
+  <div class="not-signed-in" *ngIf="(transactions$ | async).length === 0">
+    <div class="card">
+      <div class="left"></div>
+      <div class="right">
+        <h1>Start investing</h1>
+        <p>
+          Build your investment portfolio. Invest in the world's most popular
+          shares. Trading and investment have never been easier.
+        </p>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onOpenExpressionOfInterestModal()"
+        >
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="signed-in" *ngIf="(transactions$ | async).length > 0">
+    <div class="top">
+      <div class="left">
+        <app-account-card [account]="dummyAcount$ | async"></app-account-card>
+      </div>
+      <div class="right">
+        <button
+          mat-fab
+          color="accent"
+          (click)="onOpenExpressionOfInterestModal()"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="bottom">
+      <app-transactions-table
+        [dataSource]="transactions$ | async"
+        (onRowSelected)="onRowSelected($event)"
+      ></app-transactions-table>
+    </div>
+  </div>
+</section>
