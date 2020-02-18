@@ -281,6 +281,7 @@
   // ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f5e11', endColorstr='#eb6c00',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
   background-color: #f3f3f3;
+  border-bottom: 1px solid gainsboro;
   .tabs-container {
     padding: 20px 20px;
     max-width: 1180px;

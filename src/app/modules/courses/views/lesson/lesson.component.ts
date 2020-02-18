@@ -24,6 +24,7 @@ export class LessonComponent implements OnInit {
     this.decryptionKeyToken = '';
     this.route.data.subscribe((data: any) => {
       if (data.lesson) {
+        console.log('Lesson', data.lesson);
         this.lesson = data.lesson;
       }
     });

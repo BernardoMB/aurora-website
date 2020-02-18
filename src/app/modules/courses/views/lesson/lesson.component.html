@@ -1,4 +1,4 @@
-<div class="player-container">
+<div *ngIf="lesson.type === 'VIDEO'" class="player-container">
   <div class="player-wrapper">
     <app-amp-player
       id="vid1"
@@ -11,7 +11,19 @@
   </div>
 </div>
 
-<div class="article-container"></div>
+<div *ngIf="lesson.type === 'ARTICLE'" class="article-container">
+  <div class="article" [innerHTML]="lesson.article" ></div>
+</div>
 
-<div class="document-container"></div>
+<div *ngIf="lesson.type === 'DOCUMENT'" class="document-container">
+  <div class="document">
+    <i class="material-icons">insert_drive_file</i>
+    <div class="lesson-title">{{lesson.title}}</div>
+    <div class="read-time">
+      <div>{{ lesson.readTime | readTime }}</div>
+      <i class="material-icons">menu_book</i>
+    </div>
+    <button class="download-button">Download</button>
+  </div>
+</div>
 
