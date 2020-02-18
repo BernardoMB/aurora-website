@@ -1,0 +1,46 @@
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <!-- Position Column -->
+  <ng-container matColumnDef="operation">
+    <mat-header-cell *matHeaderCellDef> Operation </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <div class="operation" [style.color]="operationColors[element.operation]">
+        {{ element.operation | uppercase }}
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="type">
+    <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{ transactionTypes[element.transactionType] }}
+    </mat-cell>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="amount">
+    <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <div *ngIf="element.transactionType == 'ExpressionOfInterest'">
+        {{ element.amount }}
+      </div>
+      <div *ngIf="element.transactionType != 'ExpressionOfInterest'">
+        {{ element.amount | currency: '₦' }}
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="performedDate">
+    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      {{ element.performedDate | date: 'medium' }}
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row
+    *matRowDef="let row; columns: displayedColumns; let i = index"
+    (click)="onRowSelected.next({ transaction: row, index: i })"
+  ></mat-row>
+</mat-table>

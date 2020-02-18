@@ -1,0 +1,61 @@
+$aurora-green: #1f5e11;
+$inflow: #8cdcc8;
+$outlfow: #b9b381;
+
+.card {
+  background: $aurora-green;
+  position: relative;
+  padding: 48px 36px 18px;
+  border-radius: 12px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  color: white;
+  overflow: hidden;
+  .balance {
+    display: flex;
+    position: relative;
+    z-index: 3;
+    .amount {
+      font-size: 2.2em;
+      margin-left: 8px;
+      font-weight: 400;
+    }
+  }
+  .subtitle {
+    position: relative;
+    z-index: 3;
+    opacity: 0.8;
+    font-size: 0.85em;
+    letter-spacing: 1px;
+    font-weight: lighter;
+    margin: 8px 0 12px;
+  }
+  .in-out {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    .flow {
+      font-size: 0.85em;
+      h3 {
+        margin: 0 0 4px;
+        font-size: 1em;
+        letter-spacing: 1px;
+        font-weight: 500;
+      }
+    }
+    .inflow {
+      color: $inflow;
+    }
+    .outflow {
+      color: $outlfow;
+    }
+  }
+  .icon {
+    position: absolute;
+    z-index: 1;
+    height: 125px;
+    bottom: -28px;
+    opacity: 0.3;
+    right: -15px;
+  }
+}

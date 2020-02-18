@@ -1,0 +1,54 @@
+$aurora-green: #1f5e11;
+
+.not-signed-in {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 62vh;
+  .card {
+    display: flex;
+    flex-direction: row;
+    margin: 48px 24px;
+    border-radius: 12px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    .left {
+      width: 250px;
+      background-image: url('/assets/img/backgrounds/wom_saving.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 12px 0 0 12px;
+    }
+
+    .right {
+      h1 {
+        font-weight: lighter;
+      }
+      background-color: $aurora-green;
+      text-align: center;
+      padding: 16px;
+      color: white;
+      border-radius: 0 12px 12px 0;
+      max-width: 250px;
+      box-sizing: border-box;
+      button {
+        min-width: 75%;
+        margin: 12px 0 24px;
+      }
+    }
+  }
+}
+
+.signed-in {
+  box-sizing: border-box;
+  padding: 40px 20px;
+  max-width: 1180px;
+  min-height: 62vh;
+  margin: 0 auto;
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+}

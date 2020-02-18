@@ -1,0 +1,20 @@
+$aurora-green: #1f5e11;
+
+table {
+  width: 100%;
+}
+
+.operation {
+  font-weight: bold;
+}
+
+mat-header-cell {
+  color: $aurora-green;
+}
+
+mat-row {
+  cursor: pointer;
+  &:hover {
+    background-color: rgba($color: #000000, $alpha: 0.05);
+  }
+}
