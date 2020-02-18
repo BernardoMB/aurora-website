@@ -1,3 +1,16 @@
+<section class="categories-header">
+  <div class="categories-header-container">
+    <div class="category-container focus-outline"
+      tabindex="0"
+      *ngFor="let category of featuredCategories"
+      [routerLink]="['./categories', category.id]"
+    >
+      <i class="material-icons">{{category.materialIcon}}</i>
+      <div>{{category.name}}</div>
+    </div>
+  </div>
+</section>
+
 <section class="courses-jumbotron-section">
   <div class="jumbotron-wrapper">
     <div class="jumbotron-wrapper-overlay">
@@ -13,11 +26,11 @@
   </div>
 </section>
 
-<section *ngIf="featuredCourses.length > 0" class="courses-section">
+<section *ngIf="featuredCourses && featuredCourses.length > 0" class="courses-section">
   <div class="courses-container">
     <div class="title-container">
       <div class="title">Featured</div>
-      <a>View all</a>
+      <a [routerLink]="['/courses/all']">View all</a>
     </div>
     <div class="cards-container">
       <div
@@ -32,18 +45,31 @@
 
 <div class="divider"></div>
 
-<section *ngIf="categories.length > 0" class="categories-section">
+<section *ngIf="topCategories && topCategories.length > 0" class="categories-section">
   <div class="categories-container">
     <div class="categories-title-container">
-      <div class="categories-title">Categories</div>
+      <div class="categories-title">Top Categories</div>
       <a>View all</a>
     </div>
     <div class="categories-cards-container">
-      <div
+      <!-- <div
         class="category-card"
-        *ngFor="let category of categories; let i = index"
+        *ngFor="let category of topCategories; let i = index"
       >
         <app-category-card [category]="category"></app-category-card>
+      </div> -->
+      <div
+        class="category-card-2"
+        *ngFor="let category of topCategories; let i = index"
+      >
+        <div
+          class="card-container focus-outline"
+          tabindex="0"
+          [routerLink]="['./categories', category.id]"
+        >
+          <i class="material-icons">{{category.materialIcon}}</i>
+          <div class="category-name">{{category.name}}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -51,7 +77,7 @@
 
 <div class="divider"></div>
 
-<section *ngIf="recentCourses.length > 0" class="courses-section">
+<section *ngIf="recentCourses && recentCourses.length > 0" class="courses-section">
   <div class="courses-container">
     <div class="title-container">
       <div class="title">Rencently Added</div>
@@ -70,7 +96,7 @@
 
 <div class="divider"></div>
 
-<section *ngIf="trendingCourses.length > 0" class="courses-section">
+<section *ngIf="trendingCourses && trendingCourses.length > 0" class="courses-section">
   <div class="courses-container">
     <div class="title-container">
       <div class="title">Trending</div>

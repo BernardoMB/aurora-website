@@ -17,6 +17,15 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ReviewCardComponent } from './components/review-card/review-card.component';
 import { CoursesService } from './services/courses.service';
 import { AmpPlayerComponent } from './components/amp-player/amp-player.component';
+import { ExpressCheckoutComponent } from './views/express-checkout/express-checkout.component';
+import { CheckoutComponent } from './views/checkout/checkout.component';
+import { CheckoutGuard } from './guards/checkout.guard';
+import { MyCoursesComponent } from './views/my-courses/my-courses.component';
+import { AllMyCoursesComponent } from './views/all-my-courses/all-my-courses.component';
+import { WishlistComponent } from './views/wishlist/wishlist.component';
+import { ArchivedComponent } from './views/archived/archived.component';
+import { FavoriteComponent } from './views/favorite/favorite.component';
+import { LearningGuard } from './guards/learning.guard';
 
 @NgModule({
     declarations: [
@@ -33,8 +42,15 @@ import { AmpPlayerComponent } from './components/amp-player/amp-player.component
         LessonCardComponent,
         ReviewCardComponent,
         AmpPlayerComponent,
+        ExpressCheckoutComponent,
+        CheckoutComponent,
+        MyCoursesComponent,
+        AllMyCoursesComponent,
+        WishlistComponent,
+        ArchivedComponent,
+        FavoriteComponent,
     ],
     imports: [CommonModule, CoursesRoutingModule, SharedModule],
-    providers: [CoursesService]
+    providers: [CoursesService, CheckoutGuard, LearningGuard]
 })
 export class CoursesModule {}

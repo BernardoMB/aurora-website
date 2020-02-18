@@ -1,0 +1,78 @@
+<section class="cart-view-header">
+  <div class="cart-view-header-container">
+    <h1 class="title">Checkout</h1>
+  </div>
+</section>
+
+<section class="cart-section">
+  <div class="cart-container">
+    <div class="shopping-container">
+      <div class="payment-info">
+        <div class="title">Payment Info</div>
+        <div class="payment-options">
+          <div class="options">Credit or Debit Card</div>
+          <img class="mastercard" src="assets/img/payment/card-mc.svg" alt="MasterCard">
+          <img class="visa" src="assets/img/payment/card-visa.svg" alt="VISA">
+          <img class="amex" src="assets/img/payment/card-amex.svg" alt="AMEX">
+        </div>
+        <div class="form-container">
+          Inputs
+        </div>
+      </div>
+      <div class="checkout-card">
+        <div class="total-label">Total:</div>
+        <div class="total">{{ total | currency: 'NGN':'symbol-narrow' }}</div>
+        <div *ngIf="total !== subtotal" class="subtotal">
+          {{ subtotal | currency: 'NGN':'symbol-narrow' }}
+        </div>
+        <button class="checkout-button focus-outline" (click)="onCompletePayment()">Complete Payment</button>
+      </div>
+    </div>
+    <div class="order-summary">
+      <div class="title">Your order</div>
+      <div *ngIf="course" class="course-item">
+        <div
+          class="course-image focus-outline"
+          tabindex="0"
+          [routerLink]="['/courses', course.id]"
+          [style.backgroundImage]="'url(' + course.imgUrl + ')'"
+        ></div>
+        <div class="course-details">
+          <div class="course-name focus-outline" tabindex="0" [routerLink]="['/courses', course.id]">{{ course.name }}</div>
+          <div class="category-container">
+            <div
+              class="category-color-indicator"
+              [style.backgroundColor]="course.category.hexColor"
+            ></div>
+            <div class="category-name">{{ course.category.name }}</div>
+          </div>
+        </div>
+        <div class="action-items">
+          <a
+            class="focus-outline"
+            tabindex="0"
+            (click)="onRemoveFromOrder(course)"
+            (keyup.enter)="onRemoveFromOrder(course)"
+            >Remove</a
+          >
+        </div>
+        <div class="price-container">
+          <div class="price">
+            {{
+              course.price * (1 - course.discount)
+                | currency: 'NGN':'symbol-narrow'
+            }}<i class="material-icons">
+              local_offer
+            </i>
+          </div>
+          <div *ngIf="course.discount > 0" class="discount-container">
+            <div class="list-price">
+              {{ course.price | currency: 'NGN':'symbol-narrow' }}
+            </div>
+            <div class="discount">{{ course.discount * 100 }}% off</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

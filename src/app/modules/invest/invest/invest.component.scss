@@ -4,7 +4,6 @@ $aurora-green: #1f5e11;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 62vh;
   .card {
     display: flex;
     flex-direction: row;
@@ -43,7 +42,6 @@ $aurora-green: #1f5e11;
   box-sizing: border-box;
   padding: 40px 20px;
   max-width: 1180px;
-  min-height: 62vh;
   margin: 0 auto;
   .top {
     display: flex;

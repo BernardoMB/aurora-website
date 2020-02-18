@@ -29,3 +29,25 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Postman collection
 
 https://www.getpostman.com/collections/86501829d7d45ac17cb3
+
+## Cart
+
+To see how cart functionality works see Bernardo's OneNote notes
+
+## TODOS:
+
+- Add course Categories to store for more efficiency usign NgRx Entity
+- Implement auth guards on the following routes:
+  * my courses
+  * checkout
+- Implement propper redirections when the user logs out
+- Components that require authentication (Ej. AllMycoursesComponent) should not redirect to any route when they receive no user inside the user subscription. The login with token failure effect should take care of the redirection the a not authenticated route.
+- Test refreshing every route in the following cases:
+  * logged in
+  * not logged in
+  * logged in and invalid token
+- Test loggin out on every route
+- Test accesing every route in the following cases:
+  * logged in
+  * not logged in
+  * logged in and invalid token

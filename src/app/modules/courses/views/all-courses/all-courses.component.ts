@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Course } from '../../../../shared/models/course.model';
+import { CoursesService } from '../../services/courses.service';
 
 @Component({
   selector: 'app-all-courses',
   templateUrl: './all-courses.component.html',
   styleUrls: ['./all-courses.component.scss'],
 })
-export class AllCoursesComponent implements OnInit {
+export class AllCoursesComponent implements OnInit, OnDestroy {
   // TODO: this courses array will be obatined by a call to the server with pagination
   // Fake data
-  courses = [
+  courses1 = [
     {
       public: true,
       labels: [
@@ -686,7 +689,22 @@ export class AllCoursesComponent implements OnInit {
     },
   ];
 
-  constructor() {}
+  coursesSubscription: Subscription;
+  courses: Course[];
 
-  ngOnInit() {}
+  constructor(
+    private coursesService: CoursesService
+  ) {}
+
+  ngOnInit() {
+    this.coursesSubscription = this.coursesService.getRecentCourses(undefined, undefined).subscribe((courses: Course[]) => {
+      if (courses && courses.length > 0) {
+        this.courses = courses;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.coursesSubscription.unsubscribe();
+  }
 }

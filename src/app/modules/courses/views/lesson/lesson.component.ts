@@ -30,7 +30,7 @@ export class LessonComponent implements OnInit {
     adaptiveStreamingUrl:
       // tslint:disable-next-line: max-line-length
       // 'https://courses-euwe.streaming.media.azure.net/9c7769ff-605a-422c-95b6-54ac0124e72f/8a45abf671e0f1389f05b05a310d848f.ism/manifest(encryption=cbc)',
-      '//amssamples.streaming.mediaservices.windows.net/3b970ae0-39d5-44bd-b3a3-3136143d6435/AzureMediaServicesPromo.ism/manifest',
+      'https://courses-euwe.streaming.media.azure.net/0612b23e-bba2-4ac7-9f9f-00aaea47d9f7/unicorn.ism/manifest',
     readTime: null,
     id: '5df023246c985f0024febd91',
   };

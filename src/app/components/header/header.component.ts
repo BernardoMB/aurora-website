@@ -7,19 +7,24 @@ import {
   Inject,
   PLATFORM_ID,
   OnDestroy,
+  ViewChild,
 } from '@angular/core';
 import { WindowRef } from '../../providers/window.provider';
 import { DocumentRef } from '../../providers/document.provider';
-import { isPlatformBrowser, Location } from '@angular/common';
-import { of, fromEvent, Subscription, Observable } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
+import { of, fromEvent, Subscription } from 'rxjs';
 import { map, pairwise, switchMap, throttleTime, filter } from 'rxjs/operators';
 import { User } from '../../shared/models/user.model';
-import { Route, ActivatedRoute, Router, NavigationEnd, Event, RoutesRecognized, RouterState, UrlSegment } from '@angular/router';
-import { log } from '../../shared/utils';
+import { ActivatedRoute, Router, NavigationEnd, Event } from '@angular/router';
+import { Category } from 'src/app/shared/models/category.model';
+import { CoursesService } from 'src/app/modules/courses/services/courses.service';
+import { Store, select } from '@ngrx/store';
+import { AuthState } from '../../store/auth/auth.state';
+import { selectAuthCart } from '../../store/auth/auth.selectors';
+import { MatMenuTrigger } from '@angular/material';
 
 /**
  * The header of the application.
- * This is a dummy component.
  *
  * @export
  */
@@ -29,14 +34,15 @@ import { log } from '../../shared/utils';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  usor: User = undefined;
+  @ViewChild(MatMenuTrigger, { static: true }) cartMenuTrigger: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger, { static: true }) userMenuTrigger: MatMenuTrigger;
+  usr: User = undefined;
   @Input() set user(user: User) {
-    this.usor = user || undefined;
+    this.usr = user || undefined;
   }
   get user() {
-    return this.usor;
+    return this.usr;
   }
-  showUserMenu = false;
   @Output() login: EventEmitter<void> = new EventEmitter();
   @Output() logout: EventEmitter<void> = new EventEmitter();
   @Output() register: EventEmitter<void> = new EventEmitter();
@@ -48,7 +54,32 @@ export class HeaderComponent implements OnInit, OnDestroy {
   loggedIn: boolean;
   currentSection = '';
   routerSubscription: Subscription;
-  private history = [];
+  cartSubscription: Subscription;
+  showCategories = false;
+  categories: Category[];
+  cart: any[];
+  showGoToCartButton = true;
+  private routeHistory = [];
+  get subtotal() {
+    let subtotal = 0;
+    if (this.cart) {
+      this.cart.forEach(course => {
+        subtotal = subtotal + course.price;
+      });
+      return subtotal;
+    }
+    return 0;
+  }
+  get total() {
+    let total = 0;
+    if (this.cart) {
+      this.cart.forEach(course => {
+        total = total + course.price * (1 - course.discount);
+      });
+      return total;
+    }
+    return 0;
+  }
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -56,24 +87,48 @@ export class HeaderComponent implements OnInit, OnDestroy {
     @Inject(DocumentRef) private documentRef: DocumentRef,
     private router: Router,
     private readonly route: ActivatedRoute,
+    private coursesService: CoursesService,
+    private authStore: Store<AuthState>,
   ) {
     this.loggedIn = false;
-
-    this.router.events.pipe(
+    this.routerSubscription = this.router.events.pipe(
       filter((event: Event) => {
         return event instanceof NavigationEnd;
       })
     ).subscribe((event: NavigationEnd) => {
-      this.history = [...this.history, event.urlAfterRedirects];
-      console.log('Event Id:', event.id);
+      // #region History of routes
+      /**
+       * Uncomment the code below if the header cares for
+       * the previous route requested
+       */
+      /* this.routeHistory = [...this.routeHistory, event.urlAfterRedirects];
       if (event.id === 1 && this.route.firstChild.snapshot.url[0].path === 'courses') {
-        console.log('FETCH CATEGORIES!');
+        this.getCategories();
       }
-      if (event.id !== 1) {
+      if (event.id !== 1 && this.route.firstChild.snapshot.url[0].path === 'courses') {
         const previousPath = this.history[this.history.length - 2];
-        console.log('previousPath', previousPath);
         if (!previousPath.includes('courses')) {
-          console.log('FETCH CATEGORIES!');
+          this.getCategories();
+        }
+      } */
+      // #endregion
+      this.showCategories = false; // <-- default ui state
+      if (this.route.firstChild.snapshot.url[0].path === 'courses') {
+        this.showCategories = true;
+        this.getCategories();
+      }
+      // The following code hides the Go to cart button from the cart menu if the
+      // user is already in the cart view
+      this.showGoToCartButton = true; // <-- default ui state
+      if (this.route.firstChild.firstChild) {
+        if (this.route.firstChild.firstChild.snapshot.url[0]) {
+          // console.log('URL', this.route.firstChild.firstChild.snapshot.url);
+          if (this.route.firstChild.firstChild.snapshot.url[0].path === 'cart') {
+            this.showGoToCartButton = false;
+          }
+          if (this.route.firstChild.firstChild.snapshot.url[1]) {
+            this.showGoToCartButton = true;
+          }
         }
       }
     });
@@ -139,10 +194,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
         });
     }
     // #endregion sections logic
+    this.cartSubscription = this.authStore.pipe(select(selectAuthCart)).subscribe((cart: any[]) => {
+      if (cart) {
+        this.cart = cart;
+      }
+    });
   }
 
   ngOnDestroy() {
-    // TODO: unsubscribe router subscription
+    this.routerSubscription.unsubscribe();
+    this.cartSubscription.unsubscribe();
+  }
+
+  getCategories() {
+    this.coursesService.getCategories().subscribe((categories: Category[]) => {
+      if (categories) {
+        this.categories = categories;
+        this.showCategories = true;
+      }
+    });
   }
 
   onLogin() {
@@ -153,12 +223,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.logout.emit();
   }
 
-  onRegister() {
-    this.register.emit();
+  onGoToCourse(courseId: string) {
+    console.log(`Header component: Redirecting to /courses/${courseId}`);
+    this.router.navigate(['/courses', courseId]);
   }
 
-  onViewMayCourses() {
-    // TODO: implement this function
+  onRegister() {
+    this.register.emit();
   }
 
   onHelp() {

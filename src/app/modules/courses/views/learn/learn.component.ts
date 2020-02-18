@@ -549,7 +549,7 @@ export class LearnComponent implements OnInit {
 
   courseId: string;
   authenticatedUser: Observable<User>;
-  purchasedCourse: { progress: string[]; course: Course };
+  purchasedCourse: { progress: string[]; course: string };
   userProgress: string[];
   currentTab = 'about';
 
@@ -566,8 +566,8 @@ export class LearnComponent implements OnInit {
     this.authenticatedUser.subscribe(user => {
       if (user) {
         const purchasedCourse = user.purchasedCourses.find(
-          (el: { progress: string[]; course: Course }) =>
-            el.course.id === this.course.id,
+          (el: { progress: string[]; course: string }) =>
+            el.course === this.course.id,
         );
         this.purchasedCourse = purchasedCourse;
         if (purchasedCourse) {

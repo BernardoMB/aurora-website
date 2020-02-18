@@ -6,16 +6,18 @@
 
 <section class="cart-section">
   <div class="cart-container">
-    <div class="cart-counter">{{ cart.length }} Courses in Cart</div>
-    <div *ngIf="cart.length > 0" class="shopping-container">
+    <div *ngIf="cart" class="cart-counter">{{ cart.length }} Courses in Cart</div>
+    <div *ngIf="cart && cart.length > 0" class="shopping-container">
       <div class="courses-list">
         <div *ngFor="let course of cart; let i = index" class="course-item">
           <div
-            class="course-image"
+            class="course-image focus-outline"
+            tabindex="0"
+            [routerLink]="['/courses', course.id]"
             [style.backgroundImage]="'url(' + course.imgUrl + ')'"
           ></div>
           <div class="course-details">
-            <div class="course-name">{{ course.name }}</div>
+            <div class="course-name focus-outline" tabindex="0" [routerLink]="['/courses', course.id]">{{ course.name }}</div>
             <div class="category-container">
               <div
                 class="category-color-indicator"
@@ -28,8 +30,8 @@
             <a
               class="focus-outline"
               tabindex="0"
-              (click)="removeCourseFromCart(course.id)"
-              (keyup.enter)="removeCourseFromCart(course.id)"
+              (click)="onRemoveCourseFromCart(course)"
+              (keyup.enter)="onRemoveCourseFromCart(course)"
               >Remove</a
             >
           </div>
@@ -57,16 +59,16 @@
         <div *ngIf="total !== subtotal" class="subtotal">
           {{ subtotal | currency: 'NGN':'symbol-narrow' }}
         </div>
-        <button class="checkout-button">Checkout</button>
+        <button class="checkout-button focus-outline" (click)="onCheckout()">Checkout</button>
       </div>
     </div>
-    <div *ngIf="cart.length === 0" class="empty-container">
+    <div *ngIf="!cart || cart.length === 0" class="empty-container">
       <div class="empty-card">
         <i class="material-icons">shopping_cart</i>
         <div class="shopping-phrase">
           Your cart is empty. Courses you want to buy will appear here!
         </div>
-        <button class="keep-shopping-button focus-outline">
+        <button class="keep-shopping-button focus-outline" [routerLink]="['/courses']">
           Keep shopping
         </button>
       </div>
@@ -76,12 +78,12 @@
       <div class="title">Rencently wishlisted</div>
       <a>View all</a>
     </div>
-    <div *ngIf="wishList.length > 0" class="cards-container">
+    <div *ngIf="wishList && wishList.length > 0" class="cards-container">
       <div class="course-card" *ngFor="let course of wishList; let i = index">
         <app-course-card [course]="course"></app-course-card>
       </div>
     </div>
-    <div *ngIf="wishList.length === 0" class="empty-wishlist-phrase">
+    <div *ngIf="!wishList || wishList.length === 0" class="empty-wishlist-phrase">
       You haven't added any courses to you wishlist.
     </div>
   </div>

@@ -1,5 +1,6 @@
 $aurora-green: #1f5e11;
-$max-width: 1400px;
+$max-width: 1440px;
+$section-padding: 0px 20px;
 h2,
 h3 {
   color: $aurora-green;
@@ -16,7 +17,7 @@ p {
 
 .container {
   min-height: 50vh;
-  background: #f3f3f3;
+  background: white;
 }
 
 .text-block {
@@ -68,20 +69,33 @@ p {
 
 .leading {
   max-width: $max-width;
+  padding: $section-padding;
   margin: 0 auto;
   background: white;
-  border-right: 1px solid gainsboro;
-  border-left: 1px solid gainsboro;
-  border-bottom: 1px solid gainsboro;
   .right {
     height: 350px;
-    background: #134e5e;
-    background: linear-gradient(to right, #134e5e, #71b280);
+    background-size: cover;
+    resize: both;
+    background-position-x: center;
+    background-position-y: center;
+    background-image: url('/assets/img/landing/elegant-man.jpg');
+    position: relative;
+    &:after {
+      background: #134e5e77;
+      background: linear-gradient(to right, #134e5e67, #71b28060);
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
   }
 }
 
 .info-wrapper {
-  max-width: 1100px;
+  max-width: $max-width;
+  padding: $section-padding;
   width: 100%;
   margin: 0 auto;
   .info {
@@ -115,51 +129,91 @@ p {
 
 .service {
   max-width: $max-width;
+  padding: $section-padding;
   margin: 0 auto;
   background: white;
-  border-top: 1px solid gainsboro;
-  border-right: 1px solid gainsboro;
-  border-left: 1px solid gainsboro;
-  padding-top: 48px;
   .left {
     height: calc(100% - 96px);
     margin: 48px;
-    background: #134e5e;
-    background: linear-gradient(to right, #134e5e, #71b280);
     border-radius: 24px;
+    background-size: cover;
+    resize: both;
+    background-position-x: center;
+    background-position-y: center;
+    background-image: url('/assets/img/landing/feedback.jpg');
+    position: relative;
+    &:after {
+      border-radius: 24px;
+      background: #134e5e77;
+      background: linear-gradient(to right, #134e5e67, #71b28060);
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
   }
 }
 
 .app {
   max-width: $max-width;
+  padding: $section-padding;
   margin: 0 auto;
   background: white;
-  border-right: 1px solid gainsboro;
-  border-left: 1px solid gainsboro;
   .right {
     height: calc(100% - 96px);
     margin: 48px;
-    background: #134e5e;
-    background: linear-gradient(to right, #134e5e, #71b280);
     border-radius: 24px;
+    background-size: cover;
+    resize: both;
+    background-position-x: center;
+    background-position-y: center;
+    background-image: url('/assets/img/landing/server-rack.jpg');
+    position: relative;
+    &:after {
+      border-radius: 24px;
+      background: #134e5e77;
+      background: linear-gradient(to right, #134e5e67, #71b28060);
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
   }
 }
 
 .events {
   max-width: $max-width;
+  padding: $section-padding;
   margin: 0 auto;
   background: white;
-  border-right: 1px solid gainsboro;
-  border-left: 1px solid gainsboro;
-  padding-bottom: 48px;
   .left {
     height: calc(100% - 96px);
     margin: 48px;
-    background: #134e5e;
-    background: linear-gradient(to right, #134e5e, #71b280);
     border-radius: 24px;
+    background-size: cover;
+    resize: both;
+    background-position-x: center;
+    background-position-y: center;
+    background-image: url('/assets/img/landing/sign-contract.jpg');
+    position: relative;
+    &:after {
+      border-radius: 24px;
+      background: #134e5e77;
+      background: linear-gradient(to right, #134e5e67, #71b28060);
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
   }
 }
+
 .community-wrapper {
   background-image: url('/assets/img/backgrounds/collaborate.jpg');
   background-attachment: fixed;
@@ -191,16 +245,30 @@ p {
 
 .help {
   max-width: $max-width;
+  padding: $section-padding;
   margin: 0 auto;
   background: white;
-  border-right: 1px solid gainsboro;
-  border-left: 1px solid gainsboro;
   .right {
     height: calc(100% - 96px);
     margin: 48px;
-    background: #134e5e;
-    background: linear-gradient(to right, #134e5e, #71b280);
     border-radius: 24px;
+    background-size: cover;
+    resize: both;
+    background-position-x: center;
+    background-position-y: center;
+    background-image: url('/assets/img/landing/statistics.jpg');
+    position: relative;
+    &:after {
+      border-radius: 24px;
+      background: #134e5e77;
+      background: linear-gradient(to right, #134e5e67, #71b28060);
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
   }
 }
 

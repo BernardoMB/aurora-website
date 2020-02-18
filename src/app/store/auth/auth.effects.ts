@@ -15,12 +15,29 @@ import {
   loginWithTokenFailure,
   logout,
   signupFailure,
+  addCourseToCart,
+  addCourseToCartSuccess,
+  addCoursesToCart,
+  addCoursesToCartSuccess,
+  addCoursesToCartFailure,
+  removeCourseFromCartSuccess,
+  removeCourseFromCartFailure,
+  addCourseToCartFailure,
+  removeCourseFromCart,
+  purchaseCartSuccess,
+  purchaseCartFailure,
+  purchaseCart,
+  purchaseCourse,
+  purchaseCourseSuccess,
+  purchasecourseFailure,
 } from './auth.actions';
 import { of } from 'rxjs';
-import { GetUserDto } from '../../shared/dtos/get-user.dto';
 import { CookieService } from 'ngx-cookie-service';
 import { log } from '../../shared/utils';
 import { HttpErrorResponse } from '@angular/common/http';
+import { User } from '../../shared/models/user.model';
+import { Course } from '../../shared/models/course.model';
+import { Router } from '@angular/router';
 
 /**
  * Authentication effects
@@ -36,14 +53,11 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.signin(action.username, action.password).pipe(
           map((responseBody: { accessToken: string }) => {
-            this.cookieService.set('userToken', responseBody.accessToken);
-            // TODO: use environment variables below
-            // this.cookieService.set('userToken', responseBody.accessToken, undefined, '/', 'http://localhost:4200', true, 'Strict');
+            this.cookieService.delete('userToken', '/');
+            this.cookieService.set('userToken', responseBody.accessToken, null, '/');
             return loginSuccess();
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            log('Catched error from service:', errorResponse);
-            log('Dispatching login failure action');
             return of(
               loginFailure({
                 error: errorResponse,
@@ -61,17 +75,8 @@ export class AuthEffects {
       ofType(loginSuccess),
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
-          map((responseBody: GetUserDto) => {
-            log('loginSuccessEffect:', responseBody);
-            return getUserInfoSuccess({
-              id: responseBody.id,
-              email: responseBody.email,
-              username: responseBody.username,
-              emailVerified: responseBody.emailVerified,
-              name: responseBody.name,
-              lastName: responseBody.lastName,
-              purchasedCourses: responseBody.purchasedCourses,
-            });
+          map((responseBody: User) => {
+            return getUserInfoSuccess({ user: responseBody });
           }),
           catchError(error => of(getUserInfoFailure({ error }))),
         ),
@@ -84,17 +89,8 @@ export class AuthEffects {
       ofType(getUserInfo),
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
-          map((responseBody: GetUserDto) => {
-            log('loginSuccessEffect:', responseBody);
-            return getUserInfoSuccess({
-              id: responseBody.id,
-              email: responseBody.email,
-              username: responseBody.username,
-              emailVerified: responseBody.emailVerified,
-              name: responseBody.name,
-              lastName: responseBody.lastName,
-              purchasedCourses: responseBody.purchasedCourses,
-            });
+          map((responseBody: User) => {
+            return getUserInfoSuccess({ user: responseBody });
           }),
           catchError((errorResponse: HttpErrorResponse) =>
             of(
@@ -107,6 +103,15 @@ export class AuthEffects {
         ),
       ),
     ),
+  );
+
+  getUserInfoSuccessEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getUserInfoSuccess),
+      tap(action => {
+        this.cookieService.delete('cartCookie');
+      }),
+    ), { dispatch: false }
   );
 
   signupEffect$ = createEffect(
@@ -139,17 +144,9 @@ export class AuthEffects {
       ofType(loginWithTokenSuccess),
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
-          map((responseBody: GetUserDto) => {
+          map((responseBody: User) => {
             log('loginSuccessEffect:', responseBody);
-            return getUserInfoSuccess({
-              id: responseBody.id,
-              email: responseBody.email,
-              username: responseBody.username,
-              emailVerified: responseBody.emailVerified,
-              name: responseBody.name,
-              lastName: responseBody.lastName,
-              purchasedCourses: responseBody.purchasedCourses,
-            });
+            return getUserInfoSuccess({ user: responseBody });
           }),
           catchError(error => of(getUserInfoFailure({ error }))),
         ),
@@ -163,15 +160,143 @@ export class AuthEffects {
         ofType(logout),
         tap(action => {
           log('Deleteing usertToken cookie...');
-          this.cookieService.delete('userToken');
+          this.cookieService.delete('userToken', '/');
+          console.log('AuthEffects: logoutEffect$: Redirecting to landing page ("/")');
+          this.router.navigate(['/']);
         }),
       ),
     { dispatch: false },
+  );
+
+  addCourseToCartEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addCourseToCart),
+      exhaustMap(action =>
+        this.authService.addCoursetoShoppingCart(action.courseId, action.userId).pipe(
+          map((responseBody: Course) => {
+            return addCourseToCartSuccess({ course: responseBody});
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              addCourseToCartFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  removeCourseFromCartEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(removeCourseFromCart),
+      exhaustMap(action =>
+        this.authService.removeCourseFromShoppingCart(action.courseId, action.userId).pipe(
+          map((responseBody: Course) => {
+            return removeCourseFromCartSuccess({ course: responseBody });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              removeCourseFromCartFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  addCoursesToCartEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addCoursesToCart),
+      exhaustMap(action =>
+        this.authService.addCoursesToShoppingCart(action.courses).pipe(
+          map((responseBody: User) => {
+            return addCoursesToCartSuccess({ user: responseBody });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              addCoursesToCartFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  addCoursesToCartSuccessEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addCoursesToCartSuccess),
+      tap(action => {
+        this.cookieService.delete('cartCookie');
+      }),
+    ), { dispatch: false }
+  );
+
+  purchaseCoursesEffect$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(purchaseCart),
+    exhaustMap(action =>
+      this.authService.purchaseCart(action.courses, action.userId).pipe(
+        map((responseBody: User) => {
+          return purchaseCartSuccess(responseBody);
+        }),
+        catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              purchaseCartFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+              ),
+          ),
+          ),
+      ),
+      ),
+  );
+
+  purchaseCourseEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(purchaseCourse),
+      exhaustMap(action =>
+        this.authService.purchaseCourse(action.course, action.userId).pipe(
+          map((responseBody: Course) => {
+            return purchaseCourseSuccess({ course: responseBody });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              purchasecourseFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  purchaseCourseSuccessEffect$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(purchaseCourseSuccess),
+    tap(action => {
+      // Navigate to course detail view once purchased
+      console.log(`purchaseCourseSuccessEffect: Redirecting to /courses`);
+      this.router.navigate(['/courses', action.course.id]);
+    }),
+    ), { dispatch: false }
   );
 
   constructor(
     private actions$: Actions,
     private authService: AuthService,
     private cookieService: CookieService,
+    private router: Router
   ) {}
 }

@@ -1,0 +1,62 @@
+<section class="lerning-header">
+  <div class="header-container">
+    <div class="course-title">My Courses</div>
+    <div class="tabs-container">
+      <a
+        class="tab-selector focus-outline"
+        (click)="currentTab = 'all-courses'"
+        tabindex="0"
+        routerLinkActive="active"
+        [routerLink]="['./learning']"
+      >
+        All courses
+      </a>
+      <a
+        class="tab-selector focus-outline"
+        (click)="currentTab = 'favorite'"
+        tabindex="0"
+        routerLinkActive="active"
+        [routerLink]="['./favorite']"
+      >
+        Favorite
+      </a>
+      <a
+        class="tab-selector focus-outline"
+        (click)="currentTab = 'wishlist'"
+        tabindex="0"
+        routerLinkActive="active"
+        [routerLink]="['./wishlist']"
+      >
+        Wishlist
+      </a>
+      <a
+        class="tab-selector focus-outline"
+        (click)="currentTab = 'archived'"
+        tabindex="0"
+        routerLinkActive="active"
+        [routerLink]="['./archived']"
+      >
+        Archived
+      </a>
+    </div>
+  </div>
+</section>
+
+<router-outlet></router-outlet>
+
+<section *ngIf="relatedCourses.length > 0" class="courses-section">
+  <div class="courses-container">
+    <div class="title-container">
+      <div class="title">You might also be interested in</div>
+      <a>View all</a>
+    </div>
+    <div class="cards-container">
+      <div
+        class="course-card"
+        *ngFor="let course of relatedCourses; let i = index"
+      >
+        <app-course-card [course]="course"></app-course-card>
+      </div>
+    </div>
+  </div>
+</section>

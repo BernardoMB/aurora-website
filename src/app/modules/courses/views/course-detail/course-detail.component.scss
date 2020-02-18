@@ -160,38 +160,20 @@
             text-align: center;
             max-width: 520px;
           }
-          .enroll-button-container {
+          .buttons-container {
             display: flex;
             justify-content: center;
-            margin-bottom: 20px;
+            align-items: center;
             .enroll-button {
-              display: inline-block;
-              font-weight: 600;
-              text-align: center;
-              vertical-align: middle;
-              white-space: nowrap;
-              padding: 6px 30px;
-              font-size: 12px;
-              line-height: 1.35135;
-              border-radius: 20px;
-              -webkit-user-select: none;
-              -moz-user-select: none;
-              -ms-user-select: none;
-              user-select: none;
-              cursor: pointer;
-              color: #fff;
-              background-color: #eb6c00;
-              border: 1px solid transparent;
-            }
-            .enrolled-indicator {
               display: flex;
+              margin-bottom: 20px;
               align-items: center;
               font-weight: 600;
               text-align: center;
               vertical-align: middle;
               white-space: nowrap;
-              padding: 6px 40px;
-              font-size: 12px;
+              padding: 6px 30px;
+              font-size: 15px;
               line-height: 1.35135;
               border-radius: 20px;
               -webkit-user-select: none;
@@ -202,11 +184,32 @@
               color: #fff;
               background-color: #eb6c00;
               border: 1px solid transparent;
-              position: relative;
               i {
-                position: absolute;
-                right: 6px;
+                margin-left: 10px;
+                font-size: 22px;
               }
+            }
+            .buy-now-button {
+              margin-left: 10px;
+              display: flex;
+              margin-bottom: 20px;
+              align-items: center;
+              font-weight: 600;
+              text-align: center;
+              vertical-align: middle;
+              white-space: nowrap;
+              padding: 6px 30px;
+              font-size: 15px;
+              line-height: 1.35135;
+              border-radius: 20px;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+              cursor: pointer;
+              color: #fff;
+              background-color: unset;
+              border: 2px solid white;
             }
           }
         }

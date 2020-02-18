@@ -7,5 +7,6 @@ import { ReadTimePipe } from './pipes/read-time.pipe';
   declarations: [ReadTimePipe],
   imports: [CommonModule, FlexLayoutModule],
   exports: [FlexLayoutModule, ReadTimePipe],
+  providers: []
 })
 export class SharedModule {}
