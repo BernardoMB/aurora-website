@@ -35,6 +35,7 @@ export class LearnComponent implements OnInit, OnDestroy {
   ) {
     this.route.data.subscribe((data: { learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
       if (data.learningInfo) {
+        console.log('Learning info', data.learningInfo);
         this.course = data.learningInfo.course;
         // TODO: Implement lesson types
         this.lessonIds = (data.learningInfo.course.lessons as any[]).map(lesson => lesson.id);
