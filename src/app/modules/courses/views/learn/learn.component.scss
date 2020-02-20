@@ -27,6 +27,41 @@
     .content {
       border-right: 1px solid gainsboro;
     }
+    .navigation-container {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 20px;
+      background-color: #3c454f;
+      position: relative;
+      border-right: 1px solid gainsboro;
+      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      .navigation-button {
+        display: flex;
+        color: white;
+        font-size: 13px;
+        font-weight: 600;
+        align-items: center;
+        cursor: pointer;
+        &:hover {
+          .navigation-label {
+            text-decoration: underline;
+          }
+        }
+      }
+      .complete-course-button {
+        display: flex;
+        color: white;
+        font-size: 13px;
+        font-weight: 600;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 10px;
+        border: 1px solid white;
+        &:hover {
+          background-color: #26292c;
+        }
+      }
+    }
     .tabs-container {
       display: flex;
       justify-content: space-around;

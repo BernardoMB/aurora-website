@@ -17,7 +17,7 @@ import { ArchivedComponent } from './views/archived/archived.component';
 import { FavoriteComponent } from './views/favorite/favorite.component';
 import { LearningGuard } from './guards/learning.guard';
 import { LessonResolver } from './resolvers/lesson-resolver.service';
-import { LessonsService } from './services/lessons.service';
+import { CourseResolver } from './resolvers/course-resolver.service';
 
 /* courses/  */
 const routes: Routes = [
@@ -32,7 +32,7 @@ const routes: Routes = [
    *  { path: 'categories', component: CourseCategoriesComponent },
    */
   {
-    path: 'my-courses', // <-- this route should implement a route guard
+    path: 'my-courses',
     component: MyCoursesComponent, canActivate: [CheckoutGuard],
     children: [
       { path: '', redirectTo: 'learning', pathMatch: 'full' },
@@ -46,6 +46,7 @@ const routes: Routes = [
     path: ':id/learn',
     component: LearnComponent,
     canActivate: [LearningGuard],
+    resolve: { learningInfo: CourseResolver },
     children: [
       { path: 'lesson/:id', component: LessonComponent, resolve: { lesson: LessonResolver } }
     ],

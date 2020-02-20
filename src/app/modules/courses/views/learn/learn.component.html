@@ -9,6 +9,24 @@
     <div class="content">
       <router-outlet></router-outlet>
     </div>
+    <div class="navigation-container">
+      <div>
+        <div *ngIf="showPrevButton" class="navigation-button" tabindex="0" (click)="goToPrevLesson()">
+          <i class="material-icons">keyboard_arrow_left</i>
+          <div class="navigation-label">Previous lesson</div>
+        </div>
+      </div>
+      <div>
+        <div *ngIf="showNextButton" class="navigation-button" tabindex="0" (click)="goToNextLesson()">
+          <div class="navigation-label">Next lesson</div>
+          <i class="material-icons">keyboard_arrow_right</i>
+        </div>
+      </div>
+      <div *ngIf="!showNextButton && showCompleteCourseButton" class="complete-course-button" tabindex="0" (click)="goToNextLesson()">
+        <div class="navigation-label"></div>
+        <i class="material-icons">keyboard_arrow_right</i>
+      </div>
+    </div>
     <div class="tabs-container">
       <a
         class="tab-selector focus-outline"

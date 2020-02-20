@@ -61,7 +61,6 @@ export class LearningGuard implements CanActivate {
     }
     const userToken = this.cookieService.get('userToken');
     if (userToken) {
-      // TODO: Make http call to determine whether the token can activate this route
       return this.authService.checkCourseAccess(courseId).pipe(
         map((res: { canAccess: boolean }) => {
           return res.canAccess;

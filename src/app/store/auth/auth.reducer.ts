@@ -1,7 +1,7 @@
 import * as AuthActions from './auth.actions';
 import { createReducer, on, Action } from '@ngrx/store';
 import { initialAuthState, AuthState } from './auth.state';
-import { User } from '../../shared/models/user.model';
+import { User, IPurchasedCourse } from '../../shared/models/user.model';
 import { Course } from '../../shared/models/course.model';
 
 export const authFeatureKey = 'auth';
@@ -154,6 +154,26 @@ const authReducer = createReducer(
       cart2
     };
   }),
+  on(AuthActions.completeLessonSuccess, (state: AuthState, payload: { courseId: string, lessonId: string }) => {
+    const purchasedCourse = state.user.purchasedCourses.filter((el: IPurchasedCourse) => el.course === payload.courseId)[0];
+    const progress = [ ...(purchasedCourse.progress), payload.lessonId ];
+    const newPurchasedcourse = {
+      course: payload.courseId,
+      progress
+    };
+    const purchasedCourses = state.user.purchasedCourses.filter((el: IPurchasedCourse) => el.course !== payload.courseId);
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        purchasedCourses: [
+          ...purchasedCourses,
+          newPurchasedcourse
+        ]
+      }
+    };
+
+  })
 );
 
 export function reducer(state: AuthState | undefined, action: Action) {

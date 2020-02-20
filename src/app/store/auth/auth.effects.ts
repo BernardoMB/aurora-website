@@ -30,6 +30,9 @@ import {
   purchaseCourse,
   purchaseCourseSuccess,
   purchasecourseFailure,
+  completeLesson,
+  completeLessonSuccess,
+  completeLessonFailure,
 } from './auth.actions';
 import { of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
@@ -145,7 +148,6 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.getUserInfo().pipe(
           map((responseBody: User) => {
-            log('loginSuccessEffect:', responseBody);
             return getUserInfoSuccess({ user: responseBody });
           }),
           catchError(error => of(getUserInfoFailure({ error }))),
@@ -291,6 +293,27 @@ export class AuthEffects {
       this.router.navigate(['/courses', action.course.id]);
     }),
     ), { dispatch: false }
+  );
+
+  completeLessonEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(completeLesson),
+      exhaustMap(action =>
+        this.authService.completeLesson(action.courseId, action.lessonId).pipe(
+          map(() => {
+            return completeLessonSuccess({ courseId: action.courseId, lessonId: action.lessonId});
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              completeLessonFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   constructor(

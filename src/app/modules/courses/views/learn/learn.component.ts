@@ -2,11 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
 import { selectAuthUser } from '../../../../store/auth/auth.selectors';
-import { Observable, Subscription } from 'rxjs';
-import { User, IPurchasedCourse } from '../../../../shared/models/user.model';
+import { Subscription } from 'rxjs';
+import { User } from '../../../../shared/models/user.model';
 import { Course } from '../../../../shared/models/course.model';
-import { ActivatedRoute, UrlSegment, Router, NavigationExtras } from '@angular/router';
-import { CoursesService } from '../../services/courses.service';
+import { ActivatedRoute, UrlSegment, Router, NavigationEnd, Event } from '@angular/router';
+import { completeLesson } from '../../../../store/auth/auth.actions';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-learn',
@@ -14,72 +15,75 @@ import { CoursesService } from '../../services/courses.service';
   styleUrls: ['./learn.component.scss'],
 })
 export class LearnComponent implements OnInit, OnDestroy {
-  // TODO: Related courses are not really related courses. Fix this issue.
-  relatedCoursesSubscription: Subscription;
+  currentTab = 'about'; // Default tab when page loads
+  routerSubscription: Subscription;
+  urlSubscription: Subscription;
   relatedCourses: Course[];
-  courseSubscription: Subscription;
   course: Course;
-  courseId: string;
-  user$: Observable<User>;
   userSubscription: Subscription;
   user: User;
-  purchasedCourse: IPurchasedCourse;
   userProgress: string[]; // Array of lessons
-  currentTab = 'about'; // Default tab when page loads
+  lessonIds: string[];
+  currentLessonId: string;
+  showPrevButton = false;
+  showNextButton = true;
 
   constructor(
     private store: Store<State>,
     private route: ActivatedRoute,
-    private coursesService: CoursesService,
     private router: Router
   ) {
-    this.route.url.subscribe((url: UrlSegment[]) => {
-      console.log('Course detail component: Url:', url);
-      const courseId = url[0].path;
-      this.courseSubscription = this.coursesService.getCourse(courseId).subscribe((course: Course) => {
-        if (course) {
-          this.course = course;
-          this.user$ = this.store.pipe(select(selectAuthUser));
-          this.userSubscription = this.user$.subscribe(user => {
-            if (user) {
-              const purchasedCourse = user.purchasedCourses.find(
-                (el: { progress: string[]; course: string }) =>
-                  el.course === this.course.id,
-              );
-              this.purchasedCourse = purchasedCourse;
-              if (purchasedCourse) {
-                this.userProgress = purchasedCourse.progress;
-                if (purchasedCourse.progress.length > 0) {
-                  const progress = purchasedCourse.progress;
-                  const lastLessonId = progress[progress.length - 1];
-                  console.log(`LearnComponent: User has some course progress. Redirecting to /lesson/${lastLessonId}`);
-                  this.router.navigate(['lesson', lastLessonId], { relativeTo: this.route });
-                } else {
-                  const firstLessonId = course.lessons[0].id;
-                  console.log(`LearnComponent: User has no course progress. Redirecting to /lesson/${firstLessonId}`);
-                  this.router.navigate(['lesson', firstLessonId], { relativeTo: this.route, state: course.lessons[0] });
-                }
-              }
+    this.route.data.subscribe((data: { learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
+      if (data.learningInfo) {
+        this.course = data.learningInfo.course;
+        // TODO: Implement lesson types
+        this.lessonIds = (data.learningInfo.course.lessons as any[]).map(lesson => lesson.id);
+        this.userProgress = data.learningInfo.userProgress;
+        this.relatedCourses = data.learningInfo.relatedCourses;
+      }
+    });
+
+    this.routerSubscription = this.router.events.pipe(
+      filter((event: Event) => {
+        return event instanceof NavigationEnd;
+      })
+    ).subscribe((event: NavigationEnd) => {
+      if (this.route.firstChild) {
+        this.urlSubscription = this.route.firstChild.url.subscribe((childUrl: UrlSegment[]) => {
+          if (childUrl && childUrl[1] && this.lessonIds.length > 0) {
+            const lessonId = childUrl[1].path;
+            this.currentLessonId = lessonId;
+            const index = this.lessonIds.indexOf(lessonId);
+            index === 0 ? this.showPrevButton = false : this.showPrevButton = true;
+            index === this.lessonIds.length - 1 ? this.showNextButton = false : this.showNextButton = true;
+            if (this.lessonIds.indexOf(lessonId) === this.lessonIds.length - 1) {
+              this.store.dispatch(completeLesson({ courseId: this.course.id, lessonId }));
             }
-          });
-          // TODO: Change the code below to fetch category featured courses instead of category courses.
-          this.relatedCoursesSubscription = this.coursesService.getCategoryCourses(course.category.id).subscribe((courses: Course[]) => {
-            if (courses && courses.length > 0) {
-              this.relatedCourses = courses;
-            }
-          });
-        }
-      });
+          }
+        });
+      } else {
+        const lessonId = this.lessonIds[0];
+        console.log(`LearnComponent: No route first child url. Redirecting to /lesson/${lessonId}`);
+        this.router.navigate(['lesson', lessonId], { relativeTo: this.route });
+      }
     });
   }
 
   ngOnInit() {
+    this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
+      if (user) {
+        this.user = user;
+        this.userProgress = this.user.purchasedCourses
+          .filter(purchasedcourse => purchasedcourse.course === this.course.id)
+          .map(purchasedcourse => purchasedcourse.progress)[0];
+      }
+    });
   }
 
   ngOnDestroy() {
-    this.courseSubscription.unsubscribe();
-    this.relatedCoursesSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
+    this.routerSubscription.unsubscribe();
+    this.urlSubscription.unsubscribe();
   }
 
   lessonCompleted(lessonId: string): boolean {
@@ -92,4 +96,22 @@ export class LearnComponent implements OnInit, OnDestroy {
     }
     return false;
   }
+
+  goToPrevLesson() {
+    const index = this.lessonIds.indexOf(this.currentLessonId);
+    const targetLessonId = this.lessonIds[index - 1];
+    console.log(`LearnComponent: Go to prev lesson. Redirecting to /lesson/${targetLessonId}`);
+    this.router.navigate(['lesson', targetLessonId], { relativeTo: this.route });
+  }
+
+  goToNextLesson() {
+    const index = this.lessonIds.indexOf(this.currentLessonId);
+    const targetLessonId = this.lessonIds[index + 1];
+    console.log(`LearnComponent: Go to next lesson. Redirecting to /lesson/${targetLessonId}`);
+    this.router.navigate(['lesson', targetLessonId], { relativeTo: this.route });
+    if (this.userProgress.indexOf(this.currentLessonId) === -1) {
+      this.store.dispatch(completeLesson({ courseId: this.course.id, lessonId: this.currentLessonId }));
+    }
+  }
+
 }

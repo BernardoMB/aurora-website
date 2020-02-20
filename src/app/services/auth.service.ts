@@ -83,4 +83,10 @@ export class AuthService {
     const url = `${this.host}/${this.apiVersion}/courses/${courseId}/access`;
     return this.http.get<{ canAccess: boolean }>(url);
   }
+
+  completeLesson(courseId: string, lessonId: string): Observable<void> {
+    console.log('Auth service: Checking for course access');
+    const url = `${this.host}/${this.apiVersion}/users/complete-lesson`;
+    return this.http.post<void>(url, { course: courseId, lesson: lessonId });
+  }
 }
