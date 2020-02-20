@@ -65,7 +65,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     });
 
     this.route.url.subscribe((url: UrlSegment[]) => {
-      console.log('Course detail component: Url:', url);
+      // console.log('Course detail component: Url:', url);
       const courseId = url[0].path;
       this.getCourse(courseId);
     });
