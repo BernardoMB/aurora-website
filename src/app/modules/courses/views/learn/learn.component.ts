@@ -36,7 +36,6 @@ export class LearnComponent implements OnInit, OnDestroy {
   ) {
     this.route.data.subscribe((data: { learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
       if (data.learningInfo) {
-        console.log('Learning info', data.learningInfo);
         this.course = data.learningInfo.course;
         // TODO: Implement lesson types
         this.lessonIds = (data.learningInfo.course.lessons as any[]).map(lesson => lesson.id);
@@ -58,7 +57,7 @@ export class LearnComponent implements OnInit, OnDestroy {
             const index = this.lessonIds.indexOf(lessonId);
             index === 0 ? this.showPrevButton = false : this.showPrevButton = true;
             index === this.lessonIds.length - 1 ? this.showNextButton = false : this.showNextButton = true;
-            if (this.lessonIds.indexOf(lessonId) === this.lessonIds.length - 1) {
+            if (this.lessonIds.indexOf(lessonId) === this.lessonIds.length - 1 && this.userProgress.indexOf(lessonId) === -1) {
               this.store.dispatch(completeLesson({ courseId: this.course.id, lessonId }));
             }
           }

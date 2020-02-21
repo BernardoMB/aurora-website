@@ -41,6 +41,7 @@ To see how cart functionality works see Bernardo's OneNote notes
   * my courses
   * checkout
 - Implement propper redirections when the user logs out
+- Delete unused certificate images inside assets directory
 - Components that require authentication (Ej. AllMycoursesComponent) should not redirect to any route when they receive no user inside the user subscription. The login with token failure effect should take care of the redirection the a not authenticated route.
 - Test refreshing every route in the following cases:
   * logged in

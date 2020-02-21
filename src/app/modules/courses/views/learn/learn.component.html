@@ -1,6 +1,6 @@
 <section class="lerning-header">
   <div class="header-container">
-    <div *ngIf="course" class="course-title">{{ course.name }}</div>
+    <div *ngIf="course" class="course-title focus-outline" [routerLink]="['/courses', course.id]">{{ course.name }}</div>
   </div>
 </section>
 

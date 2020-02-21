@@ -66,7 +66,6 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.data.subscribe((data: { learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
       if (data.learningInfo) {
-        console.log('Learning info', data.learningInfo);
         this.course = data.learningInfo.course;
         this.relatedCourses = data.learningInfo.relatedCourses;
       }

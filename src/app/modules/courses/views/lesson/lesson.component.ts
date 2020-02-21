@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -10,8 +10,8 @@ import { DomSanitizer } from '@angular/platform-browser';
   templateUrl: './lesson.component.html',
   styleUrls: ['./lesson.component.scss'],
 })
-export class LessonComponent implements OnInit {
-  @ViewChild('downloadLink', { static: false }) private downloadLink: ElementRef;
+export class LessonComponent implements OnInit, OnDestroy {
+  @ViewChild('player', { static: true }) private playerElement: ElementRef;
 
   decryptionKeyToken: string;
 
@@ -34,13 +34,15 @@ export class LessonComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+
+  }
+
   async downloadFile() {
     // Best option
-    // const link = this.downloadLink.nativeElement;
     const link = document.createElement('a');
     link.href = this.lesson.documentUrl;
     link.download = this.lesson.title;
-    link.download = 'pene.pdf';
     link.click();
     window.URL.revokeObjectURL(this.lesson.documentUrl);
     window.open(this.lesson.documentUrl);

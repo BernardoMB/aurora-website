@@ -15,6 +15,10 @@
       color: white;
       font-size: 20px;
       font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }

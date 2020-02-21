@@ -1,7 +1,7 @@
 <div *ngIf="lesson.type === 'VIDEO'" class="player-container">
   <div class="player-wrapper">
     <app-amp-player
-      id="vid1"
+      #player
       [src]="lesson.adaptiveStreamingUrl"
       [autoplay]="true"
       [token]="decryptionKeyToken"
@@ -15,7 +15,6 @@
   <div class="article-container">
     <h2 class="article-title">{{lesson.title}}</h2>
     <div class="article-content" [innerHTML]="lesson.article" ></div>
-    <!-- <div style="position: absolute; left: 50%; height: 100%; width: 1px; background-color: red;"></div> -->
   </div>
 </div>
 
@@ -28,7 +27,6 @@
       <i class="material-icons">menu_book</i>
     </div>
     <button class="download-button focus-outline" (click)="downloadFile()">Download</button>
-    <a #downloadLink style="display: none;"></a>
   </div>
 </div>
 
