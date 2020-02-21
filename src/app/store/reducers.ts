@@ -12,6 +12,7 @@ export function debug(reducer: ActionReducer<any>): ActionReducer<any> {
     };
 }
 
+// * If enriconment is production, logging every action will be disabled`
 export const metaReducers: MetaReducer<{}>[] = !environment.production
-    ? [debug]
+    ? [/* debug */]
     : [];

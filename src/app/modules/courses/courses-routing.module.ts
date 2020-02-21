@@ -18,6 +18,7 @@ import { FavoriteComponent } from './views/favorite/favorite.component';
 import { LearningGuard } from './guards/learning.guard';
 import { LessonResolver } from './resolvers/lesson-resolver.service';
 import { CourseResolver } from './resolvers/course-resolver.service';
+import { CourseDetailResolver } from './resolvers/course-detail.resolver.service';
 
 /* courses/  */
 const routes: Routes = [
@@ -54,6 +55,7 @@ const routes: Routes = [
   {
     path: ':id',
     component: CourseDetailComponent,
+    resolve: { learningInfo: CourseDetailResolver },
     data: { animation: 'course' },
   },
 ];

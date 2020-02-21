@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, UrlSegment } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
-import { User } from '../../../../shared/models/user.model';
+import { User, IPurchasedCourse } from '../../../../shared/models/user.model';
 import { selectAuthUser, selectAuthIsAuthenticated, selectAuthCart } from '../../../../store/auth/auth.selectors';
 import { CoursesService } from '../../services/courses.service';
 import { Subscription } from 'rxjs';
@@ -28,11 +28,10 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   user: User;
   isAuthenticatedSubscription: Subscription;
   isAuthenticated = false;
-  courseSubscription: Subscription;
   course: Course;
-  relatedCoursesSubscription: Subscription;
   relatedCourses: Course[];
   showGoToCart = false;
+  showCertificate = false;
   get enrolled() {
     if (this.user && this.course) {
       if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
@@ -46,7 +45,6 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<State>,
     private readonly route: ActivatedRoute,
-    private coursesService: CoursesService,
     private loginDialog: MatDialog,
     private signupDialog: MatDialog,
     private cookieService: CookieService
@@ -63,19 +61,33 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       }
       return;
     });
-
-    this.route.url.subscribe((url: UrlSegment[]) => {
-      // console.log('Course detail component: Url:', url);
-      const courseId = url[0].path;
-      this.getCourse(courseId);
-    });
   }
 
   ngOnInit() {
+    this.route.data.subscribe((data: { learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
+      if (data.learningInfo) {
+        console.log('Learning info', data.learningInfo);
+        this.course = data.learningInfo.course;
+        this.relatedCourses = data.learningInfo.relatedCourses;
+      }
+    });
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
       if (user) {
         this.user = user;
         this.showCertificateTab = true;
+        // Determine what to show in the certificate tab
+        if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
+          // User has course
+          const purchasedCourses = user.purchasedCourses
+            .filter((el: IPurchasedCourse) => el.course === this.course.id);
+          if (purchasedCourses.length > 0 ) {
+            const purchasedCourse = purchasedCourses[0];
+            const userProgress = purchasedCourse.progress;
+            if (userProgress.length === this.course.lessons.length) {
+              this.showCertificate = true;
+            }
+          }
+        }
       } else {
         this.user = undefined;
         this.showCertificateTab = false;
@@ -93,33 +105,6 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
     this.isAuthenticatedSubscription.unsubscribe();
-    this.courseSubscription.unsubscribe();
-    this.relatedCoursesSubscription.unsubscribe();
-  }
-
-  getCourse(courseId: string) {
-    this.courseSubscription = this.coursesService.getCourse(courseId).subscribe((course: Course) => {
-      if (course) {
-        this.course = course;
-        this.store.pipe(select(selectAuthCart)).subscribe((cart: any[]) => {
-          if (cart) {
-            if (cart.length > 0) {
-              cart.map((el: Course) => {
-                return el.id;
-              }).indexOf(course.id) !== -1 ? this.showGoToCart = true : this.showGoToCart = false;
-            } else {
-              this.showGoToCart = false;
-            }
-          }
-        });
-        // TODO: Change the code below to fetch category featured courses instead of category courses.
-        this.relatedCoursesSubscription = this.coursesService.getCategoryCourses(course.category.id).subscribe((courses: Course[]) => {
-          if (courses && courses.length > 0) {
-            this.relatedCourses = courses;
-          }
-        });
-      }
-    });
   }
 
   onAddToCart(courseId: string) {

@@ -27,6 +27,7 @@ export class LearnComponent implements OnInit, OnDestroy {
   currentLessonId: string;
   showPrevButton = false;
   showNextButton = true;
+  showCertificate = false;
 
   constructor(
     private store: Store<State>,
@@ -77,6 +78,9 @@ export class LearnComponent implements OnInit, OnDestroy {
         this.userProgress = this.user.purchasedCourses
           .filter(purchasedcourse => purchasedcourse.course === this.course.id)
           .map(purchasedcourse => purchasedcourse.progress)[0];
+        if (this.userProgress.length === this.course.lessons.length) {
+          this.showCertificate = true;
+        }
       }
     });
   }

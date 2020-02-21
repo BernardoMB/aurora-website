@@ -29,6 +29,7 @@ import { LearningGuard } from './guards/learning.guard';
 import { LessonsService } from './services/lessons.service';
 import { LessonResolver } from './resolvers/lesson-resolver.service';
 import { CourseResolver } from './resolvers/course-resolver.service';
+import { CourseDetailResolver } from './resolvers/course-detail.resolver.service';
 
 @NgModule({
     declarations: [
@@ -60,7 +61,8 @@ import { CourseResolver } from './resolvers/course-resolver.service';
       LearningGuard,
       LessonsService,
       LessonResolver,
-      CourseResolver
+      CourseResolver,
+      CourseDetailResolver
     ]
 })
 export class CoursesModule {}
