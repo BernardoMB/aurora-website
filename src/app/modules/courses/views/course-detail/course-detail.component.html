@@ -152,7 +152,7 @@
       *ngIf="currentTab === 'certificate' && showCertificateTab && showCertificate"
       class="tab tab-certificate"
     >
-      <div class="certificate">
+      <div id="certificate" #certificate class="certificate">
         <div class="certificate-container">
           <img alt="Invest Naija Logotype" class="logotype" src="/assets/img/logos/logotype-certificate.svg">
           <div class="certificate-label">certificate</div>
@@ -197,6 +197,7 @@
           </div>
         </div>
       </div>
+      <button class="download-certificate-button focus-outline" (click)="onDownloadCertificate()">Download certificate</button>
     </div>
     <div
       *ngIf="currentTab === 'certificate' && showCertificateTab && !showCertificate"

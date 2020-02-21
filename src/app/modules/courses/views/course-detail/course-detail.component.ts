@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, UrlSegment } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
@@ -12,6 +12,8 @@ import { LoginFormComponent } from '../../../../components/login-form/login-form
 import { SignupFormComponent } from '../../../../components/signup-form/signup-form.component';
 import { addCourseToCart, pushCourseToCarts } from '../../../../store/auth/auth.actions';
 import { CookieService } from 'ngx-cookie-service';
+import * as jsPDF from 'jspdf';
+import * as html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-course-detail',
@@ -19,6 +21,8 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./course-detail.component.scss'],
 })
 export class CourseDetailComponent implements OnInit, OnDestroy {
+  @ViewChild('certificate', { static: false }) private certificateElement: ElementRef;
+
   // TODO: this should be computed from the info obtained from the server
   isFavorite: boolean;
 
@@ -158,6 +162,16 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  onDownloadCertificate() {
+    html2canvas.default(this.certificateElement.nativeElement).then(canvas => {
+      const contentDataURL = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('l', 'mm', [ canvas.width, canvas.height ]);
+      const position = 0;
+      pdf.addImage(contentDataURL, 'PNG', 0, position, canvas.width, canvas.height);
+      pdf.save('file.pdf');
+    });
   }
 
 }

@@ -559,6 +559,27 @@
         }
       }
     }
+    .download-certificate-button {
+      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      margin-top: 20px;
+      display: inline-block;
+      font-weight: 600;
+      text-align: center;
+      vertical-align: middle;
+      white-space: nowrap;
+      padding: 11px 12px;
+      font-size: 15px;
+      line-height: 1.35135;
+      border-radius: 2px;
+      user-select: none;
+      cursor: pointer;
+      color: #fff;
+      background-color: #eb6c00;
+      border: 1px solid transparent;
+      &:hover {
+        background-color: #1f5e11;
+      }
+    }
     .no-certificate {
       display: flex;
       flex-direction: column;
