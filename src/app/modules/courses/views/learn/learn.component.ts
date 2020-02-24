@@ -131,6 +131,7 @@ export class LearnComponent implements OnInit, OnDestroy {
       download.download = `Invest Naija ${this.course.name} Certificate.png`;
       download.click();
     }, 1);
+
   }
 
 }
