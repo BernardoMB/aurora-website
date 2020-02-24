@@ -30,6 +30,8 @@ import { LessonsService } from './services/lessons.service';
 import { LessonResolver } from './resolvers/lesson-resolver.service';
 import { CourseResolver } from './resolvers/course-resolver.service';
 import { CourseDetailResolver } from './resolvers/course-detail.resolver.service';
+import { StarRatingComponent } from './components/star-rating/star-rating.component';
+import { MaterialModule } from '../../material.module';
 
 @NgModule({
     declarations: [
@@ -53,8 +55,9 @@ import { CourseDetailResolver } from './resolvers/course-detail.resolver.service
         WishlistComponent,
         ArchivedComponent,
         FavoriteComponent,
+        StarRatingComponent
     ],
-    imports: [CommonModule, CoursesRoutingModule, SharedModule],
+    imports: [CommonModule, CoursesRoutingModule, SharedModule, MaterialModule],
     providers: [
       CoursesService,
       CheckoutGuard,

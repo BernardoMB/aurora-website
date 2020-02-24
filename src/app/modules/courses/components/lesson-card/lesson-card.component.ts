@@ -51,7 +51,6 @@ export class LessonCardComponent implements OnInit, AfterViewInit {
   }
 
   goToLesson() {
-    console.log('Se picoooo');
     this.navigateToLesson.emit(this.lesson.id);
   }
 }

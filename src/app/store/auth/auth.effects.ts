@@ -36,7 +36,6 @@ import {
 } from './auth.actions';
 import { of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { log } from '../../shared/utils';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from '../../shared/models/user.model';
 import { Course } from '../../shared/models/course.model';

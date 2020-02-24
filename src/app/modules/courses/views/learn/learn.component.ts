@@ -135,6 +135,7 @@ export class LearnComponent implements OnInit, OnDestroy {
 
   navigateToLesson($event: string) {
     const lessonId = $event;
+    console.log(`LearnComponent: Navigating to lesson/${lessonId}`);
     this.router.navigate(['lesson/', lessonId], { relativeTo: this.route });
   }
 

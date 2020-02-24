@@ -19,10 +19,8 @@ import * as html2canvas from 'html2canvas';
   styleUrls: ['./course-detail.component.scss'],
 })
 export class CourseDetailComponent implements OnInit, OnDestroy {
-
   // TODO: this should be computed from the info obtained from the server
   isFavorite: boolean;
-
   currentTab = 'about';
   showCertificateTab = false;
   userSubscription: Subscription;
@@ -33,6 +31,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   relatedCourses: Course[];
   showGoToCart = false;
   showCertificate = false;
+  canReviewCourse = false;
   get enrolled() {
     if (this.user && this.course) {
       if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
@@ -88,9 +87,21 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
             }
           }
         }
+        // Determine if the user is able to add review
+        // TODO: Implement review type.
+        const review = this.course.reviews.find((el: any) => el.user === this.user.id);
+        if (review) {
+          this.canReviewCourse = false;
+          const courseReviews = this.course.reviews.filter((el: any) => el.user !== this.user.id);
+          courseReviews.push(review);
+          this.course.reviews = courseReviews;
+        } else {
+          this.canReviewCourse = true;
+        }
       } else {
         this.user = undefined;
         this.showCertificateTab = false;
+        this.canReviewCourse = false;
       }
     });
     this.isAuthenticatedSubscription = this.store.pipe(select(selectAuthIsAuthenticated)).subscribe((isAuthenticated: boolean) => {
@@ -161,20 +172,6 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  /* onDownloadCertificate() {
-    html2canvas.default(document.querySelector('#certificate'), {
-      width: 860,
-      height: 680,
-      y: 500
-    }).then(canvas => {
-      const contentDataURL = canvas.toDataURL('image/png');
-      const download = document.createElement('a');
-      download.href = contentDataURL;
-      download.download = `Invest Naija ${this.course.name} Certificate.png`;
-      download.click();
-    });
-  } */
-
   async onDownloadCertificate() {
     window.scrollTo(0, 0);
     setTimeout(async () => {
@@ -191,6 +188,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   navigateToLesson($event: string) {
     const lessonId = $event;
     if (this.enrolled) {
+      console.log(`CourseDetailComponent: Navigating to lesson/${lessonId}`);
       this.router.navigate(['./learn/lesson', lessonId], { relativeTo: this.route });
     }
   }
