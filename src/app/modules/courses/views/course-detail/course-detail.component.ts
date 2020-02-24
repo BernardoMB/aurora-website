@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute, UrlSegment } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
 import { User, IPurchasedCourse } from '../../../../shared/models/user.model';
-import { selectAuthUser, selectAuthIsAuthenticated, selectAuthCart } from '../../../../store/auth/auth.selectors';
-import { CoursesService } from '../../services/courses.service';
+import { selectAuthUser, selectAuthIsAuthenticated } from '../../../../store/auth/auth.selectors';
 import { Subscription } from 'rxjs';
 import { Course } from '../../../../shared/models/course.model';
 import { MatDialog, MatDialogConfig } from '@angular/material';
@@ -12,7 +11,6 @@ import { LoginFormComponent } from '../../../../components/login-form/login-form
 import { SignupFormComponent } from '../../../../components/signup-form/signup-form.component';
 import { addCourseToCart, pushCourseToCarts } from '../../../../store/auth/auth.actions';
 import { CookieService } from 'ngx-cookie-service';
-import * as jsPDF from 'jspdf';
 import * as html2canvas from 'html2canvas';
 
 @Component({
@@ -21,7 +19,6 @@ import * as html2canvas from 'html2canvas';
   styleUrls: ['./course-detail.component.scss'],
 })
 export class CourseDetailComponent implements OnInit, OnDestroy {
-  @ViewChild('certificate', { static: false }) private certificateElement: ElementRef;
 
   // TODO: this should be computed from the info obtained from the server
   isFavorite: boolean;
@@ -164,14 +161,31 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDownloadCertificate() {
-    html2canvas.default(this.certificateElement.nativeElement).then(canvas => {
+  /* onDownloadCertificate() {
+    html2canvas.default(document.querySelector('#certificate'), {
+      width: 860,
+      height: 680,
+      y: 500
+    }).then(canvas => {
       const contentDataURL = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('l', 'mm', [ canvas.width, canvas.height ]);
-      const position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, canvas.width, canvas.height);
-      pdf.save('file.pdf');
+      const download = document.createElement('a');
+      download.href = contentDataURL;
+      download.download = `Invest Naija ${this.course.name} Certificate.png`;
+      download.click();
     });
+  } */
+
+  async onDownloadCertificate() {
+    window.scrollTo(0, 0);
+    setTimeout(async () => {
+      const canvas = await html2canvas.default(document.querySelector('#certificate'));
+      /* document.body.appendChild(canvas); */
+      const contentDataURL = canvas.toDataURL('image/png');
+      const download = document.createElement('a');
+      download.href = contentDataURL;
+      download.download = `Invest Naija ${this.course.name} Certificate.png`;
+      download.click();
+    }, 1);
   }
 
 }

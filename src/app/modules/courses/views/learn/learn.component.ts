@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
 import { selectAuthUser } from '../../../../store/auth/auth.selectors';
@@ -8,6 +8,7 @@ import { Course } from '../../../../shared/models/course.model';
 import { ActivatedRoute, UrlSegment, Router, NavigationEnd, Event } from '@angular/router';
 import { completeLesson } from '../../../../store/auth/auth.actions';
 import { filter } from 'rxjs/operators';
+import * as html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-learn',
@@ -15,6 +16,7 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./learn.component.scss'],
 })
 export class LearnComponent implements OnInit, OnDestroy {
+  @ViewChild('content', { static: true }) private contentElement: ElementRef;
   currentTab = 'about'; // Default tab when page loads
   routerSubscription: Subscription;
   urlSubscription: Subscription;
@@ -116,6 +118,19 @@ export class LearnComponent implements OnInit, OnDestroy {
     if (this.userProgress.indexOf(this.currentLessonId) === -1) {
       this.store.dispatch(completeLesson({ courseId: this.course.id, lessonId: this.currentLessonId }));
     }
+  }
+
+  async onDownloadCertificate() {
+    window.scrollTo(0, 0);
+    setTimeout(async () => {
+      const canvas = await html2canvas.default(document.querySelector('#certificate'));
+      /* document.body.appendChild(canvas); */
+      const contentDataURL = canvas.toDataURL('image/png');
+      const download = document.createElement('a');
+      download.href = contentDataURL;
+      download.download = `Invest Naija ${this.course.name} Certificate.png`;
+      download.click();
+    }, 1);
   }
 
 }
