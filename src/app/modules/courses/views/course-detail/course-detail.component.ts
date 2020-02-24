@@ -188,4 +188,11 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     }, 1);
   }
 
+  navigateToLesson($event: string) {
+    const lessonId = $event;
+    if (this.enrolled) {
+      this.router.navigate(['./learn/lesson', lessonId], { relativeTo: this.route });
+    }
+  }
+
 }

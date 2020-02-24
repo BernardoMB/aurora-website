@@ -127,6 +127,8 @@
           <app-lesson-card
             [lesson]="lesson"
             [lessonNumber]="i + 1"
+            [enrolled]="enrolled"
+            (navigateToLesson)="navigateToLesson($event)"
           ></app-lesson-card>
         </div>
       </div>

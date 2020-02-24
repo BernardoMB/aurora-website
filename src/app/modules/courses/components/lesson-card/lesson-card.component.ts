@@ -5,6 +5,8 @@ import {
   AfterViewInit,
   ViewChild,
   ElementRef,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 
 @Component({
@@ -13,9 +15,12 @@ import {
   styleUrls: ['./lesson-card.component.scss'],
 })
 export class LessonCardComponent implements OnInit, AfterViewInit {
+  // TODO: Implement lesson type.
   @Input() lesson;
   @Input() lessonNumber;
+  @Input() enrolled: boolean;
   @ViewChild('description', { static: false }) el: ElementRef;
+  @Output() navigateToLesson: EventEmitter<void> = new EventEmitter();
 
   height = '66px';
   fixedHeight = true;
@@ -43,5 +48,10 @@ export class LessonCardComponent implements OnInit, AfterViewInit {
   setHeight() {
     this.height = '66px';
     this.fixedHeight = true;
+  }
+
+  goToLesson() {
+    console.log('Se picoooo');
+    this.navigateToLesson.emit(this.lesson.id);
   }
 }
