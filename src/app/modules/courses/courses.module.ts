@@ -32,6 +32,8 @@ import { CourseResolver } from './resolvers/course-resolver.service';
 import { CourseDetailResolver } from './resolvers/course-detail.resolver.service';
 import { StarRatingComponent } from './components/star-rating/star-rating.component';
 import { MaterialModule } from '../../material.module';
+import { ReviewModalComponent } from './components/review-modal/review-modal.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -55,9 +57,17 @@ import { MaterialModule } from '../../material.module';
         WishlistComponent,
         ArchivedComponent,
         FavoriteComponent,
-        StarRatingComponent
+        StarRatingComponent,
+        ReviewModalComponent
     ],
-    imports: [CommonModule, CoursesRoutingModule, SharedModule, MaterialModule],
+    imports: [
+      CommonModule,
+      CoursesRoutingModule,
+      SharedModule,
+      MaterialModule,
+      FormsModule,
+      ReactiveFormsModule
+    ],
     providers: [
       CoursesService,
       CheckoutGuard,
@@ -66,6 +76,7 @@ import { MaterialModule } from '../../material.module';
       LessonResolver,
       CourseResolver,
       CourseDetailResolver
-    ]
+    ],
+    entryComponents: [ReviewModalComponent]
 })
 export class CoursesModule {}

@@ -12,6 +12,8 @@ import { SignupFormComponent } from '../../../../components/signup-form/signup-f
 import { addCourseToCart, pushCourseToCarts } from '../../../../store/auth/auth.actions';
 import { CookieService } from 'ngx-cookie-service';
 import * as html2canvas from 'html2canvas';
+import { ReviewModalComponent } from '../../components/review-modal/review-modal.component';
+import { CoursesService } from '../../services/courses.service';
 
 @Component({
   selector: 'app-course-detail',
@@ -31,7 +33,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   relatedCourses: Course[];
   showGoToCart = false;
   showCertificate = false;
-  canReviewCourse = false;
+  canRateCourse = false;
   get enrolled() {
     if (this.user && this.course) {
       if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
@@ -47,7 +49,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private loginDialog: MatDialog,
     private signupDialog: MatDialog,
-    private cookieService: CookieService
+    private reviewDialog: MatDialog,
+    private cookieService: CookieService,
+    private coursesService: CoursesService
   ) {
     this.router.events.subscribe(event => {
       /* console.log('Navigation event:', event); */
@@ -91,17 +95,23 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         // TODO: Implement review type.
         const review = this.course.reviews.find((el: any) => el.user === this.user.id);
         if (review) {
-          this.canReviewCourse = false;
+          this.canRateCourse = false;
           const courseReviews = this.course.reviews.filter((el: any) => el.user !== this.user.id);
           courseReviews.push(review);
-          this.course.reviews = courseReviews;
+          /* console.log('COURSE', this.course);
+          this.course.reviews = courseReviews; */
+          const course = {
+            ...this.course,
+            reviews: courseReviews
+          };
+          this.course = course;
         } else {
-          this.canReviewCourse = true;
+          this.canRateCourse = true;
         }
       } else {
         this.user = undefined;
         this.showCertificateTab = false;
-        this.canReviewCourse = false;
+        this.canRateCourse = false;
       }
     });
     this.isAuthenticatedSubscription = this.store.pipe(select(selectAuthIsAuthenticated)).subscribe((isAuthenticated: boolean) => {
@@ -191,6 +201,36 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       console.log(`CourseDetailComponent: Navigating to lesson/${lessonId}`);
       this.router.navigate(['./learn/lesson', lessonId], { relativeTo: this.route });
     }
+  }
+
+  onRateCourse() {
+    // Modal configuration
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
+    dialogConfig.backdropClass = 'custom-modal-backdrop';
+    let reviewDialogRef;
+    reviewDialogRef = this.reviewDialog.open(ReviewModalComponent, dialogConfig);
+    reviewDialogRef.afterClosed().subscribe(result => {
+      if (result && result.rating) {
+        // TODO: implement review type
+        this.coursesService.reviewCourse(this.course.id, result.rating, result.review).subscribe((review: any) => {
+          if (review) {
+            this.canRateCourse = false;
+            const reviews = [
+              ...(this.course.reviews),
+              review
+            ];
+            const course = {
+              ...(this.course),
+              reviews
+            };
+            this.course = course;
+            console.log('COURSEEEEEE', this.course);
+          }
+        });
+      }
+    });
   }
 
 }

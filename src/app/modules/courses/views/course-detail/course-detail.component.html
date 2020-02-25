@@ -133,23 +133,29 @@
         </div>
       </div>
     </div>
+
     <!-- Reviews tab content -->
     <div *ngIf="currentTab === 'reviews'" class="tab tab-reviews">
-      <div *ngIf="course.totalReviews" class="reviews-title">{{ course.totalReviews }} reviews</div>
-      <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="reviews-title">0 reviews</div>
+      <div class="reviews-title-container">
+        <div *ngIf="course.totalReviews" class="reviews-title">{{ course.totalReviews }} reviews</div>
+        <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="reviews-title">0 reviews</div>
+      </div>
       <div class="reviews-container">
-        <div
-          class="review-card"
-          *ngFor="let review of course.reviews; let i = index"
-        >
-          <app-review-card
-            [review]="review"
-            [reviewNumber]="i + 1"
-          ></app-review-card>
+        <div *ngIf="course.totalReviews > 0" class="review-cards-container">
+          <div class="review-card" *ngFor="let review of course.reviews; let i = index">
+            <app-review-card [review]="review" [reviewNumber]="i + 1"></app-review-card>
+          </div>
+        </div>
+        <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="no-review-cards-container">
+          <i class="material-icons">inbox</i>
+          <div class="complete-phrase">This course has no reviews</div>
         </div>
       </div>
-      <app-mat-star-rating [rating]="0" [starCount]="5"></app-mat-star-rating>
+      <div *ngIf="canRateCourse" class="rate-container">
+        <button mat-raised-button [color]="'accent'" (click)="onRateCourse()">Rate this course</button>
+      </div>
     </div>
+
     <!-- Certificate tab content -->
     <div
       *ngIf="currentTab === 'certificate' && showCertificateTab && showCertificate"

@@ -1,12 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation, AfterViewInit } from '@angular/core';
+import { FocusMonitor } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-mat-star-rating',
   templateUrl: './star-rating.component.html',
-  styleUrls: ['./star-rating.component.css'],
+  styleUrls: ['./star-rating.component.scss'],
   encapsulation: ViewEncapsulation.Emulated
 })
-export class StarRatingComponent implements OnInit {
+export class StarRatingComponent implements OnInit, AfterViewInit {
   @Input() rating: number;
   @Input() starCount: number;
   @Input() color: string;
@@ -15,7 +16,9 @@ export class StarRatingComponent implements OnInit {
   snackBarDuration = 2000;
   ratingArr = [];
 
-  constructor() {
+  constructor(
+    private focusMonitor: FocusMonitor // For disabling wierd classes when a star is focused
+  ) {
   }
 
   ngOnInit() {
@@ -23,8 +26,16 @@ export class StarRatingComponent implements OnInit {
       this.ratingArr.push(index);
     }
   }
+
+  ngAfterViewInit() {
+    // For disabling wierd classes when a star is focused
+    for (let index = 0; index < this.starCount; index++) {
+      this.focusMonitor.stopMonitoring(document.getElementById('star_' + index));
+    }
+  }
+
   onClick(rating: number) {
-    console.log(rating)
+    // console.log(rating);
     /* this.snackBar.open('You rated ' + rating + ' / ' + this.starCount, '', {
       duration: this.snackBarDuration
     }); */

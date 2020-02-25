@@ -394,6 +394,10 @@
   .tab-reviews,
   .tab-no-certificate {
     max-width: 900px;
+    .reviews-title-container {
+      display: flex;
+      justify-content: space-between;
+    }
     .lessons-title,
     .reviews-title {
       font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
@@ -416,6 +420,24 @@
       .review-card {
         margin-bottom: 40px;
       }
+      .no-review-cards-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        i {
+          font-size: 120px;
+          color: #e8e9eb;
+          margin-bottom: 20px;
+        }
+        .complete-phrase {
+          color: #29303b;
+        }
+      }
+    }
+    .rate-container {
+      display: flex;
+      margin-top: 20px;
+      justify-content: center;
     }
     .lessons-container::-webkit-scrollbar,
     .reviews-container::-webkit-scrollbar {
