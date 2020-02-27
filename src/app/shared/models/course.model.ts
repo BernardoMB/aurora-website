@@ -18,4 +18,5 @@ export interface Course {
     imgUrl: string;
     id: string;
     totalReviews: number;
+    totalRating: number;
 }

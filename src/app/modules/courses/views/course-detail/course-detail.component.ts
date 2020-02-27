@@ -221,11 +221,17 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
               ...(this.course.reviews),
               review
             ];
+            const newTotalReviews = this.course.totalReviews > 0 ? this.course.totalReviews + 1 : 1;
+            const newTotalRating = this.course.totalRating ? this.course.totalRating + review.rating : review.rating;
+            const newRating = ((this.course.totalRating ? this.course.totalRating : 0) + review.rating) / ((this.course.totalReviews ? this.course.totalReviews : 0) + 1);
             const course = {
               ...(this.course),
-              reviews
+              reviews,
+              rating: newRating,
+              totalRating: newTotalRating,
+              totalReviews: newTotalReviews
             };
-            this.course = course;
+            this.course = course; // Esto hace que se actualice la lista de reviews
             console.log('COURSEEEEEE', this.course);
           }
         });
