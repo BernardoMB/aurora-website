@@ -17,7 +17,7 @@ import { ArchivedComponent } from './views/archived/archived.component';
 import { FavoriteComponent } from './views/favorite/favorite.component';
 import { LearningGuard } from './guards/learning.guard';
 import { LessonResolver } from './resolvers/lesson-resolver.service';
-import { CourseResolver } from './resolvers/course-resolver.service';
+import { LearnResolver } from './resolvers/learn-resolver.service';
 import { CourseDetailResolver } from './resolvers/course-detail.resolver.service';
 
 /* courses/  */
@@ -36,8 +36,8 @@ const routes: Routes = [
     path: 'my-courses',
     component: MyCoursesComponent, canActivate: [CheckoutGuard],
     children: [
-      { path: '', redirectTo: 'learning', pathMatch: 'full' },
-      { path: 'learning', component: AllMyCoursesComponent },
+      { path: '', redirectTo: 'all', pathMatch: 'full' },
+      { path: 'all', component: AllMyCoursesComponent },
       { path: 'favorite', component:  FavoriteComponent},
       { path: 'wishlist', component:  WishlistComponent},
       { path: 'archived', component:  ArchivedComponent},
@@ -47,7 +47,7 @@ const routes: Routes = [
     path: ':id/learn',
     component: LearnComponent,
     canActivate: [LearningGuard],
-    resolve: { learningInfo: CourseResolver },
+    resolve: { learningInfo: LearnResolver },
     children: [
       { path: 'lesson/:id', component: LessonComponent, resolve: { lesson: LessonResolver } }
     ],

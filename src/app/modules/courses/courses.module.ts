@@ -28,7 +28,7 @@ import { FavoriteComponent } from './views/favorite/favorite.component';
 import { LearningGuard } from './guards/learning.guard';
 import { LessonsService } from './services/lessons.service';
 import { LessonResolver } from './resolvers/lesson-resolver.service';
-import { CourseResolver } from './resolvers/course-resolver.service';
+import { LearnResolver } from './resolvers/learn-resolver.service';
 import { CourseDetailResolver } from './resolvers/course-detail.resolver.service';
 import { StarRatingComponent } from './components/star-rating/star-rating.component';
 import { MaterialModule } from '../../material.module';
@@ -74,7 +74,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
       LearningGuard,
       LessonsService,
       LessonResolver,
-      CourseResolver,
+      LearnResolver,
       CourseDetailResolver
     ],
     entryComponents: [ReviewModalComponent]

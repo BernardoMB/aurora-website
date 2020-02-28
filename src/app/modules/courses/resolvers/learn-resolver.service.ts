@@ -11,7 +11,7 @@ import { AuthState } from '../../../store/auth/auth.state';
 import { selectAuthIsAuthenticated, selectAuthUser } from '../../../store/auth/auth.selectors';
 
 @Injectable()
-export class CourseResolver implements Resolve<any> {
+export class LearnResolver implements Resolve<any> {
   isAutehnticated: boolean;
 
   constructor(

@@ -16,8 +16,6 @@ import { CoursesService } from '../../services/courses.service';
 export class AllMyCoursesComponent implements OnInit, OnDestroy {
   userSubscription: Subscription;
   user: User;
-  isAuthenticatedSubscription: Subscription;
-  isAuthenticated: boolean;
   coursesSubscription: Subscription;
   courses: Course[];
 
@@ -28,16 +26,6 @@ export class AllMyCoursesComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.isAuthenticatedSubscription = this.store.pipe(select(selectAuthIsAuthenticated)).subscribe((isAuthenticated: boolean) => {
-      if (isAuthenticated) {
-        this.isAuthenticated = true;
-      } else  {
-        this.isAuthenticated = false;
-
-        console.log('AllMyCoursesComponent: Authenticated state is false. Redirecting to /courses');
-        this.router.navigate(['/courses']);
-      }
-    });
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
       if (user) {
         this.user = user;
@@ -51,7 +39,6 @@ export class AllMyCoursesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.isAuthenticatedSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
     this.coursesSubscription.unsubscribe();
   }
