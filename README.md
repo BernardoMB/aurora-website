@@ -62,3 +62,4 @@ To see how cart functionality works see Bernardo's OneNote notes
     <dd>{{contact?.website}}</dd>
   </dl>
   ```
+  - Route guards should not grant access if they found a user token. founding a user token is not enough. Guards should validate the found token to see if it is valid and then decide to grant access. That is now possible because observables of true or false can be returned in the canActivate function.
