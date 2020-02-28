@@ -93,4 +93,12 @@ export class CoursesService {
     return this.http.get<Course[]>(url);
   }
 
+  // TODO: Implement review type
+  reviewCourse(courseId: string, rating: number, review: string): Observable<any> {
+    console.log('Courses service: Creating course review');
+    const url = `${this.host}/${this.apiVersion}/courses/${courseId}/review`;
+    const body = { review, rating };
+    return this.http.post<any>(url, body);
+  }
+
 }

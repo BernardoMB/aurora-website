@@ -31,13 +31,17 @@ export class CheckoutGuard implements CanActivate {
     state: RouterStateSnapshot,
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.isAutehnticated) {
+      console.log('CheckoutGuard: Authenticated state is true. Access granted');
       return true;
     }
     const userToken = this.cookieService.get('userToken');
     if (userToken) {
+      // TODO: A request should be made here to check if the user token found is valid
+      console.log('CheckoutGuard: Authenticated state is false but user token found. Access granted');
       return true;
     } else {
-      console.log('Checkout guard: Redirecting to /courses');
+      console.log('CheckoutGuard: Authenticated state is false and no user token found. Access denied');
+      console.log('CheckoutGuard: Access denied. Redirecting to /courses');
       this.router.navigate(['/courses']);
       return false;
     }

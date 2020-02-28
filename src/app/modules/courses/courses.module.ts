@@ -28,7 +28,12 @@ import { FavoriteComponent } from './views/favorite/favorite.component';
 import { LearningGuard } from './guards/learning.guard';
 import { LessonsService } from './services/lessons.service';
 import { LessonResolver } from './resolvers/lesson-resolver.service';
-import { CourseResolver } from './resolvers/course-resolver.service';
+import { LearnResolver } from './resolvers/learn-resolver.service';
+import { CourseDetailResolver } from './resolvers/course-detail.resolver.service';
+import { StarRatingComponent } from './components/star-rating/star-rating.component';
+import { MaterialModule } from '../../material.module';
+import { ReviewModalComponent } from './components/review-modal/review-modal.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -52,15 +57,26 @@ import { CourseResolver } from './resolvers/course-resolver.service';
         WishlistComponent,
         ArchivedComponent,
         FavoriteComponent,
+        StarRatingComponent,
+        ReviewModalComponent
     ],
-    imports: [CommonModule, CoursesRoutingModule, SharedModule],
+    imports: [
+      CommonModule,
+      CoursesRoutingModule,
+      SharedModule,
+      MaterialModule,
+      FormsModule,
+      ReactiveFormsModule
+    ],
     providers: [
       CoursesService,
       CheckoutGuard,
       LearningGuard,
       LessonsService,
       LessonResolver,
-      CourseResolver
-    ]
+      LearnResolver,
+      CourseDetailResolver
+    ],
+    entryComponents: [ReviewModalComponent]
 })
 export class CoursesModule {}

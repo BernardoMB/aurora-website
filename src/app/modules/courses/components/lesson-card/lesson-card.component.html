@@ -53,7 +53,7 @@
       </div>
     </div>
     <div class="navigate-container">
-      <i class="material-icons">navigate_next</i>
+      <i *ngIf="enrolled" class="material-icons focus-outline" tabindex="0" (click)="goToLesson()">navigate_next</i>
     </div>
   </div>
 </div>

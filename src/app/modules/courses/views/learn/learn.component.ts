@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
 import { selectAuthUser } from '../../../../store/auth/auth.selectors';
@@ -8,6 +8,7 @@ import { Course } from '../../../../shared/models/course.model';
 import { ActivatedRoute, UrlSegment, Router, NavigationEnd, Event } from '@angular/router';
 import { completeLesson } from '../../../../store/auth/auth.actions';
 import { filter } from 'rxjs/operators';
+import * as html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-learn',
@@ -15,6 +16,7 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./learn.component.scss'],
 })
 export class LearnComponent implements OnInit, OnDestroy {
+  @ViewChild('content', { static: true }) private contentElement: ElementRef;
   currentTab = 'about'; // Default tab when page loads
   routerSubscription: Subscription;
   urlSubscription: Subscription;
@@ -27,6 +29,7 @@ export class LearnComponent implements OnInit, OnDestroy {
   currentLessonId: string;
   showPrevButton = false;
   showNextButton = true;
+  showCertificate = false;
 
   constructor(
     private store: Store<State>,
@@ -56,7 +59,7 @@ export class LearnComponent implements OnInit, OnDestroy {
             const index = this.lessonIds.indexOf(lessonId);
             index === 0 ? this.showPrevButton = false : this.showPrevButton = true;
             index === this.lessonIds.length - 1 ? this.showNextButton = false : this.showNextButton = true;
-            if (this.lessonIds.indexOf(lessonId) === this.lessonIds.length - 1) {
+            if (this.lessonIds.indexOf(lessonId) === this.lessonIds.length - 1 && this.userProgress.indexOf(lessonId) === -1) {
               this.store.dispatch(completeLesson({ courseId: this.course.id, lessonId }));
             }
           }
@@ -76,6 +79,9 @@ export class LearnComponent implements OnInit, OnDestroy {
         this.userProgress = this.user.purchasedCourses
           .filter(purchasedcourse => purchasedcourse.course === this.course.id)
           .map(purchasedcourse => purchasedcourse.progress)[0];
+        if (this.userProgress.length === this.course.lessons.length) {
+          this.showCertificate = true;
+        }
       }
     });
   }
@@ -112,6 +118,25 @@ export class LearnComponent implements OnInit, OnDestroy {
     if (this.userProgress.indexOf(this.currentLessonId) === -1) {
       this.store.dispatch(completeLesson({ courseId: this.course.id, lessonId: this.currentLessonId }));
     }
+  }
+
+  async onDownloadCertificate() {
+    window.scrollTo(0, 0);
+    setTimeout(async () => {
+      const canvas = await html2canvas.default(document.querySelector('#certificate'));
+      /* document.body.appendChild(canvas); */
+      const contentDataURL = canvas.toDataURL('image/png');
+      const download = document.createElement('a');
+      download.href = contentDataURL;
+      download.download = `Invest Naija ${this.course.name} Certificate.png`;
+      download.click();
+    }, 1);
+  }
+
+  navigateToLesson($event: string) {
+    const lessonId = $event;
+    console.log(`LearnComponent: Navigating to lesson/${lessonId}`);
+    this.router.navigate(['lesson/', lessonId], { relativeTo: this.route });
   }
 
 }

@@ -36,7 +36,6 @@ import {
 } from './auth.actions';
 import { of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { log } from '../../shared/utils';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from '../../shared/models/user.model';
 import { Course } from '../../shared/models/course.model';
@@ -56,6 +55,7 @@ export class AuthEffects {
       exhaustMap(action =>
         this.authService.signin(action.username, action.password).pipe(
           map((responseBody: { accessToken: string }) => {
+            console.log('LoginEffect: Replacing user token cookie');
             this.cookieService.delete('userToken', '/');
             this.cookieService.set('userToken', responseBody.accessToken, null, '/');
             return loginSuccess();
@@ -161,9 +161,9 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(logout),
         tap(action => {
-          log('Deleteing usertToken cookie...');
+          console.log('LogoutEffect: Deleteing usert token cookie');
           this.cookieService.delete('userToken', '/');
-          console.log('AuthEffects: logoutEffect$: Redirecting to landing page ("/")');
+          // console.log('AuthEffects: logoutEffect$: Redirecting to landing page ("/")');
           this.router.navigate(['/']);
         }),
       ),

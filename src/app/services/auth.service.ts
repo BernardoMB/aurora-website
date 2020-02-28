@@ -6,7 +6,6 @@ import { SignupDto } from '../shared/dtos/signup.dto';
 import { environment } from '../../environments/environment';
 import { Course } from '../shared/models/course.model';
 
-// TODO: standardize the use of environment variables for requests urls.
 @Injectable()
 export class AuthService {
   host = environment.host;
@@ -17,6 +16,12 @@ export class AuthService {
   getStatus(): Observable<any> {
     const url = `${this.host}/status`;
     return this.http.get<any>(url);
+  }
+
+  signup(signupDto: SignupDto): Observable<User> {
+    console.log('Auth service: Registering a user sending signup dto');
+    const url = `${this.host}/${this.apiVersion}/auth/signup`;
+    return this.http.post<User>(url, signupDto);
   }
 
   signin(username: string, password: string): Observable<any> {
@@ -30,16 +35,8 @@ export class AuthService {
 
   getUserInfo(): Observable<User> {
     console.log('Auth service: Getting user info');
-    const url =
-    // tslint:disable-next-line: max-line-length
-    `${this.host}/${this.apiVersion}/auth/user/me?populate=cart`;
+    const url = `${this.host}/${this.apiVersion}/auth/user/me?populate=cart`;
     return this.http.get<User>(url);
-  }
-
-  signup(signupDto: SignupDto): Observable<User> {
-    console.log('Auth service: Registering a user sending signup dto');
-    const url = `${this.host}/${this.apiVersion}/auth/signup`;
-    return this.http.post<User>(url, signupDto);
   }
 
   signinWithToken(): Observable<any> {

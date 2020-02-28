@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { User } from '../../shared/models/user.model';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../store/state';

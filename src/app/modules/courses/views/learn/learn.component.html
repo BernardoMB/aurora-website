@@ -1,12 +1,12 @@
 <section class="lerning-header">
   <div class="header-container">
-    <div *ngIf="course" class="course-title">{{ course.name }}</div>
+    <div *ngIf="course" class="course-title focus-outline" [routerLink]="['/courses', course.id]">{{ course.name }}</div>
   </div>
 </section>
 
 <div class="column-container">
   <div class="content-container">
-    <div class="content">
+    <div #content class="content">
       <router-outlet></router-outlet>
     </div>
     <div class="navigation-container">
@@ -21,10 +21,6 @@
           <div class="navigation-label">Next lesson</div>
           <i class="material-icons">keyboard_arrow_right</i>
         </div>
-      </div>
-      <div *ngIf="!showNextButton && showCompleteCourseButton" class="complete-course-button" tabindex="0" (click)="goToNextLesson()">
-        <div class="navigation-label"></div>
-        <i class="material-icons">keyboard_arrow_right</i>
       </div>
     </div>
     <div class="tabs-container">
@@ -82,13 +78,16 @@
             <app-lesson-card
               [lesson]="lesson"
               [lessonNumber]="i + 1"
+              [enrolled]="true"
+              (navigateToLesson)="navigateToLesson($event)"
             ></app-lesson-card>
           </div>
         </div>
       </div>
       <!-- Reviews tab content -->
       <div *ngIf="currentTab === 'reviews'" class="tab tab-reviews">
-        <div class="reviews-title">{{ course.totalReviews }} reviews</div>
+        <div *ngIf="course.totalReviews" class="reviews-title">{{ course.totalReviews }} reviews</div>
+        <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="reviews-title">0 reviews</div>
         <div class="reviews-container">
           <div
             class="review-card"
@@ -102,9 +101,68 @@
         </div>
       </div>
       <!-- Certificate tab content -->
-      <div *ngIf="currentTab === 'certificate'" class="tab tab-certificate">
-        <div style="width: 50px; height: 50px; background-color: blue;"></div>
+      <div
+      *ngIf="currentTab === 'certificate' && showCertificate"
+      class="tab tab-certificate"
+    >
+      <div class="certificate-wrapper">
+        <div id="certificate" class="certificate">
+          <div class="certificate-container">
+            <img alt="Invest Naija Logotype" class="logotype" src="/assets/img/logos/logotype-certificate.svg">
+            <div class="certificate-label">certificate</div>
+            <div class="awarded-container">
+              <div class="line"></div>
+              <div class="awarded-label">this certificate is awarded to</div>
+              <div class="line"></div>
+            </div>
+            <div class="name">
+              <div class="user-names">{{user.name}} {{user.lastName}}</div>
+              <div class="line name-line"></div>
+            </div>
+            <div class="course-details">
+              <div class="course-data course-category">
+                <div class="course-data-label">course category:</div>
+                <div class="course-data-input">
+                  <div class="course-value">{{course.category.name}}</div>
+                  <div class="input-line"></div>
+                </div>
+              </div>
+              <div class="course-data course-name">
+                <div class="course-data-label">course name:</div>
+                <div class="course-data-input">
+                  <div class="course-value">{{course.name}}</div>
+                  <div class="input-line"></div>
+                </div>
+              </div>
+              <div class="course-data course-date">
+                <div class="course-data-label">date:</div>
+                <div class="course-data-input">
+                  <div class="course-value">{{course.category.createdAt}}</div>
+                  <div class="input-line"></div>
+                </div>
+              </div>
+              <div class="course-data course-url">
+                <div class="course-data-label">url:</div>
+                <div class="course-data-input">
+                  <div class="course-value">https://investnaija.com/courses/{{course.id}}</div>
+                  <div class="input-line"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+      <button class="download-certificate-button focus-outline" (click)="onDownloadCertificate()">Download certificate</button>
+    </div>
+    <div
+      *ngIf="currentTab === 'certificate' && !showCertificate"
+      class="tab tab-no-certificate"
+    >
+      <div class="reviews-container no-certificate">
+        <i class="material-icons">inbox</i>
+        <div class="complete-phrase">Complete this course to download your certificate</div>
+      </div>
+    </div>
     </div>
   </div>
   <div class="sidebar-container">

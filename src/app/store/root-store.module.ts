@@ -22,10 +22,10 @@ import { EffectsModule } from '@ngrx/effects';
                 },
             },
         ),
-        StoreRouterConnectingModule.forRoot(),
+        StoreRouterConnectingModule.forRoot(), // This is because we have feature stores.
         StoreDevtoolsModule.instrument({
             maxAge: 25, // Retains last 25 states
-            logOnly: environment.production, // Restrict extension to log-only mode
+            logOnly: environment.production, // Restrict NgRx Dev Tools Extension functionality when running in production mode
         }),
         EffectsModule.forRoot([]),
         AuthStoreModule,

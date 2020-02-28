@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute, UrlSegment } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
-import { User } from '../../../../shared/models/user.model';
-import { selectAuthUser, selectAuthIsAuthenticated, selectAuthCart } from '../../../../store/auth/auth.selectors';
-import { CoursesService } from '../../services/courses.service';
+import { User, IPurchasedCourse } from '../../../../shared/models/user.model';
+import { selectAuthUser, selectAuthIsAuthenticated } from '../../../../store/auth/auth.selectors';
 import { Subscription } from 'rxjs';
 import { Course } from '../../../../shared/models/course.model';
 import { MatDialog, MatDialogConfig } from '@angular/material';
@@ -12,6 +11,9 @@ import { LoginFormComponent } from '../../../../components/login-form/login-form
 import { SignupFormComponent } from '../../../../components/signup-form/signup-form.component';
 import { addCourseToCart, pushCourseToCarts } from '../../../../store/auth/auth.actions';
 import { CookieService } from 'ngx-cookie-service';
+import * as html2canvas from 'html2canvas';
+import { ReviewModalComponent } from '../../components/review-modal/review-modal.component';
+import { CoursesService } from '../../services/courses.service';
 
 @Component({
   selector: 'app-course-detail',
@@ -21,18 +23,17 @@ import { CookieService } from 'ngx-cookie-service';
 export class CourseDetailComponent implements OnInit, OnDestroy {
   // TODO: this should be computed from the info obtained from the server
   isFavorite: boolean;
-
   currentTab = 'about';
   showCertificateTab = false;
   userSubscription: Subscription;
   user: User;
   isAuthenticatedSubscription: Subscription;
   isAuthenticated = false;
-  courseSubscription: Subscription;
   course: Course;
-  relatedCoursesSubscription: Subscription;
   relatedCourses: Course[];
   showGoToCart = false;
+  showCertificate = false;
+  canRateCourse = false;
   get enrolled() {
     if (this.user && this.course) {
       if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
@@ -46,10 +47,11 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<State>,
     private readonly route: ActivatedRoute,
-    private coursesService: CoursesService,
     private loginDialog: MatDialog,
     private signupDialog: MatDialog,
-    private cookieService: CookieService
+    private reviewDialog: MatDialog,
+    private cookieService: CookieService,
+    private coursesService: CoursesService
   ) {
     this.router.events.subscribe(event => {
       /* console.log('Navigation event:', event); */
@@ -63,22 +65,53 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       }
       return;
     });
-
-    this.route.url.subscribe((url: UrlSegment[]) => {
-      console.log('Course detail component: Url:', url);
-      const courseId = url[0].path;
-      this.getCourse(courseId);
-    });
   }
 
   ngOnInit() {
+    this.route.data.subscribe((data: { learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
+      if (data.learningInfo) {
+        this.course = data.learningInfo.course;
+        this.relatedCourses = data.learningInfo.relatedCourses;
+      }
+    });
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
       if (user) {
         this.user = user;
         this.showCertificateTab = true;
+        // Determine what to show in the certificate tab
+        if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
+          // User has course
+          const purchasedCourses = user.purchasedCourses
+            .filter((el: IPurchasedCourse) => el.course === this.course.id);
+          if (purchasedCourses.length > 0 ) {
+            const purchasedCourse = purchasedCourses[0];
+            const userProgress = purchasedCourse.progress;
+            if (userProgress.length === this.course.lessons.length) {
+              this.showCertificate = true;
+            }
+          }
+        }
+        // Determine if the user is able to add review
+        // TODO: Implement review type.
+        const review = this.course.reviews.find((el: any) => el.user === this.user.id);
+        if (review) {
+          this.canRateCourse = false;
+          const courseReviews = this.course.reviews.filter((el: any) => el.user !== this.user.id);
+          courseReviews.push(review);
+          /* console.log('COURSE', this.course);
+          this.course.reviews = courseReviews; */
+          const course = {
+            ...this.course,
+            reviews: courseReviews
+          };
+          this.course = course;
+        } else {
+          this.canRateCourse = true;
+        }
       } else {
         this.user = undefined;
         this.showCertificateTab = false;
+        this.canRateCourse = false;
       }
     });
     this.isAuthenticatedSubscription = this.store.pipe(select(selectAuthIsAuthenticated)).subscribe((isAuthenticated: boolean) => {
@@ -93,33 +126,6 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
     this.isAuthenticatedSubscription.unsubscribe();
-    this.courseSubscription.unsubscribe();
-    this.relatedCoursesSubscription.unsubscribe();
-  }
-
-  getCourse(courseId: string) {
-    this.courseSubscription = this.coursesService.getCourse(courseId).subscribe((course: Course) => {
-      if (course) {
-        this.course = course;
-        this.store.pipe(select(selectAuthCart)).subscribe((cart: any[]) => {
-          if (cart) {
-            if (cart.length > 0) {
-              cart.map((el: Course) => {
-                return el.id;
-              }).indexOf(course.id) !== -1 ? this.showGoToCart = true : this.showGoToCart = false;
-            } else {
-              this.showGoToCart = false;
-            }
-          }
-        });
-        // TODO: Change the code below to fetch category featured courses instead of category courses.
-        this.relatedCoursesSubscription = this.coursesService.getCategoryCourses(course.category.id).subscribe((courses: Course[]) => {
-          if (courses && courses.length > 0) {
-            this.relatedCourses = courses;
-          }
-        });
-      }
-    });
   }
 
   onAddToCart(courseId: string) {
@@ -174,6 +180,63 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  async onDownloadCertificate() {
+    window.scrollTo(0, 0);
+    setTimeout(async () => {
+      const canvas = await html2canvas.default(document.querySelector('#certificate'));
+      /* document.body.appendChild(canvas); */
+      const contentDataURL = canvas.toDataURL('image/png');
+      const download = document.createElement('a');
+      download.href = contentDataURL;
+      download.download = `Invest Naija ${this.course.name} Certificate.png`;
+      download.click();
+    }, 1);
+  }
+
+  navigateToLesson($event: string) {
+    const lessonId = $event;
+    if (this.enrolled) {
+      console.log(`CourseDetailComponent: Navigating to lesson/${lessonId}`);
+      this.router.navigate(['./learn/lesson', lessonId], { relativeTo: this.route });
+    }
+  }
+
+  onRateCourse() {
+    // Modal configuration
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
+    dialogConfig.backdropClass = 'custom-modal-backdrop';
+    let reviewDialogRef;
+    reviewDialogRef = this.reviewDialog.open(ReviewModalComponent, dialogConfig);
+    reviewDialogRef.afterClosed().subscribe(result => {
+      if (result && result.rating) {
+        // TODO: implement review type
+        this.coursesService.reviewCourse(this.course.id, result.rating, result.review).subscribe((review: any) => {
+          if (review) {
+            this.canRateCourse = false;
+            const reviews = [
+              ...(this.course.reviews),
+              review
+            ];
+            const newTotalReviews = this.course.totalReviews > 0 ? this.course.totalReviews + 1 : 1;
+            const newTotalRating = this.course.totalRating ? this.course.totalRating + review.rating : review.rating;
+            const newRating = ((this.course.totalRating ? this.course.totalRating : 0) + review.rating) / ((this.course.totalReviews ? this.course.totalReviews : 0) + 1);
+            const course = {
+              ...(this.course),
+              reviews,
+              rating: newRating,
+              totalRating: newTotalRating,
+              totalReviews: newTotalReviews
+            };
+            this.course = course; // Esto hace que se actualice la lista de reviews
+            console.log('COURSEEEEEE', this.course);
+          }
+        });
+      }
+    });
   }
 
 }

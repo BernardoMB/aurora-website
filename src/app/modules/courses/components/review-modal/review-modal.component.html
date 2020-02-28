@@ -1,0 +1,35 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <div class="modal-title" style="margin-right: 20px;">
+      How would you rate this course?
+    </div>
+    <i class="material-icons" (click)="onClose()">clear</i>
+  </div>
+  <form [formGroup]="reviewForm">
+    <div *ngIf="errorMessage" class="error-message">{{errorMessage}}</div>
+    <app-mat-star-rating
+      [rating]="rating"
+      [starCount]="5"
+      [color]="'accent'"
+      (ratingUpdated)="onRatingUpdated($event)"
+    ></app-mat-star-rating>
+    <div class="review-title">Tell us about your experience</div>
+    <div class="review-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Your review (optional)</mat-label>
+        <textarea
+          class="review-textarea"
+          matInput
+          placeholder="Ex. This course helped me a lot. It has awaken my desire to delve more on these topics."
+          formControlName="review"
+        >
+        </textarea>
+      </mat-form-field>
+    </div>
+    <div class="login-button-container">
+      <button class="login-button focus-outline" (click)="onSubmit()">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>

@@ -44,7 +44,7 @@ import { MainComponent } from './components/main/main.component';
     MaterialModule,
     SharedModule,
     AppRoutingModule, // <-- Routing modules should be imported in the correct order.c
-    RootStoreModule,
+    RootStoreModule
   ],
   providers: [
     ...DOCUMENT_PROVIDERS, // For header sections logic

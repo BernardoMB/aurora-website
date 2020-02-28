@@ -7,7 +7,6 @@ import { selectAuthUser } from '../../store/auth/auth.selectors';
 import { User } from '../../shared/models/user.model';
 import { LoginFormComponent } from '../login-form/login-form.component';
 import { SignupFormComponent } from '../signup-form/signup-form.component';
-import { log } from '../../shared/utils';
 import { logout } from '../../store/auth/auth.actions';
 import { slideInAnimation } from '../../animations';
 
@@ -61,7 +60,7 @@ export class MainComponent implements OnInit {
   }
 
   onLogout() {
-    log('AppComponent: Dispatching logout action');
+    // console.log('AppComponent: Dispatching logout action');
     this.store.dispatch(logout());
   }
 
