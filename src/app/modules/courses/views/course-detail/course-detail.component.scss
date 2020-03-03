@@ -698,3 +698,31 @@
   height: 1px;
   background-color: gainsboro;
 }
+
+.virtual-scroll-viewport {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 60px;
+  background-color: #f3f3f3;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  height: 400px;
+  overflow: auto;
+  .lesson-card,
+  .review-card {
+    margin-bottom: 40px;
+  }
+  .no-review-cards-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    i {
+      font-size: 120px;
+      color: #e8e9eb;
+      margin-bottom: 20px;
+    }
+    .complete-phrase {
+      color: #29303b;
+    }
+  }
+}

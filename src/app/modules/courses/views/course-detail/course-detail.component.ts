@@ -278,7 +278,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   // Reviews pagination
 
   nextReviewsPage($event: any, offset: number) {
-    console.log('Getting nest next reviews page. Offset:', offset);
+    console.log('Getting next reviews page. Offset:', offset);
     if (this.reviewsEnd) {
       return;
     }
