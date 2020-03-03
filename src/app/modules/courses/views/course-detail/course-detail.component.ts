@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
 import { User, IPurchasedCourse } from '../../../../shared/models/user.model';
 import { selectAuthUser, selectAuthIsAuthenticated } from '../../../../store/auth/auth.selectors';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import { Course } from '../../../../shared/models/course.model';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
@@ -14,6 +14,8 @@ import { CookieService } from 'ngx-cookie-service';
 import * as html2canvas from 'html2canvas';
 import { ReviewModalComponent } from '../../components/review-modal/review-modal.component';
 import { CoursesService } from '../../services/courses.service';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { throttleTime, mergeMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-course-detail',
@@ -21,6 +23,8 @@ import { CoursesService } from '../../services/courses.service';
   styleUrls: ['./course-detail.component.scss'],
 })
 export class CourseDetailComponent implements OnInit, OnDestroy {
+  @ViewChild(CdkVirtualScrollViewport, { static: false }) reviewsViewport: CdkVirtualScrollViewport;
+
   // TODO: this should be computed from the info obtained from the server
   isFavorite: boolean;
   currentTab = 'about';
@@ -42,6 +46,13 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     }
     return false;
   }
+  // Paginated reviews
+  reviewsSubscription: Subscription;
+  reviews = [];
+  reviewsPageSize = 10;
+  reviewsEnd = false;
+  reviewsOffset = new BehaviorSubject(null);
+  infinite: Observable<any[]>;
 
   constructor(
     private router: Router,
@@ -65,6 +76,15 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       }
       return;
     });
+
+    // Reviews pagination
+    const pageMap = this.reviewsOffset.pipe(
+      throttleTime(500),
+      tap((value: { courseId: string, offset: number }) => {
+
+        this.getReviewsPage(value.courseId, value.offset);
+      })
+    );
   }
 
   ngOnInit() {
@@ -72,6 +92,21 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       if (data.learningInfo) {
         this.course = data.learningInfo.course;
         this.relatedCourses = data.learningInfo.relatedCourses;
+
+        // Reviews infite scroll pagination.
+        // TODO: Implement reviews type.
+        /* this.reviewsSubscription = this.coursesService.getCourseReviews(data.learningInfo.course.id, 0, this.reviewsPageSize)
+          .subscribe((reviews: any[]) => {
+            if (reviews && reviews.length > 0) {
+              this.reviews = reviews;
+              if (reviews.length === data.learningInfo.course.reviews.length) {
+                this.reviewsEnd = true;
+              }
+            }
+          }); */
+        console.log('Getting reviews first page');
+        this.getReviewsPage(data.learningInfo.course.id, 0);
+
       }
     });
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
@@ -223,6 +258,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
             ];
             const newTotalReviews = this.course.totalReviews > 0 ? this.course.totalReviews + 1 : 1;
             const newTotalRating = this.course.totalRating ? this.course.totalRating + review.rating : review.rating;
+            // tslint:disable-next-line: max-line-length
             const newRating = ((this.course.totalRating ? this.course.totalRating : 0) + review.rating) / ((this.course.totalReviews ? this.course.totalReviews : 0) + 1);
             const course = {
               ...(this.course),
@@ -237,6 +273,48 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  // Reviews pagination
+
+  nextReviewsPage($event: any, offset: number) {
+    console.log('Getting nest next reviews page. Offset:', offset);
+    if (this.reviewsEnd) {
+      return;
+    }
+    const end = this.reviewsViewport.getRenderedRange().end;
+    const total = this.reviewsViewport.getDataLength();
+    if (end === total) {
+      console.log('Emiting new offset value. Offset:', offset);
+      this.reviewsOffset.next({ courseId: this.course.id, offset });
+    }
+  }
+
+  getReviewsPage(courseId: string, offset: number)  {
+    this.reviewsSubscription = this.coursesService.getCourseReviews(courseId, offset, this.reviewsPageSize)
+      .subscribe((reviews: any[]) => {
+        console.log('Reviews:', reviews);
+        if (!reviews || reviews.length === 0) {
+          console.log('Got no reviews');
+          this.reviewsEnd = true;
+        }
+        if (reviews && reviews.length > 0) {
+          console.log('Got reviews. Updating reviews array');
+          this.reviews.push(reviews);
+        }
+      });
+  }
+
+  /**
+   * Traks the index of the reviews in the array and only renders the ones that change.
+   *
+   * @param {number} index
+   * @param {model} name
+   * @returns {number}
+   * @memberof CourseDetailComponent
+   */
+  trackReviewsByIndex(index: number): number {
+    return index;
   }
 
 }

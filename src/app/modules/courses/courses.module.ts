@@ -34,6 +34,7 @@ import { StarRatingComponent } from './components/star-rating/star-rating.compon
 import { MaterialModule } from '../../material.module';
 import { ReviewModalComponent } from './components/review-modal/review-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
     declarations: [
@@ -66,7 +67,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
       SharedModule,
       MaterialModule,
       FormsModule,
-      ReactiveFormsModule
+      ReactiveFormsModule,
+      ScrollingModule
     ],
     providers: [
       CoursesService,

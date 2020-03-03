@@ -141,11 +141,19 @@
         <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="reviews-title">0 reviews</div>
       </div>
       <div class="reviews-container">
+
         <div *ngIf="course.totalReviews > 0" class="review-cards-container">
           <div class="review-card" *ngFor="let review of course.reviews; let i = index">
             <app-review-card [review]="review" [reviewNumber]="i + 1"></app-review-card>
           </div>
         </div>
+
+        <cdk-virtual-scroll-viewport *ngIf="course.totalReviews > 0" class="review-cards-container" itemSize="161" (scrolledIndexChange)="nextReviewsPage($event, reviews.length)">
+          <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews; let i = index">
+            <app-review-card [review]="review[0]"></app-review-card>
+          </div>
+        </cdk-virtual-scroll-viewport>
+
         <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="no-review-cards-container">
           <i class="material-icons">inbox</i>
           <div class="complete-phrase">This course has no reviews</div>
