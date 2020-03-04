@@ -24,6 +24,7 @@ export class ReviewCardComponent implements OnInit, AfterViewInit {
         this.showReadMoreButton = true;
       }, 1);
     }
+    console.log('REVIEW', this.review);
   }
 
   unSetHeight() {

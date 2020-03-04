@@ -204,7 +204,7 @@
         <cdk-virtual-scroll-viewport
           class="virtual-scroll-viewport nice-container-scroll"
           itemSize="161"
-          (scrolledIndexChange)="nextBatch($event, (reviews3[reviews3.length - 1]))"
+          (scrolledIndexChange)="nextBatch($event, reviews3.length - 1)"
         >
           <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews3; let i = index; trackBy: trackByIdx">
             <app-review-card [review]="review"></app-review-card>

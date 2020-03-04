@@ -47,12 +47,13 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     }
     return false;
   }
+
   // Paginated reviews
-  reviewsSubscription: Subscription;
+  /* reviewsSubscription: Subscription;
   reviews = [];
   reviewsPageSize = 10;
   reviewsEnd = false;
-  reviewsOffset = new BehaviorSubject(null);
+  reviewsOffset = new BehaviorSubject(null); */
 
 
 
@@ -76,7 +77,6 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   theEnd = false;
   offset = new BehaviorSubject(null);
   infinite: Observable<any[]>;
-
   infiniteSubscription: Subscription;
   reviews3;
 
@@ -104,14 +104,14 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     });
 
     // Reviews pagination
-    const pageMap = this.reviewsOffset.pipe(
+    /* const pageMap = this.reviewsOffset.pipe(
       throttleTime(500),
       tap((value: { courseId: string, offset: number }) => {
         console.log('Catched emited value. Offset:', value.offset);
         console.log('Getting new reviews page');
         this.getReviewsPage(value.courseId, value.offset);
       })
-    );
+    ); */
 
 
 
@@ -125,7 +125,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     const batchMap = this.offset.pipe(
       throttleTime(500),
       mergeMap((value: { courseId: string, offset: number }) => {
-        console.log('Emited new value', value);
+        console.log('Emmited new value', value);
         if (value) {
           return this.getBatch(value.courseId, value.offset);
         } else {
@@ -190,94 +190,27 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           map((reviews: any[]) => {
             return reviews.reduce((acc, review) => {
               const id = review.id;
-              const data = {
+              const reviewData = {
                 review: review.review,
                 rating: review.rating,
                 user: {
-                  name: 'Name ' + Math.trunc(Math.random() * 1000),
-                  lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
+                  name: review.user.name,
+                  lastName: review.user.lastName
                 }
               };
-              return { ...acc, [id]: data };
+              return { ...acc, [id]: reviewData };
             }, {});
           }),
           scan((acc, batch) => {
             return { ...acc, ...batch };
           }, {}),
           map(v => Object.values(v))
-        ).subscribe((arr) => {
-          console.log(arr);
-          if (arr) {
-            this.reviews3 = arr;
+        ).subscribe((reviews: any[]) => {
+          console.log('First page', reviews);
+          if (reviews) {
+            this.reviews3 = reviews;
           }
         });
-
-
-        /* of(
-          {
-            [Math.trunc(Math.random() * 1000000)]: {
-              review: 'Review ' + Math.trunc(Math.random() * 1000),
-              rating: Math.floor(Math.random() * 5) + 1,
-              user: {
-                name: 'Name ' + Math.trunc(Math.random() * 1000),
-                lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
-              }
-            }
-          },
-          {
-            [Math.trunc(Math.random() * 1000000)]: {
-              review: 'Review ' + Math.trunc(Math.random() * 1000),
-              rating: Math.floor(Math.random() * 5) + 1,
-              user: {
-                name: 'Name ' + Math.trunc(Math.random() * 1000),
-                lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
-              }
-            }
-          },
-          {
-            [Math.trunc(Math.random() * 1000000)]: {
-              review: 'Review ' + Math.trunc(Math.random() * 1000),
-              rating: Math.floor(Math.random() * 5) + 1,
-              user: {
-                name: 'Name ' + Math.trunc(Math.random() * 1000),
-                lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
-              }
-            }
-          },
-          {
-            [Math.trunc(Math.random() * 1000000)]: {
-              review: `Hello,
-              Up to section 17 inclusive, I considered it the best course after which I learned.
-              From section 18, it became very confusing to me. Different and very complicated compared to what I learned about the REST API.
-              You certainly do not need my suggestion, but I would recommend a collaboration with someone who implements the back-end part in EF Core 3.0 or Spring Boot, and then from my point of view the course would become extremely useful. I understand that the back end is not the subject of the course, but in this style, I could not actually associate with what I already knew / used about the REST API. It's just my personal opinion.`,
-              rating: Math.floor(Math.random() * 5) + 1,
-              user: {
-                name: 'Name ' + Math.trunc(Math.random() * 1000),
-                lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
-              }
-            }
-          },
-          {
-            [Math.trunc(Math.random() * 1000000)]: {
-              review: 'Review ' + Math.trunc(Math.random() * 1000),
-              rating: Math.floor(Math.random() * 5) + 1,
-              user: {
-                name: 'Name ' + Math.trunc(Math.random() * 1000),
-                lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
-              }
-            }
-          },
-        ).pipe(
-          scan((acc, batch) => {
-            return { ...acc, ...batch };
-          }, {}),
-          map(v => Object.values(v))
-        ).subscribe((arr) => {
-          if (arr) {
-            this.reviews3 = arr;
-          }
-        }); */
-
 
       }
     });
@@ -445,9 +378,14 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
             console.log('COURSEEEEEE', this.course);
 
             // Option 2: with infinite scroll pagination
-            console.log('PUCHING ELEMENT');
+            /* console.log('PUCHING ELEMENT');
             this.reviews.push(review);
-            console.log(this.reviews);
+            console.log(this.reviews); */
+
+            // Option 3: with infinite scroll pagination
+            console.log('Pushing new review to reviews array', review);
+            this.reviews3.push(review);
+            console.log(this.reviews3);
           }
         });
       }
@@ -458,9 +396,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   nextReviewsPage($event: any, offset: number) {
     console.log('Getting next reviews page. Offset:', offset);
-    if (this.reviewsEnd) {
+    /* if (this.reviewsEnd) {
       return;
-    }
+    } */
     /* const end = this.reviewsViewport.getRenderedRange().end;
     const total = this.reviewsViewport.getDataLength();
     if (end === total) {
@@ -470,7 +408,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   }
 
   getReviewsPage(courseId: string, offset: number)  {
-    this.reviewsSubscription = this.coursesService.getCourseReviews(courseId, offset, this.reviewsPageSize)
+    /* this.reviewsSubscription = this.coursesService.getCourseReviews(courseId, offset, this.reviewsPageSize)
       .subscribe((reviews: any[]) => {
         console.log('Reviews:', reviews);
         if (!reviews || reviews.length === 0) {
@@ -481,7 +419,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           console.log('Got reviews. Updating reviews array');
           this.reviews.push(reviews);
         }
-      });
+      }); */
   }
 
   /**
@@ -611,7 +549,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
 
 
-    return this.coursesService.getCourseReviews(courseId, 0, this.batch).pipe(
+    return this.coursesService.getCourseReviews(courseId, offset, this.batch).pipe(
       tap((reviews: any[]) => {
         reviews.length ? null : this.theEnd = true;
       }),
@@ -622,14 +560,15 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
             review: review.review,
             rating: review.rating,
             user: {
-              name: faker.name.findName(),
-              lastName: faker.name.findName()
+              name: review.user.name,
+              lastName: review.user.lastName
             }
           };
           return { ...acc, [id]: data };
         }, {});
       })
     );
+
   }
 
   nextBatch(e, offset) {

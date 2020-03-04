@@ -103,7 +103,7 @@ export class CoursesService {
 
   getCourseReviews(courseId: string, skip: number, limit: number): Observable<any[]> {
     console.log('Courses service: Getting course reviews');
-    const url = `${this.host}/${this.apiVersion}/reviews?course=${courseId}&skip=${skip}&limit=${limit}`;
+    const url = `${this.host}/${this.apiVersion}/reviews?course=${courseId}&skip=${skip}&limit=${limit}&populate=user`;
     return this.http.get<any>(url);
   }
 
