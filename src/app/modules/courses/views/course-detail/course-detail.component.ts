@@ -80,19 +80,6 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   infiniteSubscription: Subscription;
   reviews3;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   constructor(
     private router: Router,
     private store: Store<State>,
@@ -137,7 +124,14 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
     const batchMap = this.offset.pipe(
       throttleTime(500),
-      mergeMap(n => this.getBatch(n)),
+      mergeMap((value: { courseId: string, offset: number }) => {
+        console.log('Emited new value', value);
+        if (value) {
+          return this.getBatch(value.courseId, value.offset);
+        } else {
+          return of();
+        }
+      }),
       scan((acc, batch) => {
         return { ...acc, ...batch };
       }, {})
@@ -183,8 +177,108 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
               }
             }
           }); */
-        console.log('Getting reviews first page');
-        this.getReviewsPage(data.learningInfo.course.id, 0);
+
+        // This was working
+        /* console.log('Getting reviews first page');
+        this.getReviewsPage(data.learningInfo.course.id, 0); */
+
+        console.log('Fetching first page');
+        this.coursesService.getCourseReviews(data.learningInfo.course.id, 0, this.batch).pipe(
+          tap((reviews: any[]) => {
+            reviews.length ? null : this.theEnd = true;
+          }),
+          map((reviews: any[]) => {
+            return reviews.reduce((acc, review) => {
+              const id = review.id;
+              const data = {
+                review: review.review,
+                rating: review.rating,
+                user: {
+                  name: 'Name ' + Math.trunc(Math.random() * 1000),
+                  lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
+                }
+              };
+              return { ...acc, [id]: data };
+            }, {});
+          }),
+          scan((acc, batch) => {
+            return { ...acc, ...batch };
+          }, {}),
+          map(v => Object.values(v))
+        ).subscribe((arr) => {
+          console.log(arr);
+          if (arr) {
+            this.reviews3 = arr;
+          }
+        });
+
+
+        /* of(
+          {
+            [Math.trunc(Math.random() * 1000000)]: {
+              review: 'Review ' + Math.trunc(Math.random() * 1000),
+              rating: Math.floor(Math.random() * 5) + 1,
+              user: {
+                name: 'Name ' + Math.trunc(Math.random() * 1000),
+                lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
+              }
+            }
+          },
+          {
+            [Math.trunc(Math.random() * 1000000)]: {
+              review: 'Review ' + Math.trunc(Math.random() * 1000),
+              rating: Math.floor(Math.random() * 5) + 1,
+              user: {
+                name: 'Name ' + Math.trunc(Math.random() * 1000),
+                lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
+              }
+            }
+          },
+          {
+            [Math.trunc(Math.random() * 1000000)]: {
+              review: 'Review ' + Math.trunc(Math.random() * 1000),
+              rating: Math.floor(Math.random() * 5) + 1,
+              user: {
+                name: 'Name ' + Math.trunc(Math.random() * 1000),
+                lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
+              }
+            }
+          },
+          {
+            [Math.trunc(Math.random() * 1000000)]: {
+              review: `Hello,
+              Up to section 17 inclusive, I considered it the best course after which I learned.
+              From section 18, it became very confusing to me. Different and very complicated compared to what I learned about the REST API.
+              You certainly do not need my suggestion, but I would recommend a collaboration with someone who implements the back-end part in EF Core 3.0 or Spring Boot, and then from my point of view the course would become extremely useful. I understand that the back end is not the subject of the course, but in this style, I could not actually associate with what I already knew / used about the REST API. It's just my personal opinion.`,
+              rating: Math.floor(Math.random() * 5) + 1,
+              user: {
+                name: 'Name ' + Math.trunc(Math.random() * 1000),
+                lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
+              }
+            }
+          },
+          {
+            [Math.trunc(Math.random() * 1000000)]: {
+              review: 'Review ' + Math.trunc(Math.random() * 1000),
+              rating: Math.floor(Math.random() * 5) + 1,
+              user: {
+                name: 'Name ' + Math.trunc(Math.random() * 1000),
+                lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
+              }
+            }
+          },
+        ).pipe(
+          scan((acc, batch) => {
+            return { ...acc, ...batch };
+          }, {}),
+          map(v => Object.values(v))
+        ).subscribe((arr) => {
+          if (arr) {
+            this.reviews3 = arr;
+          }
+        }); */
+
+
       }
     });
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
@@ -422,9 +516,10 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   // Playground methods
 
-  getBatch(offset) {
-    console.log(offset);
-    return of(
+  getBatch(courseId, offset) {
+    console.log(`Fetching batch. CourseId: ${courseId}, Offset: ${offset}`);
+    // #region
+    /* return of(
       {
         [Math.trunc(Math.random() * 1000000)]: {
           review: 'Review ' + Math.trunc(Math.random() * 1000),
@@ -478,7 +573,10 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           }
         }
       },
-    );
+    ); */
+    // #endregion
+
+
     /* return this.db
       .collection('people', ref =>
         ref
@@ -497,7 +595,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           }, {});
         })
       ); */
-    /* return this.coursesService.getCourseReviews(this.course.id, offset, this.batch)
+
+
+    /* return this.coursesService.getCourseReviews(courseId, offset, this.batch)
       .pipe(
         tap((arr: any[]) => (arr.length ? null : (this.theEnd = true))),
         map((arr: any[]) => {
@@ -508,6 +608,28 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           }, {});
         })
       ); */
+
+
+
+    return this.coursesService.getCourseReviews(courseId, 0, this.batch).pipe(
+      tap((reviews: any[]) => {
+        reviews.length ? null : this.theEnd = true;
+      }),
+      map((reviews: any[]) => {
+        return reviews.reduce((acc, review) => {
+          const id = review.id;
+          const data = {
+            review: review.review,
+            rating: review.rating,
+            user: {
+              name: faker.name.findName(),
+              lastName: faker.name.findName()
+            }
+          };
+          return { ...acc, [id]: data };
+        }, {});
+      })
+    );
   }
 
   nextBatch(e, offset) {
@@ -518,7 +640,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     const total = this.viewport.getDataLength();
     console.log(`${end}, '>=', ${total}`);
     if (end === total) {
-      this.offset.next(offset);
+      this.offset.next({ courseId: this.course.id, offset });
     }
   }
 
