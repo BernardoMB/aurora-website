@@ -7,7 +7,6 @@ import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '
 })
 export class ReviewCardComponent implements OnInit, AfterViewInit {
   @Input() review;
-  @Input() reviewNumber;
   @ViewChild('description', { static: false }) el: ElementRef;
 
   height = '66px';
@@ -21,7 +20,6 @@ export class ReviewCardComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     const elementHeight = this.el.nativeElement.offsetHeight;
     if (elementHeight > 66) {
-      // console.log('Element height: ', elementHeight);
       setTimeout(() => {
         this.showReadMoreButton = true;
       }, 1);

@@ -390,23 +390,22 @@
       margin: 5px 0px;
     }
   }
-  .tab-lessons,
-  .tab-reviews,
-  .tab-no-certificate {
+
+
+
+  .tab-reviews {
     max-width: 900px;
     .reviews-title-container {
       display: flex;
       justify-content: space-between;
+      .reviews-title {
+        font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #29303b;
+      }
     }
-    .lessons-title,
-    .reviews-title {
-      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
-      font-size: 22px;
-      font-weight: 600;
-      margin-bottom: 10px;
-      color: #29303b;
-    }
-    .lessons-container,
     .reviews-container {
       display: flex;
       flex-direction: column;
@@ -416,7 +415,6 @@
       border-radius: 5px;
       max-height: 400px;
       overflow: auto;
-      .lesson-card,
       .review-card {
         margin-bottom: 40px;
       }
@@ -429,7 +427,81 @@
           color: #e8e9eb;
           margin-bottom: 20px;
         }
-        .complete-phrase {
+        .no-reviews-phrase {
+          color: #29303b;
+        }
+      }
+    }
+    .virtual-scroll-viewport {
+      display: flex;
+      flex-direction: column;
+      padding: 40px 60px;
+      background-color: #f3f3f3;
+      border: 1px solid gainsboro;
+      border-radius: 5px;
+      height: 400px;
+      overflow-x: hidden;
+      &::ng-deep {
+        .cdk-virtual-scroll-content-wrapper {
+          position: relative !important;
+          top: unset !important;
+          left: unset !important;
+          contain: unset !important;
+        }
+      }
+      .review-card {
+        margin-bottom: 40px;
+      }
+      .no-review-cards-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        i {
+          font-size: 120px;
+          color: #e8e9eb;
+          margin-bottom: 20px;
+        }
+        .no-reviews-phrase {
+          color: #29303b;
+        }
+      }
+    }
+
+    .reviews-container-2 {
+      display: flex;
+      flex-direction: column;
+      padding: 40px 60px;
+      background-color: #f3f3f3;
+      border: 1px solid gainsboro;
+      border-radius: 5px;
+      max-height: 400px;
+      overflow: auto;
+      .review-card {
+        margin-bottom: 40px;
+      }
+      .no-review-cards-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        i {
+          font-size: 120px;
+          color: #e8e9eb;
+          margin-bottom: 20px;
+        }
+        .no-reviews-phrase {
+          color: #29303b;
+        }
+      }
+      .no-review-cards-container-2 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        i {
+          font-size: 120px;
+          color: #e8e9eb;
+          margin-bottom: 20px;
+        }
+        .no-reviews-phrase {
           color: #29303b;
         }
       }
@@ -439,28 +511,32 @@
       margin-top: 20px;
       justify-content: center;
     }
-    .lessons-container::-webkit-scrollbar,
-    .reviews-container::-webkit-scrollbar {
-      width: 8px;
-      background-color: #f3f3f3;
-      position: relative;
-      border-radius: 5px;
+  }
+
+
+
+  .tab-lessons,
+  .tab-no-certificate {
+    max-width: 900px;
+    .lessons-title {
+      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #29303b;
     }
-    .lessons-container::-webkit-scrollbar-track,
-    .reviews-container::-webkit-scrollbar-track {
+    .lessons-container {
+      display: flex;
+      flex-direction: column;
+      padding: 40px 60px;
       background-color: #f3f3f3;
-      position: relative;
-      padding: 5px 0px;
-      margin: 5px 0px;
-      margin-right: 5px;
-      padding-right: 5px;
-    }
-    .lessons-container::-webkit-scrollbar-thumb,
-    .reviews-container::-webkit-scrollbar-thumb {
-      background-color: #c1c1c1;
-      border: 2px solid #f3f3f3;
+      border: 1px solid gainsboro;
       border-radius: 5px;
-      margin: 5px 0px;
+      max-height: 400px;
+      overflow: auto;
+      .lesson-card {
+        margin-bottom: 40px;
+      }
     }
     .no-certificate {
       margin-top: 40px;
@@ -617,6 +693,28 @@
       margin-top: 60px;
     }
   }
+  .nice-container-scroll {
+    &::-webkit-scrollbar {
+      width: 8px;
+      background-color: #f3f3f3;
+      position: relative;
+      border-radius: 5px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: #f3f3f3;
+      position: relative;
+      padding: 5px 0px;
+      margin: 5px 0px;
+      margin-right: 5px;
+      padding-right: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #c1c1c1;
+      border: 2px solid #f3f3f3;
+      border-radius: 5px;
+      margin: 5px 0px;
+    }
+  }
 }
 
 .courses-section {
@@ -699,30 +797,35 @@
   background-color: gainsboro;
 }
 
-.virtual-scroll-viewport {
-  display: flex;
-  flex-direction: column;
-  padding: 40px 60px;
-  background-color: #f3f3f3;
-  border: 1px solid gainsboro;
-  border-radius: 5px;
+// Playground
+
+/* cdk-virtual-scroll-viewport {
   height: 400px;
-  overflow: auto;
-  .lesson-card,
-  .review-card {
-    margin-bottom: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  list-style: none;
+  li {
+    height: 100px;
+    margin: 10px;
+    padding: 10px;
+    background: whitesmoke;
+
+    box-shadow: 2px 2px 3px rgba($color: #888888, $alpha: 0.2);
   }
-  .no-review-cards-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    i {
-      font-size: 120px;
-      color: #e8e9eb;
-      margin-bottom: 20px;
-    }
-    .complete-phrase {
-      color: #29303b;
-    }
+  &::-webkit-scrollbar {
+    width: 1em;
   }
-}
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(238, 169, 79);
+  }
+} */
+

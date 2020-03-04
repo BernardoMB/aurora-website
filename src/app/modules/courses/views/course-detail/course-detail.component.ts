@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
 import { User, IPurchasedCourse } from '../../../../shared/models/user.model';
 import { selectAuthUser, selectAuthIsAuthenticated } from '../../../../store/auth/auth.selectors';
-import { Subscription, BehaviorSubject, Observable } from 'rxjs';
+import { Subscription, BehaviorSubject, Observable, of } from 'rxjs';
 import { Course } from '../../../../shared/models/course.model';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
@@ -15,7 +15,8 @@ import * as html2canvas from 'html2canvas';
 import { ReviewModalComponent } from '../../components/review-modal/review-modal.component';
 import { CoursesService } from '../../services/courses.service';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { throttleTime, mergeMap, tap } from 'rxjs/operators';
+import { throttleTime, mergeMap, tap, map, scan } from 'rxjs/operators';
+import * as faker from 'faker';
 
 @Component({
   selector: 'app-course-detail',
@@ -23,7 +24,7 @@ import { throttleTime, mergeMap, tap } from 'rxjs/operators';
   styleUrls: ['./course-detail.component.scss'],
 })
 export class CourseDetailComponent implements OnInit, OnDestroy {
-  @ViewChild(CdkVirtualScrollViewport, { static: false }) reviewsViewport: CdkVirtualScrollViewport;
+  /* @ViewChild(CdkVirtualScrollViewport, { static: false }) reviewsViewport: CdkVirtualScrollViewport; */
 
   // TODO: this should be computed from the info obtained from the server
   isFavorite: boolean;
@@ -52,7 +53,45 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   reviewsPageSize = 10;
   reviewsEnd = false;
   reviewsOffset = new BehaviorSubject(null);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Playground
+  @ViewChild(CdkVirtualScrollViewport, { static: false })
+  viewport: CdkVirtualScrollViewport;
+  reviews2;
+  batch = 5;
+  theEnd = false;
+  offset = new BehaviorSubject(null);
   infinite: Observable<any[]>;
+
+  infiniteSubscription: Subscription;
+  reviews3;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   constructor(
     private router: Router,
@@ -81,10 +120,50 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     const pageMap = this.reviewsOffset.pipe(
       throttleTime(500),
       tap((value: { courseId: string, offset: number }) => {
-
+        console.log('Catched emited value. Offset:', value.offset);
+        console.log('Getting new reviews page');
         this.getReviewsPage(value.courseId, value.offset);
       })
     );
+
+
+
+
+
+
+
+
+    // Playground
+
+    const batchMap = this.offset.pipe(
+      throttleTime(500),
+      mergeMap(n => this.getBatch(n)),
+      scan((acc, batch) => {
+        return { ...acc, ...batch };
+      }, {})
+    );
+    this.infinite = batchMap.pipe(map(v => Object.values(v)));
+    this.infiniteSubscription = this.infinite.subscribe((arr) => {
+      if (arr) {
+        this.reviews3 = arr;
+      }
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
 
   ngOnInit() {
@@ -106,7 +185,6 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           }); */
         console.log('Getting reviews first page');
         this.getReviewsPage(data.learningInfo.course.id, 0);
-
       }
     });
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
@@ -252,6 +330,8 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         this.coursesService.reviewCourse(this.course.id, result.rating, result.review).subscribe((review: any) => {
           if (review) {
             this.canRateCourse = false;
+
+            // Option 1: no pagination
             const reviews = [
               ...(this.course.reviews),
               review
@@ -269,6 +349,11 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
             };
             this.course = course; // Esto hace que se actualice la lista de reviews
             console.log('COURSEEEEEE', this.course);
+
+            // Option 2: with infinite scroll pagination
+            console.log('PUCHING ELEMENT');
+            this.reviews.push(review);
+            console.log(this.reviews);
           }
         });
       }
@@ -282,12 +367,12 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     if (this.reviewsEnd) {
       return;
     }
-    const end = this.reviewsViewport.getRenderedRange().end;
+    /* const end = this.reviewsViewport.getRenderedRange().end;
     const total = this.reviewsViewport.getDataLength();
     if (end === total) {
       console.log('Emiting new offset value. Offset:', offset);
       this.reviewsOffset.next({ courseId: this.course.id, offset });
-    }
+    } */
   }
 
   getReviewsPage(courseId: string, offset: number)  {
@@ -315,6 +400,130 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
    */
   trackReviewsByIndex(index: number): number {
     return index;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Playground methods
+
+  getBatch(offset) {
+    console.log(offset);
+    return of(
+      {
+        [Math.trunc(Math.random() * 1000000)]: {
+          review: 'Review ' + Math.trunc(Math.random() * 1000),
+          rating: Math.floor(Math.random() * 5) + 1,
+          user: {
+            name: 'Name ' + Math.trunc(Math.random() * 1000),
+            lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
+          }
+        }
+      },
+      {
+        [Math.trunc(Math.random() * 1000000)]: {
+          review: 'Review ' + Math.trunc(Math.random() * 1000),
+          rating: Math.floor(Math.random() * 5) + 1,
+          user: {
+            name: 'Name ' + Math.trunc(Math.random() * 1000),
+            lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
+          }
+        }
+      },
+      {
+        [Math.trunc(Math.random() * 1000000)]: {
+          review: 'Review ' + Math.trunc(Math.random() * 1000),
+          rating: Math.floor(Math.random() * 5) + 1,
+          user: {
+            name: 'Name ' + Math.trunc(Math.random() * 1000),
+            lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
+          }
+        }
+      },
+      {
+        [Math.trunc(Math.random() * 1000000)]: {
+          review: `Hello,
+          Up to section 17 inclusive, I considered it the best course after which I learned.
+          From section 18, it became very confusing to me. Different and very complicated compared to what I learned about the REST API.
+          You certainly do not need my suggestion, but I would recommend a collaboration with someone who implements the back-end part in EF Core 3.0 or Spring Boot, and then from my point of view the course would become extremely useful. I understand that the back end is not the subject of the course, but in this style, I could not actually associate with what I already knew / used about the REST API. It's just my personal opinion.`,
+          rating: Math.floor(Math.random() * 5) + 1,
+          user: {
+            name: 'Name ' + Math.trunc(Math.random() * 1000),
+            lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
+          }
+        }
+      },
+      {
+        [Math.trunc(Math.random() * 1000000)]: {
+          review: 'Review ' + Math.trunc(Math.random() * 1000),
+          rating: Math.floor(Math.random() * 5) + 1,
+          user: {
+            name: 'Name ' + Math.trunc(Math.random() * 1000),
+            lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
+          }
+        }
+      },
+    );
+    /* return this.db
+      .collection('people', ref =>
+        ref
+          .orderBy('name')
+          .startAfter(offset)
+          .limit(this.batch)
+      )
+      .snapshotChanges()
+      .pipe(
+        tap((arr: any[]) => (arr.length ? null : (this.theEnd = true))),
+        map((arr: any[]) => {
+          return arr.reduce((acc, cur) => {
+            const id = cur.payload.doc.id;
+            const data = cur.payload.doc.data();
+            return { ...acc, [id]: data };
+          }, {});
+        })
+      ); */
+    /* return this.coursesService.getCourseReviews(this.course.id, offset, this.batch)
+      .pipe(
+        tap((arr: any[]) => (arr.length ? null : (this.theEnd = true))),
+        map((arr: any[]) => {
+          return arr.reduce((acc, cur) => {
+            const id = cur.payload.doc.id;
+            const data = cur.payload.doc.data();
+            return { ...acc, [id]: data };
+          }, {});
+        })
+      ); */
+  }
+
+  nextBatch(e, offset) {
+    if (this.theEnd) {
+      return;
+    }
+    const end = this.viewport.getRenderedRange().end;
+    const total = this.viewport.getDataLength();
+    console.log(`${end}, '>=', ${total}`);
+    if (end === total) {
+      this.offset.next(offset);
+    }
+  }
+
+  trackByIdx(i) {
+    return i;
   }
 
 }
