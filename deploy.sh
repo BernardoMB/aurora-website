@@ -122,10 +122,10 @@ fi
 # 4. Angular prod build
 if [ -e "$DEPLOYMENT_TARGET/angular.json" ]; then
   cd "$DEPLOYMENT_TARGET"
-  echo "Running $NPM_CMD run build --prod"
+  echo "Running $NPM_CMD run build:prod"
   echo $(node -v)
   eval $NPM_CMD rebuild node-sass
-  eval $NPM_CMD run build --prod
+  eval $NPM_CMD run build:prod
   exitWithMessageOnError "npm failed"
   cd - > /dev/null
 fi

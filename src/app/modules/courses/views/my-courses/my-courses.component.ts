@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./my-courses.component.scss']
 })
 export class MyCoursesComponent implements OnInit {
+  currentTab: string;
 
   // TODO: related ocurses should be dynamic
   relatedCourses = [

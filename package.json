@@ -5,7 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "serve-devices": "ng serve --host 0.0.0.0 --disable-host-check --port 4202",
-    "build": "ng build --prod",
+    "build": "ng build",
+    "build:prod": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
