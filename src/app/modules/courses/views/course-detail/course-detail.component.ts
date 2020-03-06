@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
 import { User, IPurchasedCourse } from '../../../../shared/models/user.model';
 import { selectAuthUser, selectAuthIsAuthenticated } from '../../../../store/auth/auth.selectors';
-import { Subscription, BehaviorSubject, Observable, of } from 'rxjs';
+import { Subscription, BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { Course } from '../../../../shared/models/course.model';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
@@ -17,6 +17,7 @@ import { CoursesService } from '../../services/courses.service';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { throttleTime, mergeMap, tap, map, scan } from 'rxjs/operators';
 import * as faker from 'faker';
+import { IReview } from '../../interfaces/IReview';
 
 @Component({
   selector: 'app-course-detail',
@@ -36,7 +37,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
   course: Course;
   relatedCourses: Course[];
-  showGoToCart = false;
+  showGoToCart = false; // TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO: Super importante! (revisar el history de este archivo)
   showCertificate = false;
   canRateCourse = false;
   get enrolled() {
@@ -48,37 +49,17 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  // Paginated reviews
-  /* reviewsSubscription: Subscription;
-  reviews = [];
-  reviewsPageSize = 10;
-  reviewsEnd = false;
-  reviewsOffset = new BehaviorSubject(null); */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // Playground
+  // Reviews infinite scroll
   @ViewChild(CdkVirtualScrollViewport, { static: false })
   viewport: CdkVirtualScrollViewport;
   reviews2;
   batch = 5;
   theEnd = false;
-  offset = new BehaviorSubject(null);
+  offset = new Subject();
   infinite: Observable<any[]>;
   infiniteSubscription: Subscription;
-  reviews3;
+  reviews3: IReview[] = [];
+  createdReview: IReview;
 
   constructor(
     private router: Router,
@@ -103,30 +84,13 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       return;
     });
 
-    // Reviews pagination
-    /* const pageMap = this.reviewsOffset.pipe(
-      throttleTime(500),
-      tap((value: { courseId: string, offset: number }) => {
-        console.log('Catched emited value. Offset:', value.offset);
-        console.log('Getting new reviews page');
-        this.getReviewsPage(value.courseId, value.offset);
-      })
-    ); */
-
-
-
-
-
-
-
-
-    // Playground
-
+    // Reviews infinite scroll
     const batchMap = this.offset.pipe(
       throttleTime(500),
       mergeMap((value: { courseId: string, offset: number }) => {
         console.log('Emmited new value', value);
         if (value) {
+
           return this.getBatch(value.courseId, value.offset);
         } else {
           return of();
@@ -138,26 +102,20 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     );
     this.infinite = batchMap.pipe(map(v => Object.values(v)));
     this.infiniteSubscription = this.infinite.subscribe((arr) => {
-      if (arr) {
-        this.reviews3 = arr;
+      console.log('Got array', arr);
+      if (arr.length > 0) {
+        if (this.createdReview) {
+          this.reviews3 = [
+            this.createdReview,
+            ...arr
+          ];
+        } else {
+          this.reviews3 = [
+            ...arr
+          ];
+        }
       }
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   }
 
   ngOnInit() {
@@ -166,24 +124,8 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         this.course = data.learningInfo.course;
         this.relatedCourses = data.learningInfo.relatedCourses;
 
-        // Reviews infite scroll pagination.
-        // TODO: Implement reviews type.
-        /* this.reviewsSubscription = this.coursesService.getCourseReviews(data.learningInfo.course.id, 0, this.reviewsPageSize)
-          .subscribe((reviews: any[]) => {
-            if (reviews && reviews.length > 0) {
-              this.reviews = reviews;
-              if (reviews.length === data.learningInfo.course.reviews.length) {
-                this.reviewsEnd = true;
-              }
-            }
-          }); */
-
-        // This was working
-        /* console.log('Getting reviews first page');
-        this.getReviewsPage(data.learningInfo.course.id, 0); */
-
-        console.log('Fetching first page');
-        this.coursesService.getCourseReviews(data.learningInfo.course.id, 0, this.batch).pipe(
+        console.log('Fetching first reviews page');
+        /* this.coursesService.getCourseReviews(data.learningInfo.course.id, 0, this.batch).pipe(
           tap((reviews: any[]) => {
             reviews.length ? null : this.theEnd = true;
           }),
@@ -205,13 +147,14 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
             return { ...acc, ...batch };
           }, {}),
           map(v => Object.values(v))
-        ).subscribe((reviews: any[]) => {
+        ).subscribe((reviews: Array<IReview>) => {
           console.log('First page', reviews);
           if (reviews) {
             this.reviews3 = reviews;
           }
-        });
-
+        }); */
+        console.log('Nexting new value');
+        this.offset.next({ courseId: data.learningInfo.course.id, offset: 0 });
       }
     });
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
@@ -377,83 +320,28 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
             this.course = course; // Esto hace que se actualice la lista de reviews
             console.log('COURSEEEEEE', this.course);
 
-            // Option 2: with infinite scroll pagination
-            /* console.log('PUCHING ELEMENT');
-            this.reviews.push(review);
-            console.log(this.reviews); */
 
-            // Option 3: with infinite scroll pagination
-            console.log('Pushing new review to reviews array', review);
-            this.reviews3.push(review);
-            console.log(this.reviews3);
+            // TODO: Lo de arriba se tiene que modificar
+            const createdReview = {
+              rating: review.rating,
+              review: review.review,
+              user: {
+                name: this.user.name,
+                lastName: this.user.lastName
+              }
+            };
+            this.createdReview = createdReview;
+            this.reviews3 = [
+              createdReview,
+              ...this.reviews3
+            ];
           }
         });
       }
     });
   }
 
-  // Reviews pagination
-
-  nextReviewsPage($event: any, offset: number) {
-    console.log('Getting next reviews page. Offset:', offset);
-    /* if (this.reviewsEnd) {
-      return;
-    } */
-    /* const end = this.reviewsViewport.getRenderedRange().end;
-    const total = this.reviewsViewport.getDataLength();
-    if (end === total) {
-      console.log('Emiting new offset value. Offset:', offset);
-      this.reviewsOffset.next({ courseId: this.course.id, offset });
-    } */
-  }
-
-  getReviewsPage(courseId: string, offset: number)  {
-    /* this.reviewsSubscription = this.coursesService.getCourseReviews(courseId, offset, this.reviewsPageSize)
-      .subscribe((reviews: any[]) => {
-        console.log('Reviews:', reviews);
-        if (!reviews || reviews.length === 0) {
-          console.log('Got no reviews');
-          this.reviewsEnd = true;
-        }
-        if (reviews && reviews.length > 0) {
-          console.log('Got reviews. Updating reviews array');
-          this.reviews.push(reviews);
-        }
-      }); */
-  }
-
-  /**
-   * Traks the index of the reviews in the array and only renders the ones that change.
-   *
-   * @param {number} index
-   * @param {model} name
-   * @returns {number}
-   * @memberof CourseDetailComponent
-   */
-  trackReviewsByIndex(index: number): number {
-    return index;
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // Playground methods
-
+  // Reviews infinite scroll
   getBatch(courseId, offset) {
     console.log(`Fetching batch. CourseId: ${courseId}, Offset: ${offset}`);
     // #region
@@ -513,42 +401,6 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       },
     ); */
     // #endregion
-
-
-    /* return this.db
-      .collection('people', ref =>
-        ref
-          .orderBy('name')
-          .startAfter(offset)
-          .limit(this.batch)
-      )
-      .snapshotChanges()
-      .pipe(
-        tap((arr: any[]) => (arr.length ? null : (this.theEnd = true))),
-        map((arr: any[]) => {
-          return arr.reduce((acc, cur) => {
-            const id = cur.payload.doc.id;
-            const data = cur.payload.doc.data();
-            return { ...acc, [id]: data };
-          }, {});
-        })
-      ); */
-
-
-    /* return this.coursesService.getCourseReviews(courseId, offset, this.batch)
-      .pipe(
-        tap((arr: any[]) => (arr.length ? null : (this.theEnd = true))),
-        map((arr: any[]) => {
-          return arr.reduce((acc, cur) => {
-            const id = cur.payload.doc.id;
-            const data = cur.payload.doc.data();
-            return { ...acc, [id]: data };
-          }, {});
-        })
-      ); */
-
-
-
     return this.coursesService.getCourseReviews(courseId, offset, this.batch).pipe(
       tap((reviews: any[]) => {
         reviews.length ? null : this.theEnd = true;
@@ -568,23 +420,31 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         }, {});
       })
     );
-
   }
 
   nextBatch(e, offset) {
+    console.log('ScrollIndexChanged. Event:', e);
     if (this.theEnd) {
+      console.log('There are no more reviews to fetch');
       return;
     }
     const end = this.viewport.getRenderedRange().end;
     const total = this.viewport.getDataLength();
     console.log(`${end}, '>=', ${total}`);
     if (end === total) {
-      this.offset.next({ courseId: this.course.id, offset });
+      console.log('All fetched elements were rendered. Asking for more elements. Offset:', offset);
+      const value = { courseId: this.course.id, offset };
+      console.log('Nexting value', value);
+      this.offset.next(value);
     }
   }
 
   trackByIdx(i) {
     return i;
+  }
+
+  onCicked() {
+    console.log('Elements in the array', this.reviews3.length);
   }
 
 }

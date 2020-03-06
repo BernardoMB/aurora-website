@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Course } from 'src/app/shared/models/course.model';
 import { Category } from 'src/app/shared/models/category.model';
 import { environment } from '../../../../environments/environment';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -102,9 +103,13 @@ export class CoursesService {
   }
 
   getCourseReviews(courseId: string, skip: number, limit: number): Observable<any[]> {
-    console.log('Courses service: Getting course reviews');
+    console.log(`Courses service: Getting course reviews skiping ${skip} elements and limiting to ${limit} elements`);
     const url = `${this.host}/${this.apiVersion}/reviews?course=${courseId}&skip=${skip}&limit=${limit}&populate=user`;
-    return this.http.get<any>(url);
+    return this.http.get<any>(url).pipe(
+      tap((arr) => {
+        console.log(`Courses service: Got ${arr.length} elements`);
+      })
+    );
   }
 
 }

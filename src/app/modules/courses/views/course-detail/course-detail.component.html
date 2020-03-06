@@ -204,7 +204,7 @@
         <cdk-virtual-scroll-viewport
           class="virtual-scroll-viewport nice-container-scroll"
           itemSize="161"
-          (scrolledIndexChange)="nextBatch($event, reviews3.length - 1)"
+          (scrolledIndexChange)="nextBatch($event, reviews3.length)"
         >
           <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews3; let i = index; trackBy: trackByIdx">
             <app-review-card [review]="review"></app-review-card>
@@ -310,7 +310,7 @@
 
 
 
-<ng-container *ngIf="reviews3 && reviews3.length > 0">
+<!-- <ng-container *ngIf="reviews3 && reviews3.length > 0">
   <cdk-virtual-scroll-viewport
     itemSize="161"
     (scrolledIndexChange)="nextBatch($event, (reviews3[reviews3.length - 1]))"
@@ -322,5 +322,6 @@
     >
     </app-review-card>
   </cdk-virtual-scroll-viewport>
-</ng-container>
+</ng-container> -->
 
+<button (click)="onCicked()">click me</button>
