@@ -37,6 +37,7 @@ To see how cart functionality works see Bernardo's OneNote notes
 ## TODOS:
 
 - Add course Categories to store for more efficiency usign NgRx Entity
+- Pagination on all views
 - Implement auth guards on the following routes:
   * my courses
   * checkout
