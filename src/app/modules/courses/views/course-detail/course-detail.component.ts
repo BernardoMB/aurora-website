@@ -3,8 +3,8 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
 import { User, IPurchasedCourse } from '../../../../shared/models/user.model';
-import { selectAuthUser, selectAuthIsAuthenticated } from '../../../../store/auth/auth.selectors';
-import { Subscription, BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { selectAuthUser, selectAuthIsAuthenticated, selectAuthCart } from '../../../../store/auth/auth.selectors';
+import { Subscription, Observable, of, Subject } from 'rxjs';
 import { Course } from '../../../../shared/models/course.model';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
@@ -37,7 +37,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
   course: Course;
   relatedCourses: Course[];
-  showGoToCart = false; // TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO: Super importante! (revisar el history de este archivo)
+  showGoToCart = false;
   showCertificate = false;
   canRateCourse = false;
   get enrolled() {
@@ -52,13 +52,12 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   // Reviews infinite scroll
   @ViewChild(CdkVirtualScrollViewport, { static: false })
   viewport: CdkVirtualScrollViewport;
-  reviews2;
   batch = 5;
   theEnd = false;
   offset = new Subject();
   infinite: Observable<any[]>;
   infiniteSubscription: Subscription;
-  reviews3: IReview[] = [];
+  reviews: IReview[] = [];
   createdReview: IReview;
 
   constructor(
@@ -72,7 +71,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     private coursesService: CoursesService
   ) {
     this.router.events.subscribe(event => {
-      /* console.log('Navigation event:', event); */
+      // console.log('Navigation event:', event);
       if (event instanceof NavigationEnd) {
         // Prevent scrolling if changed tab.
         const second = event.url.split('#')[1];
@@ -90,7 +89,6 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       mergeMap((value: { courseId: string, offset: number }) => {
         console.log('Emmited new value', value);
         if (value) {
-
           return this.getBatch(value.courseId, value.offset);
         } else {
           return of();
@@ -101,16 +99,16 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       }, {})
     );
     this.infinite = batchMap.pipe(map(v => Object.values(v)));
-    this.infiniteSubscription = this.infinite.subscribe((arr) => {
-      console.log('Got array', arr);
+    this.infiniteSubscription = this.infinite.subscribe((arr: IReview[]) => {
+      console.log('Got reviews array', arr);
       if (arr.length > 0) {
         if (this.createdReview) {
-          this.reviews3 = [
+          this.reviews = [
             this.createdReview,
             ...arr
           ];
         } else {
-          this.reviews3 = [
+          this.reviews = [
             ...arr
           ];
         }
@@ -119,10 +117,20 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
-      if (data.learningInfo) {
-        this.course = data.learningInfo.course;
-        this.relatedCourses = data.learningInfo.relatedCourses;
+    this.route.data.subscribe((data: { courseDetailInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
+      if (data.courseDetailInfo) {
+        this.course = data.courseDetailInfo.course;
+        this.relatedCourses = data.courseDetailInfo.relatedCourses;
+
+        this.store.pipe(select(selectAuthCart)).subscribe((cart: any[]) => {
+          if (cart && cart.length > 0) {
+            cart.map((el: Course) => {
+              return el.id;
+            }).indexOf(data.courseDetailInfo.course.id) !== -1 ? this.showGoToCart = true : this.showGoToCart = false;
+          } else {
+            this.showGoToCart = false;
+          }
+        });
 
         console.log('Fetching first reviews page');
         /* this.coursesService.getCourseReviews(data.learningInfo.course.id, 0, this.batch).pipe(
@@ -153,8 +161,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
             this.reviews3 = reviews;
           }
         }); */
+        const value = { courseId: data.courseDetailInfo.course.id, offset: 0 };
         console.log('Nexting new value');
-        this.offset.next({ courseId: data.learningInfo.course.id, offset: 0 });
+        this.offset.next(value);
       }
     });
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
@@ -331,9 +340,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
               }
             };
             this.createdReview = createdReview;
-            this.reviews3 = [
+            this.reviews = [
               createdReview,
-              ...this.reviews3
+              ...this.reviews
             ];
           }
         });
@@ -444,7 +453,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   }
 
   onCicked() {
-    console.log('Elements in the array', this.reviews3.length);
+    console.log('Elements in the array', this.reviews.length);
   }
 
 }

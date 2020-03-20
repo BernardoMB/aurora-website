@@ -157,7 +157,7 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  /* border: 1px dashed greenyellow; */
+  // border: 1px dashed greenyellow;
   -webkit-text-fill-color: #408e2d;
   box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0) inset;
   transition: background-color 5000s ease-in-out 0s;
@@ -175,7 +175,7 @@ body::-webkit-scrollbar-track {
 }
 body::-webkit-scrollbar-thumb {
   background-color: #c1c1c1;
-  /* border: 2px solid #555555; */
+  // border: 2px solid #555555;
 }
 
 // Custom classes
@@ -188,7 +188,7 @@ $focus-outline-thickeness: 2px;
   }
 }
 
-// Modify angular material classes
+// Modify Angular Material classes
 
 .custom-mat-dialog-container {
   .mat-dialog-container {

@@ -200,18 +200,18 @@
       </div> -->
 
       <!-- Option 5 -->
-      <div *ngIf="reviews3 && reviews3.length > 0">
+      <div *ngIf="reviews && reviews.length > 0">
         <cdk-virtual-scroll-viewport
           class="virtual-scroll-viewport nice-container-scroll"
           itemSize="161"
-          (scrolledIndexChange)="nextBatch($event, reviews3.length)"
+          (scrolledIndexChange)="nextBatch($event, reviews.length)"
         >
-          <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews3; let i = index; trackBy: trackByIdx">
+          <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews; let i = index; trackBy: trackByIdx">
             <app-review-card [review]="review"></app-review-card>
           </div>
         </cdk-virtual-scroll-viewport>
       </div>
-      <div *ngIf="!reviews3 || reviews3.length === 0" class="reviews-container-2">
+      <div *ngIf="!reviews || reviews.length === 0" class="reviews-container-2">
         <div class="no-review-cards-container-2">
           <i class="material-icons">inbox</i>
           <div class="no-reviews-phrase">This course has no reviews</div>

@@ -55,7 +55,7 @@ const routes: Routes = [
   {
     path: ':id',
     component: CourseDetailComponent,
-    resolve: { learningInfo: CourseDetailResolver },
+    resolve: { courseDetailInfo: CourseDetailResolver },
     data: { animation: 'course' },
   },
 ];
