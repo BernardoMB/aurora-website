@@ -86,72 +86,84 @@
       </div>
       <!-- Reviews tab content -->
       <div *ngIf="currentTab === 'reviews'" class="tab tab-reviews">
-        <div *ngIf="course.totalReviews" class="reviews-title">{{ course.totalReviews }} reviews</div>
-        <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="reviews-title">0 reviews</div>
-        <div class="reviews-container">
-          <div
-            class="review-card"
-            *ngFor="let review of course.reviews; let i = index"
+        <div class="reviews-title-container">
+          <div *ngIf="course.totalReviews" class="reviews-title">{{ course.totalReviews }} reviews</div>
+          <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="reviews-title">0 reviews</div>
+        </div>
+        <div *ngIf="reviews && reviews.length > 0">
+          <cdk-virtual-scroll-viewport
+            class="virtual-scroll-viewport nice-container-scroll"
+            itemSize="161"
+            (scrolledIndexChange)="nextBatch($event, reviews.length)"
           >
-            <app-review-card
-              [review]="review"
-            ></app-review-card>
+            <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews; let i = index; trackBy: trackByIdx">
+              <app-review-card [review]="review"></app-review-card>
+            </div>
+          </cdk-virtual-scroll-viewport>
+        </div>
+        <div *ngIf="!reviews || reviews.length === 0" class="reviews-container-2">
+          <div class="no-review-cards-container-2">
+            <i class="material-icons">inbox</i>
+            <div class="no-reviews-phrase">This course has no reviews</div>
           </div>
+        </div>
+        <div *ngIf="canRateCourse" class="rate-container">
+          <button mat-raised-button [color]="'accent'" (click)="onRateCourse()">Rate this course</button>
         </div>
       </div>
       <!-- Certificate tab content -->
       <div
-      *ngIf="currentTab === 'certificate' && showCertificate"
-      class="tab tab-certificate"
-    >
-      <div class="certificate-wrapper">
-        <div id="certificate" class="certificate">
-          <div class="certificate-container">
-            <img alt="Invest Naija Logotype" class="logotype" src="/assets/img/logos/logotype-certificate.svg">
-            <div class="certificate-label">certificate</div>
-            <div class="awarded-container">
-              <div class="line"></div>
-              <div class="awarded-label">this certificate is awarded to</div>
-              <div class="line"></div>
-            </div>
-            <div class="name">
-              <div class="user-names">{{user.name}} {{user.lastName}}</div>
-              <div class="line name-line"></div>
-            </div>
-            <div class="course-details">
-              <div class="course-data course-category">
-                <div class="course-data-label">course category:</div>
-                <div class="course-data-input">
-                  <div class="course-value">{{course.category.name}}</div>
-                  <div class="input-line"></div>
-                </div>
+        *ngIf="currentTab === 'certificate' && showCertificate"
+        class="tab tab-certificate"
+      >
+        <div class="certificate-wrapper">
+          <div id="certificate" class="certificate">
+            <div class="certificate-container">
+              <img alt="Invest Naija Logotype" class="logotype" src="/assets/img/logos/logotype-certificate.svg">
+              <div class="certificate-label">certificate</div>
+              <div class="awarded-container">
+                <div class="line"></div>
+                <div class="awarded-label">this certificate is awarded to</div>
+                <div class="line"></div>
               </div>
-              <div class="course-data course-name">
-                <div class="course-data-label">course name:</div>
-                <div class="course-data-input">
-                  <div class="course-value">{{course.name}}</div>
-                  <div class="input-line"></div>
-                </div>
+              <div class="name">
+                <div class="user-names">{{user.name}} {{user.lastName}}</div>
+                <div class="line name-line"></div>
               </div>
-              <div class="course-data course-date">
-                <div class="course-data-label">date:</div>
-                <div class="course-data-input">
-                  <div class="course-value">{{course.category.createdAt}}</div>
-                  <div class="input-line"></div>
+              <div class="course-details">
+                <div class="course-data course-category">
+                  <div class="course-data-label">course category:</div>
+                  <div class="course-data-input">
+                    <div class="course-value">{{course.category.name}}</div>
+                    <div class="input-line"></div>
+                  </div>
                 </div>
-              </div>
-              <div class="course-data course-url">
-                <div class="course-data-label">url:</div>
-                <div class="course-data-input">
-                  <div class="course-value">https://investnaija.com/courses/{{course.id}}</div>
-                  <div class="input-line"></div>
+                <div class="course-data course-name">
+                  <div class="course-data-label">course name:</div>
+                  <div class="course-data-input">
+                    <div class="course-value">{{course.name}}</div>
+                    <div class="input-line"></div>
+                  </div>
+                </div>
+                <div class="course-data course-date">
+                  <div class="course-data-label">date:</div>
+                  <div class="course-data-input">
+                    <div class="course-value">{{course.category.createdAt}}</div>
+                    <div class="input-line"></div>
+                  </div>
+                </div>
+                <div class="course-data course-url">
+                  <div class="course-data-label">url:</div>
+                  <div class="course-data-input">
+                    <div class="course-value">https://investnaija.com/courses/{{course.id}}</div>
+                    <div class="input-line"></div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <button class="download-certificate-button focus-outline" (click)="onDownloadCertificate()">Download certificate</button>
+        <button class="download-certificate-button focus-outline" (click)="onDownloadCertificate()">Download certificate</button>
     </div>
     <div
       *ngIf="currentTab === 'certificate' && !showCertificate"
@@ -235,3 +247,5 @@
     </div>
   </div>
 </section>
+
+<button (click)="onCicked()">click me</button>

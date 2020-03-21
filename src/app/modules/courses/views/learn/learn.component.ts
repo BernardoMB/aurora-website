@@ -2,13 +2,18 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
 import { selectAuthUser } from '../../../../store/auth/auth.selectors';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, Observable, of } from 'rxjs';
 import { User } from '../../../../shared/models/user.model';
 import { Course } from '../../../../shared/models/course.model';
 import { ActivatedRoute, UrlSegment, Router, NavigationEnd, Event } from '@angular/router';
 import { completeLesson } from '../../../../store/auth/auth.actions';
-import { filter } from 'rxjs/operators';
+import { filter, throttleTime, mergeMap, scan, map, tap } from 'rxjs/operators';
 import * as html2canvas from 'html2canvas';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { IReview } from '../../interfaces/IReview';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { ReviewModalComponent } from '../../components/review-modal/review-modal.component';
+import { CoursesService } from '../../services/courses.service';
 
 @Component({
   selector: 'app-learn',
@@ -17,6 +22,7 @@ import * as html2canvas from 'html2canvas';
 })
 export class LearnComponent implements OnInit, OnDestroy {
   @ViewChild('content', { static: true }) private contentElement: ElementRef;
+  routeFragmentSubscription: Subscription;
   currentTab = 'about'; // Default tab when page loads
   routerSubscription: Subscription;
   urlSubscription: Subscription;
@@ -30,11 +36,25 @@ export class LearnComponent implements OnInit, OnDestroy {
   showPrevButton = false;
   showNextButton = true;
   showCertificate = false;
+  canRateCourse = false;
+
+  // Reviews infinite scroll
+  @ViewChild(CdkVirtualScrollViewport, { static: false })
+  viewport: CdkVirtualScrollViewport;
+  batch = 5;
+  theEnd = false;
+  offset = new Subject();
+  infinite: Observable<any[]>;
+  infiniteSubscription: Subscription;
+  reviews: IReview[] = [];
+  createdReview: IReview;
 
   constructor(
     private store: Store<State>,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private reviewDialog: MatDialog,
+    private coursesService: CoursesService
   ) {
     this.route.data.subscribe((data: { learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
       if (data.learningInfo) {
@@ -43,6 +63,12 @@ export class LearnComponent implements OnInit, OnDestroy {
         this.lessonIds = (data.learningInfo.course.lessons as any[]).map(lesson => lesson.id);
         this.userProgress = data.learningInfo.userProgress;
         this.relatedCourses = data.learningInfo.relatedCourses;
+
+        // Reviews infinite scroll
+        console.log('Fetching first reviews page');
+        const value = { courseId: data.learningInfo.course.id, offset: 0 };
+        console.log('Nexting new value', value);
+        this.offset.next(value);
       }
     });
 
@@ -70,6 +96,44 @@ export class LearnComponent implements OnInit, OnDestroy {
         this.router.navigate(['lesson', lessonId], { relativeTo: this.route });
       }
     });
+
+    // Reviews infinite scroll
+    const batchMap = this.offset.pipe(
+      throttleTime(500),
+      mergeMap((value: { courseId: string, offset: number }) => {
+        console.log('Emmited new value', value);
+        if (value) {
+          return this.getBatch(value.courseId, value.offset);
+        } else {
+          return of();
+        }
+      }),
+      scan((acc, batch) => {
+        return { ...acc, ...batch };
+      }, {})
+    );
+    this.infinite = batchMap.pipe(map(v => Object.values(v)));
+    this.infiniteSubscription = this.infinite.subscribe((arr: IReview[]) => {
+      console.log('Got reviews array', arr);
+      if (arr.length > 0) {
+        if (this.createdReview) {
+          this.reviews = [
+            this.createdReview,
+            ...arr
+          ];
+        } else {
+          this.reviews = [
+            ...arr
+          ];
+        }
+      }
+    });
+
+    this.routeFragmentSubscription = this.route.fragment.subscribe((fragment: string) => {
+      if (fragment) {
+        this.currentTab = fragment;
+      }
+    });
   }
 
   ngOnInit() {
@@ -82,11 +146,32 @@ export class LearnComponent implements OnInit, OnDestroy {
         if (this.userProgress.length === this.course.lessons.length) {
           this.showCertificate = true;
         }
+
+        // Determine if the user is able to add review
+        // TODO: Implement review type.
+        const review = this.course.reviews.find((el: any) => el.user === this.user.id);
+        if (review) {
+          this.canRateCourse = false;
+          const courseReviews = this.course.reviews.filter((el: any) => el.user !== this.user.id);
+          courseReviews.push(review);
+          /* console.log('COURSE', this.course);
+          this.course.reviews = courseReviews; */
+          const course = {
+            ...this.course,
+            reviews: courseReviews
+          };
+          this.course = course;
+        } else {
+          this.canRateCourse = true;
+        }
+      } else {
+        this.canRateCourse = false;
       }
     });
   }
 
   ngOnDestroy() {
+    this.routeFragmentSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
     this.routerSubscription.unsubscribe();
     this.urlSubscription.unsubscribe();
@@ -137,6 +222,110 @@ export class LearnComponent implements OnInit, OnDestroy {
     const lessonId = $event;
     console.log(`LearnComponent: Navigating to lesson/${lessonId}`);
     this.router.navigate(['lesson/', lessonId], { relativeTo: this.route });
+  }
+
+  onRateCourse() {
+    // Modal configuration
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
+    dialogConfig.backdropClass = 'custom-modal-backdrop';
+    let reviewDialogRef;
+    reviewDialogRef = this.reviewDialog.open(ReviewModalComponent, dialogConfig);
+    reviewDialogRef.afterClosed().subscribe(result => {
+      if (result && result.rating) {
+        // TODO: implement review type
+        this.coursesService.reviewCourse(this.course.id, result.rating, result.review).subscribe((review: any) => {
+          if (review) {
+            this.canRateCourse = false;
+
+            // Option 1: no pagination
+            const reviews = [
+              ...(this.course.reviews),
+              review
+            ];
+            const newTotalReviews = this.course.totalReviews > 0 ? this.course.totalReviews + 1 : 1;
+            const newTotalRating = this.course.totalRating ? this.course.totalRating + review.rating : review.rating;
+            // tslint:disable-next-line: max-line-length
+            const newRating = ((this.course.totalRating ? this.course.totalRating : 0) + review.rating) / ((this.course.totalReviews ? this.course.totalReviews : 0) + 1);
+            const course = {
+              ...(this.course),
+              reviews,
+              rating: newRating,
+              totalRating: newTotalRating,
+              totalReviews: newTotalReviews
+            };
+            this.course = course; // Esto hace que se actualice la lista de reviews
+            console.log('COURSEEEEEE', this.course);
+
+
+            // TODO: Lo de arriba se tiene que modificar
+            const createdReview = {
+              rating: review.rating,
+              review: review.review,
+              user: {
+                name: this.user.name,
+                lastName: this.user.lastName
+              }
+            };
+            this.createdReview = createdReview;
+            this.reviews = [
+              createdReview,
+              ...this.reviews
+            ];
+          }
+        });
+      }
+    });
+  }
+
+  // Reviews infinite scroll
+  getBatch(courseId, offset) {
+    console.log(`Fetching batch. CourseId: ${courseId}, Offset: ${offset}`);
+    return this.coursesService.getCourseReviews(courseId, offset, this.batch).pipe(
+      tap((reviews: any[]) => {
+        reviews.length ? null : this.theEnd = true;
+      }),
+      map((reviews: any[]) => {
+        return reviews.reduce((acc, review) => {
+          const id = review.id;
+          const data = {
+            review: review.review,
+            rating: review.rating,
+            user: {
+              name: review.user.name,
+              lastName: review.user.lastName
+            }
+          };
+          return { ...acc, [id]: data };
+        }, {});
+      })
+    );
+  }
+
+  nextBatch(e, offset) {
+    console.log('ScrollIndexChanged. Event:', e);
+    if (this.theEnd) {
+      console.log('There are no more reviews to fetch');
+      return;
+    }
+    const end = this.viewport.getRenderedRange().end;
+    const total = this.viewport.getDataLength();
+    console.log(`${end}, '>=', ${total}`);
+    if (end === total) {
+      console.log('All fetched elements were rendered. Asking for more elements. Offset:', offset);
+      const value = { courseId: this.course.id, offset };
+      console.log('Nexting value', value);
+      this.offset.next(value);
+    }
+  }
+
+  trackByIdx(i) {
+    return i;
+  }
+
+  onCicked() {
+    console.log('Elements in the array', this.reviews.length);
   }
 
 }

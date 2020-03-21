@@ -175,8 +175,126 @@
           margin: 5px 0px;
         }
       }
+      .tab-reviews {
+        max-width: 900px;
+        .reviews-title-container {
+          display: flex;
+          justify-content: space-between;
+          .reviews-title {
+            font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #29303b;
+          }
+        }
+        .reviews-container {
+          display: flex;
+          flex-direction: column;
+          padding: 40px 60px;
+          background-color: #f3f3f3;
+          border: 1px solid gainsboro;
+          border-radius: 5px;
+          max-height: 400px;
+          overflow: auto;
+          .review-card {
+            margin-bottom: 40px;
+          }
+          .no-review-cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            i {
+              font-size: 120px;
+              color: #e8e9eb;
+              margin-bottom: 20px;
+            }
+            .no-reviews-phrase {
+              color: #29303b;
+            }
+          }
+        }
+        .virtual-scroll-viewport {
+          display: flex;
+          flex-direction: column;
+          padding: 40px 60px;
+          background-color: #f3f3f3;
+          border: 1px solid gainsboro;
+          border-radius: 5px;
+          height: 400px;
+          overflow-x: hidden;
+          &::ng-deep {
+            .cdk-virtual-scroll-content-wrapper {
+              position: relative !important;
+              top: unset !important;
+              left: unset !important;
+              contain: unset !important;
+            }
+          }
+          .review-card {
+            margin-bottom: 40px;
+          }
+          .no-review-cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            i {
+              font-size: 120px;
+              color: #e8e9eb;
+              margin-bottom: 20px;
+            }
+            .no-reviews-phrase {
+              color: #29303b;
+            }
+          }
+        }
+
+        .reviews-container-2 {
+          display: flex;
+          flex-direction: column;
+          padding: 40px 60px;
+          background-color: #f3f3f3;
+          border: 1px solid gainsboro;
+          border-radius: 5px;
+          max-height: 400px;
+          overflow: auto;
+          .review-card {
+            margin-bottom: 40px;
+          }
+          .no-review-cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            i {
+              font-size: 120px;
+              color: #e8e9eb;
+              margin-bottom: 20px;
+            }
+            .no-reviews-phrase {
+              color: #29303b;
+            }
+          }
+          .no-review-cards-container-2 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            i {
+              font-size: 120px;
+              color: #e8e9eb;
+              margin-bottom: 20px;
+            }
+            .no-reviews-phrase {
+              color: #29303b;
+            }
+          }
+        }
+        .rate-container {
+          display: flex;
+          margin-top: 20px;
+          justify-content: center;
+        }
+      }
       .tab-lessons,
-      .tab-reviews,
       .tab-no-certificate {
         max-width: 900px;
         .lessons-title,

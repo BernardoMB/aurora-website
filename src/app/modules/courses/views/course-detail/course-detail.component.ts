@@ -25,10 +25,8 @@ import { IReview } from '../../interfaces/IReview';
   styleUrls: ['./course-detail.component.scss'],
 })
 export class CourseDetailComponent implements OnInit, OnDestroy {
-  /* @ViewChild(CdkVirtualScrollViewport, { static: false }) reviewsViewport: CdkVirtualScrollViewport; */
-
-  // TODO: this should be computed from the info obtained from the server
-  isFavorite: boolean;
+  routeFragmentSubscription: Subscription;
+  isFavorite: boolean; // TODO: this should be computed from the info obtained from th server
   currentTab = 'about';
   showCertificateTab = false;
   userSubscription: Subscription;
@@ -49,7 +47,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  // Reviews infinite scroll
+  // #region Reviews infinite scroll
   @ViewChild(CdkVirtualScrollViewport, { static: false })
   viewport: CdkVirtualScrollViewport;
   batch = 5;
@@ -59,11 +57,12 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   infiniteSubscription: Subscription;
   reviews: IReview[] = [];
   createdReview: IReview;
+  // #endregion
 
   constructor(
+    private readonly route: ActivatedRoute,
     private router: Router,
     private store: Store<State>,
-    private readonly route: ActivatedRoute,
     private loginDialog: MatDialog,
     private signupDialog: MatDialog,
     private reviewDialog: MatDialog,
@@ -83,7 +82,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       return;
     });
 
-    // Reviews infinite scroll
+    // #region Reviews infinite scroll
     const batchMap = this.offset.pipe(
       throttleTime(500),
       mergeMap((value: { courseId: string, offset: number }) => {
@@ -114,10 +113,43 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         }
       }
     });
+    // #endregion
+
+    this.routeFragmentSubscription = this.route.fragment.subscribe((fragment: string) => {
+      if (fragment) {
+        this.currentTab = fragment;
+      }
+    });
   }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { courseDetailInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
+    const data = this.route.snapshot.data;
+    console.log('%c Activated route snapshot resolved data ', 'background: #222; color: #bada55');
+    console.log(data);
+    if (data.courseDetailInfo) {
+      const courseDetailInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } = data.courseDetailInfo;
+      this.course = courseDetailInfo.course;
+      this.relatedCourses = courseDetailInfo.relatedCourses;
+      // #region Cart logic
+      this.store.pipe(select(selectAuthCart)).subscribe((cart: any[]) => {
+        if (cart && cart.length > 0) {
+          cart.map((el: Course) => {
+            return el.id;
+          }).indexOf(courseDetailInfo.course.id) !== -1 ? this.showGoToCart = true : this.showGoToCart = false;
+        } else {
+          this.showGoToCart = false;
+        }
+      });
+      // #endregion
+      // #region Reviews infinite scroll
+      console.log('Fetching first reviews page');
+      const value = { courseId: data.courseDetailInfo.course.id, offset: 0 };
+      console.log('Nexting new value', value);
+      this.offset.next(value);
+      // #endregion
+    }
+
+    /* this.route.data.subscribe((data: { courseDetailInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
       if (data.courseDetailInfo) {
         this.course = data.courseDetailInfo.course;
         this.relatedCourses = data.courseDetailInfo.relatedCourses;
@@ -132,40 +164,15 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           }
         });
 
+        // #region Reviews infinite scroll
         console.log('Fetching first reviews page');
-        /* this.coursesService.getCourseReviews(data.learningInfo.course.id, 0, this.batch).pipe(
-          tap((reviews: any[]) => {
-            reviews.length ? null : this.theEnd = true;
-          }),
-          map((reviews: any[]) => {
-            return reviews.reduce((acc, review) => {
-              const id = review.id;
-              const reviewData = {
-                review: review.review,
-                rating: review.rating,
-                user: {
-                  name: review.user.name,
-                  lastName: review.user.lastName
-                }
-              };
-              return { ...acc, [id]: reviewData };
-            }, {});
-          }),
-          scan((acc, batch) => {
-            return { ...acc, ...batch };
-          }, {}),
-          map(v => Object.values(v))
-        ).subscribe((reviews: Array<IReview>) => {
-          console.log('First page', reviews);
-          if (reviews) {
-            this.reviews3 = reviews;
-          }
-        }); */
         const value = { courseId: data.courseDetailInfo.course.id, offset: 0 };
-        console.log('Nexting new value');
+        console.log('Nexting new value', value);
         this.offset.next(value);
+        // #endregion
       }
-    });
+    }); */
+
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
       if (user) {
         this.user = user;
@@ -216,6 +223,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.routeFragmentSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
     this.isAuthenticatedSubscription.unsubscribe();
   }
@@ -353,63 +361,6 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   // Reviews infinite scroll
   getBatch(courseId, offset) {
     console.log(`Fetching batch. CourseId: ${courseId}, Offset: ${offset}`);
-    // #region
-    /* return of(
-      {
-        [Math.trunc(Math.random() * 1000000)]: {
-          review: 'Review ' + Math.trunc(Math.random() * 1000),
-          rating: Math.floor(Math.random() * 5) + 1,
-          user: {
-            name: 'Name ' + Math.trunc(Math.random() * 1000),
-            lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
-          }
-        }
-      },
-      {
-        [Math.trunc(Math.random() * 1000000)]: {
-          review: 'Review ' + Math.trunc(Math.random() * 1000),
-          rating: Math.floor(Math.random() * 5) + 1,
-          user: {
-            name: 'Name ' + Math.trunc(Math.random() * 1000),
-            lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
-          }
-        }
-      },
-      {
-        [Math.trunc(Math.random() * 1000000)]: {
-          review: 'Review ' + Math.trunc(Math.random() * 1000),
-          rating: Math.floor(Math.random() * 5) + 1,
-          user: {
-            name: 'Name ' + Math.trunc(Math.random() * 1000),
-            lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
-          }
-        }
-      },
-      {
-        [Math.trunc(Math.random() * 1000000)]: {
-          review: `Hello,
-          Up to section 17 inclusive, I considered it the best course after which I learned.
-          From section 18, it became very confusing to me. Different and very complicated compared to what I learned about the REST API.
-          You certainly do not need my suggestion, but I would recommend a collaboration with someone who implements the back-end part in EF Core 3.0 or Spring Boot, and then from my point of view the course would become extremely useful. I understand that the back end is not the subject of the course, but in this style, I could not actually associate with what I already knew / used about the REST API. It's just my personal opinion.`,
-          rating: Math.floor(Math.random() * 5) + 1,
-          user: {
-            name: 'Name ' + Math.trunc(Math.random() * 1000),
-            lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
-          }
-        }
-      },
-      {
-        [Math.trunc(Math.random() * 1000000)]: {
-          review: 'Review ' + Math.trunc(Math.random() * 1000),
-          rating: Math.floor(Math.random() * 5) + 1,
-          user: {
-            name: 'Name ' + Math.trunc(Math.random() * 1000),
-            lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
-          }
-        }
-      },
-    ); */
-    // #endregion
     return this.coursesService.getCourseReviews(courseId, offset, this.batch).pipe(
       tap((reviews: any[]) => {
         reviews.length ? null : this.theEnd = true;
@@ -450,10 +401,6 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   trackByIdx(i) {
     return i;
-  }
-
-  onCicked() {
-    console.log('Elements in the array', this.reviews.length);
   }
 
 }

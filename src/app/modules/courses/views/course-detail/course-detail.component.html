@@ -133,73 +133,12 @@
         </div>
       </div>
     </div>
-
     <!-- Reviews tab content -->
     <div *ngIf="currentTab === 'reviews'" class="tab tab-reviews">
       <div class="reviews-title-container">
         <div *ngIf="course.totalReviews" class="reviews-title">{{ course.totalReviews }} reviews</div>
         <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="reviews-title">0 reviews</div>
       </div>
-
-      <!-- Option 1 -->
-      <!-- <div class="reviews-container nice-container-scroll">
-        <div *ngIf="course.totalReviews > 0">
-          <div class="review-card" *ngFor="let review of course.reviews; let i = index">
-            <app-review-card [review]="review" ></app-review-card>
-          </div>
-        </div>
-        <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="no-review-cards-container">
-          <i class="material-icons">inbox</i>
-          <div class="no-reviews-phrase">This course has no reviews</div>
-        </div>
-      </div> -->
-
-      <!-- Option 2 -->
-      <!-- <div class="reviews-container nice-container-scroll">
-        <div *ngIf="course.totalReviews > 0">
-          <cdk-virtual-scroll-viewport style="height: 400px;" itemSize="161" (scrolledIndexChange)="nextReviewsPage($event, reviews.length)">
-            <div style="">
-              <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews; let i = index">
-                <app-review-card [review]="review[0]"></app-review-card>
-              </div>
-            </div>
-          </cdk-virtual-scroll-viewport>
-        </div>
-        <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="no-review-cards-container">
-          <i class="material-icons">inbox</i>
-          <div class="no-reviews-phrase">This course has no reviews</div>
-        </div>
-      </div> -->
-
-      <!-- Option 3 -->
-      <!-- <cdk-virtual-scroll-viewport class="virtual-scroll-viewport" itemSize="161" (scrolledIndexChange)="nextReviewsPage($event, reviews.length)">
-        <div *ngIf="course.totalReviews > 0">
-          <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews; let i = index">
-            <app-review-card [review]="review[0]"></app-review-card>
-          </div>
-        </div>
-        <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="no-review-cards-container">
-          <i class="material-icons">inbox</i>
-          <div class="no-reviews-phrase">This course has no reviews</div>
-        </div>
-      </cdk-virtual-scroll-viewport> -->
-
-      <!-- Option 4 -->
-      <!-- <div *ngIf="reviews && reviews.length > 0">
-        <cdk-virtual-scroll-viewport class="virtual-scroll-viewport" itemSize="161" (scrolledIndexChange)="nextReviewsPage($event, reviews.length)">
-          <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews; let i = index">
-            <app-review-card [review]="review[0]"></app-review-card>
-          </div>
-        </cdk-virtual-scroll-viewport>
-      </div>
-      <div *ngIf="!reviews || reviews.length === 0" class="reviews-container-2">
-        <div class="no-review-cards-container-2">
-          <i class="material-icons">inbox</i>
-          <div class="no-reviews-phrase">This course has no reviews</div>
-        </div>
-      </div> -->
-
-      <!-- Option 5 -->
       <div *ngIf="reviews && reviews.length > 0">
         <cdk-virtual-scroll-viewport
           class="virtual-scroll-viewport nice-container-scroll"
@@ -217,12 +156,10 @@
           <div class="no-reviews-phrase">This course has no reviews</div>
         </div>
       </div>
-
       <div *ngIf="canRateCourse" class="rate-container">
         <button mat-raised-button [color]="'accent'" (click)="onRateCourse()">Rate this course</button>
       </div>
     </div>
-
     <!-- Certificate tab content -->
     <div
       *ngIf="currentTab === 'certificate' && showCertificateTab && showCertificate"
@@ -307,21 +244,3 @@
     </div>
   </div>
 </section>
-
-
-
-<!-- <ng-container *ngIf="reviews3 && reviews3.length > 0">
-  <cdk-virtual-scroll-viewport
-    itemSize="161"
-    (scrolledIndexChange)="nextBatch($event, (reviews3[reviews3.length - 1]))"
-  >
-    <app-review-card
-      *cdkVirtualFor="let review of reviews3; let i = index; trackBy: trackByIdx"
-      class="animated lightSpeedIn"
-      [review]="review"
-    >
-    </app-review-card>
-  </cdk-virtual-scroll-viewport>
-</ng-container> -->
-
-<button (click)="onCicked()">click me</button>
