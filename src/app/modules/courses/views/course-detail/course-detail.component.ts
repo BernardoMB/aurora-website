@@ -123,7 +123,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const data = this.route.snapshot.data;
+    /* const data = this.route.snapshot.data;
     console.log('%c Activated route snapshot resolved data ', 'background: #222; color: #bada55');
     console.log(data);
     if (data.courseDetailInfo) {
@@ -147,9 +147,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       console.log('Nexting new value', value);
       this.offset.next(value);
       // #endregion
-    }
+    } */
 
-    /* this.route.data.subscribe((data: { courseDetailInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
+    this.route.data.subscribe((data: { courseDetailInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
       if (data.courseDetailInfo) {
         this.course = data.courseDetailInfo.course;
         this.relatedCourses = data.courseDetailInfo.relatedCourses;
@@ -171,7 +171,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         this.offset.next(value);
         // #endregion
       }
-    }); */
+    });
 
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
       if (user) {
