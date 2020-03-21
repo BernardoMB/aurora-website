@@ -1,3 +1,39 @@
+.categories-header {
+  display: block;
+  position: relative;
+  background: #f7f8fa;
+  border-bottom: 1px solid #dedfe0;
+  .categories-header-container {
+    padding: 0px 20px;
+    max-width: 1180px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    margin: auto;
+    .category-container {
+      margin-top: 3px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      color: #686f7a;
+      font-size: 13px;
+      font-weight: 400;
+      padding: 12px 16px;
+      outline-offset: -2px;
+      i {
+        margin-right: 6px;
+        font-size: 18px;
+      }
+      &:hover {
+        background-color: #e8e9eb;
+      }
+    }
+  }
+}
+
 .courses-jumbotron-section {
   overflow: hidden;
   .jumbotron-wrapper {
@@ -48,42 +84,6 @@
             line-height: 1.1;
           }
         }
-      }
-    }
-  }
-}
-
-.categories-header {
-  display: block;
-  position: relative;
-  background: #f7f8fa;
-  border-bottom: 1px solid #dedfe0;
-  .categories-header-container {
-    padding: 0px 20px;
-    max-width: 1180px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    overflow: hidden;
-    box-sizing: border-box;
-    position: relative;
-    margin: auto;
-    .category-container {
-      margin-top: 3px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      color: #686f7a;
-      font-size: 13px;
-      font-weight: 400;
-      padding: 12px 16px;
-      outline-offset: -2px;
-      i {
-        margin-right: 6px;
-        font-size: 18px;
-      }
-      &:hover {
-        background-color: #e8e9eb;
       }
     }
   }

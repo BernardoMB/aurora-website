@@ -2,6 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Course } from '../../../../shared/models/course.model';
 import { CoursesService } from '../../services/courses.service';
+import { Category } from '../../../../shared/models/category.model';
+import { ActivatedRoute } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-all-courses',
@@ -691,15 +694,36 @@ export class AllCoursesComponent implements OnInit, OnDestroy {
 
   coursesSubscription: Subscription;
   courses: Course[];
+  categoriesSubscription: Subscription;
+  topCategories: Category[];
+  featuredCategories: Category[];
+  pageNumber: number;
 
   constructor(
-    private coursesService: CoursesService
+    private coursesService: CoursesService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    this.route.queryParams.pipe(
+      filter(params => params.page)
+    ).subscribe(params => {
+      console.log(params); // { page: <page number> }
+      this.pageNumber = params.page;
+      console.log(this.pageNumber); // <page number>
+    });
+
     this.coursesSubscription = this.coursesService.getRecentCourses(undefined, undefined).subscribe((courses: Course[]) => {
       if (courses && courses.length > 0) {
         this.courses = courses;
+      }
+    });
+
+    this.categoriesSubscription = this.coursesService.getCategories().subscribe((categories: Category[]) => {
+      // TODO: Add featured courses into the model and incorporate functionality properly into thee front-end.
+      if (categories) {
+        this.topCategories = categories.slice(0, 5);
+        this.featuredCategories = categories.slice(4, 12);
       }
     });
   }

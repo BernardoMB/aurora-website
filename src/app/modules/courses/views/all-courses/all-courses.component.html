@@ -1,3 +1,16 @@
+<section class="categories-header">
+  <div class="categories-header-container">
+    <div class="category-container focus-outline"
+      tabindex="0"
+      *ngFor="let category of featuredCategories"
+      [routerLink]="['./categories', category.id]"
+    >
+      <i class="material-icons">{{category.materialIcon}}</i>
+      <div>{{category.name}}</div>
+    </div>
+  </div>
+</section>
+
 <section class="courses-jumbotron-section">
   <div class="jumbotron-wrapper">
     <div class="jumbotron-wrapper-overlay">

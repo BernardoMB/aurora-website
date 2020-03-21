@@ -30,7 +30,7 @@
   <div class="courses-container">
     <div class="title-container">
       <div class="title">Featured</div>
-      <a [routerLink]="['/courses/all']">View all</a>
+      <a [routerLink]="['/courses/all']" [queryParams]="{ page: 1 }">View all</a>
     </div>
     <div class="cards-container">
       <div
