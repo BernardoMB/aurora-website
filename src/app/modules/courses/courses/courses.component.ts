@@ -65,16 +65,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.setFeaturedCoursesPage({ offset: pageNumber });
   }
 
-  recentCoursesPageChanged(pageNumber: number) {
-    this.recentCoursesPage.pageNumber = pageNumber;
-    this.setRecentCoursesPage({ offset: pageNumber });
-  }
-
-  trendingCoursesPageChanged(pageNumber: number) {
-    this.trendingCoursesPage.pageNumber = pageNumber;
-    this.setTrendingCoursesPage({ offset: pageNumber });
-  }
-
   /**
    * Paging function
    * @param pageInfo The page to select
@@ -88,6 +78,11 @@ export class CoursesComponent implements OnInit, OnDestroy {
     });
   }
 
+  recentCoursesPageChanged(pageNumber: number) {
+    this.recentCoursesPage.pageNumber = pageNumber;
+    this.setRecentCoursesPage({ offset: pageNumber });
+  }
+
   /**
    * Paging function
    * @param pageInfo The page to select
@@ -99,6 +94,11 @@ export class CoursesComponent implements OnInit, OnDestroy {
       this.recentCoursesPage = pagedData.page;
       this.recentCourses = pagedData.data;
     });
+  }
+
+  trendingCoursesPageChanged(pageNumber: number) {
+    this.trendingCoursesPage.pageNumber = pageNumber;
+    this.setTrendingCoursesPage({ offset: pageNumber });
   }
 
   /**

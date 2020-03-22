@@ -19,6 +19,7 @@ import { LearningGuard } from './guards/learning.guard';
 import { LessonResolver } from './resolvers/lesson-resolver.service';
 import { LearnResolver } from './resolvers/learn-resolver.service';
 import { CourseDetailResolver } from './resolvers/course-detail.resolver.service';
+import { CategoryDetailResolver } from './resolvers/category-detail.resolver.service';
 
 /* courses/  */
 const routes: Routes = [
@@ -27,7 +28,7 @@ const routes: Routes = [
   { path: 'cart/checkout/express/course/:courseId', component: ExpressCheckoutComponent, canActivate: [CheckoutGuard] },
   { path: 'cart/checkout', component: CheckoutComponent, canActivate: [CheckoutGuard] },
   { path: 'cart', component: CartComponent },
-  { path: 'categories/:id', component: CourseCategoryDetailComponent },
+  { path: 'categories/:id', component: CourseCategoryDetailComponent, resolve: { categoryDetailInfo: CategoryDetailResolver }, },
   /**
    * // This can be implemented later without any regards
    *  { path: 'categories', component: CourseCategoriesComponent },
