@@ -34,6 +34,10 @@ https://www.getpostman.com/collections/86501829d7d45ac17cb3
 
 To see how cart functionality works see Bernardo's OneNote notes
 
+## Pagination
+
+Library ued: https://www.npmjs.com/package/ngx-pagination
+
 ## TODOS:
 
 - Add course Categories to store for more efficiency usign NgRx Entity

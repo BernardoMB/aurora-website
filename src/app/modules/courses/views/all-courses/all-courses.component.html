@@ -3,7 +3,7 @@
     <div class="category-container focus-outline"
       tabindex="0"
       *ngFor="let category of featuredCategories"
-      [routerLink]="['./categories', category.id]"
+      [routerLink]="['/courses/categories', category.id]"
     >
       <i class="material-icons">{{category.materialIcon}}</i>
       <div>{{category.name}}</div>
