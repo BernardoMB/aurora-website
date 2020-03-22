@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { Course } from 'src/app/shared/models/course.model';
 import { Category } from 'src/app/shared/models/category.model';
 import { environment } from '../../../../environments/environment';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
+import { Page, PagedData } from '../../../shared/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,43 @@ export class CoursesService {
   apiVersion = environment.apiVersion;
 
   constructor(private http: HttpClient) {}
+
+  getPageData(page: Page): Observable<PagedData<Course>> {
+    console.log('Coureses service: Getting courses page', page);
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=-createdAt`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        console.log(pagedData);
+        return pagedData;
+      })
+    );
+  }
+
+  getFeaturedCoursesPageData(page: Page): Observable<PagedData<Course>> {
+    console.log('Coureses service: Getting featured courses page', page);
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=-createdAt&featured=true`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        console.log('Got data', responseBody);
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        console.log(pagedData);
+        return pagedData;
+      })
+    );
+  }
 
   getFeaturedCourses(skip: number, limit: number): Observable<Array<Course>> {
     console.log('Coureses service: Getting featured courses');
@@ -64,7 +102,7 @@ export class CoursesService {
     return this.http.get<Course>(url);
   }
 
-  getCoursesFromIds(courseIds: string[]): Observable<Course[]> {
+  getCourses(courseIds: string[]): Observable<Course[]> {
     console.log('Courses service: Getting courses providing array of ids');
     const url = `${this.host}/${this.apiVersion}/courses/courses`;
     return this.http.post<Course[]>(url, {courseIds});

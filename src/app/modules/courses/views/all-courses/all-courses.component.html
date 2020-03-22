@@ -35,9 +35,11 @@
       <a>View all</a>
     </div>
     <div class="featured-cards-container">
-      <div class="course-card" *ngFor="let course of courses; let i = index">
+      <!-- TODO: Modify totalItems property inside the pagination object -->
+      <div class="course-card" *ngFor="let i = index; let course of courses | paginate: { itemsPerPage: page.size, currentPage: page.pageNumber, totalItems: page.totalElements }">
         <app-course-card [course]="course"></app-course-card>
       </div>
     </div>
+    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
   </div>
 </section>

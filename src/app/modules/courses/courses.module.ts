@@ -35,6 +35,7 @@ import { MaterialModule } from '../../material.module';
 import { ReviewModalComponent } from './components/review-modal/review-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
     declarations: [
@@ -68,7 +69,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
       MaterialModule,
       FormsModule,
       ReactiveFormsModule,
-      ScrollingModule
+      ScrollingModule,
+      NgxPaginationModule
     ],
     providers: [
       CoursesService,

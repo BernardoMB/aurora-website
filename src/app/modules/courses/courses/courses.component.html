@@ -35,11 +35,12 @@
     <div class="cards-container">
       <div
         class="course-card"
-        *ngFor="let course of featuredCourses; let i = index"
+        *ngFor="let i = index; let course of featuredCourses | paginate: { id: 'featured', itemsPerPage: featuredCoursesPage.size, currentPage: featuredCoursesPage.pageNumber, totalItems: featuredCoursesPage.totalElements }"
       >
         <app-course-card [course]="course"></app-course-card>
       </div>
     </div>
+    <pagination-controls id="featured" (pageChange)="featuredCoursesPageChanged($event)"></pagination-controls>
   </div>
 </section>
 
