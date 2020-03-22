@@ -20,7 +20,7 @@ export class CoursesService {
     console.log('Coureses service: Getting courses page', page);
     const skip = page.size * (page.pageNumber - 1);
     const limit = page.size;
-    const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=-createdAt`;
+    const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=+createdAt`;
     return this.http.get<{ count: number, data: Course[]}>(url).pipe(
       map(responseBody => {
         const pagedData = new PagedData<Course>();
@@ -38,7 +38,26 @@ export class CoursesService {
     console.log('Coureses service: Getting featured courses page', page);
     const skip = page.size * (page.pageNumber - 1);
     const limit = page.size;
-    const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=-createdAt&featured=true`;
+    const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=+createdAt&featured=true`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        console.log('Got data', responseBody);
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        console.log(pagedData);
+        return pagedData;
+      })
+    );
+  }
+
+  getTrendingCoursesPageData(page: Page): Observable<PagedData<Course>> {
+    console.log('Coureses service: Getting featured courses page', page);
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=+createdAt&featured=true`;
     return this.http.get<{ count: number, data: Course[]}>(url).pipe(
       map(responseBody => {
         console.log('Got data', responseBody);

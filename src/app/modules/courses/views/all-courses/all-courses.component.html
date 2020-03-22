@@ -32,14 +32,12 @@
   <div class="featured-courses-container">
     <div class="featured-title-container">
       <div class="featured-title">All Courses</div>
-      <a>View all</a>
     </div>
     <div class="featured-cards-container">
-      <!-- TODO: Modify totalItems property inside the pagination object -->
       <div class="course-card" *ngFor="let i = index; let course of courses | paginate: { itemsPerPage: page.size, currentPage: page.pageNumber, totalItems: page.totalElements }">
         <app-course-card [course]="course"></app-course-card>
       </div>
     </div>
-    <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    <pagination-controls class="pagination-controls" (pageChange)="pageChanged($event)"></pagination-controls>
   </div>
 </section>

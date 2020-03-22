@@ -30,7 +30,7 @@
   <div class="courses-container">
     <div class="title-container">
       <div class="title">Featured</div>
-      <a [routerLink]="['/courses/all']" [queryParams]="{ page: 1 }">View all</a>
+      <a class="focus-outline" [routerLink]="['/courses/all']" [queryParams]="{ page: 1 }">View all</a>
     </div>
     <div class="cards-container">
       <div
@@ -40,7 +40,7 @@
         <app-course-card [course]="course"></app-course-card>
       </div>
     </div>
-    <pagination-controls id="featured" (pageChange)="featuredCoursesPageChanged($event)"></pagination-controls>
+    <pagination-controls id="featured" class="pagination-controls" (pageChange)="featuredCoursesPageChanged($event)"></pagination-controls>
   </div>
 </section>
 
@@ -82,16 +82,17 @@
   <div class="courses-container">
     <div class="title-container">
       <div class="title">Rencently Added</div>
-      <a>View all</a>
+      <a class="focus-outline" [routerLink]="['/courses/all']" [queryParams]="{ page: 1 }">View all</a>
     </div>
     <div class="cards-container">
       <div
         class="course-card"
-        *ngFor="let course of recentCourses; let i = index"
+        *ngFor="let i = index; let course of recentCourses | paginate: { id: 'recent', itemsPerPage: recentCoursesPage.size, currentPage: recentCoursesPage.pageNumber, totalItems: recentCoursesPage.totalElements }"
       >
         <app-course-card [course]="course"></app-course-card>
       </div>
     </div>
+    <pagination-controls id="recent" class="pagination-controls" (pageChange)="recentCoursesPageChanged($event)"></pagination-controls>
   </div>
 </section>
 
@@ -101,16 +102,17 @@
   <div class="courses-container">
     <div class="title-container">
       <div class="title">Trending</div>
-      <a>View all</a>
+      <a class="focus-outline" [routerLink]="['/courses/all']" [queryParams]="{ page: 1 }">View all</a>
     </div>
     <div class="cards-container">
       <div
         class="course-card"
-        *ngFor="let course of trendingCourses; let i = index"
+        *ngFor="let i = index; let course of trendingCourses | paginate: { id: 'trending', itemsPerPage: trendingCoursesPage.size, currentPage: trendingCoursesPage.pageNumber, totalItems: trendingCoursesPage.totalElements }"
       >
         <app-course-card [course]="course"></app-course-card>
       </div>
     </div>
+    <pagination-controls id="trending" class="pagination-controls" (pageChange)="trendingCoursesPageChanged($event)"></pagination-controls>
   </div>
 </section>
 
