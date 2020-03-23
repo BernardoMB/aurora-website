@@ -101,7 +101,10 @@ $mat-aurora-orange: (
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-// Define the primary pallete (the second parameter passed to mat-palette() is the default primary color)
+// Define the primary pallete
+// * (the second parameter passed to mat-palette() is the default primary color)
+// * (the third parameter passed to mat-palette() is the lighter variant of the color [some components use these values])
+// * (the Fourth parameter passed to mat-palette() is the darker variant of the color [some components use these values])
 $aurora-website-primary: mat-palette($mat-aurora-green, 700, 400, 900);
 // Define the accent pallete  (the second parameter passed to mat-palette() is the default accent color)
 $aurora-website-accent: mat-palette($mat-aurora-orange, 700, 400, 900);
