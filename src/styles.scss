@@ -207,3 +207,27 @@ $focus-outline-thickeness: 2px;
 .mat-tab-body-content {
   overflow-y: hidden !important;
 }
+
+// Ngx Paginator styles
+
+.pagination-controls .ngx-pagination {
+  padding-left: 0px;
+  display: flex;
+  justify-content: center;
+  .current {
+    border-radius: 10px;
+    background: #1f5e11;
+  }
+  li {
+    a {
+      outline: unset;
+      &:focus {
+        outline: $focus-outline-thickeness solid greenyellow;
+        outline-style: dashed;
+      }
+      &:hover {
+        border-radius: 10px;
+      }
+    }
+  }
+}
