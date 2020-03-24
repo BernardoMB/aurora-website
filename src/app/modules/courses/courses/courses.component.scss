@@ -126,30 +126,11 @@
       .course-card {
         margin: 10px 0px;
         margin-right: 15px;
-      }
-    }
-    /* .pagination-controls ::ng-deep .ngx-pagination {
-      padding-left: 0px;
-      display: flex;
-      justify-content: center;
-      .current {
-        border-radius: 10px;
-        background: #408e2d;
-      }
-      li {
-        a {
-          outline: unset;
-          &:focus {
-            $focus-outline-thickeness: 2px;
-            outline: $focus-outline-thickeness solid greenyellow;
-            outline-style: dashed;
-          }
-          &:hover {
-            border-radius: 10px;
-          }
+        &:nth-last-child(1) {
+          margin-right: 0px;
         }
       }
-    } */
+    }
   }
 }
 

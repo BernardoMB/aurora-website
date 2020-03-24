@@ -21,11 +21,9 @@ export class CategoryDetailResolver implements Resolve<any> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     return this.coursesService.getCategory(route.params.id).pipe(
       map((category: Category) => {
-        console.log('%c Resolving value ', 'background: #222; color: red');
         const categoryDetailInfo = {
           category
         };
-        console.log(categoryDetailInfo);
         return categoryDetailInfo;
       })
     );

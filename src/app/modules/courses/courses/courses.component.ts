@@ -4,6 +4,9 @@ import { Subscription } from 'rxjs';
 import { Course } from '../../../shared/models/course.model';
 import { Category } from '../../../shared/models/category.model';
 import { Page, PagedData } from '../../../shared/utils';
+import { Store } from '@ngrx/store';
+import { AuthState } from '../../../store/auth/auth.state';
+import { selectAuthIsAuthenticated } from '../../../store/auth/auth.selectors';
 
 @Component({
   selector: 'app-courses',
@@ -11,6 +14,8 @@ import { Page, PagedData } from '../../../shared/utils';
   styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit, OnDestroy {
+  isAuthenticatedSubscription: Subscription;
+  isAuthenticated: boolean;
 
   // Featured courses pagination
   featuredCourses: Course[];
@@ -29,7 +34,10 @@ export class CoursesComponent implements OnInit, OnDestroy {
   topCategories: Category[];
   featuredCategories: Category[];
 
-  constructor(private coursesService: CoursesService) {}
+  constructor(
+    private coursesService: CoursesService,
+    private store: Store<AuthState>
+  ) {}
 
   ngOnInit() {
     // Featured courses pagination
@@ -54,12 +62,25 @@ export class CoursesComponent implements OnInit, OnDestroy {
         this.featuredCategories = categories.slice(4, 12);
       }
     });
+
+    this.isAuthenticatedSubscription = this.store.select(selectAuthIsAuthenticated).subscribe((isAuthenticated: boolean) => {
+      if (isAuthenticated) {
+        this.isAuthenticated = true;
+      } else {
+        this.isAuthenticated = false;
+      }
+    });
   }
 
   ngOnDestroy() {
     this.categoriesSubscription.unsubscribe();
   }
 
+  /**
+   * This function gets called when the user clicks a button of the ngx paginator component.
+   * @param {number} pageNumber
+   * @memberof CoursesComponent
+   */
   featuredCoursesPageChanged(pageNumber: number) {
     this.featuredCoursesPage.pageNumber = pageNumber;
     this.setFeaturedCoursesPage({ offset: pageNumber });
@@ -72,12 +93,17 @@ export class CoursesComponent implements OnInit, OnDestroy {
   setFeaturedCoursesPage(pageInfo: { offset: number }) {
     this.featuredCoursesPage.pageNumber = pageInfo.offset;
     this.coursesService.getFeaturedCoursesPageData(this.featuredCoursesPage).subscribe((pagedData: PagedData<Course>) => {
-      console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
+      // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
       this.featuredCoursesPage = pagedData.page;
       this.featuredCourses = pagedData.data;
     });
   }
 
+  /**
+   * This function gets called when the user clicks a button of the ngx paginator component.
+   * @param {number} pageNumber
+   * @memberof CoursesComponent
+   */
   recentCoursesPageChanged(pageNumber: number) {
     this.recentCoursesPage.pageNumber = pageNumber;
     this.setRecentCoursesPage({ offset: pageNumber });
@@ -90,12 +116,17 @@ export class CoursesComponent implements OnInit, OnDestroy {
   setRecentCoursesPage(pageInfo: { offset: number }) {
     this.recentCoursesPage.pageNumber = pageInfo.offset;
     this.coursesService.getPageData(this.recentCoursesPage).subscribe((pagedData: PagedData<Course>) => {
-      console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
+      // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
       this.recentCoursesPage = pagedData.page;
       this.recentCourses = pagedData.data;
     });
   }
 
+  /**
+   * This function gets called when the user clicks a button of the ngx paginator component.
+   * @param {number} pageNumber
+   * @memberof CoursesComponent
+   */
   trendingCoursesPageChanged(pageNumber: number) {
     this.trendingCoursesPage.pageNumber = pageNumber;
     this.setTrendingCoursesPage({ offset: pageNumber });
@@ -108,7 +139,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   setTrendingCoursesPage(pageInfo: { offset: number }) {
     this.trendingCoursesPage.pageNumber = pageInfo.offset;
     this.coursesService.getTrendingCoursesPageData(this.trendingCoursesPage).subscribe((pagedData: PagedData<Course>) => {
-      console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
+      // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
       this.trendingCoursesPage = pagedData.page;
       this.trendingCourses = pagedData.data;
     });

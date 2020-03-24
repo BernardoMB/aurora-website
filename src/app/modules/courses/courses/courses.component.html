@@ -120,9 +120,7 @@
 
 <section class="buttons-section">
   <div class="buttons-container">
-    <button class="focus-outline">My Courses</button>
-    <button class="focus-outline" [routerLink]="['/courses/all']">
-      All Courses
-    </button>
+    <button class="focus-outline" *ngIf="isAuthenticated" [routerLink]="['/courses/my-courses/all']">My Courses</button>
+    <button class="focus-outline" [routerLink]="['/courses/all']">All Courses</button>
   </div>
 </section>

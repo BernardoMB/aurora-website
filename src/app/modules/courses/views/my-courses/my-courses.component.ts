@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-my-courses',
@@ -236,7 +237,15 @@ export class MyCoursesComponent implements OnInit {
     },
   ];
 
-  constructor() { }
+  constructor(private router: Router) {
+    this.router.events.subscribe(event => {
+      // console.log('Navigation event:', event);
+      if (event instanceof NavigationEnd) {
+        window.scrollTo(0, 0);
+      }
+      return;
+    });
+  }
 
   ngOnInit() {
   }

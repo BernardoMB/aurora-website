@@ -31,8 +31,8 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
-      console.log('%c Activated route snapshot resolved data ', 'background: #222; color: #bada55');
-      console.log(data);
+      // console.log('%c Activated route snapshot resolved data ', 'background: #222; color: #bada55');
+      // console.log(data);
       if (data.categoryDetailInfo) {
         const categoryDetailInfo: { category: Category } = data.categoryDetailInfo;
         this.category = categoryDetailInfo.category;
@@ -65,7 +65,7 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
     this.featuredCoursesPage.pageNumber = pageInfo.offset;
     this.coursesService.getCategoryFeaturedCoursesPageData(this.featuredCoursesPage, categoryId)
       .subscribe((pagedData: PagedData<Course>) => {
-        console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
+        // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
         this.featuredCoursesPage = pagedData.page;
         this.featuredCourses = pagedData.data;
       });
@@ -83,7 +83,7 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
   setRecentCoursesPage(pageInfo: { offset: number }, categoryId: string) {
     this.recentCoursesPage.pageNumber = pageInfo.offset;
     this.coursesService.getCategoryCoursesPageData(this.recentCoursesPage, categoryId).subscribe((pagedData: PagedData<Course>) => {
-      console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
+      // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
       this.recentCoursesPage = pagedData.page;
       this.recentCourses = pagedData.data;
     });

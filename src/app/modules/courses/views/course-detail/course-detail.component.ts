@@ -86,7 +86,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     const batchMap = this.offset.pipe(
       throttleTime(500),
       mergeMap((value: { courseId: string, offset: number }) => {
-        console.log('Emmited new value', value);
+        // console.log('Emmited new value', value);
         if (value) {
           return this.getBatch(value.courseId, value.offset);
         } else {
@@ -99,7 +99,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     );
     this.infinite = batchMap.pipe(map(v => Object.values(v)));
     this.infiniteSubscription = this.infinite.subscribe((arr: IReview[]) => {
-      console.log('Got reviews array', arr);
+      // console.log('Got reviews array', arr);
       if (arr.length > 0) {
         if (this.createdReview) {
           this.reviews = [
@@ -124,8 +124,8 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const data = this.route.snapshot.data;
-    console.log('%c Activated route snapshot resolved data ', 'background: #222; color: #bada55');
-    console.log(data);
+    // console.log('%c Activated route snapshot resolved data ', 'background: #222; color: #bada55');
+    // console.log(data);
     if (data.courseDetailInfo) {
       const courseDetailInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } = data.courseDetailInfo;
       this.course = courseDetailInfo.course;
@@ -142,9 +142,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       });
       // #endregion
       // #region Reviews infinite scroll
-      console.log('Fetching first reviews page');
+      // console.log('Fetching first reviews page');
       const value = { courseId: data.courseDetailInfo.course.id, offset: 0 };
-      console.log('Nexting new value', value);
+      // console.log('Nexting new value', value);
       this.offset.next(value);
       // #endregion
     }
@@ -311,8 +311,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
               totalReviews: newTotalReviews
             };
             this.course = course; // Esto hace que se actualice la lista de reviews
-            console.log('COURSEEEEEE', this.course);
-
+            // console.log('Course', this.course);
 
             // TODO: Lo de arriba se tiene que modificar
             const createdReview = {
@@ -336,7 +335,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   // Reviews infinite scroll
   getBatch(courseId, offset) {
-    console.log(`Fetching batch. CourseId: ${courseId}, Offset: ${offset}`);
+    // console.log(`Fetching batch. CourseId: ${courseId}, Offset: ${offset}`);
     return this.coursesService.getCourseReviews(courseId, offset, this.batch).pipe(
       tap((reviews: any[]) => {
         reviews.length ? null : this.theEnd = true;
@@ -359,18 +358,18 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   }
 
   nextBatch(e, offset) {
-    console.log('ScrollIndexChanged. Event:', e);
+    // console.log('ScrollIndexChanged. Event:', e);
     if (this.theEnd) {
-      console.log('There are no more reviews to fetch');
+      // console.log('There are no more reviews to fetch');
       return;
     }
     const end = this.viewport.getRenderedRange().end;
     const total = this.viewport.getDataLength();
-    console.log(`${end}, '>=', ${total}`);
+    // console.log(`${end}, '>=', ${total}`);
     if (end === total) {
-      console.log('All fetched elements were rendered. Asking for more elements. Offset:', offset);
+      // console.log('All fetched elements were rendered. Asking for more elements. Offset:', offset);
       const value = { courseId: this.course.id, offset };
-      console.log('Nexting value', value);
+      // console.log('Nexting value', value);
       this.offset.next(value);
     }
   }
