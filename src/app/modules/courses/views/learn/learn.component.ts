@@ -366,8 +366,4 @@ export class LearnComponent implements OnInit, OnDestroy {
     return i;
   }
 
-  onCicked() {
-    console.log('Elements in the array', this.reviews.length);
-  }
-
 }

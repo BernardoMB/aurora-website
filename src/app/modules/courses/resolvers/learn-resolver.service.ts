@@ -9,6 +9,7 @@ import { User, IPurchasedCourse } from '../../../shared/models/user.model';
 import { Store, select } from '@ngrx/store';
 import { AuthState } from '../../../store/auth/auth.state';
 import { selectAuthIsAuthenticated, selectAuthUser } from '../../../store/auth/auth.selectors';
+import { Page, PagedData } from '../../../shared/utils';
 
 @Injectable()
 export class LearnResolver implements Resolve<any> {
@@ -31,9 +32,11 @@ export class LearnResolver implements Resolve<any> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     return this.coursesService.getCourse(route.params.id).pipe(
       mergeMap((course: Course) => {
-        // TODO: Change the code below to fetch category featured courses instead of category courses.
-        return this.coursesService.getCategoryCourses(course.category.id).pipe(
-          mergeMap((relatedCourses: Course[]) => {
+        const page = new Page();
+        page.pageNumber = 1;
+        page.size = 5;
+        return this.coursesService.getCategoryCoursesPageData(page, course.category.id).pipe(
+          mergeMap((relatedCoursesPage: PagedData<Course>) => {
             if (this.isAutehnticated) {
               // Get the user progress from auth state
               return this.store.pipe(
@@ -44,7 +47,7 @@ export class LearnResolver implements Resolve<any> {
                   const learningInfo = {
                     course,
                     userProgress,
-                    relatedCourses
+                    relatedCourses: relatedCoursesPage.data
                   };
                   return learningInfo;
                 })
@@ -57,7 +60,7 @@ export class LearnResolver implements Resolve<any> {
                   const learningInfo = {
                     course,
                     userProgress,
-                    relatedCourses
+                    relatedCourses: relatedCoursesPage.data
                   };
                   return learningInfo;
                 })

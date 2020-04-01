@@ -8,6 +8,7 @@ import { AuthService } from '../../../services/auth.service';
 import { Store, select } from '@ngrx/store';
 import { AuthState } from '../../../store/auth/auth.state';
 import { selectAuthIsAuthenticated } from '../../../store/auth/auth.selectors';
+import { Page, PagedData } from '../../../shared/utils';
 
 /**
  * This resolver resolves the course and the related courses to course detail view.
@@ -35,12 +36,14 @@ export class CourseDetailResolver implements Resolve<any> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     return this.coursesService.getCourse(route.params.id).pipe(
       mergeMap((course: Course) => {
-        // TODO: Change the code below to fetch category featured courses instead of category courses.
-        return this.coursesService.getCategoryCourses(course.category.id).pipe(
-          map((relatedCourses: Course[]) => {
+        const page = new Page();
+        page.pageNumber = 1;
+        page.size = 5;
+        return this.coursesService.getCategoryCoursesPageData(page, course.category.id).pipe(
+          map((relatedCoursesPage: PagedData<Course>) => {
             const courseDetailInfo = {
               course,
-              relatedCourses
+              relatedCourses: relatedCoursesPage.data
             };
             return courseDetailInfo;
           })

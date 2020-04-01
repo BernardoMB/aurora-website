@@ -192,6 +192,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         this.canRateCourse = false;
       }
     });
+
     this.isAuthenticatedSubscription = this.store.pipe(select(selectAuthIsAuthenticated)).subscribe((isAuthenticated: boolean) => {
       if (isAuthenticated) {
         this.isAuthenticated = true;
