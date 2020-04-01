@@ -125,6 +125,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // Get resolved data
     const data = this.route.snapshot.data;
     // console.log('%c Activated route snapshot resolved data ', 'background: #222; color: #bada55');
     // console.log(data);

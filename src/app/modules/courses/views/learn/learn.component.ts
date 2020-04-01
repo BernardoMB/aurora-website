@@ -70,47 +70,6 @@ export class LearnComponent implements OnInit, OnDestroy {
       return;
     });
 
-    this.route.data.subscribe((data: { learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
-      if (data.learningInfo) {
-        this.course = data.learningInfo.course;
-        // TODO: Implement lesson types
-        this.lessonIds = (data.learningInfo.course.lessons as any[]).map(lesson => lesson.id);
-        this.userProgress = data.learningInfo.userProgress;
-        this.relatedCourses = data.learningInfo.relatedCourses;
-
-        // Reviews infinite scroll
-        console.log('Fetching first reviews page');
-        const value = { courseId: data.learningInfo.course.id, offset: 0 };
-        console.log('Nexting new value', value);
-        this.offset.next(value);
-      }
-    });
-
-    this.routerSubscription = this.router.events.pipe(
-      filter((event: Event) => {
-        return event instanceof NavigationEnd;
-      })
-    ).subscribe((event: NavigationEnd) => {
-      if (this.route.firstChild) {
-        this.urlSubscription = this.route.firstChild.url.subscribe((childUrl: UrlSegment[]) => {
-          if (childUrl && childUrl[1] && this.lessonIds.length > 0) {
-            const lessonId = childUrl[1].path;
-            this.currentLessonId = lessonId;
-            const index = this.lessonIds.indexOf(lessonId);
-            index === 0 ? this.showPrevButton = false : this.showPrevButton = true;
-            index === this.lessonIds.length - 1 ? this.showNextButton = false : this.showNextButton = true;
-            if (this.lessonIds.indexOf(lessonId) === this.lessonIds.length - 1 && this.userProgress.indexOf(lessonId) === -1) {
-              this.store.dispatch(completeLesson({ courseId: this.course.id, lessonId }));
-            }
-          }
-        });
-      } else {
-        const lessonId = this.lessonIds[0];
-        console.log(`LearnComponent: No route first child url. Redirecting to /lesson/${lessonId}`);
-        this.router.navigate(['lesson', lessonId], { relativeTo: this.route });
-      }
-    });
-
     // #region Reviews infinite scroll
     const batchMap = this.offset.pipe(
       throttleTime(500),
@@ -153,6 +112,71 @@ export class LearnComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // Get resolved data
+    const data = this.route.snapshot.data;
+    // console.log('%c Activated route snapshot resolved data ', 'background: #222; color: #bada55');
+    // console.log(data);
+    if (data.learningInfo) {
+      const learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } = data.learningInfo;
+      this.course = learningInfo.course;
+      this.lessonIds = (learningInfo.course.lessons as any[]).map(lesson => lesson.id);
+      this.userProgress = learningInfo.userProgress;
+      this.relatedCourses = learningInfo.relatedCourses;
+      // #region Reviews infinite scroll
+      // console.log('Fetching first reviews page');
+      const value = { courseId: learningInfo.course.id, offset: 0 };
+      // console.log('Nexting new value', value);
+      this.offset.next(value);
+      // #endregion
+    }
+
+    /* this.route.data.subscribe((data: { learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
+      if (data.learningInfo) {
+        this.course = data.learningInfo.course;
+        // TODO: Implement lesson types
+        this.lessonIds = (data.learningInfo.course.lessons as any[]).map(lesson => lesson.id);
+        this.userProgress = data.learningInfo.userProgress;
+        this.relatedCourses = data.learningInfo.relatedCourses;
+
+        // Reviews infinite scroll
+        console.log('Fetching first reviews page');
+        const value = { courseId: data.learningInfo.course.id, offset: 0 };
+        console.log('Nexting new value', value);
+        this.offset.next(value);
+      }
+    }); */
+
+    // Lesson id in route logic
+    const updateCurrentLessonState = () => {
+      if (this.route.firstChild) {
+        this.urlSubscription = this.route.firstChild.url.subscribe((childUrl: UrlSegment[]) => {
+          if (childUrl && childUrl[1] && this.lessonIds.length > 0) {
+            const lessonId = childUrl[1].path;
+            this.currentLessonId = lessonId;
+            const index = this.lessonIds.indexOf(lessonId);
+            index === 0 ? this.showPrevButton = false : this.showPrevButton = true;
+            index === this.lessonIds.length - 1 ? this.showNextButton = false : this.showNextButton = true;
+            if (this.lessonIds.indexOf(lessonId) === this.lessonIds.length - 1 && this.userProgress.indexOf(lessonId) === -1) {
+              // Navigated to last lesson of the course and user has not yet completed this lesson.
+              this.store.dispatch(completeLesson({ courseId: this.course.id, lessonId }));
+            }
+          }
+        });
+      } else {
+        const lessonId = this.lessonIds[0];
+        console.log(`LearnComponent: No route first child url. Redirecting to /lesson/${lessonId}`);
+        this.router.navigate(['lesson', lessonId], { relativeTo: this.route });
+      }
+    };
+    updateCurrentLessonState();
+    this.routerSubscription = this.router.events.pipe(
+      filter((event: Event) => {
+        return event instanceof NavigationEnd;
+      })
+    ).subscribe((event: NavigationEnd) => {
+      updateCurrentLessonState();
+    });
+
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
       if (user) {
         this.user = user;
@@ -190,7 +214,9 @@ export class LearnComponent implements OnInit, OnDestroy {
     this.routeFragmentSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
     this.routerSubscription.unsubscribe();
-    this.urlSubscription.unsubscribe();
+    if (this.urlSubscription) {
+      this.urlSubscription.unsubscribe();
+    }
   }
 
   lessonCompleted(lessonId: string): boolean {
