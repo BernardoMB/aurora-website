@@ -7,6 +7,7 @@ import { Page, PagedData } from '../../../shared/utils';
 import { Store } from '@ngrx/store';
 import { AuthState } from '../../../store/auth/auth.state';
 import { selectAuthIsAuthenticated } from '../../../store/auth/auth.selectors';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-courses',
@@ -36,8 +37,22 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   constructor(
     private coursesService: CoursesService,
-    private store: Store<AuthState>
-  ) {}
+    private store: Store<AuthState>,
+    private router: Router
+  ) {
+    this.router.events.subscribe(event => {
+      // console.log('Navigation event:', event);
+      if (event instanceof NavigationEnd) {
+        // Prevent scrolling if changed tab.
+        const fragment = event.url.split('#')[1];
+        if (fragment) {
+          return;
+        }
+        window.scrollTo(0, 0);
+      }
+      return;
+    });
+  }
 
   ngOnInit() {
     // Featured courses pagination

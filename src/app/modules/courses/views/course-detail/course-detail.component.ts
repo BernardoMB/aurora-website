@@ -69,12 +69,13 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private coursesService: CoursesService
   ) {
+    // Scroll to top
     this.router.events.subscribe(event => {
       // console.log('Navigation event:', event);
       if (event instanceof NavigationEnd) {
         // Prevent scrolling if changed tab.
-        const second = event.url.split('#')[1];
-        if (second) {
+        const fragment = event.url.split('#')[1];
+        if (fragment) {
           return;
         }
         window.scrollTo(0, 0);
@@ -115,6 +116,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     });
     // #endregion
 
+    // Set the current tab getting rote fragment if any
     this.routeFragmentSubscription = this.route.fragment.subscribe((fragment: string) => {
       if (fragment) {
         this.currentTab = fragment;

@@ -21,8 +21,7 @@ import { CoursesService } from '../../services/courses.service';
   styleUrls: ['./learn.component.scss'],
 })
 export class LearnComponent implements OnInit, OnDestroy {
-  @ViewChild('content', { static: true }) private contentElement: ElementRef;
-  routeFragmentSubscription: Subscription;
+  routeFragmentSubscription: Subscription; // To set the current tab
   currentTab = 'about'; // Default tab when page loads
   routerSubscription: Subscription;
   urlSubscription: Subscription;
@@ -38,7 +37,7 @@ export class LearnComponent implements OnInit, OnDestroy {
   showCertificate = false;
   canRateCourse = false;
 
-  // Reviews infinite scroll
+  // #region Reviews infinite scroll
   @ViewChild(CdkVirtualScrollViewport, { static: false })
   viewport: CdkVirtualScrollViewport;
   batch = 5;
@@ -48,6 +47,7 @@ export class LearnComponent implements OnInit, OnDestroy {
   infiniteSubscription: Subscription;
   reviews: IReview[] = [];
   createdReview: IReview;
+  // #endregion
 
   constructor(
     private store: Store<State>,
@@ -56,6 +56,20 @@ export class LearnComponent implements OnInit, OnDestroy {
     private reviewDialog: MatDialog,
     private coursesService: CoursesService
   ) {
+    // Scroll to top
+    this.router.events.subscribe(event => {
+      // console.log('Navigation event:', event);
+      if (event instanceof NavigationEnd) {
+        // Prevent scrolling if changed tab.
+        const fragment = event.url.split('#')[1];
+        if (fragment) {
+          return;
+        }
+        window.scrollTo(0, 0);
+      }
+      return;
+    });
+
     this.route.data.subscribe((data: { learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
       if (data.learningInfo) {
         this.course = data.learningInfo.course;
@@ -97,11 +111,11 @@ export class LearnComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Reviews infinite scroll
+    // #region Reviews infinite scroll
     const batchMap = this.offset.pipe(
       throttleTime(500),
       mergeMap((value: { courseId: string, offset: number }) => {
-        console.log('Emmited new value', value);
+        // console.log('Emmited new value', value);
         if (value) {
           return this.getBatch(value.courseId, value.offset);
         } else {
@@ -114,7 +128,7 @@ export class LearnComponent implements OnInit, OnDestroy {
     );
     this.infinite = batchMap.pipe(map(v => Object.values(v)));
     this.infiniteSubscription = this.infinite.subscribe((arr: IReview[]) => {
-      console.log('Got reviews array', arr);
+      // console.log('Got reviews array', arr);
       if (arr.length > 0) {
         if (this.createdReview) {
           this.reviews = [
@@ -128,7 +142,9 @@ export class LearnComponent implements OnInit, OnDestroy {
         }
       }
     });
+    // #endregion
 
+    // Set the current tab getting rote fragment if any
     this.routeFragmentSubscription = this.route.fragment.subscribe((fragment: string) => {
       if (fragment) {
         this.currentTab = fragment;
