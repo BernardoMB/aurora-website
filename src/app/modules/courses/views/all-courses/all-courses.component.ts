@@ -69,7 +69,7 @@ export class AllCoursesComponent implements OnInit, OnDestroy {
    */
   setPage(pageInfo: { offset: number }) {
     this.page.pageNumber = pageInfo.offset;
-    this.coursesService.getPageData(this.page).subscribe((pagedData: PagedData<Course>) => {
+    this.coursesService.getCoursesPageData(this.page).subscribe((pagedData: PagedData<Course>) => {
       console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
       this.page = pagedData.page;
       this.courses = pagedData.data;

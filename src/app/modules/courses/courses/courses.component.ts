@@ -130,7 +130,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
    */
   setRecentCoursesPage(pageInfo: { offset: number }) {
     this.recentCoursesPage.pageNumber = pageInfo.offset;
-    this.coursesService.getPageData(this.recentCoursesPage).subscribe((pagedData: PagedData<Course>) => {
+    this.coursesService.getCoursesPageData(this.recentCoursesPage).subscribe((pagedData: PagedData<Course>) => {
       // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
       this.recentCoursesPage = pagedData.page;
       this.recentCourses = pagedData.data;
