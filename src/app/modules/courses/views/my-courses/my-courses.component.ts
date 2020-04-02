@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Course } from '../../../../shared/models/course.model';
 
 @Component({
   selector: 'app-my-courses',
@@ -9,7 +10,7 @@ import { Router, NavigationEnd } from '@angular/router';
 export class MyCoursesComponent implements OnInit {
 
   // TODO: related ocurses should be dynamic
-  relatedCourses = [
+  /* relatedCourses = [
     {
       public: true,
       labels: [
@@ -235,9 +236,14 @@ export class MyCoursesComponent implements OnInit {
       totalReviews: 1,
       id: '5e1924a6e05ff4002365612f',
     },
-  ];
+  ]; */
 
-  constructor(private router: Router) {
+  recommendedCourses: Course[];
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.router.events.subscribe(event => {
       // console.log('Navigation event:', event);
       if (event instanceof NavigationEnd) {
@@ -248,6 +254,14 @@ export class MyCoursesComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Get resolved data
+    const data = this.route.snapshot.data;
+    // console.log('%c Activated route snapshot resolved data ', 'background: #222; color: #bada55');
+    // console.log(data);
+    if (data.myCoursesInfo) {
+      const myCoursesInfo: { recommendedCourses: Course[] } = data.myCoursesInfo;
+      this.recommendedCourses = myCoursesInfo.recommendedCourses;
+    }
   }
 
 }

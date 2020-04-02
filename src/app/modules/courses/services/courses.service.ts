@@ -160,6 +160,18 @@ export class CoursesService {
     );
   }
 
+  getRecommendedCourses(userId: string) {
+    console.log(`Courses service: Getting recommended courses`);
+    const url = `${this.host}/${this.apiVersion}/users/me/recommendedCourses`;
+    return this.http.get<Course[]>(url);
+  }
+
+
+
+
+
+
+
 
 
 

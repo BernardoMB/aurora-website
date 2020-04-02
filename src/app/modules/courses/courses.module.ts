@@ -37,6 +37,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CategoryDetailResolver } from './resolvers/category-detail.resolver.service';
+import { MyCoursesResolver } from './resolvers/my-courses.resolver.service';
 
 @NgModule({
     declarations: [
@@ -81,7 +82,8 @@ import { CategoryDetailResolver } from './resolvers/category-detail.resolver.ser
       LessonResolver,
       LearnResolver,
       CourseDetailResolver,
-      CategoryDetailResolver
+      CategoryDetailResolver,
+      MyCoursesResolver
     ],
     entryComponents: [ReviewModalComponent]
 })

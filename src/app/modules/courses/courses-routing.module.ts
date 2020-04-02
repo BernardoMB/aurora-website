@@ -20,6 +20,7 @@ import { LessonResolver } from './resolvers/lesson-resolver.service';
 import { LearnResolver } from './resolvers/learn-resolver.service';
 import { CourseDetailResolver } from './resolvers/course-detail.resolver.service';
 import { CategoryDetailResolver } from './resolvers/category-detail.resolver.service';
+import { MyCoursesResolver } from './resolvers/my-courses.resolver.service';
 
 /* courses/  */
 const routes: Routes = [
@@ -36,6 +37,7 @@ const routes: Routes = [
   {
     path: 'my-courses',
     component: MyCoursesComponent, canActivate: [CheckoutGuard],
+    resolve: { myCoursesInfo: MyCoursesResolver },
     children: [
       { path: '', redirectTo: 'all', pathMatch: 'full' },
       { path: 'all', component: AllMyCoursesComponent },

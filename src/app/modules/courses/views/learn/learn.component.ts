@@ -130,22 +130,6 @@ export class LearnComponent implements OnInit, OnDestroy {
       // #endregion
     }
 
-    /* this.route.data.subscribe((data: { learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
-      if (data.learningInfo) {
-        this.course = data.learningInfo.course;
-        // TODO: Implement lesson types
-        this.lessonIds = (data.learningInfo.course.lessons as any[]).map(lesson => lesson.id);
-        this.userProgress = data.learningInfo.userProgress;
-        this.relatedCourses = data.learningInfo.relatedCourses;
-
-        // Reviews infinite scroll
-        console.log('Fetching first reviews page');
-        const value = { courseId: data.learningInfo.course.id, offset: 0 };
-        console.log('Nexting new value', value);
-        this.offset.next(value);
-      }
-    }); */
-
     // Lesson id in route logic
     const updateCurrentLessonState = () => {
       if (this.route.firstChild) {
