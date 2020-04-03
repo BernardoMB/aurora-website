@@ -38,6 +38,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   showGoToCart = false;
   showCertificate = false;
   canRateCourse = false;
+  userReview: IReview;
   get enrolled() {
     if (this.user && this.course) {
       if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
@@ -170,22 +171,29 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           }
         }
         // Determine if the user is able to add review
-        // TODO: Implement review type.
-        const review = this.course.reviews.find((el: any) => el.user === this.user.id);
-        if (review) {
-          this.canRateCourse = false;
-          const courseReviews = this.course.reviews.filter((el: any) => el.user !== this.user.id);
-          courseReviews.push(review);
-          /* console.log('COURSE', this.course);
-          this.course.reviews = courseReviews; */
-          const course = {
-            ...this.course,
-            reviews: courseReviews
-          };
-          this.course = course;
-        } else {
-          this.canRateCourse = true;
+        const userId = this.course.enrolledUsers.find((el: string) => el === this.user.id);
+        if (userId) {
+          // User is enrolled
+          // TODO: Implement review type.
+          const review = this.course.reviews.find((el: any) => el.user === this.user.id);
+          if (review) {
+            // User has already reviwed this course
+            this.canRateCourse = false;
+            this.userReview = {
+              user: {
+                name: user.name,
+                lastName: user.lastName
+              },
+              rating: (review as any).rating,
+              review: (review as any).review,
+            };
+          } else {
+            // User has not yet reviwed this course
+            this.canRateCourse = true;
+          }
         }
+
+
       } else {
         this.user = undefined;
         this.showCertificateTab = false;

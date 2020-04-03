@@ -392,16 +392,16 @@
   }
   .tab-reviews {
     max-width: 900px;
+    .reviews-title {
+      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #29303b;
+    }
     .reviews-title-container {
       display: flex;
       justify-content: space-between;
-      .reviews-title {
-        font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
-        font-size: 22px;
-        font-weight: 600;
-        margin-bottom: 10px;
-        color: #29303b;
-      }
     }
     .reviews-container {
       display: flex;
@@ -507,6 +507,11 @@
       display: flex;
       margin-top: 20px;
       justify-content: center;
+    }
+    .user-review-container {
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
     }
   }
   .tab-lessons,
