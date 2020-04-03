@@ -211,9 +211,45 @@ export class CoursesService {
 
 
 
+  // TODO: Implement review type
+  reviewCourse(courseId: string, rating: number, review: string): Observable<any> {
+    console.log('Courses service: Creating course review');
+    const url = `${this.host}/${this.apiVersion}/courses/${courseId}/review`;
+    const body = { review, rating };
+    return this.http.post<any>(url, body).pipe(
+      tap((response) => {
+        console.log('\n\n\n');
+        console.log('Response', response);
+        console.log('\n\n\n');
+      })
+    );
+  }
+
+  /**
+   * This service call is used for reviews infinte scroll functionality.
+   *
+   * @param {string} courseId
+   * @param {number} skip
+   * @param {number} limit
+   * @returns {Observable<any[]>}
+   * @memberof CoursesService
+   */
+  getCourseReviews(courseId: string, skip: number, limit: number): Observable<any[]> {
+    console.log(`Courses service: Getting course reviews skiping ${skip} elements and limiting to ${limit} elements`);
+    const url = `${this.host}/${this.apiVersion}/reviews?course=${courseId}&skip=${skip}&limit=${limit}&populate=user`;
+    return this.http.get<any>(url).pipe(
+      tap((arr) => {
+        console.log(`Courses service: Got ${arr.length} elements`);
+      })
+    );
+  }
 
 
 
+
+
+
+  // * User courses
 
   // TODO: Requires pagination
   getUserCourses(skip: number, limit: number): Observable<Course[]> {
@@ -241,48 +277,6 @@ export class CoursesService {
     console.log('Courses service: Getting user archived courses with pagination');
     const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=archivedCourses`;
     return this.http.get<Course[]>(url);
-  }
-
-
-
-
-
-
-
-
-
-  // TODO: Implement review type
-  reviewCourse(courseId: string, rating: number, review: string): Observable<any> {
-    console.log('Courses service: Creating course review');
-    const url = `${this.host}/${this.apiVersion}/courses/${courseId}/review`;
-    const body = { review, rating };
-    return this.http.post<any>(url, body).pipe(
-      tap((response) => {
-        console.log('\n\n\n');
-        console.log('Response', response);
-        console.log('\n\n\n');
-      })
-    );
-  }
-
-
-  /**
-   * This service call is used for reviews infinte scroll functionality.
-   *
-   * @param {string} courseId
-   * @param {number} skip
-   * @param {number} limit
-   * @returns {Observable<any[]>}
-   * @memberof CoursesService
-   */
-  getCourseReviews(courseId: string, skip: number, limit: number): Observable<any[]> {
-    console.log(`Courses service: Getting course reviews skiping ${skip} elements and limiting to ${limit} elements`);
-    const url = `${this.host}/${this.apiVersion}/reviews?course=${courseId}&skip=${skip}&limit=${limit}&populate=user`;
-    return this.http.get<any>(url).pipe(
-      tap((arr) => {
-        console.log(`Courses service: Got ${arr.length} elements`);
-      })
-    );
   }
 
 }
