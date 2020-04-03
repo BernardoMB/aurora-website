@@ -540,6 +540,13 @@
     .no-certificate {
       margin-top: 40px;
       align-items: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f3f3f3;
+      border: 1px solid gainsboro;
+      border-radius: 5px;
+      padding: 40px 60px;
       i {
         font-size: 120px;
         color: #e8e9eb;
