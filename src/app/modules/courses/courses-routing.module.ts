@@ -58,6 +58,7 @@ const routes: Routes = [
   {
     path: ':id',
     component: CourseDetailComponent,
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     resolve: { courseDetailInfo: CourseDetailResolver },
     data: { animation: 'course' },
   },
