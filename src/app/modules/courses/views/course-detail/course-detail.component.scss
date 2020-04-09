@@ -25,6 +25,7 @@
         .top-container {
           display: flex;
           justify-content: space-between;
+          z-index: 1;
           .category-container {
             display: flex;
             align-items: center;
@@ -79,9 +80,14 @@
               display: flex;
               align-items: center;
               .category-name {
+                text-decoration: none;
                 font-family: 'Trebuchet MS', 'Bree Serif', serif;
                 color: $font-color;
                 font-weight: bold;
+                cursor: pointer;
+                &:hover {
+                  text-decoration: underline;
+                }
               }
             }
           }

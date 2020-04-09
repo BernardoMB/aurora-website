@@ -9,7 +9,7 @@
               [style.backgroundColor]="course.category.hexColor"
             ></div>
             <div class="category-name-container">
-              <div class="category-name">{{ course.category.name }}</div>
+              <a class="category-name" [routerLink]="['/','courses','categories', course.category.id]">{{ course.category.name }}</a>
             </div>
           </div>
           <div class="favorite-container">

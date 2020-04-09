@@ -239,9 +239,13 @@ export class CoursesService {
     return this.http.get<Review[]>(url);
   }
 
-
-
-
+  /**
+   *
+   *
+   * @param {Page} page
+   * @returns {Observable<PagedData<Course>>}
+   * @memberof CoursesService
+   */
   getUserCoursesPagedData(page: Page): Observable<PagedData<Course>> {
     console.log(`Courses service: Getting user courses page`);
     const skip = page.size * (page.pageNumber - 1);
@@ -259,6 +263,13 @@ export class CoursesService {
     );
   }
 
+  /**
+   *
+   *
+   * @param {Page} page
+   * @returns {Observable<PagedData<Course>>}
+   * @memberof CoursesService
+   */
   getUserFavoriteCoursesPagedData(page: Page): Observable<PagedData<Course>> {
     console.log(`Courses service: Getting user favorite courses page`);
     const skip = page.size * (page.pageNumber - 1);
@@ -276,8 +287,15 @@ export class CoursesService {
     );
   }
 
+  /**
+   *
+   *
+   * @param {Page} page
+   * @returns {Observable<PagedData<Course>>}
+   * @memberof CoursesService
+   */
   getUserWishlistCoursesPagedData(page: Page): Observable<PagedData<Course>> {
-    console.log(`Courses service: Getting user favorite courses page`);
+    console.log(`Courses service: Getting user whishlist courses page`);
     const skip = page.size * (page.pageNumber - 1);
     const limit = page.size;
     const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=wishList`;
@@ -293,8 +311,15 @@ export class CoursesService {
     );
   }
 
+  /**
+   *
+   *
+   * @param {Page} page
+   * @returns {Observable<PagedData<Course>>}
+   * @memberof CoursesService
+   */
   getUserArchivedCoursesPagedData(page: Page): Observable<PagedData<Course>> {
-    console.log(`Courses service: Getting user favorite courses page`);
+    console.log(`Courses service: Getting user archived courses page`);
     const skip = page.size * (page.pageNumber - 1);
     const limit = page.size;
     const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=archivedCourses`;
@@ -308,52 +333,6 @@ export class CoursesService {
         return pagedData;
       })
     );
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // * User courses
-
-  // TODO: Requires pagination
-    getUserCourses(skip: number, limit: number): Observable<Course[]> {
-      console.log('Courses service: Getting user courses with pagination');
-      const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}`;
-      return this.http.get<Course[]>(url);
-    }
-
-  // TODO: Requires pagination
-  getUserFavoriteCourses(skip: number, limit: number): Observable<Course[]> {
-    console.log('Courses service: Getting user favorite courses with pagination');
-    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=favoriteCourses`;
-    return this.http.get<Course[]>(url);
-  }
-
-  // TODO: Requires pagination
-  getUserWishlistCourses(skip: number, limit: number): Observable<Course[]> {
-    console.log('Courses service: Getting user wishlist courses with pagination');
-    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=wishList`;
-    return this.http.get<Course[]>(url);
-  }
-
-  // TODO: Requires pagination
-  getUserArchivedCourses(skip: number, limit: number): Observable<Course[]> {
-    console.log('Courses service: Getting user archived courses with pagination');
-    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=archivedCourses`;
-    return this.http.get<Course[]>(url);
   }
 
 }
