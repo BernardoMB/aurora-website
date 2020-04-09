@@ -15,7 +15,7 @@
       <div class="lesson-title-container">
         <div class="left">
           <div class="lesson-number">{{ lessonNumber }}</div>
-          <div class="lesson-title">{{ lesson.title }}</div>
+          <div class="lesson-title" (click)="goToLesson()">{{ lesson.title }}</div>
         </div>
         <div class="right">
           <div *ngIf="lesson.type === 'VIDEO'" class="lesson-duration">

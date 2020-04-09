@@ -26,6 +26,7 @@ import { IReview } from '../../interfaces/IReview';
 })
 export class CourseDetailComponent implements OnInit, OnDestroy {
   routeFragmentSubscription: Subscription;
+  routeDataSubscription: Subscription;
   isFavorite: boolean; // TODO: this should be computed from the info obtained from th server
   currentTab = 'about';
   showCertificateTab = false;
@@ -126,7 +127,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.route.data.subscribe((data) => {
+    this.routeDataSubscription = this.route.data.subscribe((data) => {
       if (data.courseDetailInfo) {
         const courseDetailInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } = data.courseDetailInfo;
         this.course = courseDetailInfo.course;
@@ -206,13 +207,10 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         this.isAuthenticated = false;
       }
     });
-
-    /* // TODO: Fix bug. Course detail view is not changing the course displayed if selecting a recommended course.
-    // Activated route subscription */
-
   }
 
   ngOnDestroy() {
+    this.routeDataSubscription.unsubscribe();
     this.routeFragmentSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
     this.isAuthenticatedSubscription.unsubscribe();

@@ -1,47 +1,40 @@
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable, pipe, forkJoin } from 'rxjs';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { CoursesService } from '../services/courses.service';
 import { mergeMap, map, take } from 'rxjs/operators';
 import { Course } from '../../../shared/models/course.model';
-import { AuthService } from '../../../services/auth.service';
-import { User, IPurchasedCourse } from '../../../shared/models/user.model';
+import { User } from '../../../shared/models/user.model';
 import { Store, select } from '@ngrx/store';
 import { AuthState } from '../../../store/auth/auth.state';
-import { selectAuthIsAuthenticated, selectAuthUser } from '../../../store/auth/auth.selectors';
-import { Page, PagedData } from '../../../shared/utils';
+import { selectAuthUser } from '../../../store/auth/auth.selectors';
 
 @Injectable()
 export class MyCoursesResolver implements Resolve<any> {
-  /* isAutehnticated: boolean; */
-
   constructor(
     private coursesService: CoursesService,
-    private authService: AuthService,
-    private store: Store<AuthState>
-  ) {
-    /* this.store.pipe(select(selectAuthIsAuthenticated)).subscribe((isAuthenticated: boolean) => {
-      if (isAuthenticated) {
-        this.isAutehnticated = true;
-      } else {
-        this.isAutehnticated = false;
-      }
-    }); */
-  }
+    private store: Store<AuthState>,
+    private router: Router
+  ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
     return this.store.pipe(
       select(selectAuthUser),
       take(1),
       mergeMap((user: User) => {
-        return this.coursesService.getRecommendedCourses(user.id).pipe(
-          map((recommendedCourses: Course[]) => {
-            const myCoursesInfo = {
-              recommendedCourses
-            };
-            return myCoursesInfo;
-          })
-        );
+        if (user) {
+          return this.coursesService.getRecommendedCourses(user.id).pipe(
+            map((recommendedCourses: Course[]) => {
+              const myCoursesInfo = {
+                recommendedCourses
+              };
+              return myCoursesInfo;
+            })
+          );
+        } else {
+          console.log('My courses resolver: No user found in store. Access denied. Redirecting to /courses');
+          this.router.navigate(['/courses']);
+        }
       })
     );
   }

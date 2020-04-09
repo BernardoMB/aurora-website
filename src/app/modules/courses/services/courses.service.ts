@@ -6,6 +6,7 @@ import { Category } from 'src/app/shared/models/category.model';
 import { environment } from '../../../../environments/environment';
 import { tap, map } from 'rxjs/operators';
 import { Page, PagedData } from '../../../shared/utils';
+import { Review } from '../../../shared/models/review.model';
 
 @Injectable({
   providedIn: 'root'
@@ -63,7 +64,7 @@ export class CoursesService {
    */
   getCourses(courseIds: string[]): Observable<Course[]> {
     console.log('Courses service: Getting courses providing array of ids');
-    const url = `${this.host}/${this.apiVersion}/courses/courses`;
+    const url = `${this.host}/${this.apiVersion}/courses/getByIds`;
     return this.http.post<Course[]>(url, {courseIds});
   }
 
@@ -207,22 +208,20 @@ export class CoursesService {
     return this.http.get<Course[]>(url);
   }
 
-
-
-
-
-  // TODO: Implement review type
-  reviewCourse(courseId: string, rating: number, review: string): Observable<any> {
+  /**
+   *
+   *
+   * @param {string} courseId
+   * @param {number} rating
+   * @param {string} review
+   * @returns {Observable<Review>}
+   * @memberof CoursesService
+   */
+  reviewCourse(courseId: string, rating: number, review: string): Observable<Review> {
     console.log('Courses service: Creating course review');
     const url = `${this.host}/${this.apiVersion}/courses/${courseId}/review`;
     const body = { review, rating };
-    return this.http.post<any>(url, body).pipe(
-      tap((response) => {
-        console.log('\n\n\n');
-        console.log('Response', response);
-        console.log('\n\n\n');
-      })
-    );
+    return this.http.post<Review>(url, body);
   }
 
   /**
@@ -234,12 +233,79 @@ export class CoursesService {
    * @returns {Observable<any[]>}
    * @memberof CoursesService
    */
-  getCourseReviews(courseId: string, skip: number, limit: number): Observable<any[]> {
+  getCourseReviews(courseId: string, skip: number, limit: number): Observable<Review[]> {
     console.log(`Courses service: Getting course reviews skiping ${skip} elements and limiting to ${limit} elements`);
     const url = `${this.host}/${this.apiVersion}/reviews?course=${courseId}&skip=${skip}&limit=${limit}&populate=user`;
-    return this.http.get<any>(url).pipe(
-      tap((arr) => {
-        console.log(`Courses service: Got ${arr.length} elements`);
+    return this.http.get<Review[]>(url);
+  }
+
+
+
+
+  getUserCoursesPagedData(page: Page): Observable<PagedData<Course>> {
+    console.log(`Courses service: Getting user courses page`);
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        return pagedData;
+      })
+    );
+  }
+
+  getUserFavoriteCoursesPagedData(page: Page): Observable<PagedData<Course>> {
+    console.log(`Courses service: Getting user favorite courses page`);
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=favoriteCourses`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        return pagedData;
+      })
+    );
+  }
+
+  getUserWishlistCoursesPagedData(page: Page): Observable<PagedData<Course>> {
+    console.log(`Courses service: Getting user favorite courses page`);
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=wishList`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        return pagedData;
+      })
+    );
+  }
+
+  getUserArchivedCoursesPagedData(page: Page): Observable<PagedData<Course>> {
+    console.log(`Courses service: Getting user favorite courses page`);
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=archivedCourses`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        return pagedData;
       })
     );
   }
@@ -249,14 +315,25 @@ export class CoursesService {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
   // * User courses
 
   // TODO: Requires pagination
-  getUserCourses(skip: number, limit: number): Observable<Course[]> {
-    console.log('Courses service: Getting user courses with pagination');
-    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}`;
-    return this.http.get<Course[]>(url);
-  }
+    getUserCourses(skip: number, limit: number): Observable<Course[]> {
+      console.log('Courses service: Getting user courses with pagination');
+      const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}`;
+      return this.http.get<Course[]>(url);
+    }
 
   // TODO: Requires pagination
   getUserFavoriteCourses(skip: number, limit: number): Observable<Course[]> {

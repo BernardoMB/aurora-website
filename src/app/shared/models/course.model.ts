@@ -13,8 +13,8 @@ export interface Course {
     price: number;
     discount: number;
     overview: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     imgUrl: string;
     id: string;
     totalReviews: number;
