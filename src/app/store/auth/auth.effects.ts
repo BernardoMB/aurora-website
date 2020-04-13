@@ -39,6 +39,12 @@ import {
   removeCourseFromFavorites,
   removeCourseFromFavoritesSuccess,
   removeCourseFromFavoritesFailure,
+  addCourseToWishlist,
+  addCourseToWishlistSuccess,
+  addCourseToWishlistFailure,
+  removeCourseFromWishlist,
+  removeCourseFromWishlistSuccess,
+  removeCourseFromWishlistFailure,
 } from './auth.actions';
 import { of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
@@ -354,6 +360,48 @@ export class AuthEffects {
           catchError((errorResponse: HttpErrorResponse) =>
             of(
               removeCourseFromFavoritesFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  addCoursesToWishlistEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addCourseToWishlist),
+      exhaustMap(action =>
+        this.authService.addCourseToWishlist(action.courseId, action.userId).pipe(
+          map((responseBody: User) => {
+            return addCourseToWishlistSuccess({ courseId: action.courseId });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              addCourseToWishlistFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  removeCoursesFromWishlistEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(removeCourseFromWishlist),
+      exhaustMap(action =>
+        this.authService.removeCourseFromWishlist(action.courseId, action.userId).pipe(
+          map((responseBody: User) => {
+            return removeCourseFromWishlistSuccess({ courseId: action.courseId });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              removeCourseFromWishlistFailure({
                 error: errorResponse,
                 message: errorResponse.error.message,
               }),

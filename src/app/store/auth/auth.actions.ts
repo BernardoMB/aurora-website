@@ -66,3 +66,11 @@ export const addCourseToFavoritesFailure = createAction('[Auth] AddCourseToFavor
 export const removeCourseFromFavorites = createAction('[Auth] RemoveCourseFromFavorites', props<{ courseId: string, userId: string }>());
 export const removeCourseFromFavoritesSuccess = createAction('[Auth] RemoveCourseFromFavoritesSuccess', props<{ courseId: string }>());
 export const removeCourseFromFavoritesFailure = createAction('[Auth] RemoveCourseFromFavoritesFailure', props<{ error: any; message: string }>());
+
+export const addCourseToWishlist = createAction('[Auth] AddCourseToWishlist', props<{ courseId: string, userId: string }>());
+export const addCourseToWishlistSuccess = createAction('[Auth] AddCourseToWishlistSuccess', props<{ courseId: string }>());
+export const addCourseToWishlistFailure = createAction('[Auth] AddCourseToWishlistFailure', props<{ error: any; message: string }>());
+
+export const removeCourseFromWishlist = createAction('[Auth] RemoveCourseFromWishlist', props<{ courseId: string, userId: string }>());
+export const removeCourseFromWishlistSuccess = createAction('[Auth] RemoveCourseFromWishlistSuccess', props<{ courseId: string }>());
+export const removeCourseFromWishlistFailure = createAction('[Auth] RemoveCourseFromWishlistFailure', props<{ error: any; message: string }>());

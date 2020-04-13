@@ -106,4 +106,16 @@ export class AuthService {
     return this.http.delete<User>(url, {});
   }
 
+  addCourseToWishlist(courseId: string, userId: string): Observable<User> {
+    console.log('Auth service: Adding course to user wishlist');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/wishList/${courseId}`;
+    return this.http.post<User>(url, {});
+  }
+
+  removeCourseFromWishlist(courseId: string, userId: string): Observable<User> {
+    console.log('Auth service: Removing course from user wishlist');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/wishList/${courseId}`;
+    return this.http.delete<User>(url, {});
+  }
+
 }

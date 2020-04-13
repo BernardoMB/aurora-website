@@ -16,4 +16,5 @@ export class User {
   cart?: Course[];
   courses?: string[];
   favoriteCourses?: string[];
+  wishList?: string[];
 }

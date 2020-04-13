@@ -195,6 +195,28 @@ const authReducer = createReducer(
         favoriteCourses
       }
     };
+  }),
+  on(AuthActions.addCourseToWishlistSuccess, (state: AuthState, payload: { courseId: string }) => {
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        wishList: [
+          ...(state.user.wishList),
+          payload.courseId
+        ]
+      }
+    };
+  }),
+  on(AuthActions.removeCourseFromWishlistSuccess, (state: AuthState, payload: { courseId: string }) => {
+    const wishList = state.user.wishList.filter((id: string) => id !== payload.courseId);
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        wishList
+      }
+    };
   })
 );
 

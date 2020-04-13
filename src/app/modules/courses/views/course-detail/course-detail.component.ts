@@ -9,7 +9,7 @@ import { Course } from '../../../../shared/models/course.model';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
 import { SignupFormComponent } from '../../../../components/signup-form/signup-form.component';
-import { addCourseToCart, pushCourseToCarts, addCourseToFavorites, removeCourseFromFavorites } from '../../../../store/auth/auth.actions';
+import { addCourseToCart, pushCourseToCarts, addCourseToFavorites, removeCourseFromFavorites, addCourseToWishlist, removeCourseFromWishlist } from '../../../../store/auth/auth.actions';
 import { CookieService } from 'ngx-cookie-service';
 import * as html2canvas from 'html2canvas';
 import { ReviewModalComponent } from '../../components/review-modal/review-modal.component';
@@ -41,6 +41,8 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   showCertificate = false;
   canRateCourse = false;
   userReview: IReview;
+  showWishlistButton = true;
+  canAddToWishlist = true;
   get enrolled() {
     if (this.user && this.course) {
       if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
@@ -162,6 +164,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         const userId = this.course.enrolledUsers.find((id: string) => id === this.user.id);
         if (userId) {
           // User is enrolled
+          this.showWishlistButton = false;
 
           // Determine user progress
           const purchasedCourse = user.purchasedCourses.find((el: IPurchasedCourse) => el.course === this.course.id);
@@ -195,7 +198,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           }
         }
 
-        // Determine if course is on user's favorite courses
+        // Determine if course is in user's favorite courses
         const favoriteCourseId = user.favoriteCourses.find((id: string) => id === this.course.id);
         if (favoriteCourseId) {
           this.isFavorite = true;
@@ -203,7 +206,14 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           this.isFavorite = false;
         }
 
-        // TODO: Determine if the user is able to add this course to its wishlist
+        // Determine if course is user's wishlist
+        const wishedCourseId = user.wishList.find((id: string) => id === this.course.id);
+        if (wishedCourseId) {
+          this.canAddToWishlist = false;
+        } else {
+          this.canAddToWishlist = true;
+        }
+
         // TODO: Determine if the user is able to archive this course
 
       } else {
@@ -407,7 +417,6 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   onFavoriteCourse() {
     if (this.isAuthenticated) {
-      console.log('Dispatching action addCourseToFavorites');
       this.store.dispatch(addCourseToFavorites({ courseId: this.course.id, userId: this.user.id }));
     } else {
       const dialogConfig = new MatDialogConfig();
@@ -427,7 +436,6 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
               if (user) {
                 const favoriteCourseId = user.favoriteCourses.find((id: string) => id === this.course.id);
                 if (!favoriteCourseId) {
-                  console.log('Dispatching action addCourseToFavorites');
                   this.store.dispatch(addCourseToFavorites({ courseId: this.course.id, userId: user.id }));
                 }
               }
@@ -440,8 +448,45 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   }
 
   onUnfavoriteCourse() {
-    console.log('Dispatching action removeCourseFromFavorites');
     this.store.dispatch(removeCourseFromFavorites({ courseId: this.course.id, userId: this.user.id }));
+  }
+
+  // Wishlist courses
+
+  onAddToWishlist() {
+    if (this.isAuthenticated) {
+      this.store.dispatch(addCourseToWishlist({ courseId: this.course.id, userId: this.user.id }));
+    } else {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.panelClass = 'custom-mat-dialog-container';
+      dialogConfig.backdropClass = 'custom-modal-backdrop';
+      let loginDialogRef;
+      let signupDialogRef;
+      loginDialogRef = this.loginDialog.open(LoginFormComponent, dialogConfig);
+      loginDialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          if (result.showSignUpModalOnClose) {
+            signupDialogRef = this.signupDialog.open(SignupFormComponent, dialogConfig);
+          }
+          if (this.isAuthenticated) {
+            const userSub = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
+              if (user) {
+                const wishedCourseId = user.wishList.find((id: string) => id === this.course.id);
+                if (!wishedCourseId) {
+                  this.store.dispatch(addCourseToWishlist({ courseId: this.course.id, userId: user.id }));
+                }
+              }
+            });
+            userSub.unsubscribe();
+          }
+        }
+      });
+    }
+  }
+
+  onRemoveFromWishlist() {
+    this.store.dispatch(removeCourseFromWishlist({ courseId: this.course.id, userId: this.user.id }));
   }
 
 }

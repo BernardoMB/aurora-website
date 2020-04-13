@@ -13,6 +13,8 @@
             </div>
           </div>
           <div class="favorite-container">
+            <div *ngIf="showWishlistButton && canAddToWishlist" class="wishlist-button" (click)="onAddToWishlist()">Add to wishlist</div>
+            <div *ngIf="showWishlistButton && !canAddToWishlist" class="wishlist-button" (click)="onRemoveFromWishlist()">Remove from wishlist</div>
             <div *ngIf="isFavorite" class="isFavorite">
               <i class="material-icons" (click)="onUnfavoriteCourse()">
                 favorite
