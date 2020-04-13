@@ -62,3 +62,7 @@ export const completeLessonFailure = createAction('[Auth] CompleteLessonFailure'
 export const addCourseToFavorites = createAction('[Auth] AddCourseToFavorites', props<{ courseId: string, userId: string }>());
 export const addCourseToFavoritesSuccess = createAction('[Auth] AddCourseToFavoritesSuccess', props<{ courseId: string }>());
 export const addCourseToFavoritesFailure = createAction('[Auth] AddCourseToFavoritesFailure', props<{ error: any; message: string }>());
+
+export const removeCourseFromFavorites = createAction('[Auth] RemoveCourseFromFavorites', props<{ courseId: string, userId: string }>());
+export const removeCourseFromFavoritesSuccess = createAction('[Auth] RemoveCourseFromFavoritesSuccess', props<{ courseId: string }>());
+export const removeCourseFromFavoritesFailure = createAction('[Auth] RemoveCourseFromFavoritesFailure', props<{ error: any; message: string }>());

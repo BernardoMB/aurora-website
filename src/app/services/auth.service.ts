@@ -93,4 +93,17 @@ export class AuthService {
     const url = `${this.host}/${this.apiVersion}/users/complete-lesson`;
     return this.http.post<void>(url, { course: courseId, lesson: lessonId });
   }
+
+  addCourseToFavorites(courseId: string, userId: string): Observable<User> {
+    console.log('Auth service: Adding course to user favorites');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/favoriteCourses/${courseId}`;
+    return this.http.post<User>(url, {});
+  }
+
+  removeCourseFromFavorites(courseId: string, userId: string): Observable<User> {
+    console.log('Auth service: Removing course from user favorites');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/favoriteCourses/${courseId}`;
+    return this.http.delete<User>(url, {});
+  }
+
 }

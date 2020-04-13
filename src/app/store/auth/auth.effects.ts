@@ -33,6 +33,12 @@ import {
   completeLesson,
   completeLessonSuccess,
   completeLessonFailure,
+  addCourseToFavorites,
+  addCourseToFavoritesSuccess,
+  addCourseToFavoritesFailure,
+  removeCourseFromFavorites,
+  removeCourseFromFavoritesSuccess,
+  removeCourseFromFavoritesFailure,
 } from './auth.actions';
 import { of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
@@ -306,6 +312,48 @@ export class AuthEffects {
           catchError((errorResponse: HttpErrorResponse) =>
             of(
               completeLessonFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  addCoursesToFavoritesEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addCourseToFavorites),
+      exhaustMap(action =>
+        this.authService.addCourseToFavorites(action.courseId, action.userId).pipe(
+          map((responseBody: User) => {
+            return addCourseToFavoritesSuccess({ courseId: action.courseId });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              addCourseToFavoritesFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  removeCoursesFromFavoritesEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(removeCourseFromFavorites),
+      exhaustMap(action =>
+        this.authService.removeCourseFromFavorites(action.courseId, action.userId).pipe(
+          map((responseBody: User) => {
+            return removeCourseFromFavoritesSuccess({ courseId: action.courseId });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              removeCourseFromFavoritesFailure({
                 error: errorResponse,
                 message: errorResponse.error.message,
               }),

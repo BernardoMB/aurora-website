@@ -9,7 +9,7 @@ import { Course } from '../../../../shared/models/course.model';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
 import { SignupFormComponent } from '../../../../components/signup-form/signup-form.component';
-import { addCourseToCart, pushCourseToCarts } from '../../../../store/auth/auth.actions';
+import { addCourseToCart, pushCourseToCarts, addCourseToFavorites, removeCourseFromFavorites } from '../../../../store/auth/auth.actions';
 import { CookieService } from 'ngx-cookie-service';
 import * as html2canvas from 'html2canvas';
 import { ReviewModalComponent } from '../../components/review-modal/review-modal.component';
@@ -199,6 +199,8 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         const favoriteCourseId = user.favoriteCourses.find((id: string) => id === this.course.id);
         if (favoriteCourseId) {
           this.isFavorite = true;
+        } else {
+          this.isFavorite = false;
         }
 
         // TODO: Determine if the user is able to add this course to its wishlist
@@ -405,7 +407,8 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   onFavoriteCourse() {
     if (this.isAuthenticated) {
-      alert('Should dispatch favorite course action');
+      console.log('Dispatching action addCourseToFavorites');
+      this.store.dispatch(addCourseToFavorites({ courseId: this.course.id, userId: this.user.id }));
     } else {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.autoFocus = true;
@@ -420,15 +423,16 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
             signupDialogRef = this.signupDialog.open(SignupFormComponent, dialogConfig);
           }
           if (this.isAuthenticated) {
-            // TODO: Check if user has already favorited this course
-            this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
+            const userSub = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
               if (user) {
                 const favoriteCourseId = user.favoriteCourses.find((id: string) => id === this.course.id);
                 if (!favoriteCourseId) {
-                  alert('Should dispatch favorite course action');
+                  console.log('Dispatching action addCourseToFavorites');
+                  this.store.dispatch(addCourseToFavorites({ courseId: this.course.id, userId: user.id }));
                 }
               }
             });
+            userSub.unsubscribe();
           }
         }
       });
@@ -436,7 +440,8 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   }
 
   onUnfavoriteCourse() {
-    alert('Should dispatch unfavorite course action');
+    console.log('Dispatching action removeCourseFromFavorites');
+    this.store.dispatch(removeCourseFromFavorites({ courseId: this.course.id, userId: this.user.id }));
   }
 
 }

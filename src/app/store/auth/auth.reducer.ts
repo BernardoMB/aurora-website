@@ -173,6 +173,28 @@ const authReducer = createReducer(
       }
     };
 
+  }),
+  on(AuthActions.addCourseToFavoritesSuccess, (state: AuthState, payload: { courseId: string }) => {
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        favoriteCourses: [
+          ...(state.user.favoriteCourses),
+          payload.courseId
+        ]
+      }
+    };
+  }),
+  on(AuthActions.removeCourseFromFavoritesSuccess, (state: AuthState, payload: { courseId: string }) => {
+    const favoriteCourses = state.user.favoriteCourses.filter((id: string) => id !== payload.courseId);
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        favoriteCourses
+      }
+    };
   })
 );
 
