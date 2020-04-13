@@ -6,7 +6,7 @@ import { Subscription, Subject, Observable, of } from 'rxjs';
 import { User, IPurchasedCourse } from '../../../../shared/models/user.model';
 import { Course } from '../../../../shared/models/course.model';
 import { ActivatedRoute, UrlSegment, Router, NavigationEnd, Event } from '@angular/router';
-import { completeLesson } from '../../../../store/auth/auth.actions';
+import { completeLesson, addCourseToFavorites, removeCourseFromFavorites } from '../../../../store/auth/auth.actions';
 import { filter, throttleTime, mergeMap, scan, map, tap } from 'rxjs/operators';
 import * as html2canvas from 'html2canvas';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
@@ -38,6 +38,7 @@ export class LearnComponent implements OnInit, OnDestroy {
   showCertificate = false;
   canRateCourse = false;
   userReview: IReview;
+  isFavorite = false;
 
   // #region Reviews infinite scroll
   @ViewChild(CdkVirtualScrollViewport, { static: false })
@@ -114,7 +115,7 @@ export class LearnComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // Get resolved data
+
     const data = this.route.snapshot.data;
     // console.log('%c Activated route snapshot resolved data ', 'background: #222; color: #bada55');
     // console.log(data);
@@ -199,7 +200,14 @@ export class LearnComponent implements OnInit, OnDestroy {
           this.canRateCourse = true;
         }
 
-        // TODO: Determine if the user is able to favorite this course
+        // Determine if course is on user's favorite courses
+        const favoriteCourseId = user.favoriteCourses.find((id: string) => id === this.course.id);
+        if (favoriteCourseId) {
+          this.isFavorite = true;
+        } else {
+          this.isFavorite = false;
+        }
+
         // TODO: Determine if the user is able to add this course to its wishlist
         // TODO: Determine if the user is able to archive this course
       } else {
@@ -362,6 +370,17 @@ export class LearnComponent implements OnInit, OnDestroy {
 
   trackByIdx(i) {
     return i;
+  }
+
+  // Favorite courses
+
+  onFavoriteCourse() {
+    this.store.dispatch(addCourseToFavorites({ courseId: this.course.id, userId: this.user.id }));
+  }
+
+  onUnfavoriteCourse() {
+    console.log('Dispatching action removeCourseFromFavorites');
+    this.store.dispatch(removeCourseFromFavorites({ courseId: this.course.id, userId: this.user.id }));
   }
 
 }

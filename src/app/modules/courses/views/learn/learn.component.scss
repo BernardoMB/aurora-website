@@ -20,6 +20,22 @@
         text-decoration: underline;
       }
     }
+    .favorite-container {
+      .isFavorite {
+        display: flex;
+        justify-content: flex-end;
+        i {
+          color: hotpink;
+        }
+      }
+      .notFavorite {
+        display: flex;
+        justify-content: flex-end;
+        i {
+          color: hotpink;
+        }
+      }
+    }
   }
 }
 

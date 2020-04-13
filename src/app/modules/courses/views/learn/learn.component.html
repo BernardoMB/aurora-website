@@ -1,6 +1,18 @@
 <section class="lerning-header">
   <div class="header-container">
     <div *ngIf="course" class="course-title focus-outline" [routerLink]="['/courses', course.id]">{{ course.name }}</div>
+    <div class="favorite-container">
+      <div *ngIf="isFavorite" class="isFavorite">
+        <i class="material-icons" (click)="onUnfavoriteCourse()">
+          favorite
+        </i>
+      </div>
+      <div *ngIf="!isFavorite" class="notFavorite">
+        <i class="material-icons" (click)="onFavoriteCourse()">
+          favorite_border
+        </i>
+      </div>
+    </div>
   </div>
 </section>
 
