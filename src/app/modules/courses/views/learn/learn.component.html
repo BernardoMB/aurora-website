@@ -110,6 +110,12 @@
         <div *ngIf="canRateCourse" class="rate-container">
           <button mat-raised-button [color]="'accent'" (click)="onRateCourse()">Rate this course</button>
         </div>
+        <div *ngIf="userReview" class="user-review-container">
+          <div class="reviews-title">Your review</div>
+          <div style="padding: 20px 65px;">
+            <app-review-card [review]="userReview"></app-review-card>
+          </div>
+        </div>
       </div>
       <!-- Certificate tab content -->
       <div

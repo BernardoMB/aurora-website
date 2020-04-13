@@ -36,6 +36,7 @@ export class LearnComponent implements OnInit, OnDestroy {
   showNextButton = true;
   showCertificate = false;
   canRateCourse = false;
+  userReview: IReview;
 
   // #region Reviews infinite scroll
   @ViewChild(CdkVirtualScrollViewport, { static: false })
@@ -175,17 +176,18 @@ export class LearnComponent implements OnInit, OnDestroy {
         // TODO: Implement review type.
         const review = this.course.reviews.find((el: any) => el.user === this.user.id);
         if (review) {
+          // User has already reviwed this course
           this.canRateCourse = false;
-          const courseReviews = this.course.reviews.filter((el: any) => el.user !== this.user.id);
-          courseReviews.push(review);
-          /* console.log('COURSE', this.course);
-          this.course.reviews = courseReviews; */
-          const course = {
-            ...this.course,
-            reviews: courseReviews
+          this.userReview = {
+            user: {
+              name: user.name,
+              lastName: user.lastName
+            },
+            rating: (review as any).rating,
+            review: (review as any).review,
           };
-          this.course = course;
         } else {
+          // User has not yet reviwed this course
           this.canRateCourse = true;
         }
       } else {
