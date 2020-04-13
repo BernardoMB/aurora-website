@@ -59,4 +59,6 @@ export const completeLesson = createAction('[Auth] CompleteLesson', props<{ cour
 export const completeLessonSuccess = createAction('[Auth] CompleteLessonSuccess', props<{ courseId: string, lessonId: string }>());
 export const completeLessonFailure = createAction('[Auth] CompleteLessonFailure', props<{ error: any; message: string }>());
 
-
+export const addCourseToFavorites = createAction('[Auth] AddCourseToFavorites', props<{ courseId: string, userId: string }>());
+export const addCourseToFavoritesSuccess = createAction('[Auth] AddCourseToFavoritesSuccess', props<{ courseId: string }>());
+export const addCourseToFavoritesFailure = createAction('[Auth] AddCourseToFavoritesFailure', props<{ error: any; message: string }>());

@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
 import { selectAuthUser } from '../../../../store/auth/auth.selectors';
 import { Subscription, Subject, Observable, of } from 'rxjs';
-import { User } from '../../../../shared/models/user.model';
+import { User, IPurchasedCourse } from '../../../../shared/models/user.model';
 import { Course } from '../../../../shared/models/course.model';
 import { ActivatedRoute, UrlSegment, Router, NavigationEnd, Event } from '@angular/router';
 import { completeLesson } from '../../../../store/auth/auth.actions';
@@ -14,6 +14,7 @@ import { IReview } from '../../interfaces/IReview';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { ReviewModalComponent } from '../../components/review-modal/review-modal.component';
 import { CoursesService } from '../../services/courses.service';
+import { Review } from '../../../../shared/models/review.model';
 
 @Component({
   selector: 'app-learn',
@@ -165,16 +166,23 @@ export class LearnComponent implements OnInit, OnDestroy {
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
       if (user) {
         this.user = user;
-        this.userProgress = this.user.purchasedCourses
-          .filter(purchasedcourse => purchasedcourse.course === this.course.id)
-          .map(purchasedcourse => purchasedcourse.progress)[0];
-        if (this.userProgress.length === this.course.lessons.length) {
-          this.showCertificate = true;
+        // Up to this point the user is enrolled
+
+        // Determine user progress
+        const purchasedCourse = user.purchasedCourses.find((el: IPurchasedCourse) => el.course === this.course.id);
+        if (purchasedCourse) {
+          const userProgress = purchasedCourse.progress;
+          if (userProgress.length === this.course.lessons.length) {
+            // User has completed this course
+            this.showCertificate = true;
+          } else {
+            // User not yet completed this course
+            this.showCertificate = false;
+          }
         }
 
         // Determine if the user is able to add review
-        // TODO: Implement review type.
-        const review = this.course.reviews.find((el: any) => el.user === this.user.id);
+        const review = (this.course.reviews as Review[]).find((r: Review) => r.user === this.user.id);
         if (review) {
           // User has already reviwed this course
           this.canRateCourse = false;
@@ -190,6 +198,10 @@ export class LearnComponent implements OnInit, OnDestroy {
           // User has not yet reviwed this course
           this.canRateCourse = true;
         }
+
+        // TODO: Determine if the user is able to favorite this course
+        // TODO: Determine if the user is able to add this course to its wishlist
+        // TODO: Determine if the user is able to archive this course
       } else {
         this.canRateCourse = false;
       }

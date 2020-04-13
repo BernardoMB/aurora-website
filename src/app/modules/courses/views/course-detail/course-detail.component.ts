@@ -18,6 +18,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { throttleTime, mergeMap, tap, map, scan } from 'rxjs/operators';
 import * as faker from 'faker';
 import { IReview } from '../../interfaces/IReview';
+import { Review } from '../../../../shared/models/review.model';
 
 @Component({
   selector: 'app-course-detail',
@@ -27,7 +28,7 @@ import { IReview } from '../../interfaces/IReview';
 export class CourseDetailComponent implements OnInit, OnDestroy {
   routeFragmentSubscription: Subscription;
   routeDataSubscription: Subscription;
-  isFavorite: boolean; // TODO: this should be computed from the info obtained from th server
+  isFavorite = false;
   currentTab = 'about';
   showCertificateTab = false;
   userSubscription: Subscription;
@@ -156,25 +157,27 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       if (user) {
         this.user = user;
         this.showCertificateTab = true;
-        // Determine what to show in the certificate tab
-        if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
-          // User has course
-          const purchasedCourses = user.purchasedCourses
-            .filter((el: IPurchasedCourse) => el.course === this.course.id);
-          if (purchasedCourses.length > 0 ) {
-            const purchasedCourse = purchasedCourses[0];
-            const userProgress = purchasedCourse.progress;
-            if (userProgress.length === this.course.lessons.length) {
-              this.showCertificate = true;
-            }
-          }
-        }
-        // Determine if the user is able to add review
-        const userId = this.course.enrolledUsers.find((el: string) => el === this.user.id);
+
+        // Determine if user is enrolled
+        const userId = this.course.enrolledUsers.find((id: string) => id === this.user.id);
         if (userId) {
           // User is enrolled
-          // TODO: Implement review type.
-          const review = this.course.reviews.find((el: any) => el.user === this.user.id);
+
+          // Determine user progress
+          const purchasedCourse = user.purchasedCourses.find((el: IPurchasedCourse) => el.course === this.course.id);
+          if (purchasedCourse) {
+            const userProgress = purchasedCourse.progress;
+            if (userProgress.length === this.course.lessons.length) {
+              // User has completed this course
+              this.showCertificate = true;
+            } else {
+              // User not yet completed this course
+              this.showCertificate = false;
+            }
+          }
+
+          // Determine if the user is able to add review
+          const review = (this.course.reviews as Review[]).find((r: Review) => r.user === this.user.id);
           if (review) {
             // User has already reviwed this course
             this.canRateCourse = false;
@@ -192,6 +195,14 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           }
         }
 
+        // Determine if course is on user's favorite courses
+        const favoriteCourseId = user.favoriteCourses.find((id: string) => id === this.course.id);
+        if (favoriteCourseId) {
+          this.isFavorite = true;
+        }
+
+        // TODO: Determine if the user is able to add this course to its wishlist
+        // TODO: Determine if the user is able to archive this course
 
       } else {
         this.user = undefined;
@@ -388,6 +399,44 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   trackByIdx(i) {
     return i;
+  }
+
+  // Favorite courses
+
+  onFavoriteCourse() {
+    if (this.isAuthenticated) {
+      alert('Should dispatch favorite course action');
+    } else {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.panelClass = 'custom-mat-dialog-container';
+      dialogConfig.backdropClass = 'custom-modal-backdrop';
+      let loginDialogRef;
+      let signupDialogRef;
+      loginDialogRef = this.loginDialog.open(LoginFormComponent, dialogConfig);
+      loginDialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          if (result.showSignUpModalOnClose) {
+            signupDialogRef = this.signupDialog.open(SignupFormComponent, dialogConfig);
+          }
+          if (this.isAuthenticated) {
+            // TODO: Check if user has already favorited this course
+            this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
+              if (user) {
+                const favoriteCourseId = user.favoriteCourses.find((id: string) => id === this.course.id);
+                if (!favoriteCourseId) {
+                  alert('Should dispatch favorite course action');
+                }
+              }
+            });
+          }
+        }
+      });
+    }
+  }
+
+  onUnfavoriteCourse() {
+    alert('Should dispatch unfavorite course action');
   }
 
 }

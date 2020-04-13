@@ -14,12 +14,12 @@
           </div>
           <div class="favorite-container">
             <div *ngIf="isFavorite" class="isFavorite">
-              <i class="material-icons">
+              <i class="material-icons" (click)="onUnfavoriteCourse()">
                 favorite
               </i>
             </div>
             <div *ngIf="!isFavorite" class="notFavorite">
-              <i class="material-icons">
+              <i class="material-icons" (click)="onFavoriteCourse()">
                 favorite_border
               </i>
             </div>

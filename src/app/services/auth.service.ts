@@ -5,6 +5,7 @@ import { User } from '../shared/models/user.model';
 import { SignupDto } from '../shared/dtos/signup.dto';
 import { environment } from '../../environments/environment';
 import { Course } from '../shared/models/course.model';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
@@ -36,7 +37,13 @@ export class AuthService {
   getUserInfo(): Observable<User> {
     console.log('Auth service: Getting user info');
     const url = `${this.host}/${this.apiVersion}/auth/user/me?populate=cart`;
-    return this.http.get<User>(url);
+    return this.http.get<User>(url)/* .pipe(
+      tap((response: any) => {
+        console.log('\n\n');
+        console.log('Getting user info response', response);
+        console.log('\n\n');
+      })
+    ) */;
   }
 
   signinWithToken(): Observable<any> {

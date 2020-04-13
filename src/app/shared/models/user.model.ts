@@ -15,4 +15,5 @@ export class User {
   purchasedCourses?: IPurchasedCourse[];
   cart?: Course[];
   courses?: string[];
+  favoriteCourses?: string[];
 }
