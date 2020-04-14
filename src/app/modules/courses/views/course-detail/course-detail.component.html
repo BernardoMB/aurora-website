@@ -13,6 +13,8 @@
             </div>
           </div>
           <div class="favorite-container">
+            <div *ngIf="showArchiveButton && canArchiveCourse" class="wishlist-button" (click)="onArchiveCourse()">Archive course</div>
+            <div *ngIf="showArchiveButton && !canArchiveCourse" class="wishlist-button" (click)="onUnarchiveCourse()">Unarchive course</div>
             <div *ngIf="showWishlistButton && canAddToWishlist" class="wishlist-button" (click)="onAddToWishlist()">Add to wishlist</div>
             <div *ngIf="showWishlistButton && !canAddToWishlist" class="wishlist-button" (click)="onRemoveFromWishlist()">Remove from wishlist</div>
             <div *ngIf="isFavorite" class="isFavorite">

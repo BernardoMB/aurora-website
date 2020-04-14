@@ -45,6 +45,12 @@ import {
   removeCourseFromWishlist,
   removeCourseFromWishlistSuccess,
   removeCourseFromWishlistFailure,
+  addCourseToArchive,
+  addCourseToArchiveSuccess,
+  addCourseToArchiveFailure,
+  removeCourseFromArchive,
+  removeCourseFromArchiveSuccess,
+  removeCourseFromArchiveFailure,
 } from './auth.actions';
 import { of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
@@ -402,6 +408,48 @@ export class AuthEffects {
           catchError((errorResponse: HttpErrorResponse) =>
             of(
               removeCourseFromWishlistFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  addCoursesToArchiveEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addCourseToArchive),
+      exhaustMap(action =>
+        this.authService.addCourseToArchive(action.courseId, action.userId).pipe(
+          map((responseBody: User) => {
+            return addCourseToArchiveSuccess({ courseId: action.courseId });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              addCourseToArchiveFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  removeCoursesFromArchiveEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(removeCourseFromArchive),
+      exhaustMap(action =>
+        this.authService.removeCourseFromArchive(action.courseId, action.userId).pipe(
+          map((responseBody: User) => {
+            return removeCourseFromArchiveSuccess({ courseId: action.courseId });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              removeCourseFromArchiveFailure({
                 error: errorResponse,
                 message: errorResponse.error.message,
               }),

@@ -217,6 +217,28 @@ const authReducer = createReducer(
         wishList
       }
     };
+  }),
+  on(AuthActions.addCourseToArchiveSuccess, (state: AuthState, payload: { courseId: string }) => {
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        archivedCourses: [
+          ...(state.user.archivedCourses),
+          payload.courseId
+        ]
+      }
+    };
+  }),
+  on(AuthActions.removeCourseFromArchiveSuccess, (state: AuthState, payload: { courseId: string }) => {
+    const archivedCourses = state.user.archivedCourses.filter((id: string) => id !== payload.courseId);
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        archivedCourses
+      }
+    };
   })
 );
 

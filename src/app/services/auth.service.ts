@@ -118,4 +118,16 @@ export class AuthService {
     return this.http.delete<User>(url, {});
   }
 
+  addCourseToArchive(courseId: string, userId: string): Observable<User> {
+    console.log('Auth service: Adding course to user archive');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/archivedCourses/${courseId}`;
+    return this.http.post<User>(url, {});
+  }
+
+  removeCourseFromArchive(courseId: string, userId: string): Observable<User> {
+    console.log('Auth service: Removing course from user archive');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/archivedCourses/${courseId}`;
+    return this.http.delete<User>(url, {});
+  }
+
 }

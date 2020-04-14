@@ -17,4 +17,5 @@ export class User {
   courses?: string[];
   favoriteCourses?: string[];
   wishList?: string[];
+  archivedCourses?: string[];
 }

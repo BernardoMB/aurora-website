@@ -9,7 +9,7 @@ import { Course } from '../../../../shared/models/course.model';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
 import { SignupFormComponent } from '../../../../components/signup-form/signup-form.component';
-import { addCourseToCart, pushCourseToCarts, addCourseToFavorites, removeCourseFromFavorites, addCourseToWishlist, removeCourseFromWishlist } from '../../../../store/auth/auth.actions';
+import { addCourseToCart, pushCourseToCarts, addCourseToFavorites, removeCourseFromFavorites, addCourseToWishlist, removeCourseFromWishlist, addCourseToArchive, removeCourseFromArchive } from '../../../../store/auth/auth.actions';
 import { CookieService } from 'ngx-cookie-service';
 import * as html2canvas from 'html2canvas';
 import { ReviewModalComponent } from '../../components/review-modal/review-modal.component';
@@ -43,6 +43,8 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   userReview: IReview;
   showWishlistButton = true;
   canAddToWishlist = true;
+  showArchiveButton = false;
+  canArchiveCourse = true;
   get enrolled() {
     if (this.user && this.course) {
       if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
@@ -165,6 +167,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         if (userId) {
           // User is enrolled
           this.showWishlistButton = false;
+          this.showArchiveButton = true;
 
           // Determine user progress
           const purchasedCourse = user.purchasedCourses.find((el: IPurchasedCourse) => el.course === this.course.id);
@@ -214,7 +217,13 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           this.canAddToWishlist = true;
         }
 
-        // TODO: Determine if the user is able to archive this course
+        // Determine if course is user's wishlist
+        const archivedCourseId = user.archivedCourses.find((id: string) => id === this.course.id);
+        if (archivedCourseId) {
+          this.canArchiveCourse = false;
+        } else {
+          this.canArchiveCourse = true;
+        }
 
       } else {
         this.user = undefined;
@@ -487,6 +496,16 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   onRemoveFromWishlist() {
     this.store.dispatch(removeCourseFromWishlist({ courseId: this.course.id, userId: this.user.id }));
+  }
+
+  // Archive courses
+
+  onArchiveCourse() {
+    this.store.dispatch(addCourseToArchive({ courseId: this.course.id, userId: this.user.id }));
+  }
+
+  onUnarchiveCourse() {
+    this.store.dispatch(removeCourseFromArchive({ courseId: this.course.id, userId: this.user.id }));
   }
 
 }

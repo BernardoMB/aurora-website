@@ -74,3 +74,11 @@ export const addCourseToWishlistFailure = createAction('[Auth] AddCourseToWishli
 export const removeCourseFromWishlist = createAction('[Auth] RemoveCourseFromWishlist', props<{ courseId: string, userId: string }>());
 export const removeCourseFromWishlistSuccess = createAction('[Auth] RemoveCourseFromWishlistSuccess', props<{ courseId: string }>());
 export const removeCourseFromWishlistFailure = createAction('[Auth] RemoveCourseFromWishlistFailure', props<{ error: any; message: string }>());
+
+export const addCourseToArchive = createAction('[Auth] AddCourseToArchive', props<{ courseId: string, userId: string }>());
+export const addCourseToArchiveSuccess = createAction('[Auth] AddCourseToArchiveSuccess', props<{ courseId: string }>());
+export const addCourseToArchiveFailure = createAction('[Auth] AddCourseToArchiveFailure', props<{ error: any; message: string }>());
+
+export const removeCourseFromArchive = createAction('[Auth] RemoveCourseFromArchive', props<{ courseId: string, userId: string }>());
+export const removeCourseFromArchiveSuccess = createAction('[Auth] RemoveCourseFromArchiveSuccess', props<{ courseId: string }>());
+export const removeCourseFromArchiveFailure = createAction('[Auth] RemoveCourseFromArchiveFailure', props<{ error: any; message: string }>());
