@@ -16,19 +16,19 @@ export class ReviewCardComponent implements OnInit, AfterViewInit {
   constructor() {}
 
   ngOnInit() {
-    console.log('Initializing review card. ShowReadMoreButton?', this.showReadMoreButton);
+    // console.log('Initializing review card. ShowReadMoreButton?', this.showReadMoreButton);
   }
 
   ngAfterViewInit(): void {
     const elementHeight = this.el.nativeElement.offsetHeight;
-    console.log('Element height', elementHeight);
+    // console.log('Element height', elementHeight);
     if (elementHeight > 66) {
-      console.log('Element height is greater than 66px');
+      // console.log('Element height is greater than 66px');
       setTimeout(() => {
         this.showReadMoreButton = true;
       }, 1);
     }
-    console.log('REVIEW', this.review);
+    // console.log('Review', this.review);
   }
 
   unSetHeight() {

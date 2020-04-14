@@ -9,17 +9,21 @@
               [style.backgroundColor]="course.category.hexColor"
             ></div>
             <div class="category-name-container">
-              <div class="category-name">{{ course.category.name }}</div>
+              <a class="category-name" [routerLink]="['/','courses','categories', course.category.id]">{{ course.category.name }}</a>
             </div>
           </div>
           <div class="favorite-container">
+            <div *ngIf="showArchiveButton && canArchiveCourse" class="wishlist-button" (click)="onArchiveCourse()">Archive course</div>
+            <div *ngIf="showArchiveButton && !canArchiveCourse" class="wishlist-button" (click)="onUnarchiveCourse()">Unarchive course</div>
+            <div *ngIf="showWishlistButton && canAddToWishlist" class="wishlist-button" (click)="onAddToWishlist()">Add to wishlist</div>
+            <div *ngIf="showWishlistButton && !canAddToWishlist" class="wishlist-button" (click)="onRemoveFromWishlist()">Remove from wishlist</div>
             <div *ngIf="isFavorite" class="isFavorite">
-              <i class="material-icons">
+              <i class="material-icons" (click)="onUnfavoriteCourse()">
                 favorite
               </i>
             </div>
             <div *ngIf="!isFavorite" class="notFavorite">
-              <i class="material-icons">
+              <i class="material-icons" (click)="onFavoriteCourse()">
                 favorite_border
               </i>
             </div>
@@ -55,7 +59,7 @@
           </div>
           <div *ngIf="course.rating" class="rating-container">
             <i class="material-icons">star</i>
-            <div>{{ course.rating }}</div>
+            <div>{{course.rating | number:'1.0-1'}}</div>
           </div>
         </div>
       </div>
@@ -133,62 +137,20 @@
         </div>
       </div>
     </div>
-
     <!-- Reviews tab content -->
     <div *ngIf="currentTab === 'reviews'" class="tab tab-reviews">
       <div class="reviews-title-container">
         <div *ngIf="course.totalReviews" class="reviews-title">{{ course.totalReviews }} reviews</div>
         <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="reviews-title">0 reviews</div>
       </div>
-
-      <!-- Option 1 -->
-      <!-- <div class="reviews-container nice-container-scroll">
-        <div *ngIf="course.totalReviews > 0">
-          <div class="review-card" *ngFor="let review of course.reviews; let i = index">
-            <app-review-card [review]="review" ></app-review-card>
-          </div>
-        </div>
-        <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="no-review-cards-container">
-          <i class="material-icons">inbox</i>
-          <div class="no-reviews-phrase">This course has no reviews</div>
-        </div>
-      </div> -->
-
-      <!-- Option 2 -->
-      <!-- <div class="reviews-container nice-container-scroll">
-        <div *ngIf="course.totalReviews > 0">
-          <cdk-virtual-scroll-viewport style="height: 400px;" itemSize="161" (scrolledIndexChange)="nextReviewsPage($event, reviews.length)">
-            <div style="">
-              <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews; let i = index">
-                <app-review-card [review]="review[0]"></app-review-card>
-              </div>
-            </div>
-          </cdk-virtual-scroll-viewport>
-        </div>
-        <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="no-review-cards-container">
-          <i class="material-icons">inbox</i>
-          <div class="no-reviews-phrase">This course has no reviews</div>
-        </div>
-      </div> -->
-
-      <!-- Option 3 -->
-      <!-- <cdk-virtual-scroll-viewport class="virtual-scroll-viewport" itemSize="161" (scrolledIndexChange)="nextReviewsPage($event, reviews.length)">
-        <div *ngIf="course.totalReviews > 0">
-          <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews; let i = index">
-            <app-review-card [review]="review[0]"></app-review-card>
-          </div>
-        </div>
-        <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="no-review-cards-container">
-          <i class="material-icons">inbox</i>
-          <div class="no-reviews-phrase">This course has no reviews</div>
-        </div>
-      </cdk-virtual-scroll-viewport> -->
-
-      <!-- Option 4 -->
-      <!-- <div *ngIf="reviews && reviews.length > 0">
-        <cdk-virtual-scroll-viewport class="virtual-scroll-viewport" itemSize="161" (scrolledIndexChange)="nextReviewsPage($event, reviews.length)">
-          <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews; let i = index">
-            <app-review-card [review]="review[0]"></app-review-card>
+      <div *ngIf="reviews && reviews.length > 0">
+        <cdk-virtual-scroll-viewport
+          class="virtual-scroll-viewport nice-container-scroll"
+          itemSize="161"
+          (scrolledIndexChange)="nextBatch($event, reviews.length)"
+        >
+          <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews; let i = index; trackBy: trackByIdx">
+            <app-review-card [review]="review"></app-review-card>
           </div>
         </cdk-virtual-scroll-viewport>
       </div>
@@ -197,32 +159,17 @@
           <i class="material-icons">inbox</i>
           <div class="no-reviews-phrase">This course has no reviews</div>
         </div>
-      </div> -->
-
-      <!-- Option 5 -->
-      <div *ngIf="reviews3 && reviews3.length > 0">
-        <cdk-virtual-scroll-viewport
-          class="virtual-scroll-viewport nice-container-scroll"
-          itemSize="161"
-          (scrolledIndexChange)="nextBatch($event, reviews3.length)"
-        >
-          <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews3; let i = index; trackBy: trackByIdx">
-            <app-review-card [review]="review"></app-review-card>
-          </div>
-        </cdk-virtual-scroll-viewport>
       </div>
-      <div *ngIf="!reviews3 || reviews3.length === 0" class="reviews-container-2">
-        <div class="no-review-cards-container-2">
-          <i class="material-icons">inbox</i>
-          <div class="no-reviews-phrase">This course has no reviews</div>
-        </div>
-      </div>
-
       <div *ngIf="canRateCourse" class="rate-container">
         <button mat-raised-button [color]="'accent'" (click)="onRateCourse()">Rate this course</button>
       </div>
+      <div *ngIf="userReview" class="user-review-container">
+        <div class="reviews-title">Your review</div>
+        <div style="padding: 20px 65px;">
+          <app-review-card [review]="userReview"></app-review-card>
+        </div>
+      </div>
     </div>
-
     <!-- Certificate tab content -->
     <div
       *ngIf="currentTab === 'certificate' && showCertificateTab && showCertificate"
@@ -295,7 +242,7 @@
   <div class="courses-container">
     <div class="title-container">
       <div class="title">You might also be interested in</div>
-      <a>View all</a>
+      <a class="focus-outline" [routerLink]="['/courses/categories/', course.category.id]" [queryParams]="{ page: 1 }">View all</a>
     </div>
     <div class="cards-container">
       <div
@@ -307,21 +254,3 @@
     </div>
   </div>
 </section>
-
-
-
-<!-- <ng-container *ngIf="reviews3 && reviews3.length > 0">
-  <cdk-virtual-scroll-viewport
-    itemSize="161"
-    (scrolledIndexChange)="nextBatch($event, (reviews3[reviews3.length - 1]))"
-  >
-    <app-review-card
-      *cdkVirtualFor="let review of reviews3; let i = index; trackBy: trackByIdx"
-      class="animated lightSpeedIn"
-      [review]="review"
-    >
-    </app-review-card>
-  </cdk-virtual-scroll-viewport>
-</ng-container> -->
-
-<button (click)="onCicked()">click me</button>
