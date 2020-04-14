@@ -3,10 +3,12 @@ import { User } from '../../../../shared/models/user.model';
 import { Subscription } from 'rxjs';
 import { AuthState } from '../../../../store/auth/auth.state';
 import { Store, select } from '@ngrx/store';
-import { Router } from '@angular/router';
-import { selectAuthIsAuthenticated, selectAuthUser } from '../../../../store/auth/auth.selectors';
+import { Router, ActivatedRoute } from '@angular/router';
+import { selectAuthUser } from '../../../../store/auth/auth.selectors';
 import { Course } from '../../../../shared/models/course.model';
 import { CoursesService } from '../../services/courses.service';
+import { Page } from '../../../../shared/models/page.model';
+import { PagedData } from '../../../../shared/utils';
 
 @Component({
   selector: 'app-all-my-courses',
@@ -14,14 +16,18 @@ import { CoursesService } from '../../services/courses.service';
   styleUrls: ['./all-my-courses.component.scss']
 })
 export class AllMyCoursesComponent implements OnInit, OnDestroy {
+  queryParamsSubscription: Subscription;
   userSubscription: Subscription;
   user: User;
-  coursesSubscription: Subscription;
+
+  // User courses pagination
   courses: Course[];
+  page = new Page();
 
   constructor(
     private store: Store<AuthState>,
     private router: Router,
+    private route: ActivatedRoute,
     private coursesService: CoursesService
   ) { }
 
@@ -29,18 +35,47 @@ export class AllMyCoursesComponent implements OnInit, OnDestroy {
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
       if (user) {
         this.user = user;
-      }
-    });
-    this.coursesSubscription = this.coursesService.getUserCourses(0, 12).subscribe((courses: Course[]) => {
-      if (courses && courses.length > 0) {
-        this.courses = courses;
+        if (this.route.snapshot.queryParams.page) {
+          const page = this.route.snapshot.queryParams.page;
+          this.page.size = 10;
+          this.page.pageNumber = page;
+          this.setPage({ offset: page });
+        } else {
+          this.router.navigate(['./'], { relativeTo: this.route, queryParams: { page: 1 } });
+        }
+        this.queryParamsSubscription = this.route.queryParams.subscribe((queryParams: any) => {
+          if (queryParams.page) {
+            const page = queryParams.page;
+            this.page.size = 10;
+            this.page.pageNumber = page;
+            this.setPage({ offset: page });
+          }
+        });
       }
     });
   }
 
   ngOnDestroy() {
     this.userSubscription.unsubscribe();
-    this.coursesSubscription.unsubscribe();
+    this.queryParamsSubscription.unsubscribe();
+  }
+
+  pageChanged(pageNumber: number) {
+    this.page.pageNumber = pageNumber;
+    this.router.navigate(['./'], { relativeTo: this.route, queryParams: { page: pageNumber } });
+  }
+
+  /**
+   * Paging function
+   * @param pageInfo The page to select
+   */
+  setPage(pageInfo: { offset: number }) {
+    this.page.pageNumber = pageInfo.offset;
+    this.coursesService.getUserCoursesPagedData(this.page).subscribe((pagedData: PagedData<Course>) => {
+      // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
+      this.page = pagedData.page;
+      this.courses = pagedData.data;
+    });
   }
 
 }

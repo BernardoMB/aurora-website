@@ -4,9 +4,11 @@ import { User } from '../../../../shared/models/user.model';
 import { Course } from '../../../../shared/models/course.model';
 import { Store, select } from '@ngrx/store';
 import { AuthState } from '../../../../store/auth/auth.state';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CoursesService } from '../../services/courses.service';
 import { selectAuthIsAuthenticated, selectAuthUser } from '../../../../store/auth/auth.selectors';
+import { Page } from '../../../../shared/models/page.model';
+import { PagedData } from '../../../../shared/models/paged-data.model';
 
 @Component({
   selector: 'app-favorite',
@@ -14,46 +16,66 @@ import { selectAuthIsAuthenticated, selectAuthUser } from '../../../../store/aut
   styleUrls: ['./favorite.component.scss']
 })
 export class FavoriteComponent implements OnInit, OnDestroy {
+  queryParamsSubscription: Subscription;
   userSubscription: Subscription;
   user: User;
-  isAuthenticatedSubscription: Subscription;
-  isAuthenticated: boolean;
-  coursesSubscription: Subscription;
+
+  // User courses pagination
   courses: Course[];
+  page = new Page();
 
   constructor(
     private store: Store<AuthState>,
     private router: Router,
+    private route: ActivatedRoute,
     private coursesService: CoursesService
   ) { }
 
   ngOnInit() {
-    this.isAuthenticatedSubscription = this.store.pipe(select(selectAuthIsAuthenticated)).subscribe((isAuthenticated: boolean) => {
-      if (isAuthenticated) {
-        this.isAuthenticated = true;
-      } else  {
-        this.isAuthenticated = false;
-        console.log('FavoriteComponent: Authenticated state is false. Redirecting to /courses');
-        this.router.navigate(['/courses']);
-      }
-    });
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
       if (user) {
         this.user = user;
-      }
-    });
-    this.coursesSubscription = this.coursesService.getUserFavoriteCourses(0, 12).subscribe((courses: Course[]) => {
-      console.log('FAVORITE COURSES', courses);
-      if (courses && courses.length > 0) {
-        this.courses = courses;
+        if (this.route.snapshot.queryParams.page) {
+          const page = this.route.snapshot.queryParams.page;
+          this.page.size = 10;
+          this.page.pageNumber = page;
+          this.setPage({ offset: page });
+        } else {
+          this.router.navigate(['./'], { relativeTo: this.route, queryParams: { page: 1 } });
+        }
+        this.queryParamsSubscription = this.route.queryParams.subscribe((queryParams: any) => {
+          if (queryParams.page) {
+            const page = queryParams.page;
+            this.page.size = 10;
+            this.page.pageNumber = page;
+            this.setPage({ offset: page });
+          }
+        });
       }
     });
   }
 
   ngOnDestroy() {
-    this.isAuthenticatedSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
-    this.coursesSubscription.unsubscribe();
+    this.queryParamsSubscription.unsubscribe();
+  }
+
+  pageChanged(pageNumber: number) {
+    this.page.pageNumber = pageNumber;
+    this.router.navigate(['./'], { relativeTo: this.route, queryParams: { page: pageNumber } });
+  }
+
+  /**
+   * Paging function
+   * @param pageInfo The page to select
+   */
+  setPage(pageInfo: { offset: number }) {
+    this.page.pageNumber = pageInfo.offset;
+    this.coursesService.getUserFavoriteCoursesPagedData(this.page).subscribe((pagedData: PagedData<Course>) => {
+      // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
+      this.page = pagedData.page;
+      this.courses = pagedData.data;
+    });
   }
 
 }

@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 import { Course } from 'src/app/shared/models/course.model';
 import { Category } from 'src/app/shared/models/category.model';
 import { environment } from '../../../../environments/environment';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
+import { Page, PagedData } from '../../../shared/utils';
+import { Review } from '../../../shared/models/review.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,99 +17,320 @@ export class CoursesService {
 
   constructor(private http: HttpClient) {}
 
-  getFeaturedCourses(skip: number, limit: number): Observable<Array<Course>> {
-    console.log('Coureses service: Getting featured courses');
-    const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category`;
-    return this.http.get<Array<Course>>(url);
-  }
-
-  getRecentCourses(skip: number, limit: number): Observable<Array<Course>> {
-    console.log('Coureses service: Getting recent courses');
-    let url: string;
-    if (skip && limit) {
-      url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=-createdAt`;
-    } else {
-      url = `${this.host}/${this.apiVersion}/courses/public?populate=category&sort=-createdAt`;
-    }
-    return this.http.get<Array<Course>>(url);
-  }
-
+  /**
+   * Get all categories. No pagination needed.
+   *
+   * @returns {Observable<Array<Category>>}
+   * @memberof CoursesService
+   */
   getCategories(): Observable<Array<Category>> {
     console.log('Coureses service: Getting categories');
     const url = `${this.host}/${this.apiVersion}/categories`;
     return this.http.get<Array<Category>>(url);
   }
 
+  /**
+   * Get a single category provind its id. No pagination needed.
+   *
+   * @param {string} categoryId
+   * @returns {Observable<Category>}
+   * @memberof CoursesService
+   */
   getCategory(categoryId: string): Observable<Category> {
-    console.log(`Courses service: Getting category with id ${categoryId}`);
+    console.log(`Courses service: Getting category`);
     const url = `${this.host}/${this.apiVersion}/categories/${categoryId}`;
     return this.http.get<Category>(url);
   }
 
-  getCategoryFeaturedCourses(categoryId: string): Observable<Array<Course>> {
-    // TODO: Add the featured filter
-    console.log(`Courses service: Getting featured courses of category with id ${categoryId}`);
-    const url = `${this.host}/${this.apiVersion}/courses/public?category=${categoryId}`;
-    return this.http.get<Array<Course>>(url);
-  }
-
-  getCategoryCourses(categoryId: string): Observable<Array<Course>> {
-    // TODO: This endpoint must never be called without pagination.
-    console.log(`Courses service: Getting featured courses of category with id ${categoryId}`);
-    const url = `${this.host}/${this.apiVersion}/courses/public?category=${categoryId}`;
-    return this.http.get<Array<Course>>(url);
-  }
-
+  /**
+   * Get a course by id. No pagination required
+   *
+   * @param {string} courseId
+   * @returns {Observable<Course>}
+   * @memberof CoursesService
+   */
   getCourse(courseId: string): Observable<Course> {
     console.log(`Courses service: Getting course with id ${courseId}`);
     const url = `${this.host}/${this.apiVersion}/courses/${courseId}?populate=category,lessons,reviews`;
     return this.http.get<Course>(url);
   }
 
-  getCoursesFromIds(courseIds: string[]): Observable<Course[]> {
+  /**
+   * Get courses by ids. No pagination required
+   *
+   * @param {string[]} courseIds
+   * @returns {Observable<Course[]>}
+   * @memberof CoursesService
+   */
+  getCourses(courseIds: string[]): Observable<Course[]> {
     console.log('Courses service: Getting courses providing array of ids');
-    const url = `${this.host}/${this.apiVersion}/courses/courses`;
+    const url = `${this.host}/${this.apiVersion}/courses/getByIds`;
     return this.http.post<Course[]>(url, {courseIds});
   }
 
-  getUserCourses(skip: number, limit: number): Observable<Course[]> {
-    console.log('Courses service: Getting user courses with pagination');
-    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}`;
+  /**
+   * Get courses page.
+   *
+   * @param {Page} page
+   * @returns {Observable<PagedData<Course>>}
+   * @memberof CoursesService
+   */
+  getCoursesPageData(page: Page): Observable<PagedData<Course>> {
+    console.log('Coureses service: Getting courses page');
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=+createdAt`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        // console.log('Got data', responseBody);
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        // console.log(pagedData);
+        return pagedData;
+      })
+    );
+  }
+
+  /**
+   * Get featured courses page.
+   *
+   * @param {Page} page
+   * @returns {Observable<PagedData<Course>>}
+   * @memberof CoursesService
+   */
+  getFeaturedCoursesPageData(page: Page): Observable<PagedData<Course>> {
+    console.log('Coureses service: Getting featured courses page');
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=+createdAt&featured=true`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        // console.log('Got data', responseBody);
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        // console.log(pagedData);
+        return pagedData;
+      })
+    );
+  }
+
+  /**
+   * Get trending courses page.
+   *
+   * @param {Page} page
+   * @returns {Observable<PagedData<Course>>}
+   * @memberof CoursesService
+   */
+  getTrendingCoursesPageData(page: Page): Observable<PagedData<Course>> {
+    console.log('Coureses service: Getting featured courses page');
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=+createdAt&featured=true`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        // console.log('Got data', responseBody);
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        // console.log(pagedData);
+        return pagedData;
+      })
+    );
+  }
+
+  /**
+   *
+   *
+   * @param {Page} page
+   * @param {string} categoryId
+   * @returns {Observable<PagedData<Course>>}
+   * @memberof CoursesService
+   */
+  getCategoryCoursesPageData(page: Page, categoryId: string): Observable<PagedData<Course>> {
+    console.log(`Courses service: Getting category courses page`);
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=+createdAt&category=${categoryId}`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        return pagedData;
+      })
+    );
+  }
+
+  /**
+   * Get category featured courses page.
+   *
+   * @param {string} categoryId
+   * @returns {Observable<Array<Course>>}
+   * @memberof CoursesService
+   */
+  getCategoryFeaturedCoursesPageData(page: Page, categoryId: string): Observable<PagedData<Course>> {
+    console.log(`Courses service: Getting category featured courses page`);
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=+createdAt&featured=true&category=${categoryId}`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        return pagedData;
+      })
+    );
+  }
+
+  /**
+   * No pagination needed
+   *
+   * @param {string} userId
+   * @returns
+   * @memberof CoursesService
+   */
+  getRecommendedCourses(userId: string) {
+    console.log(`Courses service: Getting recommended courses`);
+    const url = `${this.host}/${this.apiVersion}/users/me/recommendedCourses`;
     return this.http.get<Course[]>(url);
   }
 
-  getUserFavoriteCourses(skip: number, limit: number): Observable<Course[]> {
-    console.log('Courses service: Getting user favorite courses with pagination');
-    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=favoriteCourses`;
-    return this.http.get<Course[]>(url);
-  }
-
-  getUserWishlistCourses(skip: number, limit: number): Observable<Course[]> {
-    console.log('Courses service: Getting user wishlist courses with pagination');
-    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=wishList`;
-    return this.http.get<Course[]>(url);
-  }
-
-  getUserArchivedCourses(skip: number, limit: number): Observable<Course[]> {
-    console.log('Courses service: Getting user archived courses with pagination');
-    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=archivedCourses`;
-    return this.http.get<Course[]>(url);
-  }
-
-  // TODO: Implement review type
-  reviewCourse(courseId: string, rating: number, review: string): Observable<any> {
+  /**
+   *
+   *
+   * @param {string} courseId
+   * @param {number} rating
+   * @param {string} review
+   * @returns {Observable<Review>}
+   * @memberof CoursesService
+   */
+  reviewCourse(courseId: string, rating: number, review: string): Observable<Review> {
     console.log('Courses service: Creating course review');
     const url = `${this.host}/${this.apiVersion}/courses/${courseId}/review`;
     const body = { review, rating };
-    return this.http.post<any>(url, body);
+    return this.http.post<Review>(url, body);
   }
 
-  getCourseReviews(courseId: string, skip: number, limit: number): Observable<any[]> {
+  /**
+   * This service call is used for reviews infinte scroll functionality.
+   *
+   * @param {string} courseId
+   * @param {number} skip
+   * @param {number} limit
+   * @returns {Observable<any[]>}
+   * @memberof CoursesService
+   */
+  getCourseReviews(courseId: string, skip: number, limit: number): Observable<Review[]> {
     console.log(`Courses service: Getting course reviews skiping ${skip} elements and limiting to ${limit} elements`);
     const url = `${this.host}/${this.apiVersion}/reviews?course=${courseId}&skip=${skip}&limit=${limit}&populate=user`;
-    return this.http.get<any>(url).pipe(
-      tap((arr) => {
-        console.log(`Courses service: Got ${arr.length} elements`);
+    return this.http.get<Review[]>(url);
+  }
+
+  /**
+   *
+   *
+   * @param {Page} page
+   * @returns {Observable<PagedData<Course>>}
+   * @memberof CoursesService
+   */
+  getUserCoursesPagedData(page: Page): Observable<PagedData<Course>> {
+    console.log(`Courses service: Getting user courses page`);
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        return pagedData;
+      })
+    );
+  }
+
+  /**
+   *
+   *
+   * @param {Page} page
+   * @returns {Observable<PagedData<Course>>}
+   * @memberof CoursesService
+   */
+  getUserFavoriteCoursesPagedData(page: Page): Observable<PagedData<Course>> {
+    console.log(`Courses service: Getting user favorite courses page`);
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=favoriteCourses`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        return pagedData;
+      })
+    );
+  }
+
+  /**
+   *
+   *
+   * @param {Page} page
+   * @returns {Observable<PagedData<Course>>}
+   * @memberof CoursesService
+   */
+  getUserWishlistCoursesPagedData(page: Page): Observable<PagedData<Course>> {
+    console.log(`Courses service: Getting user whishlist courses page`);
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=wishList`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        return pagedData;
+      })
+    );
+  }
+
+  /**
+   *
+   *
+   * @param {Page} page
+   * @returns {Observable<PagedData<Course>>}
+   * @memberof CoursesService
+   */
+  getUserArchivedCoursesPagedData(page: Page): Observable<PagedData<Course>> {
+    console.log(`Courses service: Getting user archived courses page`);
+    const skip = page.size * (page.pageNumber - 1);
+    const limit = page.size;
+    const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=archivedCourses`;
+    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
+      map(responseBody => {
+        const pagedData = new PagedData<Course>();
+        page.totalElements = responseBody.count;
+        page.totalPages = Math.ceil(page.totalElements / page.size);
+        pagedData.data = responseBody.data;
+        pagedData.page = page;
+        return pagedData;
       })
     );
   }

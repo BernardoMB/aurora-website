@@ -1,0 +1,41 @@
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { CoursesService } from '../services/courses.service';
+import { mergeMap, map, take } from 'rxjs/operators';
+import { Course } from '../../../shared/models/course.model';
+import { User } from '../../../shared/models/user.model';
+import { Store, select } from '@ngrx/store';
+import { AuthState } from '../../../store/auth/auth.state';
+import { selectAuthUser } from '../../../store/auth/auth.selectors';
+
+@Injectable()
+export class MyCoursesResolver implements Resolve<any> {
+  constructor(
+    private coursesService: CoursesService,
+    private store: Store<AuthState>,
+    private router: Router
+  ) { }
+
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
+    return this.store.pipe(
+      select(selectAuthUser),
+      take(1),
+      mergeMap((user: User) => {
+        if (user) {
+          return this.coursesService.getRecommendedCourses(user.id).pipe(
+            map((recommendedCourses: Course[]) => {
+              const myCoursesInfo = {
+                recommendedCourses
+              };
+              return myCoursesInfo;
+            })
+          );
+        } else {
+          console.log('My courses resolver: No user found in store. Access denied. Redirecting to /courses');
+          this.router.navigate(['/courses']);
+        }
+      })
+    );
+  }
+}

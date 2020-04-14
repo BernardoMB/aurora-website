@@ -1,8 +1,9 @@
 import { Category } from './category.model';
+import { Review } from './review.model';
 
 export interface Course {
     labels: string[];
-    reviews: string[];
+    reviews: string[] | Review[]; // type array of reviews because of population
     enrolledUsers: string[];
     featured: boolean;
     lessons: string[] | any[]; // type array of any because of population
@@ -13,8 +14,8 @@ export interface Course {
     price: number;
     discount: number;
     overview: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     imgUrl: string;
     id: string;
     totalReviews: number;

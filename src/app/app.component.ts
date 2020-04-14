@@ -35,7 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if (cartCookie) {
       const cartCookieArray: string[] = JSON.parse(cartCookie);
       if (cartCookieArray && cartCookieArray.length > 0) {
-        this.coursesService.getCoursesFromIds(cartCookieArray).subscribe((courses: Course[]) => {
+        this.coursesService.getCourses(cartCookieArray).subscribe((courses: Course[]) => {
           if (courses && courses.length > 0) {
             this.store.dispatch(getCoursesFrommCookiesSuccess({courses}));
             this.cookieService.delete('cartCookie');
