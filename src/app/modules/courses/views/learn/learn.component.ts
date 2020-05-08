@@ -134,6 +134,7 @@ export class LearnComponent implements OnInit, OnDestroy {
     }
 
     // Lesson id in route logic
+    // * Function
     const updateCurrentLessonState = () => {
       if (this.route.firstChild) {
         this.urlSubscription = this.route.firstChild.url.subscribe((childUrl: UrlSegment[]) => {
@@ -150,9 +151,14 @@ export class LearnComponent implements OnInit, OnDestroy {
           }
         });
       } else {
-        const lessonId = this.lessonIds[0];
-        console.log(`LearnComponent: No route first child url. Redirecting to /lesson/${lessonId}`);
-        this.router.navigate(['lesson', lessonId], { relativeTo: this.route });
+        console.log(`LearnComponent: No route first child url. LessonId not imputed on router.`);
+        if (this.lessonIds && this.lessonIds.length > 0) {
+          const lessonId = this.lessonIds[0];
+          console.log(`LearnComponent:  Redirecting to /lesson/${lessonId}.`);
+          this.router.navigate(['lesson', lessonId], { relativeTo: this.route });
+        } else {
+          alert('Course has no lessons');
+        }
       }
     };
     updateCurrentLessonState();
@@ -217,10 +223,15 @@ export class LearnComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    console.log('fragment');
     this.routeFragmentSubscription.unsubscribe();
+    console.log('user');
     this.userSubscription.unsubscribe();
+    console.log('router');
     this.routerSubscription.unsubscribe();
+    console.log('url');
     if (this.urlSubscription) {
+      console.log('url subcription was instanciated');
       this.urlSubscription.unsubscribe();
     }
   }

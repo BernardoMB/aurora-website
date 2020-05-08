@@ -33,6 +33,9 @@ export class ExpressCheckoutComponent implements OnInit, OnDestroy {
     }
     return 0;
   }
+  showPaymentForm = true;
+  expirationYears: number[];
+  rememberCard = true;
 
   constructor(
     private store: Store<AuthState>,
@@ -81,5 +84,15 @@ export class ExpressCheckoutComponent implements OnInit, OnDestroy {
   onRemoveFromOrder(course: Course) {
     console.log(`ExpressCheckoutComponent: Removed course from order. Redirecting to /courses/${this.course.id}`);
     this.router.navigate([`/courses/${this.course.id}`]);
+  }
+
+  toggleRememberCard() {
+    console.log('Togglig');
+    this.rememberCard = !this.rememberCard;
+  }
+
+  toggleForm() {
+    console.log('Togglig');
+    this.showPaymentForm = !this.showPaymentForm;
   }
 }
