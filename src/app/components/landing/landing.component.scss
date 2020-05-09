@@ -5,7 +5,7 @@
   img {
     width: 100%;
     height: auto;
-    animation: kenburns 0s ease-in-out infinite alternate;
+    animation: kenburns 30s ease-in-out infinite alternate;
   }
   .gradient-wrapper {
     position: absolute;
@@ -153,7 +153,7 @@
       flex-direction: column;
       align-items: center;
       border: 2px solid lightgray;
-      padding: 60px 20px;
+      padding: 60px 10px;
       border-radius: 40px;
       max-width: 200px;
       .card-text {
@@ -250,7 +250,7 @@
       resize: both;
       background-position-x: center;
       background-position-y: center;
-      background-image: url('../../../assets/img/landing/jumbotron.jpg');
+      background-image: url('../../../assets/img/landing/man-and-woman-smiling-inside-building.jpg');
       border-radius: 100px;
     }
   }
@@ -395,7 +395,7 @@
 }
 
 .community-wrapper {
-  background-image: url('../../../assets/img/landing/collaborate.jpg');
+  background-image: url('../../../assets/img/landing/smiling-woman-leaning-on-table.jpg');
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
