@@ -1,5 +1,4 @@
 $break-small: 320px;
-$break-large: 1290px;
 $focus-border: 2px;
 
 .header {
@@ -20,6 +19,7 @@ $focus-border: 2px;
     padding: 0 20px;
     position: relative;
     z-index: 1;
+    $break-large: 1260px;
     .logotype-container {
       margin: 10px 0px;
       .logotype {

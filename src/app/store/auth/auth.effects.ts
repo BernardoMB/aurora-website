@@ -264,6 +264,7 @@ export class AuthEffects {
   this.actions$.pipe(
     ofType(purchaseCart),
     exhaustMap(action =>
+      // TODO: Pass payment info
       this.authService.purchaseCart(action.courses, action.userId).pipe(
         map((responseBody: User) => {
           return purchaseCartSuccess(responseBody);
@@ -285,6 +286,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(purchaseCourse),
       exhaustMap(action =>
+        // TODO: pass payment info
         this.authService.purchaseCourse(action.course, action.userId).pipe(
           map((responseBody: Course) => {
             return purchaseCourseSuccess({ course: responseBody });

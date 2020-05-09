@@ -95,8 +95,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.userSubscription.unsubscribe();
   }
 
+  // Pay button
   onCompletePayment() {
+    // TODO: Validate form
     const courseIds = this.cart.map((course: Course) => course.id);
+    // TODO: Pay payment data here
     this.store.dispatch(purchaseCart({ courses: courseIds, userId: this.user.id }));
   }
 
