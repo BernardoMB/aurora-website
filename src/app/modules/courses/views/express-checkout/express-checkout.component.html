@@ -1,22 +1,88 @@
 <section class="cart-view-header">
   <div class="cart-view-header-container">
     <h1 class="title">Checkout</h1>
+    <div class="subtitle">You are just one step away from knowledge!</div>
   </div>
 </section>
 
 <section class="cart-section">
   <div class="cart-container">
     <div class="shopping-container">
-      <div class="payment-info">
+      <div class="payment-nginfo">
+        <!-- <div style="background-color: red; width: 20px; height: 20px;"></div> -->
         <div class="title">Payment Info</div>
-        <div class="payment-options">
-          <div class="options">Credit or Debit Card</div>
-          <img class="mastercard" src="assets/img/payment/card-mc.svg" alt="MasterCard">
-          <img class="visa" src="assets/img/payment/card-visa.svg" alt="VISA">
-          <img class="amex" src="assets/img/payment/card-amex.svg" alt="AMEX">
+        <div class="billing-address-menu">
+            <mat-form-field appearance="outline">
+              <mat-label>Billing Address</mat-label>
+              <!-- TODO: add formControlName attribute to the following mat-select -->
+              <mat-select>
+                <mat-option style="color: gray;">Select an option</mat-option>
+                <mat-option *ngFor="let country of coursesService.countries"  [value]="country">{{country}}</mat-option>
+              </mat-select>
+            </mat-form-field>
         </div>
-        <div class="form-container">
-          Inputs
+        <div class="payment-options">
+          <mat-checkbox class="checkbox" color="primary" [checked]="showPaymentForm" (change)="toggleForm()">
+            <div>Credit or Debit Card</div>
+            <img class="mastercard" src="assets/img/payment/card-mc.svg" alt="MasterCard">
+            <img class="visa" src="assets/img/payment/card-visa.svg" alt="VISA">
+            <img class="amex" src="assets/img/payment/card-amex.svg" alt="AMEX">
+          </mat-checkbox>
+          <mat-radio-group aria-label="Select an option">
+            <mat-radio-button *ngFor="let card of [1,2,3]" class="radio-button card" color="primary" (change)="cardSelected(card)" [value]="card">
+              Option {{card}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div *ngIf="showPaymentForm" class="form-container">
+          <form>
+            <mat-form-field appearance="outline">
+              <mat-label>Name on Card</mat-label>
+              <!-- TODO: add formControlName attribute to the following input -->
+              <input matInput type="text" placeholder="Name on Card">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Card Number</mat-label>
+              <!-- TODO: add formControlName attribute to the following input -->
+              <input matInput type="number" placeholder="Card Number">
+              <mat-icon style="color: gainsboro;" matSuffix>lock</mat-icon>
+            </mat-form-field>
+            <div style="display: flex;">
+              <mat-form-field appearance="outline" style="margin-right: 10px; flex-grow: 1;">
+                <mat-label>Expiry Month</mat-label>
+                <!-- TODO: add formControlName attribute to the following mat-select -->
+                <mat-select>
+                  <mat-option style="color: gray;">MM</mat-option>
+                  <mat-option *ngFor="let month of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="month">{{month}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" style="margin-right: 10px; flex-grow: 1;">
+                <mat-label>Expiry Year</mat-label>
+                <!-- TODO: add formControlName attribute to the following mat-select -->
+                <mat-select>
+                  <mat-option style="color: gray;">YYYY</mat-option>
+                  <mat-option *ngFor="let year of expirationYears" [value]="year">{{year}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Security Code</mat-label>
+                <!-- TODO: add formControlName attribute to the following input -->
+                <input matInput type="number" placeholder="Security Code">
+                <mat-icon style="color: gainsboro;" matSuffix>help</mat-icon>
+              </mat-form-field>
+              <!-- TODO: add formControlName attribute to the following radio button -->
+            </div>
+            <mat-checkbox class="checkbox" color="primary" [checked]="true" (change)="toggleRememberCard()">
+              <div>Remember this card</div>
+            </mat-checkbox>
+          </form>
+          <div class="secure-connection-container">
+            <mat-icon>lock</mat-icon>
+            <div class="labels-container">
+              <div>Secure</div>
+              <div>Connection</div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="checkout-card">

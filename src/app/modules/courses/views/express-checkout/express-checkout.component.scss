@@ -10,11 +10,18 @@
     position: relative;
     overflow: hidden;
     display: flex;
+    align-items: baseline;
     padding: 20px 20px;
-    justify-content: space-between;
     .title {
       color: white;
       font-size: 30px;
+      font-weight: 400;
+      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+    }
+    .subtitle {
+      margin-left: 40px;
+      color: white;
+      font-size: 18px;
       font-weight: 400;
       font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
     }
@@ -55,21 +62,48 @@
           font-weight: bold;
           margin: 40px 0px 10px 0px;
         }
-        .payment-options {
+        .billing-address-menu {
           margin-top: 20px;
+        }
+        .payment-options {
           display: flex;
-          align-items: center;
-          .options {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            margin-right: 20px;
-            font-family: open sans,helvetica neue,Helvetica,Arial,sans-serif;
-            font-size: 15px;
+          flex-direction: column;
+          .checkbox {
+            ::ng-deep {
+              .mat-checkbox-label {
+                display: flex;
+                align-items: center;
+              }
+            }
+            .options {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              margin-right: 20px;
+              font-family: open sans,helvetica neue,Helvetica,Arial,sans-serif;
+              font-size: 15px;
+            }
+            .mastercard, .visa, .amex {
+              width: 64px;
+              height: 30px;
+            }
           }
-          .mastercard, .visa, .amex {
-            width: 64px;
-            height: 30px;
+          mat-radio-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 10px;
+            .radio-button {
+              ::ng-deep {
+                .mat-radio-label-content {
+                  display: flex;
+                  align-items: center;
+                }
+              }
+            }
+            .radio-button, .card {
+              margin-bottom: 15px;
+            }
           }
         }
         .form-container {
@@ -78,6 +112,43 @@
           background-color: #f8f8f9;
           border: 1px solid #dedfe0;
           border-radius: 4px;
+          form {
+            display: flex;
+            flex-direction: column;
+            ::ng-deep {
+              .mat-form-field-outline {
+                border-radius: 5px;
+                background-color: white;
+              }
+              .mat-radio-label-content {
+                display: flex;
+                align-items: center;
+              }
+            }
+            .checkbox {
+              color: grey;
+            }
+          }
+          .secure-connection-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            color: gainsboro;
+            font-family: sf pro text,-apple-system,BlinkMacSystemFont,segoe ui,Roboto,Helvetica,Arial,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol;
+            mat-icon {
+              font-size: 36px;
+              width: 36px;
+              height: 36px;
+            }
+            .labels-container {
+              display: flex;
+              flex-direction: column;
+              justify-content: flex-start;
+              div {
+                line-height: 1;
+              }
+            }
+          }
         }
       }
       .checkout-card {

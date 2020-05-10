@@ -5,6 +5,7 @@ import { User } from '../shared/models/user.model';
 import { SignupDto } from '../shared/dtos/signup.dto';
 import { environment } from '../../environments/environment';
 import { Course } from '../shared/models/course.model';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
@@ -36,7 +37,13 @@ export class AuthService {
   getUserInfo(): Observable<User> {
     console.log('Auth service: Getting user info');
     const url = `${this.host}/${this.apiVersion}/auth/user/me?populate=cart`;
-    return this.http.get<User>(url);
+    return this.http.get<User>(url)/* .pipe(
+      tap((response: any) => {
+        console.log('\n\n');
+        console.log('Getting user info response', response);
+        console.log('\n\n');
+      })
+    ) */;
   }
 
   signinWithToken(): Observable<any> {
@@ -86,4 +93,41 @@ export class AuthService {
     const url = `${this.host}/${this.apiVersion}/users/complete-lesson`;
     return this.http.post<void>(url, { course: courseId, lesson: lessonId });
   }
+
+  addCourseToFavorites(courseId: string, userId: string): Observable<User> {
+    console.log('Auth service: Adding course to user favorites');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/favoriteCourses/${courseId}`;
+    return this.http.post<User>(url, {});
+  }
+
+  removeCourseFromFavorites(courseId: string, userId: string): Observable<User> {
+    console.log('Auth service: Removing course from user favorites');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/favoriteCourses/${courseId}`;
+    return this.http.delete<User>(url, {});
+  }
+
+  addCourseToWishlist(courseId: string, userId: string): Observable<User> {
+    console.log('Auth service: Adding course to user wishlist');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/wishList/${courseId}`;
+    return this.http.post<User>(url, {});
+  }
+
+  removeCourseFromWishlist(courseId: string, userId: string): Observable<User> {
+    console.log('Auth service: Removing course from user wishlist');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/wishList/${courseId}`;
+    return this.http.delete<User>(url, {});
+  }
+
+  addCourseToArchive(courseId: string, userId: string): Observable<User> {
+    console.log('Auth service: Adding course to user archive');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/archivedCourses/${courseId}`;
+    return this.http.post<User>(url, {});
+  }
+
+  removeCourseFromArchive(courseId: string, userId: string): Observable<User> {
+    console.log('Auth service: Removing course from user archive');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/archivedCourses/${courseId}`;
+    return this.http.delete<User>(url, {});
+  }
+
 }

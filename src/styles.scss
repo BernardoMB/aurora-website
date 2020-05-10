@@ -101,7 +101,10 @@ $mat-aurora-orange: (
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-// Define the primary pallete (the second parameter passed to mat-palette() is the default primary color)
+// Define the primary pallete
+// * (the second parameter passed to mat-palette() is the default primary color)
+// * (the third parameter passed to mat-palette() is the lighter variant of the color [some components use these values])
+// * (the Fourth parameter passed to mat-palette() is the darker variant of the color [some components use these values])
 $aurora-website-primary: mat-palette($mat-aurora-green, 700, 400, 900);
 // Define the accent pallete  (the second parameter passed to mat-palette() is the default accent color)
 $aurora-website-accent: mat-palette($mat-aurora-orange, 700, 400, 900);
@@ -157,7 +160,7 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  /* border: 1px dashed greenyellow; */
+  // border: 1px dashed greenyellow;
   -webkit-text-fill-color: #408e2d;
   box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0) inset;
   transition: background-color 5000s ease-in-out 0s;
@@ -175,7 +178,7 @@ body::-webkit-scrollbar-track {
 }
 body::-webkit-scrollbar-thumb {
   background-color: #c1c1c1;
-  /* border: 2px solid #555555; */
+  // border: 2px solid #555555;
 }
 
 // Custom classes
@@ -188,7 +191,7 @@ $focus-outline-thickeness: 2px;
   }
 }
 
-// Modify angular material classes
+// Modify Angular Material classes
 
 .custom-mat-dialog-container {
   .mat-dialog-container {
@@ -206,4 +209,28 @@ $focus-outline-thickeness: 2px;
 
 .mat-tab-body-content {
   overflow-y: hidden !important;
+}
+
+// Ngx Paginator styles
+
+.pagination-controls .ngx-pagination {
+  padding-left: 0px;
+  display: flex;
+  justify-content: center;
+  .current {
+    border-radius: 10px;
+    background: #1f5e11;
+  }
+  li {
+    a {
+      outline: unset;
+      &:focus {
+        outline: $focus-outline-thickeness solid greenyellow;
+        outline-style: dashed;
+      }
+      &:hover {
+        border-radius: 10px;
+      }
+    }
+  }
 }

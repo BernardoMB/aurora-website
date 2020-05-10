@@ -59,4 +59,26 @@ export const completeLesson = createAction('[Auth] CompleteLesson', props<{ cour
 export const completeLessonSuccess = createAction('[Auth] CompleteLessonSuccess', props<{ courseId: string, lessonId: string }>());
 export const completeLessonFailure = createAction('[Auth] CompleteLessonFailure', props<{ error: any; message: string }>());
 
+export const addCourseToFavorites = createAction('[Auth] AddCourseToFavorites', props<{ courseId: string, userId: string }>());
+export const addCourseToFavoritesSuccess = createAction('[Auth] AddCourseToFavoritesSuccess', props<{ courseId: string }>());
+export const addCourseToFavoritesFailure = createAction('[Auth] AddCourseToFavoritesFailure', props<{ error: any; message: string }>());
 
+export const removeCourseFromFavorites = createAction('[Auth] RemoveCourseFromFavorites', props<{ courseId: string, userId: string }>());
+export const removeCourseFromFavoritesSuccess = createAction('[Auth] RemoveCourseFromFavoritesSuccess', props<{ courseId: string }>());
+export const removeCourseFromFavoritesFailure = createAction('[Auth] RemoveCourseFromFavoritesFailure', props<{ error: any; message: string }>());
+
+export const addCourseToWishlist = createAction('[Auth] AddCourseToWishlist', props<{ courseId: string, userId: string }>());
+export const addCourseToWishlistSuccess = createAction('[Auth] AddCourseToWishlistSuccess', props<{ courseId: string }>());
+export const addCourseToWishlistFailure = createAction('[Auth] AddCourseToWishlistFailure', props<{ error: any; message: string }>());
+
+export const removeCourseFromWishlist = createAction('[Auth] RemoveCourseFromWishlist', props<{ courseId: string, userId: string }>());
+export const removeCourseFromWishlistSuccess = createAction('[Auth] RemoveCourseFromWishlistSuccess', props<{ courseId: string }>());
+export const removeCourseFromWishlistFailure = createAction('[Auth] RemoveCourseFromWishlistFailure', props<{ error: any; message: string }>());
+
+export const addCourseToArchive = createAction('[Auth] AddCourseToArchive', props<{ courseId: string, userId: string }>());
+export const addCourseToArchiveSuccess = createAction('[Auth] AddCourseToArchiveSuccess', props<{ courseId: string }>());
+export const addCourseToArchiveFailure = createAction('[Auth] AddCourseToArchiveFailure', props<{ error: any; message: string }>());
+
+export const removeCourseFromArchive = createAction('[Auth] RemoveCourseFromArchive', props<{ courseId: string, userId: string }>());
+export const removeCourseFromArchiveSuccess = createAction('[Auth] RemoveCourseFromArchiveSuccess', props<{ courseId: string }>());
+export const removeCourseFromArchiveFailure = createAction('[Auth] RemoveCourseFromArchiveFailure', props<{ error: any; message: string }>());

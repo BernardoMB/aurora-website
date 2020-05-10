@@ -34,9 +34,14 @@ https://www.getpostman.com/collections/86501829d7d45ac17cb3
 
 To see how cart functionality works see Bernardo's OneNote notes
 
+## Pagination
+
+Library ued: https://www.npmjs.com/package/ngx-pagination
+
 ## TODOS:
 
 - Add course Categories to store for more efficiency usign NgRx Entity
+- Pagination on all views
 - Implement auth guards on the following routes:
   * my courses
   * checkout
@@ -63,3 +68,6 @@ To see how cart functionality works see Bernardo's OneNote notes
   </dl>
   ```
   - Route guards should not grant access if they found a user token. founding a user token is not enough. Guards should validate the found token to see if it is valid and then decide to grant access. That is now possible because observables of true or false can be returned in the canActivate function.
+
+
+  Hola

@@ -3,13 +3,13 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
 import { User, IPurchasedCourse } from '../../../../shared/models/user.model';
-import { selectAuthUser, selectAuthIsAuthenticated } from '../../../../store/auth/auth.selectors';
-import { Subscription, BehaviorSubject, Observable, of } from 'rxjs';
+import { selectAuthUser, selectAuthIsAuthenticated, selectAuthCart } from '../../../../store/auth/auth.selectors';
+import { Subscription, Observable, of, Subject } from 'rxjs';
 import { Course } from '../../../../shared/models/course.model';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
 import { SignupFormComponent } from '../../../../components/signup-form/signup-form.component';
-import { addCourseToCart, pushCourseToCarts } from '../../../../store/auth/auth.actions';
+import { addCourseToCart, pushCourseToCarts, addCourseToFavorites, removeCourseFromFavorites, addCourseToWishlist, removeCourseFromWishlist, addCourseToArchive, removeCourseFromArchive } from '../../../../store/auth/auth.actions';
 import { CookieService } from 'ngx-cookie-service';
 import * as html2canvas from 'html2canvas';
 import { ReviewModalComponent } from '../../components/review-modal/review-modal.component';
@@ -17,6 +17,8 @@ import { CoursesService } from '../../services/courses.service';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { throttleTime, mergeMap, tap, map, scan } from 'rxjs/operators';
 import * as faker from 'faker';
+import { IReview } from '../../interfaces/IReview';
+import { Review } from '../../../../shared/models/review.model';
 
 @Component({
   selector: 'app-course-detail',
@@ -24,10 +26,9 @@ import * as faker from 'faker';
   styleUrls: ['./course-detail.component.scss'],
 })
 export class CourseDetailComponent implements OnInit, OnDestroy {
-  /* @ViewChild(CdkVirtualScrollViewport, { static: false }) reviewsViewport: CdkVirtualScrollViewport; */
-
-  // TODO: this should be computed from the info obtained from the server
-  isFavorite: boolean;
+  routeFragmentSubscription: Subscription;
+  routeDataSubscription: Subscription;
+  isFavorite = false;
   currentTab = 'about';
   showCertificateTab = false;
   userSubscription: Subscription;
@@ -39,6 +40,11 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   showGoToCart = false;
   showCertificate = false;
   canRateCourse = false;
+  userReview: IReview;
+  showWishlistButton = true;
+  canAddToWishlist = true;
+  showArchiveButton = false;
+  canArchiveCourse = true;
   get enrolled() {
     if (this.user && this.course) {
       if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
@@ -48,54 +54,35 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  // Paginated reviews
-  /* reviewsSubscription: Subscription;
-  reviews = [];
-  reviewsPageSize = 10;
-  reviewsEnd = false;
-  reviewsOffset = new BehaviorSubject(null); */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // Playground
+  // #region Reviews infinite scroll
   @ViewChild(CdkVirtualScrollViewport, { static: false })
   viewport: CdkVirtualScrollViewport;
-  reviews2;
   batch = 5;
   theEnd = false;
-  offset = new BehaviorSubject(null);
+  offset = new Subject();
   infinite: Observable<any[]>;
   infiniteSubscription: Subscription;
-  reviews3;
+  reviews: IReview[] = [];
+  createdReview: IReview;
+  // #endregion
 
   constructor(
+    private readonly route: ActivatedRoute,
     private router: Router,
     private store: Store<State>,
-    private readonly route: ActivatedRoute,
     private loginDialog: MatDialog,
     private signupDialog: MatDialog,
     private reviewDialog: MatDialog,
     private cookieService: CookieService,
     private coursesService: CoursesService
   ) {
+    // Scroll to top
     this.router.events.subscribe(event => {
-      /* console.log('Navigation event:', event); */
+      // console.log('Navigation event:', event);
       if (event instanceof NavigationEnd) {
         // Prevent scrolling if changed tab.
-        const second = event.url.split('#')[1];
-        if (second) {
+        const fragment = event.url.split('#')[1];
+        if (fragment) {
           return;
         }
         window.scrollTo(0, 0);
@@ -103,29 +90,11 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       return;
     });
 
-    // Reviews pagination
-    /* const pageMap = this.reviewsOffset.pipe(
-      throttleTime(500),
-      tap((value: { courseId: string, offset: number }) => {
-        console.log('Catched emited value. Offset:', value.offset);
-        console.log('Getting new reviews page');
-        this.getReviewsPage(value.courseId, value.offset);
-      })
-    ); */
-
-
-
-
-
-
-
-
-    // Playground
-
+    // #region Reviews infinite scroll
     const batchMap = this.offset.pipe(
       throttleTime(500),
       mergeMap((value: { courseId: string, offset: number }) => {
-        console.log('Emmited new value', value);
+        // console.log('Emmited new value', value);
         if (value) {
           return this.getBatch(value.courseId, value.offset);
         } else {
@@ -137,123 +106,132 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       }, {})
     );
     this.infinite = batchMap.pipe(map(v => Object.values(v)));
-    this.infiniteSubscription = this.infinite.subscribe((arr) => {
-      if (arr) {
-        this.reviews3 = arr;
+    this.infiniteSubscription = this.infinite.subscribe((arr: IReview[]) => {
+      // console.log('Got reviews array', arr);
+      if (arr.length > 0) {
+        if (this.createdReview) {
+          this.reviews = [
+            this.createdReview,
+            ...arr
+          ];
+        } else {
+          this.reviews = [
+            ...arr
+          ];
+        }
       }
     });
+    // #endregion
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // Set the current tab getting rote fragment if any
+    this.routeFragmentSubscription = this.route.fragment.subscribe((fragment: string) => {
+      if (fragment) {
+        this.currentTab = fragment;
+      }
+    });
   }
 
   ngOnInit() {
-    this.route.data.subscribe((data: { learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } }) => {
-      if (data.learningInfo) {
-        this.course = data.learningInfo.course;
-        this.relatedCourses = data.learningInfo.relatedCourses;
-
-        // Reviews infite scroll pagination.
-        // TODO: Implement reviews type.
-        /* this.reviewsSubscription = this.coursesService.getCourseReviews(data.learningInfo.course.id, 0, this.reviewsPageSize)
-          .subscribe((reviews: any[]) => {
-            if (reviews && reviews.length > 0) {
-              this.reviews = reviews;
-              if (reviews.length === data.learningInfo.course.reviews.length) {
-                this.reviewsEnd = true;
-              }
-            }
-          }); */
-
-        // This was working
-        /* console.log('Getting reviews first page');
-        this.getReviewsPage(data.learningInfo.course.id, 0); */
-
-        console.log('Fetching first page');
-        this.coursesService.getCourseReviews(data.learningInfo.course.id, 0, this.batch).pipe(
-          tap((reviews: any[]) => {
-            reviews.length ? null : this.theEnd = true;
-          }),
-          map((reviews: any[]) => {
-            return reviews.reduce((acc, review) => {
-              const id = review.id;
-              const reviewData = {
-                review: review.review,
-                rating: review.rating,
-                user: {
-                  name: review.user.name,
-                  lastName: review.user.lastName
-                }
-              };
-              return { ...acc, [id]: reviewData };
-            }, {});
-          }),
-          scan((acc, batch) => {
-            return { ...acc, ...batch };
-          }, {}),
-          map(v => Object.values(v))
-        ).subscribe((reviews: any[]) => {
-          console.log('First page', reviews);
-          if (reviews) {
-            this.reviews3 = reviews;
+    this.routeDataSubscription = this.route.data.subscribe((data) => {
+      if (data.courseDetailInfo) {
+        const courseDetailInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } = data.courseDetailInfo;
+        this.course = courseDetailInfo.course;
+        this.relatedCourses = courseDetailInfo.relatedCourses;
+        // #region Cart logic
+        this.store.pipe(select(selectAuthCart)).subscribe((cart: any[]) => {
+          if (cart && cart.length > 0) {
+            cart.map((el: Course) => {
+              return el.id;
+            }).indexOf(courseDetailInfo.course.id) !== -1 ? this.showGoToCart = true : this.showGoToCart = false;
+          } else {
+            this.showGoToCart = false;
           }
         });
-
+        // #endregion
+        // #region Reviews infinite scroll
+        // console.log('Fetching first reviews page');
+        const value = { courseId: data.courseDetailInfo.course.id, offset: 0 };
+        // console.log('Nexting new value', value);
+        this.offset.next(value);
+        // #endregion
       }
     });
+
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
       if (user) {
         this.user = user;
         this.showCertificateTab = true;
-        // Determine what to show in the certificate tab
-        if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
-          // User has course
-          const purchasedCourses = user.purchasedCourses
-            .filter((el: IPurchasedCourse) => el.course === this.course.id);
-          if (purchasedCourses.length > 0 ) {
-            const purchasedCourse = purchasedCourses[0];
+
+        // Determine if user is enrolled
+        const userId = this.course.enrolledUsers.find((id: string) => id === this.user.id);
+        if (userId) {
+          // User is enrolled
+          this.showWishlistButton = false;
+          this.showArchiveButton = true;
+
+          // Determine user progress
+          const purchasedCourse = user.purchasedCourses.find((el: IPurchasedCourse) => el.course === this.course.id);
+          if (purchasedCourse) {
             const userProgress = purchasedCourse.progress;
             if (userProgress.length === this.course.lessons.length) {
+              // User has completed this course
               this.showCertificate = true;
+            } else {
+              // User not yet completed this course
+              this.showCertificate = false;
             }
           }
+
+          // Determine if the user is able to add review
+          const review = (this.course.reviews as Review[]).find((r: Review) => r.user === this.user.id);
+          if (review) {
+            // User has already reviwed this course
+            this.canRateCourse = false;
+            this.userReview = {
+              user: {
+                name: user.name,
+                lastName: user.lastName
+              },
+              rating: (review as any).rating,
+              review: (review as any).review,
+            };
+          } else {
+            // User has not yet reviwed this course
+            this.canRateCourse = true;
+          }
         }
-        // Determine if the user is able to add review
-        // TODO: Implement review type.
-        const review = this.course.reviews.find((el: any) => el.user === this.user.id);
-        if (review) {
-          this.canRateCourse = false;
-          const courseReviews = this.course.reviews.filter((el: any) => el.user !== this.user.id);
-          courseReviews.push(review);
-          /* console.log('COURSE', this.course);
-          this.course.reviews = courseReviews; */
-          const course = {
-            ...this.course,
-            reviews: courseReviews
-          };
-          this.course = course;
+
+        // Determine if course is in user's favorite courses
+        const favoriteCourseId = user.favoriteCourses.find((id: string) => id === this.course.id);
+        if (favoriteCourseId) {
+          this.isFavorite = true;
         } else {
-          this.canRateCourse = true;
+          this.isFavorite = false;
         }
+
+        // Determine if course is user's wishlist
+        const wishedCourseId = user.wishList.find((id: string) => id === this.course.id);
+        if (wishedCourseId) {
+          this.canAddToWishlist = false;
+        } else {
+          this.canAddToWishlist = true;
+        }
+
+        // Determine if course is user's wishlist
+        const archivedCourseId = user.archivedCourses.find((id: string) => id === this.course.id);
+        if (archivedCourseId) {
+          this.canArchiveCourse = false;
+        } else {
+          this.canArchiveCourse = true;
+        }
+
       } else {
         this.user = undefined;
         this.showCertificateTab = false;
         this.canRateCourse = false;
       }
     });
+
     this.isAuthenticatedSubscription = this.store.pipe(select(selectAuthIsAuthenticated)).subscribe((isAuthenticated: boolean) => {
       if (isAuthenticated) {
         this.isAuthenticated = true;
@@ -264,6 +242,8 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.routeDataSubscription.unsubscribe();
+    this.routeFragmentSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
     this.isAuthenticatedSubscription.unsubscribe();
   }
@@ -375,180 +355,31 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
               totalReviews: newTotalReviews
             };
             this.course = course; // Esto hace que se actualice la lista de reviews
-            console.log('COURSEEEEEE', this.course);
+            // console.log('Course', this.course);
 
-            // Option 2: with infinite scroll pagination
-            /* console.log('PUCHING ELEMENT');
-            this.reviews.push(review);
-            console.log(this.reviews); */
-
-            // Option 3: with infinite scroll pagination
-            console.log('Pushing new review to reviews array', review);
-            this.reviews3.push(review);
-            console.log(this.reviews3);
+            // TODO: Lo de arriba se tiene que modificar
+            const createdReview = {
+              rating: review.rating,
+              review: review.review,
+              user: {
+                name: this.user.name,
+                lastName: this.user.lastName
+              }
+            };
+            this.createdReview = createdReview;
+            this.reviews = [
+              createdReview,
+              ...this.reviews
+            ];
           }
         });
       }
     });
   }
 
-  // Reviews pagination
-
-  nextReviewsPage($event: any, offset: number) {
-    console.log('Getting next reviews page. Offset:', offset);
-    /* if (this.reviewsEnd) {
-      return;
-    } */
-    /* const end = this.reviewsViewport.getRenderedRange().end;
-    const total = this.reviewsViewport.getDataLength();
-    if (end === total) {
-      console.log('Emiting new offset value. Offset:', offset);
-      this.reviewsOffset.next({ courseId: this.course.id, offset });
-    } */
-  }
-
-  getReviewsPage(courseId: string, offset: number)  {
-    /* this.reviewsSubscription = this.coursesService.getCourseReviews(courseId, offset, this.reviewsPageSize)
-      .subscribe((reviews: any[]) => {
-        console.log('Reviews:', reviews);
-        if (!reviews || reviews.length === 0) {
-          console.log('Got no reviews');
-          this.reviewsEnd = true;
-        }
-        if (reviews && reviews.length > 0) {
-          console.log('Got reviews. Updating reviews array');
-          this.reviews.push(reviews);
-        }
-      }); */
-  }
-
-  /**
-   * Traks the index of the reviews in the array and only renders the ones that change.
-   *
-   * @param {number} index
-   * @param {model} name
-   * @returns {number}
-   * @memberof CourseDetailComponent
-   */
-  trackReviewsByIndex(index: number): number {
-    return index;
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // Playground methods
-
+  // Reviews infinite scroll
   getBatch(courseId, offset) {
-    console.log(`Fetching batch. CourseId: ${courseId}, Offset: ${offset}`);
-    // #region
-    /* return of(
-      {
-        [Math.trunc(Math.random() * 1000000)]: {
-          review: 'Review ' + Math.trunc(Math.random() * 1000),
-          rating: Math.floor(Math.random() * 5) + 1,
-          user: {
-            name: 'Name ' + Math.trunc(Math.random() * 1000),
-            lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
-          }
-        }
-      },
-      {
-        [Math.trunc(Math.random() * 1000000)]: {
-          review: 'Review ' + Math.trunc(Math.random() * 1000),
-          rating: Math.floor(Math.random() * 5) + 1,
-          user: {
-            name: 'Name ' + Math.trunc(Math.random() * 1000),
-            lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
-          }
-        }
-      },
-      {
-        [Math.trunc(Math.random() * 1000000)]: {
-          review: 'Review ' + Math.trunc(Math.random() * 1000),
-          rating: Math.floor(Math.random() * 5) + 1,
-          user: {
-            name: 'Name ' + Math.trunc(Math.random() * 1000),
-            lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
-          }
-        }
-      },
-      {
-        [Math.trunc(Math.random() * 1000000)]: {
-          review: `Hello,
-          Up to section 17 inclusive, I considered it the best course after which I learned.
-          From section 18, it became very confusing to me. Different and very complicated compared to what I learned about the REST API.
-          You certainly do not need my suggestion, but I would recommend a collaboration with someone who implements the back-end part in EF Core 3.0 or Spring Boot, and then from my point of view the course would become extremely useful. I understand that the back end is not the subject of the course, but in this style, I could not actually associate with what I already knew / used about the REST API. It's just my personal opinion.`,
-          rating: Math.floor(Math.random() * 5) + 1,
-          user: {
-            name: 'Name ' + Math.trunc(Math.random() * 1000),
-            lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
-          }
-        }
-      },
-      {
-        [Math.trunc(Math.random() * 1000000)]: {
-          review: 'Review ' + Math.trunc(Math.random() * 1000),
-          rating: Math.floor(Math.random() * 5) + 1,
-          user: {
-            name: 'Name ' + Math.trunc(Math.random() * 1000),
-            lastName: 'LastName ' + Math.trunc(Math.random() * 10000),
-          }
-        }
-      },
-    ); */
-    // #endregion
-
-
-    /* return this.db
-      .collection('people', ref =>
-        ref
-          .orderBy('name')
-          .startAfter(offset)
-          .limit(this.batch)
-      )
-      .snapshotChanges()
-      .pipe(
-        tap((arr: any[]) => (arr.length ? null : (this.theEnd = true))),
-        map((arr: any[]) => {
-          return arr.reduce((acc, cur) => {
-            const id = cur.payload.doc.id;
-            const data = cur.payload.doc.data();
-            return { ...acc, [id]: data };
-          }, {});
-        })
-      ); */
-
-
-    /* return this.coursesService.getCourseReviews(courseId, offset, this.batch)
-      .pipe(
-        tap((arr: any[]) => (arr.length ? null : (this.theEnd = true))),
-        map((arr: any[]) => {
-          return arr.reduce((acc, cur) => {
-            const id = cur.payload.doc.id;
-            const data = cur.payload.doc.data();
-            return { ...acc, [id]: data };
-          }, {});
-        })
-      ); */
-
-
-
+    // console.log(`Fetching batch. CourseId: ${courseId}, Offset: ${offset}`);
     return this.coursesService.getCourseReviews(courseId, offset, this.batch).pipe(
       tap((reviews: any[]) => {
         reviews.length ? null : this.theEnd = true;
@@ -568,23 +399,113 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         }, {});
       })
     );
-
   }
 
   nextBatch(e, offset) {
+    // console.log('ScrollIndexChanged. Event:', e);
     if (this.theEnd) {
+      // console.log('There are no more reviews to fetch');
       return;
     }
     const end = this.viewport.getRenderedRange().end;
     const total = this.viewport.getDataLength();
-    console.log(`${end}, '>=', ${total}`);
+    // console.log(`${end}, '>=', ${total}`);
     if (end === total) {
-      this.offset.next({ courseId: this.course.id, offset });
+      // console.log('All fetched elements were rendered. Asking for more elements. Offset:', offset);
+      const value = { courseId: this.course.id, offset };
+      // console.log('Nexting value', value);
+      this.offset.next(value);
     }
   }
 
   trackByIdx(i) {
     return i;
+  }
+
+  // Favorite courses
+
+  onFavoriteCourse() {
+    if (this.isAuthenticated) {
+      this.store.dispatch(addCourseToFavorites({ courseId: this.course.id, userId: this.user.id }));
+    } else {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.panelClass = 'custom-mat-dialog-container';
+      dialogConfig.backdropClass = 'custom-modal-backdrop';
+      let loginDialogRef;
+      let signupDialogRef;
+      loginDialogRef = this.loginDialog.open(LoginFormComponent, dialogConfig);
+      loginDialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          if (result.showSignUpModalOnClose) {
+            signupDialogRef = this.signupDialog.open(SignupFormComponent, dialogConfig);
+          }
+          if (this.isAuthenticated) {
+            const userSub = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
+              if (user) {
+                const favoriteCourseId = user.favoriteCourses.find((id: string) => id === this.course.id);
+                if (!favoriteCourseId) {
+                  this.store.dispatch(addCourseToFavorites({ courseId: this.course.id, userId: user.id }));
+                }
+              }
+            });
+            userSub.unsubscribe();
+          }
+        }
+      });
+    }
+  }
+
+  onUnfavoriteCourse() {
+    this.store.dispatch(removeCourseFromFavorites({ courseId: this.course.id, userId: this.user.id }));
+  }
+
+  // Wishlist courses
+
+  onAddToWishlist() {
+    if (this.isAuthenticated) {
+      this.store.dispatch(addCourseToWishlist({ courseId: this.course.id, userId: this.user.id }));
+    } else {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.panelClass = 'custom-mat-dialog-container';
+      dialogConfig.backdropClass = 'custom-modal-backdrop';
+      let loginDialogRef;
+      let signupDialogRef;
+      loginDialogRef = this.loginDialog.open(LoginFormComponent, dialogConfig);
+      loginDialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          if (result.showSignUpModalOnClose) {
+            signupDialogRef = this.signupDialog.open(SignupFormComponent, dialogConfig);
+          }
+          if (this.isAuthenticated) {
+            const userSub = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
+              if (user) {
+                const wishedCourseId = user.wishList.find((id: string) => id === this.course.id);
+                if (!wishedCourseId) {
+                  this.store.dispatch(addCourseToWishlist({ courseId: this.course.id, userId: user.id }));
+                }
+              }
+            });
+            userSub.unsubscribe();
+          }
+        }
+      });
+    }
+  }
+
+  onRemoveFromWishlist() {
+    this.store.dispatch(removeCourseFromWishlist({ courseId: this.course.id, userId: this.user.id }));
+  }
+
+  // Archive courses
+
+  onArchiveCourse() {
+    this.store.dispatch(addCourseToArchive({ courseId: this.course.id, userId: this.user.id }));
+  }
+
+  onUnarchiveCourse() {
+    this.store.dispatch(removeCourseFromArchive({ courseId: this.course.id, userId: this.user.id }));
   }
 
 }

@@ -173,6 +173,72 @@ const authReducer = createReducer(
       }
     };
 
+  }),
+  on(AuthActions.addCourseToFavoritesSuccess, (state: AuthState, payload: { courseId: string }) => {
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        favoriteCourses: [
+          ...(state.user.favoriteCourses),
+          payload.courseId
+        ]
+      }
+    };
+  }),
+  on(AuthActions.removeCourseFromFavoritesSuccess, (state: AuthState, payload: { courseId: string }) => {
+    const favoriteCourses = state.user.favoriteCourses.filter((id: string) => id !== payload.courseId);
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        favoriteCourses
+      }
+    };
+  }),
+  on(AuthActions.addCourseToWishlistSuccess, (state: AuthState, payload: { courseId: string }) => {
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        wishList: [
+          ...(state.user.wishList),
+          payload.courseId
+        ]
+      }
+    };
+  }),
+  on(AuthActions.removeCourseFromWishlistSuccess, (state: AuthState, payload: { courseId: string }) => {
+    const wishList = state.user.wishList.filter((id: string) => id !== payload.courseId);
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        wishList
+      }
+    };
+  }),
+  on(AuthActions.addCourseToArchiveSuccess, (state: AuthState, payload: { courseId: string }) => {
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        archivedCourses: [
+          ...(state.user.archivedCourses),
+          payload.courseId
+        ]
+      }
+    };
+  }),
+  on(AuthActions.removeCourseFromArchiveSuccess, (state: AuthState, payload: { courseId: string }) => {
+    const archivedCourses = state.user.archivedCourses.filter((id: string) => id !== payload.courseId);
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        archivedCourses
+      }
+    };
   })
 );
 

@@ -34,7 +34,7 @@
           </div>
           <div *ngIf="course.rating" class="rating-container">
             <i class="material-icons">star</i>
-            <div>{{ course.rating }}</div>
+            <div>{{ course.rating | number:'1.0-1' }}</div>
           </div>
         </div>
       </div>

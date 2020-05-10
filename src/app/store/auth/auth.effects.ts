@@ -33,6 +33,24 @@ import {
   completeLesson,
   completeLessonSuccess,
   completeLessonFailure,
+  addCourseToFavorites,
+  addCourseToFavoritesSuccess,
+  addCourseToFavoritesFailure,
+  removeCourseFromFavorites,
+  removeCourseFromFavoritesSuccess,
+  removeCourseFromFavoritesFailure,
+  addCourseToWishlist,
+  addCourseToWishlistSuccess,
+  addCourseToWishlistFailure,
+  removeCourseFromWishlist,
+  removeCourseFromWishlistSuccess,
+  removeCourseFromWishlistFailure,
+  addCourseToArchive,
+  addCourseToArchiveSuccess,
+  addCourseToArchiveFailure,
+  removeCourseFromArchive,
+  removeCourseFromArchiveSuccess,
+  removeCourseFromArchiveFailure,
 } from './auth.actions';
 import { of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
@@ -246,6 +264,7 @@ export class AuthEffects {
   this.actions$.pipe(
     ofType(purchaseCart),
     exhaustMap(action =>
+      // TODO: Pass payment info
       this.authService.purchaseCart(action.courses, action.userId).pipe(
         map((responseBody: User) => {
           return purchaseCartSuccess(responseBody);
@@ -267,6 +286,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(purchaseCourse),
       exhaustMap(action =>
+        // TODO: pass payment info
         this.authService.purchaseCourse(action.course, action.userId).pipe(
           map((responseBody: Course) => {
             return purchaseCourseSuccess({ course: responseBody });
@@ -306,6 +326,132 @@ export class AuthEffects {
           catchError((errorResponse: HttpErrorResponse) =>
             of(
               completeLessonFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  addCoursesToFavoritesEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addCourseToFavorites),
+      exhaustMap(action =>
+        this.authService.addCourseToFavorites(action.courseId, action.userId).pipe(
+          map((responseBody: User) => {
+            return addCourseToFavoritesSuccess({ courseId: action.courseId });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              addCourseToFavoritesFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  removeCoursesFromFavoritesEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(removeCourseFromFavorites),
+      exhaustMap(action =>
+        this.authService.removeCourseFromFavorites(action.courseId, action.userId).pipe(
+          map((responseBody: User) => {
+            return removeCourseFromFavoritesSuccess({ courseId: action.courseId });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              removeCourseFromFavoritesFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  addCoursesToWishlistEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addCourseToWishlist),
+      exhaustMap(action =>
+        this.authService.addCourseToWishlist(action.courseId, action.userId).pipe(
+          map((responseBody: User) => {
+            return addCourseToWishlistSuccess({ courseId: action.courseId });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              addCourseToWishlistFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  removeCoursesFromWishlistEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(removeCourseFromWishlist),
+      exhaustMap(action =>
+        this.authService.removeCourseFromWishlist(action.courseId, action.userId).pipe(
+          map((responseBody: User) => {
+            return removeCourseFromWishlistSuccess({ courseId: action.courseId });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              removeCourseFromWishlistFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  addCoursesToArchiveEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addCourseToArchive),
+      exhaustMap(action =>
+        this.authService.addCourseToArchive(action.courseId, action.userId).pipe(
+          map((responseBody: User) => {
+            return addCourseToArchiveSuccess({ courseId: action.courseId });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              addCourseToArchiveFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  removeCoursesFromArchiveEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(removeCourseFromArchive),
+      exhaustMap(action =>
+        this.authService.removeCourseFromArchive(action.courseId, action.userId).pipe(
+          map((responseBody: User) => {
+            return removeCourseFromArchiveSuccess({ courseId: action.courseId });
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              removeCourseFromArchiveFailure({
                 error: errorResponse,
                 message: errorResponse.error.message,
               }),
