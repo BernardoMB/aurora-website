@@ -12,39 +12,11 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: '/home', pathMatch: 'full' },
       { path: 'home', component: LandingComponent },
-      {
-        path: 'courses',
-        loadChildren: () =>
-          import('./modules/courses/courses.module').then(
-            mod => mod.CoursesModule,
-          ),
-      },
-      {
-        path: 'news',
-        loadChildren: () =>
-          import('./modules/news/news.module').then(mod => mod.NewsModule),
-      },
-      {
-        path: 'events',
-        loadChildren: () =>
-          import('./modules/events/events.module').then(
-            mod => mod.EventsModule,
-          ),
-      },
-      {
-        path: 'invest',
-        loadChildren: () =>
-          import('./modules/invest/invest.module').then(
-            mod => mod.InvestModule,
-          ),
-      },
-      {
-        path: 'profile',
-        loadChildren: () =>
-          import('./modules/profile/profile.module').then(
-            mod => mod.ProfileModule,
-          ),
-      },
+      { path: 'courses', loadChildren: () => import('./modules/courses/courses.module').then(mod => mod.CoursesModule) },
+      { path: 'news', loadChildren: () => import('./modules/news/news.module').then(mod => mod.NewsModule) },
+      { path: 'events', loadChildren: () => import('./modules/events/events.module').then(mod => mod.EventsModule) },
+      { path: 'invest', loadChildren: () => import('./modules/invest/invest.module').then(mod => mod.InvestModule) },
+      { path: 'profile', loadChildren: () => import('./modules/profile/profile.module').then(mod => mod.ProfileModule) },
       // TODO: This last child route 'profile' should have an auth guard
     ],
   },

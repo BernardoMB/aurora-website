@@ -35,6 +35,9 @@ import { MaterialModule } from '../../material.module';
 import { ReviewModalComponent } from './components/review-modal/review-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { CategoryDetailResolver } from './resolvers/category-detail.resolver.service';
+import { MyCoursesResolver } from './resolvers/my-courses.resolver.service';
 
 @NgModule({
     declarations: [
@@ -68,7 +71,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
       MaterialModule,
       FormsModule,
       ReactiveFormsModule,
-      ScrollingModule
+      ScrollingModule,
+      NgxPaginationModule
     ],
     providers: [
       CoursesService,
@@ -77,7 +81,9 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
       LessonsService,
       LessonResolver,
       LearnResolver,
-      CourseDetailResolver
+      CourseDetailResolver,
+      CategoryDetailResolver,
+      MyCoursesResolver
     ],
     entryComponents: [ReviewModalComponent]
 })
