@@ -68,7 +68,7 @@
 .section-1 {
   background-color: white;
   padding: 60px 0px;
-  overflow-x: hidden;
+  overflow: hidden;
   .section-1-container {
     position: relative;
     .chingadera-verde-obscuro {
@@ -130,6 +130,12 @@
           }
         }
       }
+    }
+    img {
+      position: absolute;
+      right: -240px;
+      top: 0px;
+      height: 380px;
     }
   }
 }
@@ -319,9 +325,15 @@
       resize: both;
       background-position-x: center;
       background-position-y: center;
-      background-image: url('../../../assets/img/landing/jumbotron.jpg');
+      background-image: url('../../../assets/img/landing/banking.jpg');
       border-radius: 100px;
     }
+  }
+  img {
+    position: absolute;
+    left: -110px;
+    top: 0px;
+    height: 380px;
   }
 }
 
@@ -388,7 +400,7 @@
       resize: both;
       background-position-x: center;
       background-position-y: center;
-      background-image: url('../../../assets/img/landing/jumbotron.jpg');
+      background-image: url('../../../assets/img/landing/events.jpg');
       border-radius: 100px;
     }
   }
@@ -501,7 +513,7 @@
       resize: both;
       background-position-x: center;
       background-position-y: center;
-      background-image: url('../../../assets/img/landing/jumbotron.jpg');
+      background-image: url('../../../assets/img/landing/support.jpg');
       border-radius: 100px;
     }
   }
@@ -548,229 +560,3 @@
     transform: scale3d(1.2, 1.2, 1.2) translate3d(-80px, -180px, 0px);
   }
 }
-
-/* $aurora-green: #1f5e11;
-$max-width: 1440px;
-$section-padding: 0px 20px;
-h2,
-h3 {
-  color: $aurora-green;
-  font-family: 'Open Sans', sans-serif;
-}
-
-p {
-  line-height: 1.7em;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-.container {
-  min-height: 50vh;
-  background: white;
-}
-
-.text-block {
-  padding: 48px;
-  h2 {
-    margin-top: 0;
-    width: 100%;
-  }
-  p {
-    margin-block-end: 2em;
-  }
-}
-
-.leading {
-  max-width: $max-width;
-  padding: $section-padding;
-  margin: 0 auto;
-  background: white;
-  .right {
-    height: 350px;
-    background-size: cover;
-    resize: both;
-    background-position-x: center;
-    background-position-y: center;
-    background-image: url('/assets/img/landing/elegant-man.jpg');
-    position: relative;
-    &:after {
-      background: #134e5e77;
-      background: linear-gradient(to right, #134e5e67, #71b28060);
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
-  }
-}
-
-.info-wrapper {
-  max-width: $max-width;
-  padding: $section-padding;
-  width: 100%;
-  margin: 0 auto;
-  .info {
-    max-width: 260px;
-    padding: 24px;
-    text-align: center;
-    background-color: white;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    &:hover {
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    }
-    .info-header {
-      margin-bottom: 24px;
-      padding: 0 8px;
-      h3 {
-        margin: 0;
-      }
-      mat-icon {
-        color: $aurora-green;
-      }
-    }
-    p {
-      margin-top: 0;
-      font-size: 0.9em;
-    }
-  }
-}
-
-.service {
-  max-width: $max-width;
-  padding: $section-padding;
-  margin: 0 auto;
-  background: white;
-  .left {
-    height: calc(100% - 96px);
-    margin: 48px;
-    border-radius: 24px;
-    background-size: cover;
-    resize: both;
-    background-position-x: center;
-    background-position-y: center;
-    background-image: url('/assets/img/landing/feedback.jpg');
-    position: relative;
-    &:after {
-      border-radius: 24px;
-      background: #134e5e77;
-      background: linear-gradient(to right, #134e5e67, #71b28060);
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
-  }
-}
-
-.app {
-  max-width: $max-width;
-  padding: $section-padding;
-  margin: 0 auto;
-  background: white;
-  .right {
-    height: calc(100% - 96px);
-    margin: 48px;
-    border-radius: 24px;
-    background-size: cover;
-    resize: both;
-    background-position-x: center;
-    background-position-y: center;
-    background-image: url('/assets/img/landing/server-rack.jpg');
-    position: relative;
-    &:after {
-      border-radius: 24px;
-      background: #134e5e77;
-      background: linear-gradient(to right, #134e5e67, #71b28060);
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
-  }
-}
-
-.events {
-  max-width: $max-width;
-  padding: $section-padding;
-  margin: 0 auto;
-  background: white;
-  .left {
-    height: calc(100% - 96px);
-    margin: 48px;
-    border-radius: 24px;
-    background-size: cover;
-    resize: both;
-    background-position-x: center;
-    background-position-y: center;
-    background-image: url('/assets/img/landing/sign-contract.jpg');
-    position: relative;
-    &:after {
-      border-radius: 24px;
-      background: #134e5e77;
-      background: linear-gradient(to right, #134e5e67, #71b28060);
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
-  }
-}
-
-.help {
-  max-width: $max-width;
-  padding: $section-padding;
-  margin: 0 auto;
-  background: white;
-  .right {
-    height: calc(100% - 96px);
-    margin: 48px;
-    border-radius: 24px;
-    background-size: cover;
-    resize: both;
-    background-position-x: center;
-    background-position-y: center;
-    background-image: url('/assets/img/landing/statistics.jpg');
-    position: relative;
-    &:after {
-      border-radius: 24px;
-      background: #134e5e77;
-      background: linear-gradient(to right, #134e5e67, #71b28060);
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
-  }
-}
-
-.contact {
-  background: #134e5e;
-  background: linear-gradient(to right, #134e5e, #71b280);
-  padding: 24px 0;
-  color: white;
-  .inner-contact {
-    width: 100%;
-    max-width: 960px;
-    margin: 0 auto;
-    .left {
-      padding: 0 16px;
-      p {
-        font-size: 1.153em;
-      }
-    }
-  }
-} */
