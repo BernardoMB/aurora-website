@@ -41,7 +41,7 @@ export class ExpressCheckoutComponent implements OnInit, OnDestroy {
     private store: Store<AuthState>,
     private router: Router,
     private route: ActivatedRoute,
-    private coursesService: CoursesService
+    public coursesService: CoursesService
   ) { }
 
   ngOnInit() {
@@ -94,5 +94,9 @@ export class ExpressCheckoutComponent implements OnInit, OnDestroy {
   toggleForm() {
     console.log('Togglig');
     this.showPaymentForm = !this.showPaymentForm;
+  }
+
+  cardSelected(anyPar)  {
+
   }
 }
