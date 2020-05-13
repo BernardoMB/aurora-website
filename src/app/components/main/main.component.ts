@@ -47,14 +47,15 @@ export class MainComponent implements OnInit {
     dialogConfig.panelClass = 'custom-mat-dialog-container';
     dialogConfig.backdropClass = 'custom-modal-backdrop';
     let loginDialogRef;
-    let signupDialogRef;
+    /* let signupDialogRef; */
     loginDialogRef = this.loginDialog.open(LoginFormComponent, dialogConfig);
     loginDialogRef.afterClosed().subscribe(result => {
       if (result && result.showSignUpModalOnClose) {
-        signupDialogRef = this.signupDialog.open(
+        /* signupDialogRef = this.signupDialog.open(
           SignupFormComponent,
           dialogConfig,
-        );
+        ); */
+        this.onRegister();
       }
     });
   }
@@ -65,8 +66,22 @@ export class MainComponent implements OnInit {
   }
 
   onRegister() {
-    // TODO: Open register modal.
-    console.log('Should open register modal');
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'custom-mat-dialog-container';
+    dialogConfig.backdropClass = 'custom-modal-backdrop';
+    /* let loginDialogRef; */
+    let signupDialogRef;
+    signupDialogRef = this.signupDialog.open(SignupFormComponent, dialogConfig);
+    signupDialogRef.afterClosed().subscribe(result => {
+      if (result && result.showLoginModalOnClose) {
+        /* loginDialogRef = this.loginDialog.open(
+          SignupFormComponent,
+          dialogConfig,
+        ); */
+        this.onLogin();
+      }
+    });
   }
 
   onViewProfile() {

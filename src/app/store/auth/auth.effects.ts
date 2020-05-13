@@ -142,7 +142,12 @@ export class AuthEffects {
         exhaustMap(action =>
           this.authService
             .signup(action)
-            .pipe(catchError(error => of(signupFailure({ error })))),
+            .pipe(
+              tap(() => {
+                this.router.navigate(['/']);
+              }),
+              catchError(error => of(signupFailure({ error })))
+            ),
         ),
       ),
     { dispatch: false },

@@ -219,6 +219,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.login.emit();
   }
 
+  onRegister() {
+    this.register.emit();
+  }
+
   onLogout() {
     this.logout.emit();
   }
@@ -226,10 +230,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onGoToCourse(courseId: string) {
     console.log(`Header component: Redirecting to /courses/${courseId}`);
     this.router.navigate(['/courses', courseId]);
-  }
-
-  onRegister() {
-    this.register.emit();
   }
 
   onHelp() {

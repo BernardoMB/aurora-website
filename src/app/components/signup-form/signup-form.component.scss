@@ -1,0 +1,104 @@
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+  color: #29303b;
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid gainsboro;
+    width: 100%;
+    margin: 24px 0px;
+    padding-bottom: 24px;
+    .modal-title {
+      margin: 0px 24px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    i {
+      margin-right: 24px;
+      cursor: pointer;
+      &:hover {
+        color: darkorange;
+      }
+    }
+  }
+  .welcome-phrase {
+    margin-bottom: 10px;
+  }
+  form {
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 20px;
+    .field-row {
+      display: flex;
+      width: 100%;
+      mat-form-field {
+        width: 100%;
+        flex-grow: 1;
+      }
+      mat-icon {
+        color: grey;
+      }
+    }
+    .password-indications {
+      // text-align: center;
+      width: 100%;
+      color: grey;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    .alert-message {
+      width: 100%;
+      margin-bottom: 22px;
+      color: #721c24;
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      padding: 0.75rem 0px;
+      border-radius: 0.25rem;
+      text-align: center;
+    }
+    .login-button-container {
+      margin-bottom: 30px;
+      width: 100%;
+      cursor: pointer;
+      .login-button {
+        width: 100%;
+        display: inline-block;
+        font-weight: 600;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+        padding: 11px 25px;
+        font-size: 15px;
+        line-height: 1.35135;
+        border-radius: 2px;
+        user-select: none;
+        cursor: pointer;
+        color: #fff;
+        background-color: #eb6c00;
+        border: 1px solid transparent;
+        &:hover {
+          background-color: #1f5e11;
+        }
+      }
+    }
+  }
+  .signup-phrase {
+    margin-bottom: 40px;
+    a {
+      color: #289e50;
+      cursor: pointer;
+      font-weight: 500;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

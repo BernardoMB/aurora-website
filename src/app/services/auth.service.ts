@@ -34,6 +34,18 @@ export class AuthService {
     });
   }
 
+  checkUsernameAvailability(username: string): Observable<{ usernameIsAvailable: boolean }> {
+    console.log('Auth service: Checking username availability');
+    const url = `${this.host}/${this.apiVersion}/auth/checkUsernameAvalability`;
+    return this.http.post<{ usernameIsAvailable: boolean }>(url, { username });
+  }
+
+  checkEmailAvailability(email: string): Observable<{ emailIsAvailable: boolean }> {
+    console.log('Auth service: Checking email availability');
+    const url = `${this.host}/${this.apiVersion}/auth/checkEmailAvalability`;
+    return this.http.post<{ emailIsAvailable: boolean }>(url, { email });
+  }
+
   getUserInfo(): Observable<User> {
     console.log('Auth service: Getting user info');
     const url = `${this.host}/${this.apiVersion}/auth/user/me?populate=cart`;
