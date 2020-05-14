@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { State } from '../../store/state';
 import { Store, select } from '@ngrx/store';
 import { MatDialog, MatDialogConfig } from '@angular/material';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, Router } from '@angular/router';
 import { selectAuthUser } from '../../store/auth/auth.selectors';
 import { User } from '../../shared/models/user.model';
 import { LoginFormComponent } from '../login-form/login-form.component';
@@ -23,6 +23,7 @@ export class MainComponent implements OnInit {
     private store: Store<State>,
     private loginDialog: MatDialog,
     private signupDialog: MatDialog,
+    private router: Router
   ) { }
 
   getAnimationData(outlet: RouterOutlet) {
@@ -85,7 +86,8 @@ export class MainComponent implements OnInit {
   }
 
   onViewProfile() {
-    alert('implement this function');
+    console.log('MainComponent: Navigation to user profile view');
+    this.router.navigate(['profile']);
   }
 
   onViewShoppingKart() {

@@ -1,0 +1,25 @@
+<section class="profile-section">
+  <div class="profile-container">
+    <div class="content">
+      <div class="left">
+        <div class="photo-and-name">
+          <div class="photo-container">
+            <mat-icon>person</mat-icon>
+          </div>
+          <div *ngIf="user" class="names">
+            <div>{{user.name}}</div>
+            <div>{{user.lastName}}</div>
+          </div>
+        </div>
+        <div class="navigation-links">
+          <div class="navigation-link focus-outline" [routerLink]="['./edit-profile']" routerLinkActive="list-item-active">Profile</div>
+          <div class="navigation-link focus-outline" [routerLink]="['./edit-account']" routerLinkActive="list-item-active">Account</div>
+          <div class="navigation-link focus-outline" [routerLink]="['./edit-credit-cards']" routerLinkActive="list-item-active">Payment methods</div>
+        </div>
+      </div>
+      <div class="right">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</section>

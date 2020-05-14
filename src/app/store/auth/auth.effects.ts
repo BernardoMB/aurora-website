@@ -51,6 +51,9 @@ import {
   removeCourseFromArchive,
   removeCourseFromArchiveSuccess,
   removeCourseFromArchiveFailure,
+  updateProfileInfo,
+  updateProfileInfoSuccess,
+  updateProfileInfoFailure,
 } from './auth.actions';
 import { of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
@@ -191,6 +194,27 @@ export class AuthEffects {
         }),
       ),
     { dispatch: false },
+  );
+
+  updateProfileInfoEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateProfileInfo),
+      exhaustMap(action =>
+        this.authService.updateProfileInfo(action.profileInfo).pipe(
+          map((responseBody: User) => {
+            return updateProfileInfoSuccess(responseBody);
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              updateProfileInfoFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   addCourseToCartEffect$ = createEffect(() =>

@@ -61,7 +61,13 @@ export class AuthService {
   signinWithToken(): Observable<any> {
     console.log('Auth service: Loging in sending user token');
     const url = `${this.host}/${this.apiVersion}/auth/signinWithToken`;
-    return this.http.post(url, {});
+    return this.http.post(url, {}, { observe: 'response' });
+  }
+
+  updateProfileInfo(profileInfo: { name?: string, lastName?: string, nameTitle?: string }): Observable<User> {
+    console.log('Auth service: Updating user profile info');
+    const url = `${this.host}/${this.apiVersion}/auth/user`;
+    return this.http.patch<User>(url, profileInfo);
   }
 
   addCoursetoShoppingCart(courseId: string, userId: string): Observable<Course> {

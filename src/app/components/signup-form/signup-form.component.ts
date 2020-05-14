@@ -334,7 +334,7 @@ export class SignupFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('Button clicked');
+    // console.log('Button clicked');
     if (!this.isValid) {
       // console.log('From is not valid');
       return;

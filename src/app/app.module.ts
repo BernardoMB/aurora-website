@@ -23,6 +23,7 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
 import { MainComponent } from './components/main/main.component';
+import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { MainComponent } from './components/main/main.component';
     RootStoreModule
   ],
   providers: [
+    AuthGuard,
     ...DOCUMENT_PROVIDERS, // For header sections logic
     ...WINDOW_PROVIDERS, // For headers sections logic
     CookieService, // Service to store and retreive cookies

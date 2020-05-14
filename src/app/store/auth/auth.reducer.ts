@@ -239,6 +239,12 @@ const authReducer = createReducer(
         archivedCourses
       }
     };
+  }),
+  on(AuthActions.updateProfileInfoSuccess, (state: AuthState, user: User) => {
+    return {
+      ...state,
+      user
+    };
   })
 );
 

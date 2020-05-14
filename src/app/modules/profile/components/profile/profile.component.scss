@@ -1,0 +1,97 @@
+.profile-section {
+  display: block;
+  position: relative;
+  .profile-container {
+    padding: 40px 20px;
+    max-width: 1180px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    margin: auto;
+    .content {
+      border: 1px solid gainsboro;
+      display: flex;
+      .left {
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid gainsboro;
+        .photo-and-name {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 20px;
+          .photo-container {
+            $widthHeight: 40px;
+            border: 1px solid gray;
+            border-radius: 100px;
+            width: $widthHeight;
+            height: $widthHeight;
+            mat-icon {
+              font-size: $widthHeight;
+              width: $widthHeight;
+              height: $widthHeight;
+            }
+          }
+          .names {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+        }
+        .navigation-links {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 20px;
+          .navigation-link {
+            min-width: 152px;
+            position: relative;
+            padding: 4px 10px;
+            &:hover {
+              background-color: gainsboro;
+            }
+            &:active {
+              outline: none;
+            }
+          }
+          .list-item-active {
+            font-weight: 500;
+            background-color: gainsboro;
+            &:before {
+              content: '';
+              position: absolute;
+              z-index: 1;
+              width: 3px;
+              height: 100%;
+              top: 0px;
+              right: 0px;
+              background-color: #f18d02;
+            }
+            &:focus {
+              outline: none;
+              font-weight: 500;
+              background-color: gainsboro;
+              &:before {
+                content: '';
+                position: absolute;
+                z-index: 1;
+                width: 3px;
+                height: 100%;
+                top: 0px;
+                right: 0px;
+                background-color: #f18d02;
+              }
+            }
+          }
+        }
+      }
+      .right {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+}

@@ -7,6 +7,7 @@ import { Course } from '../../shared/models/course.model';
 
 export const getStatus = createAction('[Auth] GetStatus', props<{}>());
 
+// username can also be the email.
 export const login = createAction('[Auth] Login', props<{ username: string; password: string }>());
 export const loginSuccess = createAction('[Auth] LoginSuccess');
 export const loginFailure = createAction('[Auth] LoginFailure', props<{ error: any; message: string }>(),);
@@ -27,6 +28,10 @@ export const loginWithTokenFailure = createAction('[Auth] LoginWithTokenFailure'
 export const logout = createAction('[Auth] Logout');
 export const logoutSuccess = createAction('[Auth] LogoutSuccess');
 export const logoutFailure = createAction('[Auth] LogoutFailure');
+
+export const updateProfileInfo = createAction('[Auth] UpdateProfileInfo', props<{ profileInfo: { name?: string, lastName?: string, nameTitle?: string }, userId: string }>());
+export const updateProfileInfoSuccess = createAction('[Auth] UpdateProfileInfoSuccess', props<User>());
+export const updateProfileInfoFailure = createAction('[Auth] UpdateProfileInfoFailure', props<{ error: any; message: string }>());
 
 export const addCourseToCart = createAction('[Auth] AddCourseToCart', props<{ courseId: string, userId: string }>());
 export const addCourseToCartSuccess = createAction('[Auth] AddCourseToCartSuccess', props<{ course: Course }>());
