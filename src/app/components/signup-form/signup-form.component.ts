@@ -279,7 +279,7 @@ export class SignupFormComponent implements OnInit {
         if (password === value) {
           isValid = true;
         }
-        return isValid ? null : {'passwordsMustBeEqual': {value: control.value}};
+        return isValid ? null : { passwordsMustBeEqual: {value: control.value}};
       }
     ]),
     msisdnControl: new FormControl('', [Validators.required]),
@@ -370,7 +370,7 @@ export class SignupFormComponent implements OnInit {
       this.authService.checkUsernameAvailability(username).subscribe((res: { usernameIsAvailable: boolean }) => {
         if (!res.usernameIsAvailable) {
           // console.log('usernamer is not available ): ');
-          usernameControl.setErrors({'notAvailable': { errorMessage: 'Username is not available' }});
+          usernameControl.setErrors({ notAvailable: { errorMessage: 'Username is not available' }});
         } else {
           // console.log('usernamer is available (:');
         }
@@ -385,7 +385,7 @@ export class SignupFormComponent implements OnInit {
       this.authService.checkEmailAvailability(email).subscribe((res: { emailIsAvailable: boolean }) => {
         if (!res.emailIsAvailable) {
           // console.log('email is not available ): ');
-          emailControl.setErrors({'notAvailable': { errorMessage: 'Email is not available' }});
+          emailControl.setErrors({ notAvailable: { errorMessage: 'Email is not available' }});
         } else {
           // console.log('email is available (:');
         }

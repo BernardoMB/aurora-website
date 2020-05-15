@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { User } from '../shared/models/user.model';
 import { SignupDto } from '../shared/dtos/signup.dto';
 import { environment } from '../../environments/environment';
 import { Course } from '../shared/models/course.model';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
@@ -34,18 +34,6 @@ export class AuthService {
     });
   }
 
-  checkUsernameAvailability(username: string): Observable<{ usernameIsAvailable: boolean }> {
-    console.log('Auth service: Checking username availability');
-    const url = `${this.host}/${this.apiVersion}/auth/checkUsernameAvalability`;
-    return this.http.post<{ usernameIsAvailable: boolean }>(url, { username });
-  }
-
-  checkEmailAvailability(email: string): Observable<{ emailIsAvailable: boolean }> {
-    console.log('Auth service: Checking email availability');
-    const url = `${this.host}/${this.apiVersion}/auth/checkEmailAvalability`;
-    return this.http.post<{ emailIsAvailable: boolean }>(url, { email });
-  }
-
   getUserInfo(): Observable<User> {
     console.log('Auth service: Getting user info');
     const url = `${this.host}/${this.apiVersion}/auth/user/me?populate=cart`;
@@ -62,6 +50,29 @@ export class AuthService {
     console.log('Auth service: Loging in sending user token');
     const url = `${this.host}/${this.apiVersion}/auth/signinWithToken`;
     return this.http.post(url, {}, { observe: 'response' });
+  }
+
+  changeUserPassword(password: string, newPassword: string, newPasswordConfirmation: string): Observable<User> {
+    console.log('Auth service: changing user password');
+    const url = `${this.host}/${this.apiVersion}/auth/user/password`;
+    return this.http.patch<User>(url, { password, newPassword, newPasswordConfirmation }).pipe(
+      catchError((error) => {
+        // Catching and throwing error so error can be handled by the effect that triggered this call
+        throw error;
+      })
+    );
+  }
+
+  checkUsernameAvailability(username: string): Observable<{ usernameIsAvailable: boolean }> {
+    console.log('Auth service: Checking username availability');
+    const url = `${this.host}/${this.apiVersion}/auth/checkUsernameAvalability`;
+    return this.http.post<{ usernameIsAvailable: boolean }>(url, { username });
+  }
+
+  checkEmailAvailability(email: string): Observable<{ emailIsAvailable: boolean }> {
+    console.log('Auth service: Checking email availability');
+    const url = `${this.host}/${this.apiVersion}/auth/checkEmailAvalability`;
+    return this.http.post<{ emailIsAvailable: boolean }>(url, { email });
   }
 
   updateProfileInfo(profileInfo: { name?: string, lastName?: string, nameTitle?: string }): Observable<User> {

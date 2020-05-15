@@ -10,10 +10,10 @@ export const getStatus = createAction('[Auth] GetStatus', props<{}>());
 // username can also be the email.
 export const login = createAction('[Auth] Login', props<{ username: string; password: string }>());
 export const loginSuccess = createAction('[Auth] LoginSuccess');
-export const loginFailure = createAction('[Auth] LoginFailure', props<{ error: any; message: string }>(),);
+export const loginFailure = createAction('[Auth] LoginFailure', props<{ error: any; message: string }>());
 
 export const getUserInfo = createAction('[Auth] GetUserInfo', props<{ token: string }>());
-export const getUserInfoSuccess = createAction('[Auth] GetUserInfoSuccess', props<{ user: User }>(),);
+export const getUserInfoSuccess = createAction('[Auth] GetUserInfoSuccess', props<{ user: User }>());
 export const getUserInfoFailure = createAction('[Auth] GetUserInfoFailure', props<{ error: any }>());
 
 export const signup = createAction('[Auth] Signup', props<SignupDto>());
@@ -28,6 +28,10 @@ export const loginWithTokenFailure = createAction('[Auth] LoginWithTokenFailure'
 export const logout = createAction('[Auth] Logout');
 export const logoutSuccess = createAction('[Auth] LogoutSuccess');
 export const logoutFailure = createAction('[Auth] LogoutFailure');
+
+export const changeUserPassword = createAction('[Auth] ChangeUserPassword', props<{ password: string; newPassword: string; newPasswordConfirmation: string; }>());
+export const changeUserPasswordSuccess = createAction('[Auth] ChangeUserPasswordSuccess'); // No payload needed because the store should change after this.
+export const changeUserPasswordFailure = createAction('[Auth] ChangeUserPasswordFailure', props<{ error: any; message: string }>());
 
 export const updateProfileInfo = createAction('[Auth] UpdateProfileInfo', props<{ profileInfo: { name?: string, lastName?: string, nameTitle?: string }, userId: string }>());
 export const updateProfileInfoSuccess = createAction('[Auth] UpdateProfileInfoSuccess', props<User>());

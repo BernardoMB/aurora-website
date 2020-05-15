@@ -78,7 +78,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError(error => {
-        // console.log('ErrorInterceptor: Response interceptor catched error!');
+        console.log('ErrorInterceptor: Response interceptor catched error!');
         if (error instanceof HttpErrorResponse && error.status === 401) {
           // console.log('ErrorInterceptor: Response status is 401 (unauthorized)');
           // console.log('ErrorInterceptor: Removeing userToken');

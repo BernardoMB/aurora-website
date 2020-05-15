@@ -42,7 +42,7 @@ export class AuthGuard implements CanActivate {
     if (userToken) {
       return this.authService.signinWithToken().pipe(
         map((response) => {
-          console.log('Status', response.status);
+          // console.log('Status', response.status);
           if (response.status === 200 || response.status === 201) {
             const authorizationHeader = response.headers.get('Authorization');
             // console.log(authorizationHeader);

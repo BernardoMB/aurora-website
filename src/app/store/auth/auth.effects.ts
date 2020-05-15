@@ -54,6 +54,9 @@ import {
   updateProfileInfo,
   updateProfileInfoSuccess,
   updateProfileInfoFailure,
+  changeUserPassword,
+  changeUserPasswordSuccess,
+  changeUserPasswordFailure,
 } from './auth.actions';
 import { of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
@@ -194,6 +197,40 @@ export class AuthEffects {
         }),
       ),
     { dispatch: false },
+  );
+
+  changeUserPasswordEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(changeUserPassword),
+      exhaustMap(action =>
+        this.authService.changeUserPassword(action.password, action.newPassword, action.newPasswordConfirmation).pipe(
+          map((responseBody: User) => {
+            return changeUserPasswordSuccess();
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            console.log('changeUserPasswordEffect: Catched error. firing failure action');
+            return of(
+              changeUserPasswordFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            );
+          }),
+        ),
+      ),
+    ),
+  );
+
+  changeUserPasswordFailureEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(changeUserPasswordFailure),
+      tap(action => {
+        console.log('changeUserPasswordFailureEffect: Handling error');
+        console.error(action.error);
+        console.log(action.message);
+        // TODO: fire toast here
+      }),
+    ), { dispatch: false }
   );
 
   updateProfileInfoEffect$ = createEffect(() =>

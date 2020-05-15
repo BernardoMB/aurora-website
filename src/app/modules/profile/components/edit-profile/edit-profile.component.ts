@@ -67,9 +67,4 @@ export class EditProfileComponent implements OnInit {
     this.store.dispatch(updateProfileInfo({ profileInfo, userId: this.user.id }));
   }
 
-  /* printStatus() {
-    console.log('STATUS: ', this.profileInfoForm.status);
-    console.log('Valid: ', this.profileInfoForm.valid);
-  } */
-
 }
