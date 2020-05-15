@@ -3,7 +3,20 @@
   <div>Edit your account settings and change you password here.</div>
 </div>
 <div class="content">
-  <div class="username-section"></div>
+  <div class="username-section">
+    <div style="margin-bottom: 15px;">Username:</div>
+    <div class="editable-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Your username</mat-label>
+        <input
+          matInput
+          placeholder="Your email address"
+          [formControl]="usernameControl"
+        />
+      </mat-form-field>
+      <button mat-flat-button (click)="onUpdateUsername()" [ngStyle]="getUpdateUsernameButtonStyles" [disabled]="!usernameFieldIsValid">Update</button>
+    </div>
+  </div>
   <div class="email-section"></div>
   <div class="reset-password-section">
     <div style="margin-bottom: 15px;">Password:</div>

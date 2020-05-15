@@ -16,7 +16,18 @@ import { AuthService } from '../../../../services/auth.service';
 export class EditAccountComponent implements OnInit {
   user: User;
   userSubscription: Subscription;
-  usernameControl = new FormControl('');
+  usernameControl = new FormControl('', [
+    (control: AbstractControl): {[key: string]: any} | null => {
+      /* if (!this.user) {
+        return { usernameNotChanged: { errorMessage: 'Username not changed'} };
+      }
+      if (control.value !== this.user.username) {
+        return null;
+      }
+      return { usernameNotChanged: { errorMessage: 'Username not changed'} }; */
+      return null;
+    }
+  ]);
   emailControl = new FormControl('', [Validators.email]);
   resetPasswordForm = new FormGroup({
     currentPasswordControl: new FormControl(''),
@@ -58,6 +69,13 @@ export class EditAccountComponent implements OnInit {
       return isValid ? null : { anyValue: true };
     }
   });
+  get usernameFieldIsValid(): boolean {
+    if (!this.user) {
+      return false;
+    }
+    const valid = this.usernameControl.value !== this.user.username;
+    return this.usernameControl.valid && valid;
+  }
   get isValid(): boolean {
     return this.resetPasswordForm.valid && this.resetPasswordForm.touched;
   }
@@ -124,6 +142,34 @@ export class EditAccountComponent implements OnInit {
     }
   }
 
+  onUpdateUsername() {
+    if (!this.usernameFieldIsValid) {
+      console.log('Username field is not valid');
+      return;
+    }
+    console.log('Username field is valid');
+  }
+
+  public get getUpdateUsernameButtonStyles(): any {
+    if (this.usernameFieldIsValid) {
+      return {
+        'background-color': '#e56e00',
+        color: 'white',
+        cursor: 'pointer'
+      };
+    } else {
+      return {
+        'background-color': 'gainsboro',
+        color: 'grey',
+        cursor: 'no-drop'
+      };
+    }
+  }
+
+  onUpdateEmail() {
+    // TODO: Dispatch update username
+  }
+
   /**
    * This function is called when the user wants to verify his unverified email
    */
@@ -131,17 +177,9 @@ export class EditAccountComponent implements OnInit {
     // TODO: Call server to verify email
   }
 
-  onUpdateUsername() {
-    // TODO: Dispatch update user username action
-  }
-
-  onUpdateEmail() {
-    // TODO: Dispatch update username
-  }
-
   onSubmit() {
     if (!this.isValid) {
-      console.log('From is not valid');
+      // console.log('From is not valid');
       return;
     }
     const changePasswordDto = {

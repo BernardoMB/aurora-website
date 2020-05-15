@@ -11,25 +11,48 @@
   border-bottom: 1px solid gainsboro;
 }
 .content {
-  padding: 20px;
   display: flex;
   flex-direction: column;
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    mat-form-field {
-      width: 100%;
-      mat-icon {
-        color: gray;
+  .username-section {
+    border-bottom: 1px solid gainsboro;
+    padding: 20px;
+    .editable-field {
+      display: flex;
+      mat-form-field {
+        width: 100%;
+        mat-icon {
+          color: gray;
+        }
+        margin-right: 5px;
+      }
+      button {
+        margin-top: 4px;
+        background-color: #e56e00;
+        color: white;
+        font-weight: 500;
+        height: 59px;
       }
     }
-    .submit-button {
-      margin-top: 5px;
-      // width: 100%;
-      background-color: #e56e00;
-      color: white;
-      font-weight: 500;
+  }
+  .reset-password-section {
+    padding: 20px;
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      mat-form-field {
+        width: 100%;
+        mat-icon {
+          color: gray;
+        }
+      }
+      .submit-button {
+        margin-top: 5px;
+        // width: 100%;
+        background-color: #e56e00;
+        color: white;
+        font-weight: 500;
+      }
     }
   }
 }
