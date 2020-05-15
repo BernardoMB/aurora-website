@@ -41,7 +41,7 @@ export class LearnComponent implements OnInit, OnDestroy {
   isFavorite = false;
 
   // #region Reviews infinite scroll
-  @ViewChild(CdkVirtualScrollViewport, { static: false })
+  @ViewChild(CdkVirtualScrollViewport)
   viewport: CdkVirtualScrollViewport;
   batch = 5;
   theEnd = false;
