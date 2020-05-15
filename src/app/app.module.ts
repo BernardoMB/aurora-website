@@ -24,6 +24,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
 import { MainComponent } from './components/main/main.component';
 import { AuthGuard } from './guards/auth.guard';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,11 @@ import { AuthGuard } from './guards/auth.guard';
     MaterialModule,
     SharedModule,
     AppRoutingModule, // <-- Routing modules should be imported in the correct order.c
-    RootStoreModule
+    RootStoreModule,
+    /* ToastrModule.forRoot({ // ToastrModule added
+      // Global options (any individual option can be a global option)
+      // disableTimeOut: true
+    }) */
   ],
   providers: [
     AuthGuard,
