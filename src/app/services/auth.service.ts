@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 import { User } from '../shared/models/user.model';
 import { SignupDto } from '../shared/dtos/signup.dto';
 import { environment } from '../../environments/environment';
@@ -11,6 +11,8 @@ import { tap, catchError } from 'rxjs/operators';
 export class AuthService {
   host = environment.host;
   apiVersion = environment.apiVersion;
+  private emptyResetPasswordFormSubject = new BehaviorSubject<boolean>(false);
+  public emptyResetPasswordForm$ = this.emptyResetPasswordFormSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -56,6 +58,9 @@ export class AuthService {
     console.log('Auth service: changing user password');
     const url = `${this.host}/${this.apiVersion}/auth/user/password`;
     return this.http.patch<User>(url, { password, newPassword, newPasswordConfirmation }).pipe(
+      tap(() => {
+        this.emptyResetPasswordFormSubject.next(true);
+      }),
       catchError((error) => {
         // Catching and throwing error so error can be handled by the effect that triggered this call
         throw error;

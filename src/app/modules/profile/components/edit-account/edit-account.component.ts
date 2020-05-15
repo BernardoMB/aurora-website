@@ -6,6 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { AuthState } from '../../../../store/auth/auth.state';
 import { selectAuthUser } from '../../../../store/auth/auth.selectors';
 import { changeUserPassword } from '../../../../store/auth/auth.actions';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-edit-account',
@@ -65,6 +66,7 @@ export class EditAccountComponent implements OnInit {
 
   constructor(
     private store: Store<AuthState>, // Change user state
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -104,11 +106,12 @@ export class EditAccountComponent implements OnInit {
       }
     });
 
-    // TODO: delete the folloging code
-    this.resetPasswordForm.setValue({
-      currentPasswordControl: 'Qawsed123!',
-      newPasswordControl: 'Qawsed123',
-      retypeNewPasswordControl: 'Qawsed123'
+    this.authService.emptyResetPasswordForm$.subscribe((resetForm: boolean) => {
+      if (resetForm) {
+        this.resetPasswordForm.reset();
+        this.resetPasswordForm.setErrors(null);
+        this.resetPasswordForm.get('newPasswordControl').setErrors(null);
+      }
     });
   }
 

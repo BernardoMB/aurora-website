@@ -64,6 +64,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { User } from '../../shared/models/user.model';
 import { Course } from '../../shared/models/course.model';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 /**
  * Authentication effects
@@ -221,14 +222,21 @@ export class AuthEffects {
     ),
   );
 
+  changeUserPasswordSuccessEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(changeUserPasswordSuccess),
+      tap(action => {
+        this.toastr.success('Password changed');
+      }),
+    ), { dispatch: false }
+  );
+
   changeUserPasswordFailureEffect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(changeUserPasswordFailure),
       tap(action => {
-        console.log('changeUserPasswordFailureEffect: Handling error');
         console.error(action.error);
-        console.log(action.message);
-        // TODO: fire toast here
+        this.toastr.error(action.message, 'Check you current password');
       }),
     ), { dispatch: false }
   );
@@ -252,6 +260,15 @@ export class AuthEffects {
         ),
       ),
     ),
+  );
+
+  updateProfileInfoEffectSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateProfileInfoSuccess),
+      tap(action => {
+        this.toastr.success('Profile updated');
+      }),
+    ), { dispatch: false }
   );
 
   addCourseToCartEffect$ = createEffect(() =>
@@ -532,6 +549,7 @@ export class AuthEffects {
     private actions$: Actions,
     private authService: AuthService,
     private cookieService: CookieService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 }

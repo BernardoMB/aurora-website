@@ -49,20 +49,20 @@ export class EditProfileComponent implements OnInit {
           nameControl: this.user.name,
           lastNameControl: this.user.lastName,
           nameTitleControl: this.user.nameTitle
-        })
+        });
       }
     });
   }
 
   onSubmit() {
     if (!this.isValid) {
-      console.log('From is not valid');
+      // console.log('From is not valid');
       return;
     }
     const profileInfo = {
       name: this.profileInfoForm.value.nameControl,
       lastName: this.profileInfoForm.value.lastNameControl,
-      nameTitle: this.profileInfoForm.value.nameTitle
+      nameTitle: this.profileInfoForm.value.nameTitleControl
     };
     this.store.dispatch(updateProfileInfo({ profileInfo, userId: this.user.id }));
   }

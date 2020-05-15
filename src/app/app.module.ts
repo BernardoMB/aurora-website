@@ -47,10 +47,14 @@ import { ToastrModule } from 'ngx-toastr';
     SharedModule,
     AppRoutingModule, // <-- Routing modules should be imported in the correct order.c
     RootStoreModule,
-    /* ToastrModule.forRoot({ // ToastrModule added
+    ToastrModule.forRoot({ // ToastrModule added
       // Global options (any individual option can be a global option)
       // disableTimeOut: true
-    }) */
+      progressBar: true,
+      closeButton: true,
+      enableHtml: true,
+      tapToDismiss: false
+    })
   ],
   providers: [
     AuthGuard,
