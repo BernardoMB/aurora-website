@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { State } from '../../store/state';
 import { Store, select } from '@ngrx/store';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { RouterOutlet, Router } from '@angular/router';
 import { selectAuthUser } from '../../store/auth/auth.selectors';
 import { User } from '../../shared/models/user.model';

@@ -21,7 +21,7 @@ import { CoursesService } from 'src/app/modules/courses/services/courses.service
 import { Store, select } from '@ngrx/store';
 import { AuthState } from '../../store/auth/auth.state';
 import { selectAuthCart } from '../../store/auth/auth.selectors';
-import { MatMenuTrigger } from '@angular/material';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 /**
  * The header of the application.

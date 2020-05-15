@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { State } from '../../store/state';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { signup } from '../../store/auth/auth.actions';
 import { SignupDto } from '../../shared/dtos/signup.dto';
 import { throttle } from 'rxjs/operators';
