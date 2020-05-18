@@ -19,7 +19,7 @@ export class EditAccountComponent implements OnInit {
   user: User;
   userSubscription: Subscription;
   usernameControl = new FormControl('');
-  emailControl = new FormControl('', [Validators.email]);
+  emailControl = new FormControl({value: '', disabled: true}, [Validators.email]);
   resetPasswordForm = new FormGroup({
     currentPasswordControl: new FormControl(''),
     newPasswordControl: new FormControl('', [
