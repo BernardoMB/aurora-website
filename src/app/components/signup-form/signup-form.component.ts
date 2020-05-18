@@ -260,6 +260,7 @@ export const countries = [
   styleUrls: ['./signup-form.component.scss']
 })
 export class SignupFormComponent implements OnInit {
+  throttlingTime = 1000; // Miliseconds
   countries = countries;
   retypePasswordEnabled = false;
   signupForm = new FormGroup({
@@ -308,14 +309,14 @@ export class SignupFormComponent implements OnInit {
   ngOnInit() {
     const usernameControl = this.signupForm.get('usernameControl');
     usernameControl.valueChanges.pipe(
-      throttle(ev => interval(2000))
+      throttle(ev => interval(this.throttlingTime))
     ).subscribe((value) => {
       // console.log(value);
       this.checkUsernameAvailability();
     });
     const emailControl = this.signupForm.get('emailControl');
     emailControl.valueChanges.pipe(
-      throttle(ev => interval(2000))
+      throttle(ev => interval(this.throttlingTime))
     ).subscribe((value) => {
       // console.log(value);
       this.checkEmailAvailability();

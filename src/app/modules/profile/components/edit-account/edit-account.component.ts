@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../../../shared/models/user.model';
-import { Subscription } from 'rxjs';
+import { Subscription, interval } from 'rxjs';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { AuthState } from '../../../../store/auth/auth.state';
 import { selectAuthUser } from '../../../../store/auth/auth.selectors';
-import { changeUserPassword } from '../../../../store/auth/auth.actions';
+import { changeUserPassword, changeUsername } from '../../../../store/auth/auth.actions';
 import { AuthService } from '../../../../services/auth.service';
+import { throttle } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-account',
@@ -14,20 +15,10 @@ import { AuthService } from '../../../../services/auth.service';
   styleUrls: ['./edit-account.component.scss']
 })
 export class EditAccountComponent implements OnInit {
+  throttlingTime = 1000; // Miliseconds
   user: User;
   userSubscription: Subscription;
-  usernameControl = new FormControl('', [
-    (control: AbstractControl): {[key: string]: any} | null => {
-      /* if (!this.user) {
-        return { usernameNotChanged: { errorMessage: 'Username not changed'} };
-      }
-      if (control.value !== this.user.username) {
-        return null;
-      }
-      return { usernameNotChanged: { errorMessage: 'Username not changed'} }; */
-      return null;
-    }
-  ]);
+  usernameControl = new FormControl('');
   emailControl = new FormControl('', [Validators.email]);
   resetPasswordForm = new FormGroup({
     currentPasswordControl: new FormControl(''),
@@ -83,7 +74,7 @@ export class EditAccountComponent implements OnInit {
   showVerifyEmailWarning = false;
 
   constructor(
-    private store: Store<AuthState>, // Change user state
+    private store: Store<AuthState>,
     private authService: AuthService
   ) { }
 
@@ -99,11 +90,18 @@ export class EditAccountComponent implements OnInit {
       }
     });
 
+    // * Username
+    const usernameControl = this.usernameControl;
+    usernameControl.valueChanges.pipe(
+      throttle(ev => interval(this.throttlingTime))
+    ).subscribe((value) => {
+      // console.log(value);
+      this.checkUsernameAvailability();
+    });
+
     const newPasswordControl = this.resetPasswordForm.get('newPasswordControl');
     const retypeNewPasswordControl = this.resetPasswordForm.get('retypeNewPasswordControl');
     newPasswordControl.valueChanges.subscribe(value => {
-      // console.log('Value', value);
-      // console.log('Status', newPasswordControl.status);
       if (newPasswordControl.status === 'VALID') {
         retypeNewPasswordControl.enable();
       } else {
@@ -112,8 +110,6 @@ export class EditAccountComponent implements OnInit {
     });
     const currentPasswordControl = this.resetPasswordForm.get('currentPasswordControl');
     currentPasswordControl.valueChanges.subscribe(value => {
-      // console.log('Value', value);
-      // console.log('Status', newPasswordControl.status);
       if (currentPasswordControl.value !== newPasswordControl.value) {
         newPasswordControl.setErrors(null);
         retypeNewPasswordControl.enable();
@@ -133,21 +129,13 @@ export class EditAccountComponent implements OnInit {
     });
   }
 
-  validateNewPasswordControl() {
-    const currentPasswordControl = this.resetPasswordForm.get('currentPasswordControl');
-    const newPasswordControl = this.resetPasswordForm.get('newPasswordControl');
-    if (newPasswordControl.value === currentPasswordControl.value) {
-      newPasswordControl.setErrors({ newPassError: { errorMessage: 'Your new password must be different from the current password.' }});
-      this.resetPasswordForm.get('retypeNewPasswordControl').disable();
-    }
-  }
+  // * Username
 
   onUpdateUsername() {
     if (!this.usernameFieldIsValid) {
-      console.log('Username field is not valid');
       return;
     }
-    console.log('Username field is valid');
+    this.store.dispatch(changeUsername({ username: this.usernameControl.value }));
   }
 
   public get getUpdateUsernameButtonStyles(): any {
@@ -166,8 +154,25 @@ export class EditAccountComponent implements OnInit {
     }
   }
 
+  checkUsernameAvailability() {
+    const usernameControl = this.usernameControl;
+    const username  = usernameControl.value;
+    if (username && username !== this.user.username) {
+      this.authService.checkUsernameAvailability(username).subscribe((res: { usernameIsAvailable: boolean }) => {
+        if (!res.usernameIsAvailable) {
+          // console.log('usernamer is not available ): ');
+          usernameControl.setErrors({ notAvailable: { errorMessage: 'Username is not available' }});
+        } else {
+          // console.log('usernamer is available (:');
+        }
+      });
+    }
+  }
+
+  // * Email
+
   onUpdateEmail() {
-    // TODO: Dispatch update username
+    // TODO: Dispatch update email action
   }
 
   /**
@@ -177,9 +182,37 @@ export class EditAccountComponent implements OnInit {
     // TODO: Call server to verify email
   }
 
+  onOpenEditEmailModal() {}
+
+  checkEmailAvailability() {
+    // TODO: This function should go inside the change email modal (functionality yet to be implemented)
+    const emailControl = this.emailControl;
+    const email  = emailControl.value;
+    if (email) {
+      this.authService.checkEmailAvailability(email).subscribe((res: { emailIsAvailable: boolean }) => {
+        if (!res.emailIsAvailable) {
+          // console.log('email is not available ): ');
+          emailControl.setErrors({ notAvailable: { errorMessage: 'Email is not available' }});
+        } else {
+          // console.log('email is available (:');
+        }
+      });
+    }
+  }
+
+  // * Password
+
+  validateNewPasswordControl() {
+    const currentPasswordControl = this.resetPasswordForm.get('currentPasswordControl');
+    const newPasswordControl = this.resetPasswordForm.get('newPasswordControl');
+    if (newPasswordControl.value === currentPasswordControl.value) {
+      newPasswordControl.setErrors({ newPassError: { errorMessage: 'Your new password must be different from the current password.' }});
+      this.resetPasswordForm.get('retypeNewPasswordControl').disable();
+    }
+  }
+
   onSubmit() {
     if (!this.isValid) {
-      // console.log('From is not valid');
       return;
     }
     const changePasswordDto = {

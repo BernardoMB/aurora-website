@@ -12,12 +12,27 @@
           matInput
           placeholder="Your email address"
           [formControl]="usernameControl"
+          (blur)="checkUsernameAvailability()"
         />
+        <mat-error *ngIf="usernameControl.errors && usernameControl.errors['notAvailable']">{{usernameControl.errors['notAvailable'].errorMessage}}</mat-error>
       </mat-form-field>
       <button mat-flat-button (click)="onUpdateUsername()" [ngStyle]="getUpdateUsernameButtonStyles" [disabled]="!usernameFieldIsValid">Update</button>
     </div>
   </div>
-  <div class="email-section"></div>
+  <div class="email-section">
+    <div style="margin-bottom: 15px;">Email:</div>
+    <div class="editable-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Your email address</mat-label>
+        <input
+          matInput
+          placeholder="Your email address"
+          [formControl]="emailControl"
+        />
+      </mat-form-field>
+      <button mat-flat-button (click)="onOpenEditEmailModal()">Change</button>
+    </div>
+  </div>
   <div class="reset-password-section">
     <div style="margin-bottom: 15px;">Password:</div>
     <form [formGroup]="resetPasswordForm">

@@ -7,6 +7,13 @@ import { environment } from '../../environments/environment';
 import { Course } from '../shared/models/course.model';
 import { tap, catchError } from 'rxjs/operators';
 
+/**
+ * TODO: Add changeUsername function
+ * TODO: Add changeEmail  function
+ *
+ * @export
+ * @class AuthService
+ */
 @Injectable()
 export class AuthService {
   host = environment.host;
@@ -84,6 +91,16 @@ export class AuthService {
     console.log('Auth service: Updating user profile info');
     const url = `${this.host}/${this.apiVersion}/auth/user`;
     return this.http.patch<User>(url, profileInfo);
+  }
+
+  changeUsername(username: string): Observable<User> {
+    console.log('Auth service: changing user username');
+    const url = `${this.host}/${this.apiVersion}/auth/user/username`;
+    return this.http.patch<User>(url, { username }).pipe(
+      catchError((error) => {
+        throw error;
+      })
+    );
   }
 
   addCoursetoShoppingCart(courseId: string, userId: string): Observable<Course> {

@@ -245,7 +245,13 @@ const authReducer = createReducer(
       ...state,
       user
     };
-  })
+  }),
+  on(AuthActions.changeUsernameSuccess, (state: AuthState, user: User) => {
+    return {
+      ...state,
+      user
+    };
+  }),
 );
 
 export function reducer(state: AuthState | undefined, action: Action) {

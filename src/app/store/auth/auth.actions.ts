@@ -33,6 +33,10 @@ export const changeUserPassword = createAction('[Auth] ChangeUserPassword', prop
 export const changeUserPasswordSuccess = createAction('[Auth] ChangeUserPasswordSuccess'); // No payload needed because the store should change after this.
 export const changeUserPasswordFailure = createAction('[Auth] ChangeUserPasswordFailure', props<{ error: any; message: string }>());
 
+export const changeUsername = createAction('[Auth] ChangeUsername', props<{ username: string }>());
+export const changeUsernameSuccess = createAction('[Auth] ChangeUsernameSuccess', props<User>());
+export const changeUsernameFailure = createAction('[Auth] ChangeUsernameFailure', props<{ error: any; message: string }>());
+
 export const updateProfileInfo = createAction('[Auth] UpdateProfileInfo', props<{ profileInfo: { name?: string, lastName?: string, nameTitle?: string }, userId: string }>());
 export const updateProfileInfoSuccess = createAction('[Auth] UpdateProfileInfoSuccess', props<User>());
 export const updateProfileInfoFailure = createAction('[Auth] UpdateProfileInfoFailure', props<{ error: any; message: string }>());
