@@ -9,21 +9,18 @@
       <span class="line"></span>
       <span class="line"></span>
     </div>
-    <!-- Logo container -->
-    <div class="logo logotype-container focus-outline" routerLink="/" (click)="mobileNavBarOpen = false">
-      <img
-        class="logotype"
+    <img
+        class="logotype focus-outline"
         src="/assets/img/logos/logotype.svg"
         alt="Invest Naija Logotype"
+        routerLink="/" (click)="mobileNavBarOpen = false"
       />
-    </div>
-    <div class="logo logomark-container focus-outline" routerLink="/" (click)="mobileNavBarOpen = false">
-      <img
-        class="logomark"
-        src="/assets/img/logos/logomark.svg"
-        alt="Invest Naija Logotype"
-      />
-    </div>
+    <img
+      class="logomark focus-outline"
+      src="/assets/img/logos/logomark.svg"
+      alt="Invest Naija Logotype"
+      routerLink="/" (click)="mobileNavBarOpen = false"
+    />
     <div class="header-left">
       <button
         *ngIf="showCategories"

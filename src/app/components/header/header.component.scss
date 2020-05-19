@@ -1,8 +1,7 @@
+$break-logo: 1000px;
+$categories-label-break: 900px;
 $break-header: 800px;
-$brack-registration-buttons: 450px;
-
-
-$break-small: 320px;
+$break-registration-buttons: 450px;
 $focus-border: 2px;
 
 .header {
@@ -27,17 +26,16 @@ $focus-border: 2px;
     padding: 0 20px;
     position: relative;
     z-index: 1;
-    $break-large: 1260px;
     .hamburger {
       cursor: pointer;
       margin: auto 0;
-      transform: scale(0.6);
+      margin-right: 20px;
       .line {
-        width: 50px;
-        height: 5px;
+        width: 30px;
+        height: 3px;
+        margin: 5px 0px;
         background-color:  #eb6c00;
         display: block;
-        margin: 8px auto;
         -webkit-transition: all 0.3s ease-in-out;
         -o-transition: all 0.3s ease-in-out;
         transition: all 0.3s ease-in-out;
@@ -47,42 +45,34 @@ $focus-border: 2px;
       }
     }
     .hamburger.is-active .line:nth-child(1) {
-      -webkit-transform: translateY(13px) rotate(45deg);
-      -ms-transform: translateY(13px) rotate(45deg);
-      -o-transform: translateY(13px) rotate(45deg);
-      transform: translateY(13px) rotate(45deg);
+      -webkit-transform: translateY(8px) rotate(45deg);
+      -ms-transform: translateY(8px) rotate(45deg);
+      -o-transform: translateY(8px) rotate(45deg);
+      transform: translateY(8px) rotate(45deg);
     }
     .hamburger.is-active .line:nth-child(2) {
       opacity: 0;
     }
     .hamburger.is-active .line:nth-child(3) {
-      -webkit-transform: translateY(-13px) rotate(-45deg);
-      -ms-transform: translateY(-13px) rotate(-45deg);
-      -o-transform: translateY(-13px) rotate(-45deg);
-      transform: translateY(-13px) rotate(-45deg);
+      -webkit-transform: translateY(-8px) rotate(-45deg);
+      -ms-transform: translateY(-8px) rotate(-45deg);
+      -o-transform: translateY(-8px) rotate(-45deg);
+      transform: translateY(-8px) rotate(-45deg);
     }
-    .logotype-container {
+    .logotype {
       margin: 10px 0px;
-      .logotype {
-        height: 100%;
-      }
-      @media screen and (max-width: $break-large) {
+      width: 154px;
+      @media screen and (max-width: $break-logo) {
         display: none;
       }
     }
-    .logomark-container {
+    .logomark {
       margin: 10px 0px;
-      .logomark {
-        height: 100%;
-        margin: 0px 20px; // Protection area
-      }
+      width: 43px;
       display: none;
-      @media screen and (max-width: $break-large) {
+      @media screen and (max-width: $break-logo) {
         display: inherit;
       }
-    }
-    .logo {
-      //border: 1px solid red;
     }
     .header-left {
       //border: 1px solid blue;
@@ -92,7 +82,7 @@ $focus-border: 2px;
       flex-direction: row;
       justify-content: center;
       align-items: center;
-      margin: 10px;
+      margin: 10px 20px;
       .category-menu-button {
         cursor: pointer;
         display: flex;
@@ -112,7 +102,7 @@ $focus-border: 2px;
         .button-label {
           margin-left: 5px;
           padding-top: 1px;
-          @media screen and (max-width: 900px) {
+          @media screen and (max-width: $categories-label-break) {
             display: none;
           }
         }
@@ -167,7 +157,7 @@ $focus-border: 2px;
           display: flex;
           align-items: center;
           margin: 0px 2px;
-          @media screen and (max-width: $brack-registration-buttons) {
+          @media screen and (max-width: $break-registration-buttons) {
             display: none;
           }
           @media screen and (max-width: $break-header) {
@@ -214,7 +204,7 @@ $focus-border: 2px;
           }
         }
         .user-section {
-          @media screen and (max-width: $brack-registration-buttons) {
+          @media screen and (max-width: $break-registration-buttons) {
             display: none;
           }
           position: relative;
@@ -296,7 +286,7 @@ $focus-border: 2px;
           }
         }
         .register-section {
-          @media screen and (max-width: $brack-registration-buttons) {
+          @media screen and (max-width: $break-registration-buttons) {
             display: none;
           }
           position: relative;
