@@ -62,6 +62,14 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "home": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.home.ts"
+                }
+              ]
             }
           }
         },
@@ -73,6 +81,9 @@
           "configurations": {
             "production": {
               "browserTarget": "aurora-website:build:production"
+            },
+            "home": {
+              "browserTarget": "aurora-website:build:home"
             }
           }
         },
@@ -91,10 +102,12 @@
             "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/web.config"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/animate.css/animate.min.css"
             ],
             "scripts": []
           }
@@ -125,6 +138,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "aurora-website"
 }

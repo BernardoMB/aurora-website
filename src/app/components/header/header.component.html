@@ -1,14 +1,23 @@
 <div class="header">
   <div class="header-inner">
+    <div
+      class="hamburger"
+      [class.is-active]="mobileNavBarOpen"
+      (click)="mobileNavBarOpen = !mobileNavBarOpen"
+    >
+      <span class="line"></span>
+      <span class="line"></span>
+      <span class="line"></span>
+    </div>
     <!-- Logo container -->
-    <div class="logotype-container focus-outline" routerLink="/">
+    <div class="logo logotype-container focus-outline" routerLink="/">
       <img
         class="logotype"
         src="/assets/img/logos/logotype.svg"
         alt="Invest Naija Logotype"
       />
     </div>
-    <div class="logomark-container focus-outline" routerLink="/">
+    <div class="logo logomark-container focus-outline" routerLink="/">
       <img
         class="logomark"
         src="/assets/img/logos/logomark.svg"
@@ -22,14 +31,14 @@
         [matMenuTriggerFor]="categoriesMenu"
       >
         <i class="material-icons">apps</i>
-        <div style="padding-top: 1px;">
+        <div class="button-label">
           Categories
         </div>
       </button>
       <mat-menu #categoriesMenu="matMenu">
         <div
-          *ngFor="let category of categories; let i = index"
           class="category-container focus-outline"
+          *ngFor="let category of categories; let i = index"
           tabindex="0"
           [routerLink]="['/courses/categories', category.id]"
           routerLinkActive="active"
@@ -103,8 +112,8 @@
             >shopping_cart</i
           >
           <div
-            *ngIf="cart && cart.length > 0"
             class="cart-count-indicator"
+            *ngIf="cart && cart.length > 0"
             #cartMenuTrigger="matMenuTrigger"
             [matMenuTriggerFor]="cartMenu"
             (keyup.enter)="cartMenuTrigger.openMenu()"
@@ -246,4 +255,75 @@
       </div>
     </div>
   </div>
+</div>
+
+<div *ngIf="mobileNavBarOpen" class="mobile-navigation-links">
+  <ul class="mobilenav-links">
+    <li class="mobilenav-link">
+      <a
+        class="focus-outline"
+        routerLink="/home"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}"
+        (click)="handleMobileLinkClick()">
+        Landing page
+      </a>
+    </li>
+    <li class="mobilenav-link">
+      <a
+        class="focus-outline"
+        routerLink="/courses"
+        routerLinkActive="active"
+        (click)="handleMobileLinkClick()">
+        Courses
+      </a>
+    </li>
+    <li class="mobilenav-link">
+      <a
+        class="focus-outline"
+        routerLink="/news"
+        routerLinkActive="active"
+        (click)="handleMobileLinkClick()"
+      >
+        Explore
+      </a>
+    </li>
+    <li class="mobilenav-link">
+      <a
+        class="focus-outline"
+        routerLink="/events"
+        routerLinkActive="active"
+        (click)="handleMobileLinkClick()"
+      >Events</a>
+    </li>
+    <li class="mobilenav-link">
+      <a
+        class="focus-outline"
+        routerLink="/invest"
+        routerLinkActive="active"
+        (click)="handleMobileLinkClick()"
+        >Invest</a
+      >
+    </li>
+    <li class="mobilenav-link">
+      <a
+        class="focus-outline"
+        [routerLink]="['/home']"
+        fragment="contact"
+        [class.active]="currentSection === 'contact'"
+        (click)="handleMobileLinkClick()"
+        >Contact</a
+      >
+    </li>
+    <!-- <li class="mobilenav-link">
+      <a routerLink="/press-releases" (click)="handleMobileLinkClick()" routerLinkActive="active">
+        Press releases
+      </a>
+    </li>
+    <li class="mobilenav-link">
+      <a routerLink="/blog" (click)="handleMobileLinkClick()" routerLinkActive="active">
+        Blog
+      </a>
+    </li> -->
+  </ul>
 </div>

@@ -34,6 +34,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  mobileNavBarOpen = false;
   @ViewChild(MatMenuTrigger, { static: true }) cartMenuTrigger: MatMenuTrigger;
   @ViewChild(MatMenuTrigger, { static: true }) userMenuTrigger: MatMenuTrigger;
   usr: User = undefined;
@@ -242,5 +243,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onViewShoppingKart() {
     this.viewShoppingKart.emit();
+  }
+
+  handleMobileLinkClick() {
+    this.mobileNavBarOpen = false;
   }
 }

@@ -1,3 +1,7 @@
+$break-header: 800px;
+$brack-registration-buttons: 450px;
+
+
 $break-small: 320px;
 $focus-border: 2px;
 
@@ -7,7 +11,7 @@ $focus-border: 2px;
   display: block;
   position: relative;
   z-index: 10;
-  background: #fff;
+  background: white;
   position: fixed;
   top: 0px;
   width: 100%;
@@ -23,6 +27,39 @@ $focus-border: 2px;
     position: relative;
     z-index: 1;
     $break-large: 1260px;
+    .hamburger {
+      cursor: pointer;
+      margin: auto 0;
+      transform: scale(0.6);
+      .line {
+        width: 50px;
+        height: 5px;
+        background-color:  #eb6c00;
+        display: block;
+        margin: 8px auto;
+        -webkit-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+      }
+      @media screen and (min-width: $break-header) {
+        display: none;
+      }
+    }
+    .hamburger.is-active .line:nth-child(1) {
+      -webkit-transform: translateY(13px) rotate(45deg);
+      -ms-transform: translateY(13px) rotate(45deg);
+      -o-transform: translateY(13px) rotate(45deg);
+      transform: translateY(13px) rotate(45deg);
+    }
+    .hamburger.is-active .line:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.is-active .line:nth-child(3) {
+      -webkit-transform: translateY(-13px) rotate(-45deg);
+      -ms-transform: translateY(-13px) rotate(-45deg);
+      -o-transform: translateY(-13px) rotate(-45deg);
+      transform: translateY(-13px) rotate(-45deg);
+    }
     .logotype-container {
       margin: 10px 0px;
       .logotype {
@@ -36,13 +73,18 @@ $focus-border: 2px;
       margin: 10px 0px;
       .logomark {
         height: 100%;
+        margin: 0px 20px; // Protection area
       }
       display: none;
       @media screen and (max-width: $break-large) {
         display: inherit;
       }
     }
+    .logo {
+      //border: 1px solid red;
+    }
     .header-left {
+      //border: 1px solid blue;
       flex: 1;
       min-width: 1px;
       display: flex;
@@ -51,6 +93,7 @@ $focus-border: 2px;
       align-items: center;
       margin: 10px;
       .category-menu-button {
+        cursor: pointer;
         display: flex;
         align-items: center;
         line-height: 1;
@@ -65,12 +108,17 @@ $focus-border: 2px;
           border: 1px solid;
           border-color: rgba(20,23,28,.05);
         }
-        i {
-          margin-right: 5px;
+        .button-label {
+          margin-left: 5px;
+          padding-top: 1px;
+          @media screen and (max-width: 900px) {
+            display: none;
+          }
         }
       }
     }
     .header-right {
+      //border: 1px solid green;
       display: flex;
       align-items: center;
       margin: 10px 0px;
@@ -79,10 +127,14 @@ $focus-border: 2px;
         font-family: 'Trebuchet MS', Helvetica, sans-serif;
         color: #1f5e11;
         font-size: 18px;
+        height: 100%;
         .navigation-links {
           display: flex;
           align-items: center;
           padding: 0px 15px;
+          @media screen and (max-width: $break-header) {
+            display: none;
+          }
           .nav-link {
             list-style: none;
             margin: 0px 10px;
@@ -114,6 +166,9 @@ $focus-border: 2px;
           display: flex;
           align-items: center;
           margin: 0px 2px;
+          @media screen and (max-width: $brack-registration-buttons) {
+            display: none;
+          }
           .divider {
             height: 60%;
             border-left: 1px solid #dedfe0;
@@ -138,7 +193,7 @@ $focus-border: 2px;
             height: 17px;
             border-radius: 10px;
             position: absolute;
-            top: 10px;
+            top: 2px;
             right: -5px;
             font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
             font-size: 11px;
@@ -155,6 +210,9 @@ $focus-border: 2px;
           }
         }
         .user-section {
+          @media screen and (max-width: $brack-registration-buttons) {
+            display: none;
+          }
           position: relative;
           display: flex;
           align-items: center;
@@ -234,6 +292,9 @@ $focus-border: 2px;
           }
         }
         .register-section {
+          @media screen and (max-width: $brack-registration-buttons) {
+            display: none;
+          }
           position: relative;
           display: flex;
           align-items: center;
@@ -293,6 +354,54 @@ $focus-border: 2px;
     }
   }
 }
+
+// Mobile menu
+.mobile-navigation-links {
+  box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1),
+    0 3px 1px 0 rgba(20, 23, 28, 0.1);
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  background: #585863;
+  z-index: 3;
+  ul.mobilenav-links {
+    padding: 0 0 0 2px;
+    .mobilenav-link {
+      a {
+        height: 100%;
+        box-sizing: border-box;
+        display: inline-block;
+        padding: 16px;
+        text-decoration: none;
+        color: white;
+        // background-color: black;
+        width: 100%;
+        font-size: 0.75em;
+        margin-left: 2px solid transparent;
+        position: relative;
+        background-clip: padding-box;
+        &.active {
+          background-color: lighten(black, 20%);
+          &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+            margin-left: -2px;
+            border-radius: inherit;
+            background: linear-gradient(to bottom, #dc5500, #f59805);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Mat menu classes
 
 .category-container {
   display: flex;
@@ -509,8 +618,10 @@ $focus-border: 2px;
   }
 }
 
-::ng-deep {
+// Modify Angular Material classes
+
+/* ::ng-deep {
   .mat-menu-panel {
     max-width: 400px !important;
   }
-}
+} */
