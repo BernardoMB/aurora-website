@@ -5,7 +5,25 @@
   img {
     width: 100%;
     height: auto;
-    animation: kenburns 30s ease-in-out infinite alternate;
+    $animation-time: 25s;
+    animation: kenburns1 $animation-time ease-in-out infinite alternate;
+    @media screen and (max-width: 950px) {
+      animation: kenburns2 $animation-time ease-in-out infinite alternate;
+    }
+    @media screen and (max-width: 600px) {
+      animation: kenburns3 $animation-time ease-in-out infinite alternate;
+    }
+    @media screen and (max-width: 420px) {
+      animation: kenburns4 $animation-time ease-in-out infinite alternate;
+    }
+    @media screen and (max-width: 360px) {
+      animation: kenburns5 $animation-time ease-in-out infinite alternate;
+    }
+    @media screen and (max-width: 320px) {
+      //animation: none;
+      height: 100%;
+      animation: kenburns5 15s ease-in-out infinite alternate;
+    }
   }
   .gradient-wrapper {
     position: absolute;
@@ -27,10 +45,18 @@
       .chingadera-blanca {
         position: absolute;
         height: 100%;
-        width: 50px;
         background-color: white;
+        width: 50px;
         left: -25px;
         border-radius: 20px;
+        @media screen and (max-width: 950px) {
+          width: 25px;
+          left: -12px;
+        }
+        @media screen and (max-width: 430px) {
+          width: 25px;
+          left: -18px;
+        }
       }
       .content {
         height: 100%;
@@ -42,11 +68,17 @@
         .texts {
           display: flex;
           flex-direction: column;
-          margin-left: 100px;
+          margin: 0px 100px;
           color: white;
           font-family: 'Nunito', sans-serif;
           .quality {
             font-size: 52px;
+            @media screen and (max-width: 950px) {
+              font-size: 28px;
+            }
+            @media screen and (max-width: 570px) {
+              font-size: 25px;
+            }
           }
           .bank-service {
             font-size: 52px;
@@ -58,10 +90,26 @@
             font-size: 20px;
             margin-left: 50px;
             max-width: 470px;
+            @media screen and (max-width: 570px) {
+              font-size: 16px;
+            }
+          }
+          @media screen and (max-width: 430px) {
+            margin-left: 25px;
+            margin-right: 15px;
           }
         }
       }
+      @media screen and (max-width: 950px) {
+        margin-top: 30px;
+      }
+      @media screen and (max-width: 570px) {
+        margin-top: 0px;
+      }
     }
+  }
+  @media screen and (max-width: 950px) {
+    height: 320px;
   }
 }
 
@@ -80,6 +128,10 @@
       background-color: #166047;
       border-top-right-radius: 16px;
       border-bottom-right-radius: 16px;
+      @media screen and (max-width: 1050px) {
+        width: 100%;
+        left: -20px;
+      }
     }
     .chingadera-verde {
       top: 0px;
@@ -90,6 +142,10 @@
       background-color: #35a881;
       border-top-right-radius: 96px;
       border-bottom-right-radius: 96px;
+      @media screen and (max-width: 1050px) {
+        width: 100%;
+        left: -40px;
+      }
     }
     .conatiner {
       max-width: 1180px;
@@ -109,6 +165,10 @@
           font-size: 30px;
           max-width: 420px;
           font-weight: 700;
+          @media screen and (max-width: 1050px) {
+            max-width: none;
+            text-align: center;
+          }
         }
         .phrase {
           margin-top: 10px;
@@ -116,6 +176,10 @@
           max-width: 420px;
           font-size: 20px;
           font-weight: 500;
+          @media screen and (max-width: 1050px) {
+            max-width: none;
+            text-align: center;
+          }
         }
         .enroll-button-container {
           display: flex;
@@ -129,6 +193,15 @@
             border-radius: 50px;
           }
         }
+        @media screen and (max-width: 1050px) {
+          margin: 0px;
+          align-items: center;
+          padding-left: 20px;
+          padding-right: 50px;
+        }
+      }
+      @media screen and (max-width: 1050px) {
+        justify-content: center;
       }
     }
     img {
@@ -136,7 +209,13 @@
       right: -240px;
       top: 0px;
       height: 380px;
+      @media screen and (max-width: 1050px) {
+        display: none;
+      }
     }
+  }
+  @media screen and (max-width: 1050px) {
+    /* margin: 0px 20px; */
   }
 }
 
@@ -175,6 +254,10 @@
         padding: 8px 30px;
         font-weight: 700;
         border-radius: 50px;
+        text-align: center;
+        @media screen and (max-width: 600px) {
+          border-radius: 25px;
+        }
       }
     }
     $cardOffset: 80px;
@@ -250,6 +333,7 @@
       }
     }
     .image {
+      margin-left: 20px;
       flex-grow: 1;
       height: 300px;
       background-size: cover;
@@ -323,10 +407,14 @@
       height: 300px;
       background-size: cover;
       resize: both;
-      background-position-x: center;
+      background-position-x: 0px;
       background-position-y: center;
       background-image: url('../../../assets/img/landing/banking.jpg');
       border-radius: 100px;
+      margin-right: 20px;
+      @media screen and (max-width: 780px) {
+        background-position-x: -50px;
+      }
     }
   }
   img {
@@ -334,6 +422,12 @@
     left: -110px;
     top: 0px;
     height: 380px;
+    @media screen and (max-width: 1250px) {
+      left: -160px;
+    }
+    @media screen and (max-width: 600px) {
+      left: -160px;
+    }
   }
 }
 
@@ -402,6 +496,7 @@
       background-position-y: center;
       background-image: url('../../../assets/img/landing/events.jpg');
       border-radius: 100px;
+      margin-left: 20px;
     }
   }
 }
@@ -524,7 +619,7 @@
   position: relative;
   overflow-x: hidden;
   .content {
-    padding: 30px 0px;
+    padding: 30px 20px;
     max-width: 1180px;
     margin: auto;
     box-sizing: border-box;
@@ -552,11 +647,47 @@
   }
 }
 
-@keyframes kenburns {
+@keyframes kenburns1 {
   0% {
     transform: scale3d(1, 1, 1) translate3d(0px, 0px, 0px);
   }
   100% {
     transform: scale3d(1.2, 1.2, 1.2) translate3d(-80px, -180px, 0px);
+  }
+}
+
+@keyframes kenburns2 {
+  0% {
+    transform: scale3d(1, 1, 1) translate3d(0px, -40px, 0px);
+  }
+  100% {
+    transform: scale3d(1.2, 1.2, 1.2) translate3d(-50px, -110px, 0px);
+  }
+}
+
+@keyframes kenburns3 {
+  0% {
+    transform: scale3d(1, 1, 1) translate3d(0px, -40px, 0px);
+  }
+  100% {
+    transform: scale3d(1.2, 1.2, 1.2) translate3d(-25px, -60px, 0px);
+  }
+}
+
+@keyframes kenburns4 {
+  0% {
+    transform: scale3d(1, 1, 1) translate3d(0px, 0px, 0px);
+  }
+  100% {
+    transform: scale3d(1.2, 1.2, 1.2) translate3d(0px, 0px, 0px);
+  }
+}
+
+@keyframes kenburns5 {
+  0% {
+    transform: scale3d(1, 1, 1) translate3d(0px, 0px, 0px);
+  }
+  100% {
+    transform: scale3d(1.2, 1.2, 1.2) translate3d(0px, 0px, 0px);
   }
 }

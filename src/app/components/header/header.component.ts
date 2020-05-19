@@ -217,10 +217,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogin() {
+    this.mobileNavBarOpen = false;
     this.login.emit();
   }
 
   onRegister() {
+    this.mobileNavBarOpen = false;
     this.register.emit();
   }
 

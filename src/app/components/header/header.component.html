@@ -10,14 +10,14 @@
       <span class="line"></span>
     </div>
     <!-- Logo container -->
-    <div class="logo logotype-container focus-outline" routerLink="/">
+    <div class="logo logotype-container focus-outline" routerLink="/" (click)="mobileNavBarOpen = false">
       <img
         class="logotype"
         src="/assets/img/logos/logotype.svg"
         alt="Invest Naija Logotype"
       />
     </div>
-    <div class="logo logomark-container focus-outline" routerLink="/">
+    <div class="logo logomark-container focus-outline" routerLink="/" (click)="mobileNavBarOpen = false">
       <img
         class="logomark"
         src="/assets/img/logos/logomark.svg"
@@ -29,6 +29,7 @@
         *ngIf="showCategories"
         class="category-menu-button focus-outline"
         [matMenuTriggerFor]="categoriesMenu"
+        (click)="mobileNavBarOpen = false"
       >
         <i class="material-icons">apps</i>
         <div class="button-label">
@@ -129,6 +130,7 @@
                     class="focus-outline"
                     [routerLink]="['/courses']"
                     tabindex="0"
+                    (click)="mobileNavBarOpen = false"
                     >Keep shopping</a
                   >
                 </div>
@@ -272,6 +274,17 @@
     <li class="mobilenav-link">
       <a
         class="focus-outline"
+        [routerLink]="['/home']"
+        fragment="contact"
+        [class.active]="currentSection === 'contact'"
+        (click)="handleMobileLinkClick()"
+        >Contact</a
+      >
+    </li>
+    <div style="width: calc(100% - 30px); height: 1px; background-color: gray; margin: auto;"></div>
+    <li class="mobilenav-link">
+      <a
+        class="focus-outline"
         routerLink="/courses"
         routerLinkActive="active"
         (click)="handleMobileLinkClick()">
@@ -305,25 +318,20 @@
         >Invest</a
       >
     </li>
+    <div style="width: calc(100% - 30px); height: 1px; background-color: gray; margin: auto;"></div>
     <li class="mobilenav-link">
       <a
         class="focus-outline"
-        [routerLink]="['/home']"
-        fragment="contact"
-        [class.active]="currentSection === 'contact'"
-        (click)="handleMobileLinkClick()"
-        >Contact</a
+        (click)="onLogin()"
+        >Log In</a
       >
     </li>
-    <!-- <li class="mobilenav-link">
-      <a routerLink="/press-releases" (click)="handleMobileLinkClick()" routerLinkActive="active">
-        Press releases
-      </a>
-    </li>
     <li class="mobilenav-link">
-      <a routerLink="/blog" (click)="handleMobileLinkClick()" routerLinkActive="active">
-        Blog
-      </a>
-    </li> -->
+      <a
+        class="focus-outline"
+        (click)="onRegister()"
+        >Sign Up</a
+      >
+    </li>
   </ul>
 </div>

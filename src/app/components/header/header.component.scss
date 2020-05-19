@@ -6,15 +6,16 @@ $break-small: 320px;
 $focus-border: 2px;
 
 .header {
+  // Un comment for fixed header
+  /* position: fixed;
+  top: 0px; */
+  position: relative; // Comment for fixed header
+  width: 100%;
   box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1),
     0 3px 1px 0 rgba(20, 23, 28, 0.1);
   display: block;
-  position: relative;
   z-index: 10;
   background: white;
-  position: fixed;
-  top: 0px;
-  width: 100%;
   .header-inner {
     display: flex;
     justify-content: space-between;
@@ -167,6 +168,9 @@ $focus-border: 2px;
           align-items: center;
           margin: 0px 2px;
           @media screen and (max-width: $brack-registration-buttons) {
+            display: none;
+          }
+          @media screen and (max-width: $break-header) {
             display: none;
           }
           .divider {
@@ -357,16 +361,20 @@ $focus-border: 2px;
 
 // Mobile menu
 .mobile-navigation-links {
+  // Uncoment for fixed header
+  /* position: fixed;
+  top: 64px; */
+  position: relative; // comment for fixed header
+  width: 100%; // comment for fixed header
   box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1),
     0 3px 1px 0 rgba(20, 23, 28, 0.1);
-  position: fixed;
-  top: 64px;
   left: 0;
   right: 0;
   background: #585863;
   z-index: 3;
   ul.mobilenav-links {
     padding: 0 0 0 2px;
+    margin: 0px;
     .mobilenav-link {
       a {
         height: 100%;
