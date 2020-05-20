@@ -38,13 +38,21 @@
   }
   .welcome-phrase {
     margin-bottom: 20px;
+    text-align: center;
   }
   form {
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
+    padding: 20px;
+    width: calc(100% - 40px);
+    max-width: 260px;
     .credential-field {
+      width: 100%;
+      mat-form-field {
+        width: 100%;
+      }
       mat-icon {
         margin-left: 10px;
       }
@@ -63,7 +71,6 @@
       text-align: center;
     }
     .login-button-container {
-      margin-bottom: 30px;
       width: 100%;
       cursor: pointer;
       .login-button {
@@ -89,7 +96,8 @@
     }
   }
   .signup-phrase {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
+    padding: 20px;
     a {
       color: #289e50;
       cursor: pointer;
@@ -97,6 +105,9 @@
       &:hover {
         text-decoration: underline;
       }
+    }
+    @media screen and (max-width: 400px) {
+      font-size: 14px;
     }
   }
 }

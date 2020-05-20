@@ -9,6 +9,7 @@ import { LoginFormComponent } from '../login-form/login-form.component';
 import { SignupFormComponent } from '../signup-form/signup-form.component';
 import { logout } from '../../store/auth/auth.actions';
 import { slideInAnimation } from '../../animations';
+import { ScrollStrategy } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-main',
@@ -47,15 +48,11 @@ export class MainComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'custom-mat-dialog-container';
     dialogConfig.backdropClass = 'custom-modal-backdrop';
+    dialogConfig.maxHeight = '80vh';
     let loginDialogRef;
-    /* let signupDialogRef; */
     loginDialogRef = this.loginDialog.open(LoginFormComponent, dialogConfig);
     loginDialogRef.afterClosed().subscribe(result => {
       if (result && result.showSignUpModalOnClose) {
-        /* signupDialogRef = this.signupDialog.open(
-          SignupFormComponent,
-          dialogConfig,
-        ); */
         this.onRegister();
       }
     });
@@ -71,15 +68,11 @@ export class MainComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'custom-mat-dialog-container';
     dialogConfig.backdropClass = 'custom-modal-backdrop';
-    /* let loginDialogRef; */
+    dialogConfig.maxHeight = '80vh';
     let signupDialogRef;
     signupDialogRef = this.signupDialog.open(SignupFormComponent, dialogConfig);
     signupDialogRef.afterClosed().subscribe(result => {
       if (result && result.showLoginModalOnClose) {
-        /* loginDialogRef = this.loginDialog.open(
-          SignupFormComponent,
-          dialogConfig,
-        ); */
         this.onLogin();
       }
     });

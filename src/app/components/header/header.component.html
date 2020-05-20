@@ -10,11 +10,11 @@
       <span class="line"></span>
     </div>
     <img
-        class="logotype focus-outline"
-        src="/assets/img/logos/logotype.svg"
-        alt="Invest Naija Logotype"
-        routerLink="/" (click)="mobileNavBarOpen = false"
-      />
+      class="logotype focus-outline"
+      src="/assets/img/logos/logotype.svg"
+      alt="Invest Naija Logotype"
+      routerLink="/" (click)="mobileNavBarOpen = false"
+    />
     <img
       class="logomark focus-outline"
       src="/assets/img/logos/logomark.svg"
@@ -182,6 +182,133 @@
             </div>
           </mat-menu>
         </div>
+        <div *ngIf="user" class="person-container">
+          <i
+            class="material-icons focus-outline"
+            tabindex="0"
+            #userMenuTrigger="matMenuTrigger"
+            [matMenuTriggerFor]="userMenu"
+            (keyup.enter)="userMenuTrigger.openMenu()"
+            >person</i
+          >
+          <mat-menu #userMenu="matMenu">
+            <div class="user-menu">
+              <div
+                class="user-details-container focus-outline"
+                tabindex="0"
+                (keyup.enter)="onViewProfile()"
+                (click)="onViewProfile()"
+              >
+                <div class="profile-pic-container">
+                  <i class="material-icons">
+                    person
+                  </i>
+                </div>
+                <div class="user-names-container">
+                  <div class="user-names">
+                    {{ user.name }} {{ user.lastName }}
+                  </div>
+                  <div class="user-email">{{ user.email }}</div>
+                </div>
+              </div>
+              <div
+                class="menu-section focus-outline"
+                tabindex="0"
+                [routerLink]="['/courses/my-courses']"
+              >
+                My Courses
+              </div>
+              <div class="menu-separator"></div>
+              <div
+                class="menu-section focus-outline"
+                (click)="onHelp()"
+                tabindex="0"
+                (keyup.enter)="onHelp()"
+              >
+                Help
+              </div>
+              <div
+                class="menu-section focus-outline"
+                (click)="onLogout()"
+                tabindex="0"
+                (keyup.enter)="onLogout()"
+              >
+                Log out
+              </div>
+            </div>
+          </mat-menu>
+          <!-- <i
+            class="material-icons focus-outline"
+            tabindex="0"
+            #cartMenuTrigger="matMenuTrigger"
+            [matMenuTriggerFor]="cartMenu"
+            (keyup.enter)="cartMenuTrigger.openMenu()"
+            >shopping_cart</i
+          >
+          <mat-menu #cartMenu="matMenu">
+            <div *ngIf="!cart || cart.length === 0">
+              <div class="empty-cart-container">
+                <div>Your cart is empty.</div>
+                <div class="keep-shopping">
+                  <a
+                    class="focus-outline"
+                    [routerLink]="['/courses']"
+                    tabindex="0"
+                    (click)="mobileNavBarOpen = false"
+                    >Keep shopping</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div *ngIf="cart.length > 0">
+              <div class="courses-container">
+                <div
+                  *ngFor="let course of cart"
+                  class="course-item focus-outline"
+                  tabindex="0"
+                  (click)="onGoToCourse(course.id)"
+                >
+                  <div
+                    class="course-image"
+                    [style.backgroundImage]="'url(' + course.imgUrl + ')'"
+                  ></div>
+                  <div class="course-details">
+                    <div class="course-name">{{ course.name }}</div>
+                    <div class="course-prices">
+                      <div class="final-price">
+                        {{
+                          course.price * (1 - course.discount)
+                            | currency: 'NGN':'symbol-narrow'
+                        }}
+                      </div>
+                      <div class="original-price" *ngIf="course.discount > 0">
+                        {{ course.price | currency: 'NGN':'symbol-narrow' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="menu-footer">
+                  <div class="total-container">
+                    <div class="label">Total:</div>
+                    <div class="total">
+                      {{ total | currency: 'NGN':'symbol-narrow' }}
+                    </div>
+                    <div class="subtotal" *ngIf="total !== subtotal">
+                      {{ subtotal | currency: 'NGN':'symbol-narrow' }}
+                    </div>
+                  </div>
+                  <button
+                    class="cart-button focus-outline"
+                    *ngIf="showGoToCartButton"
+                    [routerLink]="['/courses/cart']"
+                  >
+                    Go to cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-menu> -->
+        </div>
         <div *ngIf="user" class="user-section">
           <div
             class="user-name-container focus-outline"
@@ -278,7 +405,7 @@
         >Contact</a
       >
     </li>
-    <div style="width: calc(100% - 30px); height: 1px; background-color: gray; margin: auto;"></div>
+    <div class="divider"></div>
     <li class="mobilenav-link">
       <a
         class="focus-outline"
@@ -315,15 +442,15 @@
         >Invest</a
       >
     </li>
-    <div style="width: calc(100% - 30px); height: 1px; background-color: gray; margin: auto;"></div>
-    <li class="mobilenav-link">
+    <div *ngIf="!user" class="divider"></div>
+    <li *ngIf="!user" class="mobilenav-link">
       <a
         class="focus-outline"
         (click)="onLogin()"
         >Log In</a
       >
     </li>
-    <li class="mobilenav-link">
+    <li *ngIf="!user" class="mobilenav-link">
       <a
         class="focus-outline"
         (click)="onRegister()"

@@ -203,6 +203,23 @@ $focus-border: 2px;
             cursor: pointer;
           }
         }
+        .person-container {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+          position: relative;
+          i {
+            cursor: pointer;
+            &:hover {
+              color: #408e2d;
+            }
+          }
+          display: none;
+          @media screen and (max-width: $break-registration-buttons) {
+            display: inherit;
+          }
+        }
         .user-section {
           @media screen and (max-width: $break-registration-buttons) {
             display: none;
@@ -210,7 +227,6 @@ $focus-border: 2px;
           position: relative;
           display: flex;
           align-items: center;
-          width: 157.672px;
           justify-content: flex-end;
           .user-name-container {
             position: relative;
@@ -395,6 +411,12 @@ $focus-border: 2px;
           }
         }
       }
+    }
+    .divider {
+      margin: 5px auto;
+      width: calc(100% - 30px);
+      height: 1px;
+      background-color: gray;
     }
   }
 }

@@ -141,6 +141,7 @@ $alt-theme: mat-dark-theme($alt-primary, $alt-accent, $alt-warn);
 
 html,
 body {
+  min-height: 100vh;
   height: 100%;
   background-color: #fafbfc;
 }
