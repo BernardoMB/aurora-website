@@ -1,8 +1,23 @@
+<section class="categories-header-mobile">
+  <div class="categories-header-container">
+    <div
+      *ngFor="let category of featuredCategories"
+      class="category-container focus-outline"
+      tabindex="0"
+      [routerLink]="['/courses/categories', category.id]"
+    >
+      <i class="material-icons">{{category.materialIcon}}</i>
+      <div>{{category.name}}</div>
+    </div>
+  </div>
+</section>
+
 <section class="categories-header">
   <div class="categories-header-container">
-    <div class="category-container focus-outline"
-      tabindex="0"
+    <div
       *ngFor="let category of featuredCategories"
+      class="category-container focus-outline"
+      tabindex="0"
       [routerLink]="['/courses/categories', category.id]"
     >
       <i class="material-icons">{{category.materialIcon}}</i>
