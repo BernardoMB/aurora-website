@@ -1,6 +1,6 @@
 {
     "javascript.preferences.importModuleSpecifier": "relative",
     "typescript.preferences.importModuleSpecifier": "relative",
-    "workbench.colorTheme": "Hackpot Poisoned Garden",
+    "workbench.colorTheme": "Monokai",
     "workbench.preferredDarkColorTheme": "Hackpot Garden Of Atlantis"
 }

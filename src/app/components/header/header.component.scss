@@ -1,5 +1,4 @@
 $break-small: 320px;
-$break-large: 1290px;
 $focus-border: 2px;
 
 .header {
@@ -7,8 +6,11 @@ $focus-border: 2px;
     0 3px 1px 0 rgba(20, 23, 28, 0.1);
   display: block;
   position: relative;
-  z-index: 1;
+  z-index: 10;
   background: #fff;
+  position: fixed;
+  top: 0px;
+  width: 100%;
   .header-inner {
     display: flex;
     justify-content: space-between;
@@ -20,6 +22,7 @@ $focus-border: 2px;
     padding: 0 20px;
     position: relative;
     z-index: 1;
+    $break-large: 1260px;
     .logotype-container {
       margin: 10px 0px;
       .logotype {
