@@ -25,27 +25,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   isAuthenticatedSubscription: Subscription;
   isAuthenticated: boolean;
 
-  // Featured courses pagination
-  featuredCourses: Course[];
-  featuredCoursesPage = new Page();
-
-  // Recent courses pagination
-  recentCourses: Course[];
-  recentCoursesPage = new Page();
-
-  // Trending courses pagination
-  trendingCourses: Course[];
-  trendingCoursesPage = new Page();
-
-  // Categories
-  categoriesSubscription: Subscription;
-  topCategories: Category[];
-  featuredCategories: Category[];
-
-  // Swiper slider
-  @ViewChild(SwiperDirective) mySwiper?: SwiperDirective;
-  testCourses: Course[] = [];
-  testCoursesPage = new Page();
+  // Sliders configuration
   config: any = {
     initialSlide: 0, // Slide Index Starting from 0
     paginationClickable: true, // Making pagination dots clicable
@@ -74,6 +54,27 @@ export class CoursesComponent implements OnInit, OnDestroy {
     },
   };
 
+  // Featured courses pagination
+  @ViewChild('featuredCoursesSwiper') featuredCoursesSwiper?: SwiperDirective;
+  featuredCourses: Course[] = [];
+  featuredCoursesPage = new Page();
+
+  // Recent courses pagination (Se quedan como estan)
+  recentCourses: Course[];
+  recentCoursesPage = new Page();
+
+  // Trending courses pagination
+  trendingCourses: Course[];
+  trendingCoursesPage = new Page();
+
+  // Categories
+  categoriesSubscription: Subscription;
+  topCategories: Category[];
+  featuredCategories: Category[];
+
+
+
+
   constructor(
     private coursesService: CoursesService,
     private store: Store<AuthState>,
@@ -95,19 +96,15 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Test courses infinite
-    this.testCoursesPage.size = 4;
-    this.testCoursesPage.pageNumber = 1;
-    this.setTestCoursesPage({ offset: this.testCoursesPage.pageNumber });
-    this.testCoursesPage.pageNumber = 2;
-    this.setTestCoursesPage({ offset: this.testCoursesPage.pageNumber });
-
-    // Featured courses pagination
-    this.featuredCoursesPage.size = 5;
+    this.featuredCoursesPage.size = 4;
     this.featuredCoursesPage.pageNumber = 1;
+    this.setFeaturedCoursesPage({ offset: this.featuredCoursesPage.pageNumber });
+    // Request second page
+    this.featuredCoursesPage.pageNumber = 2;
     this.setFeaturedCoursesPage({ offset: this.featuredCoursesPage.pageNumber });
 
     // Recent courses pagination
-    this.recentCoursesPage.size = 5;
+    this.recentCoursesPage.size = 2;
     this.recentCoursesPage.pageNumber = 1;
     this.setRecentCoursesPage({ offset: this.recentCoursesPage.pageNumber });
 
@@ -137,16 +134,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.categoriesSubscription.unsubscribe();
   }
 
-  /**
-   * This function gets called when the user clicks a button of the ngx paginator component.
-   * @param {number} pageNumber
-   * @memberof CoursesComponent
-   */
-  featuredCoursesPageChanged(pageNumber: number) {
-    this.featuredCoursesPage.pageNumber = pageNumber;
-    this.setFeaturedCoursesPage({ offset: pageNumber });
-  }
-
+  // * Featured courses
   /**
    * Paging function
    * @param pageInfo The page to select
@@ -156,9 +144,59 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.coursesService.getFeaturedCoursesPageData(this.featuredCoursesPage).subscribe((pagedData: PagedData<Course>) => {
       // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
       this.featuredCoursesPage = pagedData.page;
-      this.featuredCourses = pagedData.data;
+      // this.trendingCourses = pagedData.data;
+      this.featuredCourses = [
+        ...(this.featuredCourses),
+        ...(pagedData.data)
+      ];
+      setTimeout(() => {
+        this.featuredCoursesSwiper.update();
+      }, 0);
     });
   }
+  // Swiper slider
+  index = 0;
+  onIndexChange(e) {
+    // TODO: arreglar el pedo de que se navega directamente a una slide
+    const i = e;
+    this.featuredCoursesSwiper.setIndex(i);
+    if (i >= this.index) {
+      this.index = i;
+      let value: number;
+      const vw = window.innerWidth; // Viewport with
+      if (0 <= vw && vw <= 500) {
+        value = 1; // 1.5 slides
+        if (i === 1) {
+          return;
+        }
+      } else if (500 < vw && vw <= 700) {
+        value = 1; // 2 slides
+        if (i === 1) {
+          return;
+        }
+      } else if (700 < vw && vw <= 1020) {
+        value = 0; // 3 slides
+      } else {
+        value = 3; // 4 slides
+      }
+      if ((i % 4) === value) {
+        this.requestNextPage();
+      }
+    }
+  }
+  requestNextPage() {
+    this.featuredCoursesPage.size = 4;
+    this.setFeaturedCoursesPage({offset: this.featuredCoursesPage.pageNumber + 1});
+  }
+  prevSlide() {
+    this.featuredCoursesSwiper.prevSlide();
+  }
+  nextSlide() {
+    this.featuredCoursesSwiper.nextSlide();
+  }
+
+
+
 
   /**
    * This function gets called when the user clicks a button of the ngx paginator component.
@@ -214,67 +252,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
   testCoursesPageChanged(pageNumber: number) {
     this.trendingCoursesPage.pageNumber = pageNumber;
     this.setTrendingCoursesPage({ offset: pageNumber });
-  }
-
-  /**
-   * Paging function
-   * @param pageInfo The page to select
-   */
-  setTestCoursesPage(pageInfo: { offset: number }) {
-    this.testCoursesPage.pageNumber = pageInfo.offset;
-    this.coursesService.getCoursesPageData(this.testCoursesPage).subscribe((pagedData: PagedData<Course>) => {
-      console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
-      this.testCoursesPage = pagedData.page;
-      // this.trendingCourses = pagedData.data;
-      this.testCourses = [
-        ...(this.testCourses),
-        ...(pagedData.data)
-      ];
-      setTimeout(() => {
-        this.mySwiper.update();
-      }, 0);
-    });
-  }
-
-  // Swiper slider
-  index = 0;
-  onIndexChange(e) {
-    // TODO: arreglar el pedo de que se navega directamente a una slide
-    const i = e;
-    this.mySwiper.setIndex(i);
-    if (i >= this.index) {
-      this.index = i;
-      let value: number;
-      const vw = window.innerWidth; // Viewport with
-      if (0 <= vw && vw <= 500) {
-        value = 1; // 1.5 slides
-        if (i === 1) {
-          return;
-        }
-      } else if (500 < vw && vw <= 700) {
-        value = 1; // 2 slides
-        if (i === 1) {
-          return;
-        }
-      } else if (700 < vw && vw <= 1020) {
-        value = 0; // 3 slides
-      } else {
-        value = 3; // 4 slides
-      }
-      if ((i % 4) === value) {
-        this.requestNextPage();
-      }
-    }
-  }
-  requestNextPage() {
-    this.testCoursesPage.size = 4;
-    this.setTestCoursesPage({offset: this.testCoursesPage.pageNumber + 1});
-  }
-  prevSlide() {
-    this.mySwiper.prevSlide();
-  }
-  nextSlide() {
-    this.mySwiper.nextSlide();
   }
 
 }
