@@ -61,50 +61,10 @@
       </div>
       <div class="swiper-scrollbar"></div>
     </div>
-    <div class="swiper-button-prev" (click)="prevSlide()"></div>
-    <div class="swiper-button-next" (click)="nextSlide()"></div>
+    <div class="swiper-button-prev" *ngIf="showPrevBubtton" (click)="prevSlide()"></div>
+    <div class="swiper-button-next" *ngIf="showNextButton" (click)="nextSlide()"></div>
   </div>
 </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <section *ngIf="featuredCourses && featuredCourses.length > 0" class="courses-section">
-  <div class="courses-container">
-    <div class="title-container">
-      <div class="title">Featured</div>
-      <a class="focus-outline" [routerLink]="['/courses/all']" [queryParams]="{ page: 1 }">View all</a>
-    </div>
-    <div class="cards-container">
-      <div
-        class="course-card"
-        *ngFor="let i = index; let course of featuredCourses | paginate: { id: 'featured', itemsPerPage: featuredCoursesPage.size, currentPage: featuredCoursesPage.pageNumber, totalItems: featuredCoursesPage.totalElements }"
-      >
-        <app-course-card [course]="course"></app-course-card>
-      </div>
-    </div>
-    <pagination-controls id="featured" class="pagination-controls" (pageChange)="featuredCoursesPageChanged($event)"></pagination-controls>
-  </div>
-</section> -->
-
-
-
-
 
 <div class="divider"></div>
 

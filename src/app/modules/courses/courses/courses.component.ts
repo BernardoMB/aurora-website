@@ -51,8 +51,10 @@ export class CoursesComponent implements OnInit, OnDestroy {
     scrollbar: {
       el: '.swiper-scrollbar',
       hide: true,
-    },
+    }
   };
+  showPrevBubtton = false;
+  showNextButton = true;
 
   // Featured courses pagination
   @ViewChild(SwiperDirective) featuredCoursesSwiper?: SwiperDirective;
@@ -71,9 +73,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
   categoriesSubscription: Subscription;
   topCategories: Category[];
   featuredCategories: Category[];
-
-
-
 
   constructor(
     private coursesService: CoursesService,
@@ -149,6 +148,12 @@ export class CoursesComponent implements OnInit, OnDestroy {
         ...(this.featuredCourses),
         ...(pagedData.data)
       ];
+      if (pagedData.page.totalPages === pagedData.page.pageNumber) {
+        this.showNextButton = false;
+      } else {
+        this.showNextButton = true;
+      }
+      console.log('Show next button', this.showNextButton);
       setTimeout(() => {
         this.featuredCoursesSwiper.update();
       }, 0);
@@ -159,6 +164,16 @@ export class CoursesComponent implements OnInit, OnDestroy {
   onIndexChange(e) {
     // TODO: arreglar el pedo de que se navega directamente a una slide
     const i = e;
+    console.log('Indes', i);
+    if (i === 0) {
+      this.showPrevBubtton = false;
+    } else {
+      this.showPrevBubtton = true;
+    }
+    if (this.showNextButton === false) {
+      this.showNextButton = true;
+    }
+    console.log('Show prev button', this.showPrevBubtton);
     this.featuredCoursesSwiper.setIndex(i);
     if (i >= this.index) {
       this.index = i;
@@ -195,9 +210,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.featuredCoursesSwiper.nextSlide();
   }
 
-
-
-
+  // * Recent courses
   /**
    * This function gets called when the user clicks a button of the ngx paginator component.
    * @param {number} pageNumber
@@ -207,7 +220,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.recentCoursesPage.pageNumber = pageNumber;
     this.setRecentCoursesPage({ offset: pageNumber });
   }
-
   /**
    * Paging function
    * @param pageInfo The page to select
@@ -221,6 +233,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     });
   }
 
+  // * Trendring courses
   /**
    * This function gets called when the user clicks a button of the ngx paginator component.
    * @param {number} pageNumber
@@ -230,7 +243,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.trendingCoursesPage.pageNumber = pageNumber;
     this.setTrendingCoursesPage({ offset: pageNumber });
   }
-
   /**
    * Paging function
    * @param pageInfo The page to select
@@ -242,16 +254,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
       this.trendingCoursesPage = pagedData.page;
       this.trendingCourses = pagedData.data;
     });
-  }
-
-  /**
-   * This function gets called when the user clicks a button of the ngx paginator component.
-   * @param {number} pageNumber
-   * @memberof CoursesComponent
-   */
-  testCoursesPageChanged(pageNumber: number) {
-    this.trendingCoursesPage.pageNumber = pageNumber;
-    this.setTrendingCoursesPage({ offset: pageNumber });
   }
 
 }
