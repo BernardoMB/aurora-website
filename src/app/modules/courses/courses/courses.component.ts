@@ -62,6 +62,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
   showPrevBubtton = false;
   showNextButton = true;
   featuredReachedEnd = false;
+  index = 0;
+  lastIndex = 0;
 
   // Recent courses pagination (Se quedan como estan)
   recentCourses: Course[];
@@ -75,6 +77,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   showNextButtonTrending = true;
   trendingLastPageFetched: number;
   trendingTotalpages: number;
+  trendingIndex = 0;
 
   // Categories
   categoriesSubscription: Subscription;
@@ -183,10 +186,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
 
   // * Featured courses
-  /**
-   * Paging function
-   * @param pageInfo The page to select
-   */
   setFeaturedCoursesPage(pageInfo: { offset: number }) {
     this.featuredCoursesPage.pageNumber = pageInfo.offset;
     this.coursesService.getFeaturedCoursesPageData(this.featuredCoursesPage).subscribe((pagedData: PagedData<Course>) => {
@@ -212,9 +211,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
       }, 0);
     });
   }
-  // Swiper slider
-  index = 0;
-  lastIndex = 0;
   onIndexChange(e) {
     // TODO: arreglar el pedo de que se navega directamente a una slide
     const i = e;
@@ -305,19 +301,10 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
 
   // * Recent courses
-  /**
-   * This function gets called when the user clicks a button of the ngx paginator component.
-   * @param {number} pageNumber
-   * @memberof CoursesComponent
-   */
   recentCoursesPageChanged(pageNumber: number) {
     this.recentCoursesPage.pageNumber = pageNumber;
     this.setRecentCoursesPage({ offset: pageNumber });
   }
-  /**
-   * Paging function
-   * @param pageInfo The page to select
-   */
   setRecentCoursesPage(pageInfo: { offset: number }) {
     this.recentCoursesPage.pageNumber = pageInfo.offset;
     this.coursesService.getCoursesPageData(this.recentCoursesPage).subscribe((pagedData: PagedData<Course>) => {
@@ -347,10 +334,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
 
   // * Trending courses
-  /**
-   * Paging function
-   * @param pageInfo The page to select
-   */
   setTrendingCoursesPage(pageInfo: { offset: number }) {
     this.trendingCoursesPage.pageNumber = pageInfo.offset;
     this.coursesService.getTrendingCoursesPageData(this.trendingCoursesPage).subscribe((pagedData: PagedData<Course>) => {
@@ -375,8 +358,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
       }, 0);
     });
   }
-  // Swiper slider
-  trendingIndex = 0;
   onIndexChangeTrending(e) {
     // TODO: arreglar el pedo de que se navega directamente a una slide
     const i = e;
