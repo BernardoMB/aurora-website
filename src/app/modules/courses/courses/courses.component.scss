@@ -141,6 +141,54 @@ $categories-header-break: 980px;
   }
 }
 
+.courses-slider-section {
+  display: block;
+  position: relative;
+  .courses-container {
+    padding: 40px;
+    max-width: 1180px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    margin: auto;
+    .title-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Trebuchet MS', Helvetica, sans-serif;
+      .title {
+        color: #1b4568;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      a {
+        margin-right: 20px;
+        font-size: 18px;
+        color: darkgray;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+    .cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      .course-card {
+        margin: 10px 0px;
+        margin-right: 15px;
+        &:nth-last-child(1) {
+          margin-right: 0px;
+        }
+      }
+    }
+    @media screen and (max-width: 500px) {
+      padding: 40px 15px;
+    }
+  }
+}
+
 .courses-section {
   display: block;
   position: relative;
@@ -316,6 +364,46 @@ $categories-header-break: 980px;
       background-color: #eb6c00;
       border: 1px solid transparent;
       box-shadow: rgba(0, 0, 0, 0.75) -2px 2px 5px 0px;
+    }
+  }
+}
+
+// Custom swiper classes
+
+::ng-deep {
+  $button-radius: 46px;
+  .swiper-button-prev {
+    background-color: white;
+    height: $button-radius;
+    width: $button-radius;
+    box-shadow: 0 0 1px 1px rgba(20,23,28,.1), 0 3px 1px 0 rgba(20,23,28,.1);
+    border-radius: $button-radius;
+    top: 53%;
+    left: 14px;
+    &:after {
+      font-size: 18px;
+      font-weight: 900;
+      color: darkorange;
+    }
+    @media screen and (max-width: 500px) {
+      display: none;
+    }
+  }
+  .swiper-button-next {
+    background-color: white;
+    height: $button-radius;
+    width: $button-radius;
+    box-shadow: 0 0 1px 1px rgba(20,23,28,.1), 0 3px 1px 0 rgba(20,23,28,.1);
+    border-radius: $button-radius;
+    top: 53%;
+    right: 14px;
+    &:after {
+      font-size: 18px;
+      font-weight: 900;
+      color: darkorange;
+    }
+    @media screen and (max-width: 500px) {
+      display: none;
     }
   }
 }

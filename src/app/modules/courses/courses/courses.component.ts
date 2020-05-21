@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { CoursesService } from '../services/courses.service';
 import { Subscription } from 'rxjs';
 import { Course } from '../../../shared/models/course.model';
@@ -8,6 +8,13 @@ import { Store } from '@ngrx/store';
 import { AuthState } from '../../../store/auth/auth.state';
 import { selectAuthIsAuthenticated } from '../../../store/auth/auth.selectors';
 import { Router, NavigationEnd } from '@angular/router';
+import {
+  SwiperComponent,
+  SwiperDirective,
+  SwiperConfigInterface,
+  SwiperScrollbarInterface,
+  SwiperPaginationInterface
+} from 'ngx-swiper-wrapper';
 
 @Component({
   selector: 'app-courses',
@@ -35,6 +42,38 @@ export class CoursesComponent implements OnInit, OnDestroy {
   topCategories: Category[];
   featuredCategories: Category[];
 
+  // Swiper slider
+  @ViewChild(SwiperDirective) mySwiper?: SwiperDirective;
+  testCourses: Course[] = [];
+  testCoursesPage = new Page();
+  config: any = {
+    initialSlide: 0, // Slide Index Starting from 0
+    paginationClickable: true, // Making pagination dots clicable
+    pagination: '.swiper-pagination', // Pagination Class defined
+    nextButton: '.swiper-button-next', // Class for next button
+    prevButton: '.swiper-button-prev', // Class for prev button
+    slidesPerView: 1.5,
+    spaceBetween: 15, // Pixels between each slide
+    breakpoints: {
+      500: {
+        slidesPerView: 2,
+        spaceBetween: 20,
+      },
+      700: {
+        slidesPerView: 3,
+        spaceBetween: 30,
+      },
+      1020: {
+        slidesPerView: 4,
+        spaceBetween: 40,
+      },
+    },
+    scrollbar: {
+      el: '.swiper-scrollbar',
+      hide: true,
+    },
+  };
+
   constructor(
     private coursesService: CoursesService,
     private store: Store<AuthState>,
@@ -55,6 +94,13 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // Test courses infinite
+    this.testCoursesPage.size = 4;
+    this.testCoursesPage.pageNumber = 1;
+    this.setTestCoursesPage({ offset: this.testCoursesPage.pageNumber });
+    this.testCoursesPage.pageNumber = 2;
+    this.setTestCoursesPage({ offset: this.testCoursesPage.pageNumber });
+
     // Featured courses pagination
     this.featuredCoursesPage.size = 5;
     this.featuredCoursesPage.pageNumber = 1;
@@ -159,4 +205,76 @@ export class CoursesComponent implements OnInit, OnDestroy {
       this.trendingCourses = pagedData.data;
     });
   }
+
+  /**
+   * This function gets called when the user clicks a button of the ngx paginator component.
+   * @param {number} pageNumber
+   * @memberof CoursesComponent
+   */
+  testCoursesPageChanged(pageNumber: number) {
+    this.trendingCoursesPage.pageNumber = pageNumber;
+    this.setTrendingCoursesPage({ offset: pageNumber });
+  }
+
+  /**
+   * Paging function
+   * @param pageInfo The page to select
+   */
+  setTestCoursesPage(pageInfo: { offset: number }) {
+    this.testCoursesPage.pageNumber = pageInfo.offset;
+    this.coursesService.getCoursesPageData(this.testCoursesPage).subscribe((pagedData: PagedData<Course>) => {
+      console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
+      this.testCoursesPage = pagedData.page;
+      // this.trendingCourses = pagedData.data;
+      this.testCourses = [
+        ...(this.testCourses),
+        ...(pagedData.data)
+      ];
+      setTimeout(() => {
+        this.mySwiper.update();
+      }, 0);
+    });
+  }
+
+  // Swiper slider
+  index = 0;
+  onIndexChange(e) {
+    // TODO: arreglar el pedo de que se navega directamente a una slide
+    const i = e;
+    this.mySwiper.setIndex(i);
+    if (i >= this.index) {
+      this.index = i;
+      let value: number;
+      const vw = window.innerWidth; // Viewport with
+      if (0 <= vw && vw <= 500) {
+        value = 1; // 1.5 slides
+        if (i === 1) {
+          return;
+        }
+      } else if (500 < vw && vw <= 700) {
+        value = 1; // 2 slides
+        if (i === 1) {
+          return;
+        }
+      } else if (700 < vw && vw <= 1020) {
+        value = 0; // 3 slides
+      } else {
+        value = 3; // 4 slides
+      }
+      if ((i % 4) === value) {
+        this.requestNextPage();
+      }
+    }
+  }
+  requestNextPage() {
+    this.testCoursesPage.size = 4;
+    this.setTestCoursesPage({offset: this.testCoursesPage.pageNumber + 1});
+  }
+  prevSlide() {
+    this.mySwiper.prevSlide();
+  }
+  nextSlide() {
+    this.mySwiper.nextSlide();
+  }
+
 }
