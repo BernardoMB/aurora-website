@@ -114,7 +114,7 @@
         <app-course-card [course]="course"></app-course-card>
       </div>
     </div>
-    <pagination-controls id="recent" class="pagination-controls" (pageChange)="recentCoursesPageChanged($event)"></pagination-controls>
+    <pagination-controls maxSize="3" id="recent" class="pagination-controls" (pageChange)="recentCoursesPageChanged($event)"></pagination-controls>
   </div>
 </section>
 
