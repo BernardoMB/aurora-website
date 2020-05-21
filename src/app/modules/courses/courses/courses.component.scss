@@ -226,15 +226,14 @@ $categories-header-break: 980px;
     }
     .categories-cards-container {
       display: flex;
-      justify-content: space-between;
       flex-wrap: wrap;
       margin-top: 20px;
+      justify-content: center;
       .category-card {
         margin: 10px 0px;
         margin-right: 15px;
       }
       .category-card-2 {
-
         .card-container {
           color: #505763;
           font-size: 15px;
@@ -282,8 +281,19 @@ $categories-header-break: 980px;
           }
           .category-name {
           }
+          @media screen and (max-width: 468px) {
+            width: 100%;
+            margin-right: 0px;
+            margin-left: 0px;
+          }
         }
       }
+      @media screen and (max-width: 468px) {
+        flex-direction: column;
+      }
+    }
+    @media screen and (max-width: 500px) {
+      padding: 40px 15px;
     }
   }
 }
