@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, HostListener, ViewChildren, QueryList } from '@angular/core';
 import { CoursesService } from '../services/courses.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { Course } from '../../../shared/models/course.model';
 import { Category } from '../../../shared/models/category.model';
 import { Page, PagedData } from '../../../shared/utils';
@@ -26,6 +26,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   isAuthenticated: boolean;
 
   // Sliders configuration
+  @ViewChildren(SwiperDirective) swiperDirective: QueryList<SwiperDirective>;
   config: any = {
     initialSlide: 0, // Slide Index Starting from 0
     paginationClickable: true, // Making pagination dots clicable
@@ -53,21 +54,27 @@ export class CoursesComponent implements OnInit, OnDestroy {
       hide: true,
     }
   };
-  showPrevBubtton = false;
-  showNextButton = true;
 
   // Featured courses pagination
-  @ViewChild(SwiperDirective) featuredCoursesSwiper?: SwiperDirective;
+  //@ViewChild(SwiperDirective) featuredCoursesSwiper?: SwiperDirective;
   featuredCourses: Course[] = [];
   featuredCoursesPage = new Page();
+  showPrevBubtton = false;
+  showNextButton = true;
+  featuredReachedEnd = false;
 
   // Recent courses pagination (Se quedan como estan)
   recentCourses: Course[];
   recentCoursesPage = new Page();
 
   // Trending courses pagination
-  trendingCourses: Course[];
+  //@ViewChild(SwiperDirective) trendingCoursesSwiper?: SwiperDirective;
+  trendingCourses: Course[] = [];
   trendingCoursesPage = new Page();
+  showPrevBubttonTrending = false;
+  showNextButtonTrending = true;
+  trendingLastPageFetched: number;
+  trendingTotalpages: number;
 
   // Categories
   categoriesSubscription: Subscription;
@@ -93,8 +100,16 @@ export class CoursesComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Recent courses pagination
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    // console.log(event.target.innerWidth);
+    // console.log('Eventonsion', event);
+    // TODO: Reset Recently added pagination with appropiate number of pages
+  }
+
   ngOnInit() {
-    // Test courses infinite
+    // Featured courses infinite
     this.featuredCoursesPage.size = 4;
     this.featuredCoursesPage.pageNumber = 1;
     this.setFeaturedCoursesPage({ offset: this.featuredCoursesPage.pageNumber });
@@ -103,13 +118,25 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.setFeaturedCoursesPage({ offset: this.featuredCoursesPage.pageNumber });
 
     // Recent courses pagination
-    this.recentCoursesPage.size = 2;
+    const vw = window.innerWidth; // Viewport with
+    if (0 <= vw && vw <= 500) {
+      this.recentCoursesPage.size = 2;
+    } else if (500 < vw && vw <= 700) {
+      this.recentCoursesPage.size = 2;
+    } else if (700 < vw && vw <= 1020) {
+      this.recentCoursesPage.size = 3;
+    } else {
+      this.recentCoursesPage.size = 4;
+    }
     this.recentCoursesPage.pageNumber = 1;
     this.setRecentCoursesPage({ offset: this.recentCoursesPage.pageNumber });
 
-    // Trending courses pagination
-    this.trendingCoursesPage.size = 5;
+    // Featured courses infinite
+    this.trendingCoursesPage.size = 4;
     this.trendingCoursesPage.pageNumber = 1;
+    this.setTrendingCoursesPage({ offset: this.trendingCoursesPage.pageNumber });
+    // Request second page
+    this.trendingCoursesPage.pageNumber = 2;
     this.setTrendingCoursesPage({ offset: this.trendingCoursesPage.pageNumber });
 
     this.categoriesSubscription = this.coursesService.getCategories().subscribe((categories: Category[]) => {
@@ -133,6 +160,28 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.categoriesSubscription.unsubscribe();
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // * Featured courses
   /**
    * Paging function
@@ -149,32 +198,37 @@ export class CoursesComponent implements OnInit, OnDestroy {
         ...(pagedData.data)
       ];
       if (pagedData.page.totalPages === pagedData.page.pageNumber) {
-        this.showNextButton = false;
+        //this.showNextButton = false;
+        console.log('setting reach end to true');
+        this.featuredReachedEnd = true;
       } else {
-        this.showNextButton = true;
+        this.showNextButton = true; console.log('Setted next button to true');
       }
-      console.log('Show next button', this.showNextButton);
+      //console.log('Show next button', this.showNextButton);
       setTimeout(() => {
-        this.featuredCoursesSwiper.update();
+        ////this.featuredCoursesSwiper.update();
+        /* console.log('PENENENEEEe', this.swiperDirective); */
+        this.swiperDirective.first.update();
       }, 0);
     });
   }
   // Swiper slider
   index = 0;
+  lastIndex = 0;
   onIndexChange(e) {
     // TODO: arreglar el pedo de que se navega directamente a una slide
     const i = e;
-    console.log('Indes', i);
     if (i === 0) {
       this.showPrevBubtton = false;
     } else {
       this.showPrevBubtton = true;
     }
-    if (this.showNextButton === false) {
-      this.showNextButton = true;
+    if (e < this.lastIndex) {
+      this.showNextButton = true; console.log('Setted next button to true esp');
     }
-    console.log('Show prev button', this.showPrevBubtton);
-    this.featuredCoursesSwiper.setIndex(i);
+    //console.log('Show prev button', this.showPrevBubtton);
+    ////this.featuredCoursesSwiper.setIndex(i);
+    this.swiperDirective.first.setIndex(i);
     if (i >= this.index) {
       this.index = i;
       let value: number;
@@ -195,20 +249,60 @@ export class CoursesComponent implements OnInit, OnDestroy {
         value = 3; // 4 slides
       }
       if ((i % 4) === value) {
-        this.requestNextPage();
+        if (!this.featuredReachedEnd) {
+          this.requestNextPage();
+        }
       }
     }
+    this.lastIndex = e;
   }
   requestNextPage() {
     this.featuredCoursesPage.size = 4;
     this.setFeaturedCoursesPage({offset: this.featuredCoursesPage.pageNumber + 1});
   }
   prevSlide() {
-    this.featuredCoursesSwiper.prevSlide();
+    ////this.featuredCoursesSwiper.prevSlide();
+    this.swiperDirective.first.prevSlide();
   }
   nextSlide() {
-    this.featuredCoursesSwiper.nextSlide();
+    ////this.featuredCoursesSwiper.nextSlide();
+    this.swiperDirective.first.nextSlide();
   }
+  onReachEnd() {
+    console.log('Reached end', this.featuredReachedEnd);
+    if (this.featuredReachedEnd) {
+      this.showNextButton = false;
+    }
+  }
+
+  pene(){
+    console.log(this.showNextButton);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // * Recent courses
   /**
@@ -233,16 +327,26 @@ export class CoursesComponent implements OnInit, OnDestroy {
     });
   }
 
-  // * Trendring courses
-  /**
-   * This function gets called when the user clicks a button of the ngx paginator component.
-   * @param {number} pageNumber
-   * @memberof CoursesComponent
-   */
-  trendingCoursesPageChanged(pageNumber: number) {
-    this.trendingCoursesPage.pageNumber = pageNumber;
-    this.setTrendingCoursesPage({ offset: pageNumber });
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // * Trending courses
   /**
    * Paging function
    * @param pageInfo The page to select
@@ -252,8 +356,81 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.coursesService.getTrendingCoursesPageData(this.trendingCoursesPage).subscribe((pagedData: PagedData<Course>) => {
       // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
       this.trendingCoursesPage = pagedData.page;
-      this.trendingCourses = pagedData.data;
+      // this.trendingCourses = pagedData.data;
+      this.trendingCourses = [
+        ...(this.trendingCourses),
+        ...(pagedData.data)
+      ];
+      this.trendingLastPageFetched = pagedData.page.pageNumber;
+      this.trendingTotalpages = pagedData.page.totalPages;
+      if (pagedData.page.totalPages === pagedData.page.pageNumber) {
+        this.showNextButtonTrending = false;
+      } else {
+        this.showNextButtonTrending = true;
+      }
+      //console.log('Show next button', this.showNextButtonTrending);
+      setTimeout(() => {
+        ////this.trendingCoursesSwiper.update();
+        this.swiperDirective.last.update();
+      }, 0);
     });
+  }
+  // Swiper slider
+  trendingIndex = 0;
+  onIndexChangeTrending(e) {
+    // TODO: arreglar el pedo de que se navega directamente a una slide
+    const i = e;
+    if (i === 0) {
+      this.showPrevBubttonTrending = false;
+    } else {
+      this.showPrevBubttonTrending = true;
+    }
+    if (this.showNextButtonTrending === false) {
+      this.showNextButtonTrending = true;
+    }
+    //console.log('Show prev button', this.showPrevBubtton);
+    ////this.trendingCoursesSwiper.setIndex(i);
+    this.swiperDirective.last.setIndex(i);
+    if (i >= this.trendingIndex) {
+      this.trendingIndex = i;
+      let value: number;
+      const vw = window.innerWidth; // Viewport with
+      if (0 <= vw && vw <= 500) {
+        value = 1; // 1.5 slides
+        if (i === 1) {
+          return;
+        }
+      } else if (500 < vw && vw <= 700) {
+        value = 1; // 2 slides
+        if (i === 1) {
+          return;
+        }
+      } else if (700 < vw && vw <= 1020) {
+        value = 0; // 3 slides
+      } else {
+        value = 3; // 4 slides
+      }
+      if ((i % 4) === value) {
+        this.requestNextPageTrending();
+      }
+    }
+  }
+  requestNextPageTrending() {
+    this.trendingCoursesPage.size = 4;
+    this.setTrendingCoursesPage({offset: this.trendingCoursesPage.pageNumber + 1});
+  }
+  prevSlideTrending() {
+    ////this.trendingCoursesSwiper.prevSlide();
+    this.swiperDirective.last.prevSlide();
+  }
+  nextSlideTrending() {
+    ////this.trendingCoursesSwiper.nextSlide();
+    this.swiperDirective.last.nextSlide();
+  }
+  onReachEndTrending() {
+    if (this.trendingLastPageFetched === this.trendingTotalpages) {
+      this.showNextButtonTrending = false;
+    }
   }
 
 }

@@ -53,6 +53,7 @@
       [swiper]="config"
       (indexChange)="onIndexChange($event)"
       style="width: 100%; margin-top: 20px;"
+      (reachEnd)="onReachEnd()"
     >
       <div class="swiper-wrapper">
         <div class="swiper-slide" *ngFor="let i = index; let course of featuredCourses">
@@ -120,7 +121,7 @@
 
 <div class="divider"></div>
 
-<section *ngIf="trendingCourses && trendingCourses.length > 0" class="courses-section">
+<!-- <section *ngIf="trendingCourses && trendingCourses.length > 0" class="courses-section">
   <div class="courses-container">
     <div class="title-container">
       <div class="title">Trending</div>
@@ -136,6 +137,31 @@
     </div>
     <pagination-controls id="trending" class="pagination-controls" (pageChange)="trendingCoursesPageChanged($event)"></pagination-controls>
   </div>
+</section> -->
+<section *ngIf="trendingCourses && trendingCourses.length > 0" class="courses-slider-section">
+  <div class="courses-container">
+    <div class="title-container">
+      <div class="title">Trending</div>
+      <a class="focus-outline" [routerLink]="['/courses/all']" [queryParams]="{ page: 1 }" style="margin: 0px;">View all</a>
+    </div>
+    <div
+      class="swiper-container"
+      #trendingCoursesSwiper
+      [swiper]="config"
+      (indexChange)="onIndexChangeTrending($event)"
+      style="width: 100%; margin-top: 20px;"
+      (reachEnd)="onReachEndTrending()"
+    >
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" *ngFor="let i = index; let course of trendingCourses">
+          <app-course-swiper-card [course]="course"></app-course-swiper-card>
+        </div>
+      </div>
+      <div class="swiper-scrollbar"></div>
+    </div>
+    <div class="swiper-button-prev" *ngIf="showPrevBubttonTrending" (click)="prevSlideTrending()"></div>
+    <div class="swiper-button-next" *ngIf="showNextButtonTrending" (click)="nextSlideTrending()"></div>
+  </div>
 </section>
 
 <div class="divider"></div>
@@ -146,3 +172,5 @@
     <button class="focus-outline" [routerLink]="['/courses/all']">All Courses</button>
   </div>
 </section>
+
+<button (click)="pene()">Pegame</button>
