@@ -27,12 +27,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   // Sliders configuration
   @ViewChildren(SwiperDirective) swiperDirective: QueryList<SwiperDirective>;
-  config: any = {
+  config: SwiperConfigInterface = {
     initialSlide: 0, // Slide Index Starting from 0
-    paginationClickable: true, // Making pagination dots clicable
-    pagination: '.swiper-pagination', // Pagination Class defined
-    nextButton: '.swiper-button-next', // Class for next button
-    prevButton: '.swiper-button-prev', // Class for prev button
     slidesPerView: 1.5,
     spaceBetween: 15, // Pixels between each slide
     breakpoints: {
@@ -56,7 +52,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
   };
 
   // Featured courses pagination
-  //@ViewChild(SwiperDirective) featuredCoursesSwiper?: SwiperDirective;
   featuredCourses: Course[] = [];
   featuredCoursesPage = new Page();
   showPrevBubtton = false;
@@ -65,24 +60,23 @@ export class CoursesComponent implements OnInit, OnDestroy {
   index = 0;
   lastIndex = 0;
 
-  // Recent courses pagination (Se quedan como estan)
-  recentCourses: Course[];
-  recentCoursesPage = new Page();
-
-  // Trending courses pagination
-  //@ViewChild(SwiperDirective) trendingCoursesSwiper?: SwiperDirective;
-  trendingCourses: Course[] = [];
-  trendingCoursesPage = new Page();
-  showPrevBubttonTrending = false;
-  showNextButtonTrending = true;
-  trendingLastPageFetched: number;
-  trendingTotalpages: number;
-  trendingIndex = 0;
-
   // Categories
   categoriesSubscription: Subscription;
   topCategories: Category[];
   featuredCategories: Category[];
+
+  // Recent courses pagination
+  recentCourses: Course[];
+  recentCoursesPage = new Page();
+
+  // Trending courses pagination
+  trendingCourses: Course[] = [];
+  trendingCoursesPage = new Page();
+  showPrevBubttonTrending = false;
+  showNextButtonTrending = true;
+  trendingReachedEnd = false;
+  trendingIndex = 0;
+  trendingLastIndex = 0;
 
   constructor(
     private coursesService: CoursesService,
@@ -162,28 +156,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.categoriesSubscription.unsubscribe();
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   // * Featured courses
   setFeaturedCoursesPage(pageInfo: { offset: number }) {
@@ -346,10 +318,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
         ...(this.trendingCourses),
         ...(pagedData.data)
       ];
-      this.trendingLastPageFetched = pagedData.page.pageNumber;
-      this.trendingTotalpages = pagedData.page.totalPages;
       if (pagedData.page.totalPages === pagedData.page.pageNumber) {
-        this.showNextButtonTrending = false;
+        this.trendingReachedEnd = true;
       } else {
         this.showNextButtonTrending = true;
       }
@@ -368,8 +338,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
     } else {
       this.showPrevBubttonTrending = true;
     }
-    if (this.showNextButtonTrending === false) {
-      this.showNextButtonTrending = true;
+    if (e < this.trendingLastIndex) {
+      this.showNextButtonTrending = true; console.log('Setted next button to true esp');
     }
     //console.log('Show prev button', this.showPrevBubtton);
     ////this.trendingCoursesSwiper.setIndex(i);
@@ -394,9 +364,12 @@ export class CoursesComponent implements OnInit, OnDestroy {
         value = 3; // 4 slides
       }
       if ((i % 4) === value) {
-        this.requestNextPageTrending();
+        if (!this.featuredReachedEnd) {
+          this.requestNextPageTrending();
+        }
       }
     }
+    this.trendingLastIndex = e;
   }
   requestNextPageTrending() {
     this.trendingCoursesPage.size = 4;
@@ -411,8 +384,10 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.swiperDirective.last.nextSlide();
   }
   onReachEndTrending() {
-    if (this.trendingLastPageFetched === this.trendingTotalpages) {
+    if (this.trendingReachedEnd) {
       this.showNextButtonTrending = false;
+    } else {
+      this.requestNextPageTrending();
     }
   }
 
