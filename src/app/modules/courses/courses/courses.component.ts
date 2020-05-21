@@ -55,7 +55,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   };
 
   // Featured courses pagination
-  @ViewChild('featuredCoursesSwiper') featuredCoursesSwiper?: SwiperDirective;
+  @ViewChild(SwiperDirective) featuredCoursesSwiper?: SwiperDirective;
   featuredCourses: Course[] = [];
   featuredCoursesPage = new Page();
 

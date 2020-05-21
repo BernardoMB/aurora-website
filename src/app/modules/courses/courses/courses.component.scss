@@ -189,51 +189,6 @@ $categories-header-break: 980px;
   }
 }
 
-.courses-section {
-  display: block;
-  position: relative;
-  .courses-container {
-    padding: 40px 20px;
-    max-width: 1180px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    box-sizing: border-box;
-    position: relative;
-    margin: auto;
-    .title-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-family: 'Trebuchet MS', Helvetica, sans-serif;
-      .title {
-        color: #1b4568;
-        font-size: 20px;
-        font-weight: bold;
-      }
-      a {
-        margin-right: 20px;
-        font-size: 18px;
-        color: darkgray;
-        text-decoration: underline;
-        cursor: pointer;
-      }
-    }
-    .cards-container {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 10px;
-      .course-card {
-        margin: 10px 0px;
-        margin-right: 15px;
-        &:nth-last-child(1) {
-          margin-right: 0px;
-        }
-      }
-    }
-  }
-}
-
 .divider {
   width: 100%;
   height: 1px;
@@ -244,7 +199,7 @@ $categories-header-break: 980px;
   display: block;
   position: relative;
   .categories-container {
-    padding: 40px 20px;
+    padding: 40px 40px;
     max-width: 1180px;
     display: flex;
     flex-direction: column;
@@ -327,6 +282,51 @@ $categories-header-break: 980px;
           }
           .category-name {
           }
+        }
+      }
+    }
+  }
+}
+
+.courses-section {
+  display: block;
+  position: relative;
+  .courses-container {
+    padding: 40px 40px;
+    max-width: 1180px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    margin: auto;
+    .title-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Trebuchet MS', Helvetica, sans-serif;
+      .title {
+        color: #1b4568;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      a {
+        margin-right: 20px;
+        font-size: 18px;
+        color: darkgray;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+    .cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      .course-card {
+        margin: 10px 0px;
+        margin-right: 15px;
+        &:nth-last-child(1) {
+          margin-right: 0px;
         }
       }
     }
