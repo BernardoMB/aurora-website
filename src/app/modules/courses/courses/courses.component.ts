@@ -268,6 +268,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
     console.log('Reached end', this.featuredReachedEnd);
     if (this.featuredReachedEnd) {
       this.showNextButton = false;
+    } else {
+      this.requestNextPage();
     }
   }
 
