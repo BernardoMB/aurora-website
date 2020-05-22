@@ -239,16 +239,25 @@
   }
 }
 
+:host ::ng-deep .course-card-wrapper {
+  display: flex;
+  flex-grow: 1;
+}
+
+:host ::ng-deep .course-card-wrapper {
+  display: flex;
+  flex-grow: 1;
+}
+
+:host ::ng-deep .course-card-container {
+  display: flex;
+  flex-grow: 1;
+}
+
 :host ::ng-deep .gradient-overlay {
+  width: 100% !important;
+}
 
-  @media screen and (max-width: 500px) {
-    width: 100% !important;
-  }
-  @media screen and (max-width: 700px) {
-    width: 120px;
-  }
-  @media screen and (max-width: 1020px) {
-    width: 220px;
-  }
-
+:host ::ng-deep .course-name {
+  max-width: 220px;
 }
