@@ -252,5 +252,6 @@
         <app-course-card [course]="course"></app-course-card>
       </div>
     </div>
+    <a class="focus-outline" [routerLink]="['/courses/categories/', course.category.id]" [queryParams]="{ page: 1 }">View all</a>
   </div>
 </section>

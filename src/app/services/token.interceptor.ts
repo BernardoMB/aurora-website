@@ -85,8 +85,8 @@ export class ErrorInterceptor implements HttpInterceptor {
           console.log('TokenInterceptor: Deleting user token cookie');
           this.cookieService.delete('userToken', '/');
           // No redirecting is need
-          console.log('ErrorInterceptor: Redirecting to login page');
-          this.router.navigateByUrl('/log-in');
+          /* console.log('ErrorInterceptor: Redirecting to home page');
+          this.router.navigateByUrl('/log-in'); */
           // TODO: toastr service call here to warn the user that has been ridirected and logout action dhould be dispatched at some point.
           // TODO: Verify thispatching logout action before implementing toastr
         }
