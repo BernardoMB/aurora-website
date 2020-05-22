@@ -134,7 +134,7 @@
   display: block;
   position: relative;
   .featured-courses-container {
-    padding: 40px 20px;
+    padding: 40px;
     max-width: 1180px;
     display: flex;
     flex-direction: column;
@@ -165,8 +165,10 @@
       flex-wrap: wrap;
       margin-top: 10px;
       .course-card {
-        margin: 10px 0px;
-        margin-right: 15px;
+        // margin: 10px 0px;
+        // margin-right: 15px;
+        margin: 10px;
+        flex-grow: 1;
       }
     }
     .pagination-controls ::ng-deep .ngx-pagination {
@@ -190,6 +192,9 @@
           }
         }
       }
+    }
+    @media screen and (max-width: 500px) {
+      padding: 40px 15px;
     }
   }
 }
@@ -245,6 +250,5 @@
   @media screen and (max-width: 1020px) {
     width: 220px;
   }
-
 
 }
