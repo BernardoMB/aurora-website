@@ -163,28 +163,21 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.coursesService.getFeaturedCoursesPageData(this.featuredCoursesPage).subscribe((pagedData: PagedData<Course>) => {
       // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
       this.featuredCoursesPage = pagedData.page;
-      // this.trendingCourses = pagedData.data;
       this.featuredCourses = [
         ...(this.featuredCourses),
         ...(pagedData.data)
       ];
       if (pagedData.page.totalPages === pagedData.page.pageNumber) {
-        //this.showNextButton = false;
-        console.log('setting reach end to true');
         this.featuredReachedEnd = true;
       } else {
-        this.showNextButton = true; console.log('Setted next button to true');
+        this.showNextButton = true;
       }
-      //console.log('Show next button', this.showNextButton);
       setTimeout(() => {
-        ////this.featuredCoursesSwiper.update();
-        /* console.log('PENENENEEEe', this.swiperDirective); */
         this.swiperDirective.first.update();
       }, 0);
     });
   }
   onIndexChange(e) {
-    // TODO: arreglar el pedo de que se navega directamente a una slide
     const i = e;
     if (i === 0) {
       this.showPrevBubtton = false;
@@ -192,10 +185,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
       this.showPrevBubtton = true;
     }
     if (e < this.lastIndex) {
-      this.showNextButton = true; console.log('Setted next button to true esp');
+      this.showNextButton = true;
     }
-    //console.log('Show prev button', this.showPrevBubtton);
-    ////this.featuredCoursesSwiper.setIndex(i);
     this.swiperDirective.first.setIndex(i);
     if (i >= this.index) {
       this.index = i;
@@ -229,50 +220,18 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.setFeaturedCoursesPage({offset: this.featuredCoursesPage.pageNumber + 1});
   }
   prevSlide() {
-    ////this.featuredCoursesSwiper.prevSlide();
     this.swiperDirective.first.prevSlide();
   }
   nextSlide() {
-    ////this.featuredCoursesSwiper.nextSlide();
     this.swiperDirective.first.nextSlide();
   }
   onReachEnd() {
-    console.log('Reached end', this.featuredReachedEnd);
     if (this.featuredReachedEnd) {
       this.showNextButton = false;
     } else {
       this.requestNextPage();
     }
   }
-
-  pene(){
-    console.log(this.showNextButton);
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   // * Recent courses
   recentCoursesPageChanged(pageNumber: number) {
@@ -288,32 +247,12 @@ export class CoursesComponent implements OnInit, OnDestroy {
     });
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   // * Trending courses
   setTrendingCoursesPage(pageInfo: { offset: number }) {
     this.trendingCoursesPage.pageNumber = pageInfo.offset;
     this.coursesService.getTrendingCoursesPageData(this.trendingCoursesPage).subscribe((pagedData: PagedData<Course>) => {
       // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
       this.trendingCoursesPage = pagedData.page;
-      // this.trendingCourses = pagedData.data;
       this.trendingCourses = [
         ...(this.trendingCourses),
         ...(pagedData.data)
@@ -323,9 +262,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
       } else {
         this.showNextButtonTrending = true;
       }
-      //console.log('Show next button', this.showNextButtonTrending);
       setTimeout(() => {
-        ////this.trendingCoursesSwiper.update();
         this.swiperDirective.last.update();
       }, 0);
     });
@@ -339,10 +276,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
       this.showPrevBubttonTrending = true;
     }
     if (e < this.trendingLastIndex) {
-      this.showNextButtonTrending = true; console.log('Setted next button to true esp');
+      this.showNextButtonTrending = true;
     }
-    //console.log('Show prev button', this.showPrevBubtton);
-    ////this.trendingCoursesSwiper.setIndex(i);
     this.swiperDirective.last.setIndex(i);
     if (i >= this.trendingIndex) {
       this.trendingIndex = i;
@@ -376,11 +311,9 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.setTrendingCoursesPage({offset: this.trendingCoursesPage.pageNumber + 1});
   }
   prevSlideTrending() {
-    ////this.trendingCoursesSwiper.prevSlide();
     this.swiperDirective.last.prevSlide();
   }
   nextSlideTrending() {
-    ////this.trendingCoursesSwiper.nextSlide();
     this.swiperDirective.last.nextSlide();
   }
   onReachEndTrending() {

@@ -76,12 +76,6 @@
       <a>View all</a>
     </div>
     <div class="categories-cards-container">
-      <!-- <div
-        class="category-card"
-        *ngFor="let category of topCategories; let i = index"
-      >
-        <app-category-card [category]="category"></app-category-card>
-      </div> -->
       <div
         class="category-card-2"
         *ngFor="let category of topCategories; let i = index"
@@ -121,23 +115,6 @@
 
 <div class="divider"></div>
 
-<!-- <section *ngIf="trendingCourses && trendingCourses.length > 0" class="courses-section">
-  <div class="courses-container">
-    <div class="title-container">
-      <div class="title">Trending</div>
-      <a class="focus-outline" [routerLink]="['/courses/all']" [queryParams]="{ page: 1 }">View all</a>
-    </div>
-    <div class="cards-container">
-      <div
-        class="course-card"
-        *ngFor="let i = index; let course of trendingCourses | paginate: { id: 'trending', itemsPerPage: trendingCoursesPage.size, currentPage: trendingCoursesPage.pageNumber, totalItems: trendingCoursesPage.totalElements }"
-      >
-        <app-course-card [course]="course"></app-course-card>
-      </div>
-    </div>
-    <pagination-controls id="trending" class="pagination-controls" (pageChange)="trendingCoursesPageChanged($event)"></pagination-controls>
-  </div>
-</section> -->
 <section *ngIf="trendingCourses && trendingCourses.length > 0" class="courses-slider-section">
   <div class="courses-container">
     <div class="title-container">
@@ -172,5 +149,3 @@
     <button class="focus-outline" [routerLink]="['/courses/all']">All Courses</button>
   </div>
 </section>
-
-<button (click)="pene()">Pegame</button>
