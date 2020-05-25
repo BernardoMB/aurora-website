@@ -10,6 +10,7 @@ import { SignupFormComponent } from '../signup-form/signup-form.component';
 import { logout } from '../../store/auth/auth.actions';
 import { slideInAnimation } from '../../animations';
 import { ScrollStrategy } from '@angular/cdk/overlay';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-main',
@@ -24,7 +25,8 @@ export class MainComponent implements OnInit {
     private store: Store<State>,
     private loginDialog: MatDialog,
     private signupDialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) { }
 
   getAnimationData(outlet: RouterOutlet) {
@@ -39,6 +41,14 @@ export class MainComponent implements OnInit {
         this.user = user;
       } else {
         this.user = undefined;
+      }
+    });
+
+    this.authService.signupIsSuccessfull$.subscribe((signupSuccessfull: boolean) => {
+      console.log('Nexted value', signupSuccessfull);
+      if (signupSuccessfull) {
+        this.signupDialog.closeAll();
+        // TODO: Open check email adress modal
       }
     });
   }

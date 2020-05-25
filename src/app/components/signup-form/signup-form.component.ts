@@ -293,7 +293,6 @@ export class SignupFormComponent implements OnInit {
     secretQuestionControl: new FormControl('', [Validators.required]),
     secretAnswerControl: new FormControl('', [Validators.required])
   });
-
   errorMessage: string | null;
   get isValid(): boolean {
     return this.signupForm.valid && !this.signupForm.pristine;
@@ -330,6 +329,13 @@ export class SignupFormComponent implements OnInit {
         retypePasswordControl.enable();
       } else {
         retypePasswordControl.disable();
+      }
+    });
+
+    // Error message in case a valid request is sent but server throws an error
+    this.authService.signupError$.subscribe((errorMessage: string) => {
+      if (errorMessage) {
+        this.errorMessage = errorMessage;
       }
     });
   }
@@ -373,7 +379,9 @@ export class SignupFormComponent implements OnInit {
           // console.log('usernamer is not available ): ');
           usernameControl.setErrors({ notAvailable: { errorMessage: 'Username is not available' }});
         } else {
-          // console.log('usernamer is available (:');
+          /* const newErrors = usernameControl.errors;
+          delete newErrors.notAvailable;
+          usernameControl.setErrors(newErrors); */
         }
       });
     }
@@ -388,7 +396,9 @@ export class SignupFormComponent implements OnInit {
           // console.log('email is not available ): ');
           emailControl.setErrors({ notAvailable: { errorMessage: 'Email is not available' }});
         } else {
-          // console.log('email is available (:');
+          /* const newErrors = emailControl.errors;
+          delete newErrors.notAvailable;
+          emailControl.setErrors(newErrors); */
         }
       });
     }

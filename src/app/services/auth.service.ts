@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { User } from '../shared/models/user.model';
@@ -18,8 +18,15 @@ import { tap, catchError } from 'rxjs/operators';
 export class AuthService {
   host = environment.host;
   apiVersion = environment.apiVersion;
+
   private emptyResetPasswordFormSubject = new BehaviorSubject<boolean>(false);
   public emptyResetPasswordForm$ = this.emptyResetPasswordFormSubject.asObservable();
+
+  private signupErrorSubject = new BehaviorSubject<string>(null);
+  public signupError$ = this.signupErrorSubject.asObservable();
+
+  private signupIsSuccessfullSubject = new BehaviorSubject<boolean>(false);
+  public signupIsSuccessfull$ = this.signupIsSuccessfullSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -31,7 +38,15 @@ export class AuthService {
   signup(signupDto: SignupDto): Observable<User> {
     console.log('Auth service: Registering a user sending signup dto');
     const url = `${this.host}/${this.apiVersion}/auth/signup`;
-    return this.http.post<User>(url, signupDto);
+    return this.http.post<User>(url, signupDto).pipe(
+      tap(() => {
+        this.signupIsSuccessfullSubject.next(true);
+      }),
+      catchError((errorResponse: HttpErrorResponse) => {
+        this.signupErrorSubject.next(errorResponse.error.message);
+        throw errorResponse.error;
+      })
+    );
   }
 
   signin(username: string, password: string): Observable<any> {

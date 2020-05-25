@@ -27,6 +27,7 @@
           placeholder="Email"
           formControlName="emailControl"
           required
+          (blur)="checkEmailAvailability()"
         />
         <mat-error *ngIf="signupForm.controls.emailControl.errors && signupForm.controls.emailControl.errors['required']">Email is required</mat-error>
         <mat-error *ngIf="signupForm.controls.emailControl.errors && signupForm.controls.emailControl.errors['notAvailable']">{{signupForm.controls.emailControl.errors['notAvailable'].errorMessage}}</mat-error>

@@ -155,9 +155,14 @@ export class AuthEffects {
             .signup(action)
             .pipe(
               tap(() => {
-                this.router.navigate(['/']);
+                /* console.log('AuthEffects: Signup successfull redirecting to \'/\'');
+                this.router.navigate(['/']); */
+                this.toastr.success('Check you email address');
               }),
-              catchError(error => of(signupFailure({ error })))
+              catchError((error) => {
+                this.toastr.error(error.message);
+                return of(signupFailure({ error }));
+              })
             ),
         ),
       ),
