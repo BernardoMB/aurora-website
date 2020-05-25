@@ -293,24 +293,6 @@
 .tabs-section {
   display: block;
   position: relative;
-  // /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1f5e11+0,eb6c00+100 */
-  // background: rgb(31, 94, 17); /* Old browsers */
-  // background: -moz-linear-gradient(
-  //   45deg,
-  //   rgba(31, 94, 17, 1) 0%,
-  //   rgba(235, 108, 0, 1) 100%
-  // ); /* FF3.6-15 */
-  // background: -webkit-linear-gradient(
-  //   45deg,
-  //   rgba(31, 94, 17, 1) 0%,
-  //   rgba(235, 108, 0, 1) 100%
-  // ); /* Chrome10-25,Safari5.1-6 */
-  // background: linear-gradient(
-  //   45deg,
-  //   rgba(31, 94, 17, 1) 0%,
-  //   rgba(235, 108, 0, 1) 100%
-  // ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f5e11', endColorstr='#eb6c00',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
   background-color: #f3f3f3;
   border-bottom: 1px solid gainsboro;
   .tabs-container {
@@ -412,7 +394,6 @@
       border-radius: 5px;
     }
     .description-content::-webkit-scrollbar-track {
-      /* box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1); */
       background-color: white;
       position: relative;
       padding: 5px 0px;
@@ -551,7 +532,86 @@
       margin-top: 20px;
     }
   }
-  .tab-lessons,
+  .tab-lessons {
+    max-width: 900px;
+    .lessons-title {
+      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #29303b;
+    }
+    .lessons-container {
+      $lessons-break: 800px;
+      display: flex;
+      flex-direction: column;
+      padding: 40px 60px;
+      background-color: #f3f3f3;
+      border: 1px solid gainsboro;
+      border-radius: 5px;
+      max-height: 400px;
+      overflow: auto;
+      .lesson-card {
+        margin-bottom: 40px;
+        &:nth-last-child(1) {
+          margin-bottom: 0px;
+        }
+        @media screen and (max-width: $lessons-break) {
+          display: none;
+        }
+      }
+      .lesson-card-small {
+        margin-bottom: 15px;
+        display: none;
+        background-color: white;
+        padding: 10px;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 18px 0px;
+        border-radius: 4px;
+        .lesson-card-container {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          .lesson-title {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-weight: bold;
+            color: #1f5e11;
+          }
+          .lesson-description {
+            color: gray;
+            margin-top: 10px;
+            cursor: pointer;
+            overflow: hidden;
+            display: -webkit-box!important;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+          }
+          .lesson-details {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            color: rgb(83, 83, 83);
+            .lesson-duration, .lesson-readtime {
+              display: flex;
+              align-items: center;
+              i {
+                margin-left: 3px;
+              }
+            }
+          }
+        }
+        &:nth-last-child(1) {
+          margin-bottom: 0px;
+        }
+        @media screen and (max-width: $lessons-break) {
+          display: inherit;
+        }
+      }
+      @media screen and (max-width: $lessons-break) {
+        padding: 25px 15px;
+      }
+    }
+  }
   .tab-no-certificate {
     max-width: 900px;
     .lessons-title {
@@ -606,6 +666,9 @@
   .tab-certificate {
     align-items: center;
     .certificate-wrapper {
+      width: 100%;
+      max-width: 860px;
+      overflow-x: scroll;
       display: flex;
       -webkit-box-shadow: 0px 0px 25px -2px rgba(0,0,0,0.14);
       -moz-box-shadow: 0px 0px 25px -2px rgba(0,0,0,0.14);
@@ -819,8 +882,6 @@
       flex-wrap: wrap;
       margin-top: 10px;
       .course-card {
-        // margin: 10px 0px;
-        // margin-right: 15px;
         margin: 10px;
         flex-grow: 1;
       }
@@ -848,7 +909,6 @@
       border-radius: 2px;
       user-select: none;
       cursor: pointer;
-
       color: #fff;
       background-color: #eb6c00;
       border: 1px solid transparent;

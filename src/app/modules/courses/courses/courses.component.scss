@@ -477,7 +477,6 @@ $categories-header-break: 980px;
 }
 
 :host ::ng-deep .gradient-overlay {
-
   @media screen and (max-width: 500px) {
     width: 100% !important;
   }
@@ -487,6 +486,4 @@ $categories-header-break: 980px;
   @media screen and (max-width: 1020px) {
     width: 220px;
   }
-
-
 }
