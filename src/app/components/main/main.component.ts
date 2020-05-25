@@ -11,6 +11,7 @@ import { logout } from '../../store/auth/auth.actions';
 import { slideInAnimation } from '../../animations';
 import { ScrollStrategy } from '@angular/cdk/overlay';
 import { AuthService } from '../../services/auth.service';
+import { VerifyEmailModalComponent } from '../verify-email-modal/verify-email-modal.component';
 
 @Component({
   selector: 'app-main',
@@ -25,6 +26,7 @@ export class MainComponent implements OnInit {
     private store: Store<State>,
     private loginDialog: MatDialog,
     private signupDialog: MatDialog,
+    private verifyEmailDialog: MatDialog,
     private router: Router,
     private authService: AuthService
   ) { }
@@ -45,10 +47,20 @@ export class MainComponent implements OnInit {
     });
 
     this.authService.signupIsSuccessfull$.subscribe((signupSuccessfull: boolean) => {
-      console.log('Nexted value', signupSuccessfull);
       if (signupSuccessfull) {
         this.signupDialog.closeAll();
-        // TODO: Open check email adress modal
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.autoFocus = true;
+        dialogConfig.panelClass = 'custom-mat-dialog-container';
+        dialogConfig.backdropClass = 'custom-modal-backdrop';
+        dialogConfig.maxHeight = '80vh';
+        let verifyEmailDialogRef;
+        verifyEmailDialogRef = this.verifyEmailDialog.open(VerifyEmailModalComponent, dialogConfig);
+        verifyEmailDialogRef.afterClosed().subscribe(result => {
+          if (result && result.showLoginModalOnClose) {
+            this.onLogin();
+          }
+        });
       }
     });
   }

@@ -196,4 +196,10 @@ export class AuthService {
     return this.http.delete<User>(url, {});
   }
 
+  resendEmailVerification(): Observable<boolean> {
+    console.log('Auth service: Requesting verification email');
+    const url = `${this.host}/${this.apiVersion}/auth/user/resendVerificationEmail`;
+    return this.http.post<boolean>(url, {});
+  }
+
 }

@@ -25,6 +25,7 @@ import { SignupFormComponent } from './components/signup-form/signup-form.compon
 import { MainComponent } from './components/main/main.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ToastrModule } from 'ngx-toastr';
+import { VerifyEmailModalComponent } from './components/verify-email-modal/verify-email-modal.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ToastrModule } from 'ngx-toastr';
     NotFoundComponent,
     LoginFormComponent,
     SignupFormComponent,
+    VerifyEmailModalComponent,
     MainComponent
   ],
   imports: [
@@ -75,7 +77,7 @@ import { ToastrModule } from 'ngx-toastr';
       multi: true,
     }
   ],
-  entryComponents: [LoginFormComponent, SignupFormComponent],
+  entryComponents: [LoginFormComponent, SignupFormComponent, VerifyEmailModalComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

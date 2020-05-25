@@ -13,15 +13,17 @@ import { WindowRef } from '../../providers/window.provider';
 import { DocumentRef } from '../../providers/document.provider';
 import { isPlatformBrowser } from '@angular/common';
 import { of, fromEvent, Subscription } from 'rxjs';
-import { map, pairwise, switchMap, throttleTime, filter } from 'rxjs/operators';
+import { map, pairwise, switchMap, throttleTime, filter, catchError } from 'rxjs/operators';
 import { User } from '../../shared/models/user.model';
 import { ActivatedRoute, Router, NavigationEnd, Event } from '@angular/router';
 import { Category } from 'src/app/shared/models/category.model';
 import { CoursesService } from 'src/app/modules/courses/services/courses.service';
 import { Store, select } from '@ngrx/store';
 import { AuthState } from '../../store/auth/auth.state';
-import { selectAuthCart } from '../../store/auth/auth.selectors';
+import { selectAuthCart, selectAuthUser } from '../../store/auth/auth.selectors';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { AuthService } from '../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 /**
  * The header of the application.
@@ -38,12 +40,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger, { static: true }) cartMenuTrigger: MatMenuTrigger;
   @ViewChild(MatMenuTrigger, { static: true }) userMenuTrigger: MatMenuTrigger;
   usr: User = undefined;
+  userV: User;
+  userSubscription: Subscription;
   @Input() set user(user: User) {
     this.usr = user || undefined;
   }
   get user() {
     return this.usr;
   }
+  showEmailWarning = false;
   @Output() login: EventEmitter<void> = new EventEmitter();
   @Output() logout: EventEmitter<void> = new EventEmitter();
   @Output() register: EventEmitter<void> = new EventEmitter();
@@ -90,6 +95,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private coursesService: CoursesService,
     private authStore: Store<AuthState>,
+    private authService: AuthService,
+    private toastr: ToastrService
   ) {
     this.loggedIn = false;
     this.routerSubscription = this.router.events.pipe(
@@ -200,11 +207,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.cart = cart;
       }
     });
+
+    this.userSubscription = this.authStore.pipe(select(selectAuthUser)).subscribe((user: User) => {
+      if (user) {
+        this.userV = user;
+        if (!user.emailVerified) {
+          this.showEmailWarning = true;
+        } else {
+          this.showEmailWarning = false;
+        }
+      } else {
+        this.showEmailWarning = false;
+      }
+    });
   }
 
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
     this.cartSubscription.unsubscribe();
+    this.userSubscription.unsubscribe();
   }
 
   getCategories() {
@@ -249,5 +270,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   handleMobileLinkClick() {
     this.mobileNavBarOpen = false;
+  }
+
+  dismissEmailWarning() {
+    this.showEmailWarning = false;
+  }
+
+  resendEmail() {
+    this.authService.resendEmailVerification().pipe(
+      catchError((error) => {
+        console.log(error);
+        throw error;
+        this.toastr.error('Could not send verification email');
+      })
+      ).subscribe((emailVerificationSend: boolean) => {
+        if (emailVerificationSend) {
+          this.toastr.success('Verification email sent');
+      }
+    });
   }
 }

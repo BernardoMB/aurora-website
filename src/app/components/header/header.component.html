@@ -459,3 +459,16 @@
     </li>
   </ul>
 </div>
+
+<div *ngIf="showEmailWarning" class="email-warning">
+  <div class="warning-label-container">
+    <mat-icon>report_problem</mat-icon>
+    <div class="texts">
+      <div class="resend-phrase">Please check your email address and activate your account.</div>
+      <div class="resend-label" (click)="resendEmail()">Resend email</div>
+    </div>
+  </div>
+  <button mat-mini-fab aria-label="close-warning" (click)="dismissEmailWarning()">
+    <mat-icon>clear</mat-icon>
+  </button>
+</div>

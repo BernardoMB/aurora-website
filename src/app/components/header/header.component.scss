@@ -638,6 +638,53 @@ $focus-border: 2px;
   }
 }
 
+.email-warning {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid #ffeeba;
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 10px;
+  .warning-label-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    mat-icon {
+      margin: 0px 10px;
+    }
+    .texts {
+      display: flex;
+      justify-content: center;
+      .resend-phrase {
+        text-align: center;
+      }
+      .resend-label {
+        text-align: center;
+        font-style: italic;
+        margin-left: 10px;
+        font-weight: 500;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      @media screen and (max-width: 650px) {
+        flex-direction: column;
+        .resend-label {
+          margin-left: 0px;
+        }
+      }
+    }
+  }
+  button {
+    background-color: inherit;
+    box-shadow: none;
+    color: inherit;
+  }
+}
+
 // Modify Angular Material classes
 
 /* ::ng-deep {
