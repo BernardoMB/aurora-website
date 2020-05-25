@@ -202,4 +202,10 @@ export class AuthService {
     return this.http.post<boolean>(url, {});
   }
 
+  verifyUserEmail(userId: string, email: string, token: string): Observable<User> {
+    console.log('Auth service: Validating user email');
+    const url = `${this.host}/${this.apiVersion}/auth/user/verify/${userId}?email=${email}&token=${token}`;
+    return this.http.get<User>(url);
+  }
+
 }

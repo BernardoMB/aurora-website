@@ -26,6 +26,7 @@ import { MainComponent } from './components/main/main.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ToastrModule } from 'ngx-toastr';
 import { VerifyEmailModalComponent } from './components/verify-email-modal/verify-email-modal.component';
+import { EmailVerifiedActionModalComponent } from './components/email-verified-action-modal/email-verified-action-modal.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { VerifyEmailModalComponent } from './components/verify-email-modal/verif
     LoginFormComponent,
     SignupFormComponent,
     VerifyEmailModalComponent,
+    EmailVerifiedActionModalComponent,
     MainComponent
   ],
   imports: [
@@ -77,7 +79,7 @@ import { VerifyEmailModalComponent } from './components/verify-email-modal/verif
       multi: true,
     }
   ],
-  entryComponents: [LoginFormComponent, SignupFormComponent, VerifyEmailModalComponent],
+  entryComponents: [LoginFormComponent, SignupFormComponent, VerifyEmailModalComponent, EmailVerifiedActionModalComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
