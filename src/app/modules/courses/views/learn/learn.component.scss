@@ -46,6 +46,9 @@
     width: 75%;
     .content {
       border-right: 1px solid gainsboro;
+      @media screen and (max-width: 850px) {
+        border-right: 0px;
+      }
     }
     .navigation-container {
       display: flex;
@@ -83,6 +86,9 @@
         &:hover {
           background-color: #26292c;
         }
+      }
+      @media screen and (max-width: 850px) {
+        border-right: 0px;
       }
     }
     .tabs-container {
@@ -521,6 +527,9 @@
         }
       }
     }
+    @media screen and (max-width: 850px) {
+      width: 100%;
+    }
   }
   .sidebar-container {
     width: 25%;
@@ -544,6 +553,10 @@
         border-right: none;
         color: #29303b;
         font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+        @media screen and (max-width: 850px) {
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+        }
       }
       .lesson-card-container {
         flex-grow: 1;
@@ -579,6 +592,12 @@
               align-items: flex-start;
               font-size: 15px;
               font-weight: 600;
+              .number {
+                @media screen and (max-width: 850px) {
+                  //direction: ltr;
+                  //flex-direction: row-reverse;
+                }
+              }
               a {
                 text-align: left;
                 margin-left: 10px;
@@ -629,12 +648,24 @@
                 }
               }
             }
+            @media screen and (max-width: 850px) {
+              flex-grow: 1;
+            }
           }
           /* .right {
           } */
+          @media screen and (max-width: 850px) {
+            //flex-direction: row;
+          }
         }
         #item_direction {
           direction: ltr;
+        }
+        @media screen and (max-width: 850px) {
+          max-height: 200px;
+          border-bottom-right-radius: 5px;
+          border-bottom-left-radius: 5px;
+          //direction: unset;
         }
       }
       .lesson-card-container::-webkit-scrollbar {
@@ -648,14 +679,25 @@
       .lesson-card-container::-webkit-scrollbar-thumb {
         background-color: #c1c1c1;
       }
+      @media screen and (max-width: 850px) {
+        border-radius: 5px;
+      }
     }
+    @media screen and (max-width: 850px) {
+      width: unset;
+      margin: 25px;
+      border: 1px solid gainsboro;
+      border-radius: 5px;
+    }
+  }
+  @media screen and (max-width: 850px) {
+    flex-direction: column;
   }
 }
 
 .courses-section {
   display: block;
   position: relative;
-  border-top: 1px solid gainsboro;
   .courses-container {
     padding: 40px 20px;
     max-width: 1180px;
@@ -665,6 +707,18 @@
     box-sizing: border-box;
     position: relative;
     margin: auto;
+    a {
+      margin-top: 10px;
+      font-size: 18px;
+      color: darkgray;
+      text-decoration: underline;
+      cursor: pointer;
+      display: none;
+      justify-content: center;
+      @media screen and (max-width: 450px) {
+        display: inherit;
+      }
+    }
     .title-container {
       display: flex;
       align-items: center;
@@ -676,24 +730,27 @@
         font-weight: bold;
       }
       a {
-        margin-right: 20px;
+        //margin-right: 20px;
         font-size: 18px;
         color: darkgray;
         text-decoration: underline;
         cursor: pointer;
+        @media screen and (max-width: 450px) {
+          display: none;
+        }
       }
     }
     .cards-container {
       display: flex;
-      justify-content: space-between;
       flex-wrap: wrap;
       margin-top: 10px;
       .course-card {
-        margin: 10px 0px;
-        margin-right: 15px;
+        margin: 10px;
+        flex-grow: 1;
       }
     }
   }
+
   .buttons-container {
     padding: 40px 20px;
     max-width: 1180px;
@@ -723,4 +780,28 @@
       }
     }
   }
+}
+
+:host ::ng-deep .course-card-wrapper {
+  display: flex;
+  flex-grow: 1;
+  max-width: 418px;
+}
+
+:host ::ng-deep .course-card-wrapper {
+  display: flex;
+  flex-grow: 1;
+}
+
+:host ::ng-deep .course-card-container {
+  display: flex;
+  flex-grow: 1;
+}
+
+:host ::ng-deep .gradient-overlay {
+  width: 100% !important;
+}
+
+:host ::ng-deep .course-name {
+  max-width: 220px;
 }

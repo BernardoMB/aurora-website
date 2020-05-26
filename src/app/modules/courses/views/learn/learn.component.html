@@ -210,7 +210,7 @@
             </div>
             <div class="middle">
               <div class="number-title-container">
-                <div>.{{ i + 1 }}</div>
+                <div class="number">.{{ i + 1 }}</div>
                 <a [routerLink]="['./lesson', lesson.id]"  routerLinkActive="active">{{ lesson.title }}</a>
               </div>
               <div class="type-duration-container">
@@ -253,7 +253,7 @@
   <div class="courses-container">
     <div class="title-container">
       <div class="title">You might also be interested in</div>
-      <a>View all</a>
+      <a class="focus-outline" [routerLink]="['/courses/categories/', course.category.id]" [queryParams]="{ page: 1 }">View all</a>
     </div>
     <div class="cards-container">
       <div
@@ -263,5 +263,6 @@
         <app-course-card [course]="course"></app-course-card>
       </div>
     </div>
+    <a class="focus-outline" [routerLink]="['/courses/categories/', course.category.id]" [queryParams]="{ page: 1 }">View all</a>
   </div>
 </section>

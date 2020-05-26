@@ -68,6 +68,7 @@ export class LearnComponent implements OnInit, OnDestroy {
         if (fragment) {
           return;
         }
+        console.log('Scrolling to top');
         window.scrollTo(0, 0);
       }
       return;

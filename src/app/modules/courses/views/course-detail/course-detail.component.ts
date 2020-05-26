@@ -274,6 +274,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       dialogConfig.autoFocus = true;
       dialogConfig.panelClass = 'custom-mat-dialog-container';
       dialogConfig.backdropClass = 'custom-modal-backdrop';
+      dialogConfig.maxHeight = '80vh';
       let loginDialogRef;
       let signupDialogRef;
       loginDialogRef = this.loginDialog.open(LoginFormComponent, dialogConfig);
