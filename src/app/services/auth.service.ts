@@ -1,16 +1,32 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 import { User } from '../shared/models/user.model';
 import { SignupDto } from '../shared/dtos/signup.dto';
 import { environment } from '../../environments/environment';
 import { Course } from '../shared/models/course.model';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 
+/**
+ * TODO: Add changeUsername function
+ * TODO: Add changeEmail  function
+ *
+ * @export
+ * @class AuthService
+ */
 @Injectable()
 export class AuthService {
   host = environment.host;
   apiVersion = environment.apiVersion;
+
+  private emptyResetPasswordFormSubject = new BehaviorSubject<boolean>(false);
+  public emptyResetPasswordForm$ = this.emptyResetPasswordFormSubject.asObservable();
+
+  private signupErrorSubject = new BehaviorSubject<string>(null);
+  public signupError$ = this.signupErrorSubject.asObservable();
+
+  private signupIsSuccessfullSubject = new BehaviorSubject<boolean>(false);
+  public signupIsSuccessfull$ = this.signupIsSuccessfullSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -22,7 +38,15 @@ export class AuthService {
   signup(signupDto: SignupDto): Observable<User> {
     console.log('Auth service: Registering a user sending signup dto');
     const url = `${this.host}/${this.apiVersion}/auth/signup`;
-    return this.http.post<User>(url, signupDto);
+    return this.http.post<User>(url, signupDto).pipe(
+      tap(() => {
+        this.signupIsSuccessfullSubject.next(true);
+      }),
+      catchError((errorResponse: HttpErrorResponse) => {
+        this.signupErrorSubject.next(errorResponse.error.message);
+        throw errorResponse.error;
+      })
+    );
   }
 
   signin(username: string, password: string): Observable<any> {
@@ -49,7 +73,49 @@ export class AuthService {
   signinWithToken(): Observable<any> {
     console.log('Auth service: Loging in sending user token');
     const url = `${this.host}/${this.apiVersion}/auth/signinWithToken`;
-    return this.http.post(url, {});
+    return this.http.post(url, {}, { observe: 'response' });
+  }
+
+  changeUserPassword(password: string, newPassword: string, newPasswordConfirmation: string): Observable<User> {
+    console.log('Auth service: changing user password');
+    const url = `${this.host}/${this.apiVersion}/auth/user/password`;
+    return this.http.patch<User>(url, { password, newPassword, newPasswordConfirmation }).pipe(
+      tap(() => {
+        this.emptyResetPasswordFormSubject.next(true);
+      }),
+      catchError((error) => {
+        // Catching and throwing error so error can be handled by the effect that triggered this call
+        throw error;
+      })
+    );
+  }
+
+  checkUsernameAvailability(username: string): Observable<{ usernameIsAvailable: boolean }> {
+    console.log('Auth service: Checking username availability');
+    const url = `${this.host}/${this.apiVersion}/auth/checkUsernameAvalability`;
+    return this.http.post<{ usernameIsAvailable: boolean }>(url, { username });
+  }
+
+  checkEmailAvailability(email: string): Observable<{ emailIsAvailable: boolean }> {
+    console.log('Auth service: Checking email availability');
+    const url = `${this.host}/${this.apiVersion}/auth/checkEmailAvalability`;
+    return this.http.post<{ emailIsAvailable: boolean }>(url, { email });
+  }
+
+  updateProfileInfo(profileInfo: { name?: string, lastName?: string, nameTitle?: string }): Observable<User> {
+    console.log('Auth service: Updating user profile info');
+    const url = `${this.host}/${this.apiVersion}/auth/user`;
+    return this.http.patch<User>(url, profileInfo);
+  }
+
+  changeUsername(username: string): Observable<User> {
+    console.log('Auth service: changing user username');
+    const url = `${this.host}/${this.apiVersion}/auth/user/username`;
+    return this.http.patch<User>(url, { username }).pipe(
+      catchError((error) => {
+        throw error;
+      })
+    );
   }
 
   addCoursetoShoppingCart(courseId: string, userId: string): Observable<Course> {
@@ -128,6 +194,18 @@ export class AuthService {
     console.log('Auth service: Removing course from user archive');
     const url = `${this.host}/${this.apiVersion}/users/${userId}/archivedCourses/${courseId}`;
     return this.http.delete<User>(url, {});
+  }
+
+  resendEmailVerification(): Observable<boolean> {
+    console.log('Auth service: Requesting verification email');
+    const url = `${this.host}/${this.apiVersion}/auth/user/resendVerificationEmail`;
+    return this.http.post<boolean>(url, {});
+  }
+
+  verifyUserEmail(userId: string, email: string, token: string): Observable<User> {
+    console.log('Auth service: Validating user email');
+    const url = `${this.host}/${this.apiVersion}/auth/user/verify/${userId}?email=${email}&token=${token}`;
+    return this.http.get<User>(url);
   }
 
 }

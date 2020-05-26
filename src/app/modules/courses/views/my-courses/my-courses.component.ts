@@ -8,6 +8,7 @@ import { Course } from '../../../../shared/models/course.model';
   styleUrls: ['./my-courses.component.scss']
 })
 export class MyCoursesComponent implements OnInit {
+  currentTab: string;
   recommendedCourses: Course[];
 
   constructor(
@@ -33,5 +34,4 @@ export class MyCoursesComponent implements OnInit {
       this.recommendedCourses = myCoursesInfo.recommendedCourses;
     }
   }
-
 }

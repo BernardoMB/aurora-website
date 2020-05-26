@@ -1,0 +1,128 @@
+.course-card-wrapper {
+  padding: 10px;
+  @media screen and (max-width: 500px) {
+    padding: 10px 6px;
+    padding-bottom: 20px;
+  }
+  padding-bottom: 20px;
+  .course-card-container {
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.75) -2px 2px 5px 0px;
+    background-size: cover;
+    resize: both;
+    background-position-x: center;
+    background-position-y: center;
+    .gradient-overlay {
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 180px;
+      width: 100%;
+      position: relative;
+      cursor: pointer;
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,fbfbfb+29&0.4+0,0+100 */
+      background: -moz-linear-gradient(
+        top,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(251, 251, 251, 0.28) 29%,
+        rgba(251, 251, 251, 0) 100%
+      ); /* FF3.6-15 */
+      background: -webkit-linear-gradient(
+        top,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(251, 251, 251, 0.28) 29%,
+        rgba(251, 251, 251, 0) 100%
+      ); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(251, 251, 251, 0.28) 29%,
+        rgba(251, 251, 251, 0) 100%
+      ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#66000000', endColorstr='#00fbfbfb',GradientType=0 ); /* IE6-9 */
+      &:hover {
+        background: none;
+      }
+      .category-container {
+        padding: 5px 10px;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        display: flex;
+        align-items: center;
+        .category-indicator {
+          width: 10px;
+          height: 10px;
+          border-radius: 5px;
+        }
+        .category-name {
+          color: white;
+          margin-left: 10px;
+          font-size: 12px;
+        }
+      }
+      .course-details {
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        height: 75px;
+        color: white;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .course-name-container {
+          margin-bottom: 20px;
+          .course-name {
+            max-height: 38px;
+            cursor: pointer;
+            overflow: hidden;
+            display: -webkit-box!important;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+        .price-rating-continer {
+          display: flex;
+          flex-direction: row-reverse;
+          justify-content: space-between;
+          align-items: center;
+          .rating-container {
+            display: flex;
+            align-items: center;
+            div {
+              line-height: 1;
+            }
+            i {
+              color: goldenrod;
+              font-size: 18px;
+              margin-right: 5px;
+            }
+          }
+          .price-container {
+            .free-container {
+              /* background-color: white; */
+              border-radius: 5px;
+              padding: 1px;
+              .free {
+                background-color: gold;
+                color: black;
+                border-radius: 5px;
+                border: 1px solid black;
+                padding: 1px 5px;
+                font-weight: bold;
+                font-size: 12px;
+              }
+            }
+            .price {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

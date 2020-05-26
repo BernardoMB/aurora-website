@@ -51,6 +51,15 @@ import {
   removeCourseFromArchive,
   removeCourseFromArchiveSuccess,
   removeCourseFromArchiveFailure,
+  updateProfileInfo,
+  updateProfileInfoSuccess,
+  updateProfileInfoFailure,
+  changeUserPassword,
+  changeUserPasswordSuccess,
+  changeUserPasswordFailure,
+  changeUsername,
+  changeUsernameSuccess,
+  changeUsernameFailure,
 } from './auth.actions';
 import { of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
@@ -58,10 +67,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { User } from '../../shared/models/user.model';
 import { Course } from '../../shared/models/course.model';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 /**
  * Authentication effects
  * TODO: Implement failure effects
+ * TODO: Add change email effects
  *
  * @export
  */
@@ -142,7 +153,17 @@ export class AuthEffects {
         exhaustMap(action =>
           this.authService
             .signup(action)
-            .pipe(catchError(error => of(signupFailure({ error })))),
+            .pipe(
+              tap(() => {
+                /* console.log('AuthEffects: Signup successfull redirecting to \'/\'');
+                this.router.navigate(['/']); */
+                this.toastr.success('Check you email address');
+              }),
+              catchError((error) => {
+                this.toastr.error(error.message);
+                return of(signupFailure({ error }));
+              })
+            ),
         ),
       ),
     { dispatch: false },
@@ -186,6 +207,117 @@ export class AuthEffects {
         }),
       ),
     { dispatch: false },
+  );
+
+  changeUserPasswordEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(changeUserPassword),
+      exhaustMap(action =>
+        this.authService.changeUserPassword(action.password, action.newPassword, action.newPasswordConfirmation).pipe(
+          map((responseBody: User) => {
+            return changeUserPasswordSuccess();
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            console.log('changeUserPasswordEffect: Catched error. firing failure action');
+            return of(
+              changeUserPasswordFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            );
+          }),
+        ),
+      ),
+    ),
+  );
+
+  changeUserPasswordSuccessEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(changeUserPasswordSuccess),
+      tap(action => {
+        this.toastr.success('Password changed');
+      }),
+    ), { dispatch: false }
+  );
+
+  changeUserPasswordFailureEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(changeUserPasswordFailure),
+      tap(action => {
+        console.error(action.error);
+        this.toastr.error(action.message, 'Check you current password');
+      }),
+    ), { dispatch: false }
+  );
+
+  changeUsernameEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(changeUsername),
+      exhaustMap(action =>
+        this.authService.changeUsername(action.username).pipe(
+          map((responseBody: User) => {
+            return changeUsernameSuccess(responseBody);
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              changeUsernameFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  changeUsernameEffectSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(changeUsernameSuccess),
+      tap(action => {
+        this.toastr.success('Username updated');
+      }),
+    ), { dispatch: false }
+  );
+
+  changeUsernameEffectEffectFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(changeUsernameFailure),
+      tap(action => {
+        console.error(action.error);
+        this.toastr.error(action.message + '.', 'Choose another username');
+      }),
+    ), { dispatch: false }
+  );
+
+  updateProfileInfoEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateProfileInfo),
+      exhaustMap(action =>
+        this.authService.updateProfileInfo(action.profileInfo).pipe(
+          map((responseBody: User) => {
+            return updateProfileInfoSuccess(responseBody);
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
+            of(
+              updateProfileInfoFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  updateProfileInfoEffectSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateProfileInfoSuccess),
+      tap(action => {
+        this.toastr.success('Profile updated');
+      }),
+    ), { dispatch: false }
   );
 
   addCourseToCartEffect$ = createEffect(() =>
@@ -261,30 +393,32 @@ export class AuthEffects {
   );
 
   purchaseCoursesEffect$ = createEffect(() =>
-  this.actions$.pipe(
-    ofType(purchaseCart),
-    exhaustMap(action =>
-      this.authService.purchaseCart(action.courses, action.userId).pipe(
-        map((responseBody: User) => {
-          return purchaseCartSuccess(responseBody);
-        }),
-        catchError((errorResponse: HttpErrorResponse) =>
+    this.actions$.pipe(
+      ofType(purchaseCart),
+      exhaustMap(action =>
+        // TODO: Pass payment info
+        this.authService.purchaseCart(action.courses, action.userId).pipe(
+          map((responseBody: User) => {
+            return purchaseCartSuccess(responseBody);
+          }),
+          catchError((errorResponse: HttpErrorResponse) =>
             of(
               purchaseCartFailure({
                 error: errorResponse,
                 message: errorResponse.error.message,
               }),
-              ),
+            ),
           ),
-          ),
+        ),
       ),
-      ),
+    ),
   );
 
   purchaseCourseEffect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(purchaseCourse),
       exhaustMap(action =>
+        // TODO: pass payment info
         this.authService.purchaseCourse(action.course, action.userId).pipe(
           map((responseBody: Course) => {
             return purchaseCourseSuccess({ course: responseBody });
@@ -464,6 +598,7 @@ export class AuthEffects {
     private actions$: Actions,
     private authService: AuthService,
     private cookieService: CookieService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 }

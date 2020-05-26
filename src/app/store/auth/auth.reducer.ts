@@ -81,14 +81,14 @@ const authReducer = createReducer(
       },
       cart2: [],
       cart: payload.user.cart
-    }
+    };
   }),
   on(AuthActions.getCoursesFrommCookiesSuccess, (state: AuthState, payload: {courses: Course[]} ) => {
     return {
       ...state,
       cart: [...(state.cart), ...(payload.courses)],
       cart2: [...(state.cart2), ...(payload.courses)]
-    }
+    };
   }),
   on(AuthActions.pushCourseToCarts, (state: AuthState, payload: { course: Course }) => {
     return {
@@ -239,7 +239,19 @@ const authReducer = createReducer(
         archivedCourses
       }
     };
-  })
+  }),
+  on(AuthActions.updateProfileInfoSuccess, (state: AuthState, user: User) => {
+    return {
+      ...state,
+      user
+    };
+  }),
+  on(AuthActions.changeUsernameSuccess, (state: AuthState, user: User) => {
+    return {
+      ...state,
+      user
+    };
+  }),
 );
 
 export function reducer(state: AuthState | undefined, action: Action) {

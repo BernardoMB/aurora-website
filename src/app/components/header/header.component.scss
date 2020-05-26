@@ -1,14 +1,20 @@
-$break-small: 320px;
-$break-large: 1290px;
+$break-logo: 1000px;
+$categories-label-break: 900px;
+$break-header: 800px;
+$break-registration-buttons: 450px;
 $focus-border: 2px;
 
 .header {
+  // Un comment for fixed header
+  /* position: fixed;
+  top: 0px; */
+  position: relative; // Comment for fixed header
+  width: 100%;
   box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1),
     0 3px 1px 0 rgba(20, 23, 28, 0.1);
   display: block;
-  position: relative;
-  z-index: 1;
-  background: #fff;
+  z-index: 10;
+  background: white;
   .header-inner {
     display: flex;
     justify-content: space-between;
@@ -20,34 +26,65 @@ $focus-border: 2px;
     padding: 0 20px;
     position: relative;
     z-index: 1;
-    .logotype-container {
-      margin: 10px 0px;
-      .logotype {
-        height: 100%;
+    .hamburger {
+      cursor: pointer;
+      margin: auto 0;
+      margin-right: 20px;
+      .line {
+        width: 30px;
+        height: 3px;
+        margin: 5px 0px;
+        background-color:  #eb6c00;
+        display: block;
+        -webkit-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
       }
-      @media screen and (max-width: $break-large) {
+      @media screen and (min-width: $break-header) {
         display: none;
       }
     }
-    .logomark-container {
+    .hamburger.is-active .line:nth-child(1) {
+      -webkit-transform: translateY(8px) rotate(45deg);
+      -ms-transform: translateY(8px) rotate(45deg);
+      -o-transform: translateY(8px) rotate(45deg);
+      transform: translateY(8px) rotate(45deg);
+    }
+    .hamburger.is-active .line:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.is-active .line:nth-child(3) {
+      -webkit-transform: translateY(-8px) rotate(-45deg);
+      -ms-transform: translateY(-8px) rotate(-45deg);
+      -o-transform: translateY(-8px) rotate(-45deg);
+      transform: translateY(-8px) rotate(-45deg);
+    }
+    .logotype {
       margin: 10px 0px;
-      .logomark {
-        height: 100%;
+      width: 154px;
+      @media screen and (max-width: $break-logo) {
+        display: none;
       }
+    }
+    .logomark {
+      margin: 10px 0px;
+      width: 43px;
       display: none;
-      @media screen and (max-width: $break-large) {
+      @media screen and (max-width: $break-logo) {
         display: inherit;
       }
     }
     .header-left {
+      //border: 1px solid blue;
       flex: 1;
       min-width: 1px;
       display: flex;
       flex-direction: row;
       justify-content: center;
       align-items: center;
-      margin: 10px;
+      margin: 10px 20px;
       .category-menu-button {
+        cursor: pointer;
         display: flex;
         align-items: center;
         line-height: 1;
@@ -62,12 +99,17 @@ $focus-border: 2px;
           border: 1px solid;
           border-color: rgba(20,23,28,.05);
         }
-        i {
-          margin-right: 5px;
+        .button-label {
+          margin-left: 5px;
+          padding-top: 1px;
+          @media screen and (max-width: $categories-label-break) {
+            display: none;
+          }
         }
       }
     }
     .header-right {
+      //border: 1px solid green;
       display: flex;
       align-items: center;
       margin: 10px 0px;
@@ -76,10 +118,14 @@ $focus-border: 2px;
         font-family: 'Trebuchet MS', Helvetica, sans-serif;
         color: #1f5e11;
         font-size: 18px;
+        height: 100%;
         .navigation-links {
           display: flex;
           align-items: center;
           padding: 0px 15px;
+          @media screen and (max-width: $break-header) {
+            display: none;
+          }
           .nav-link {
             list-style: none;
             margin: 0px 10px;
@@ -111,6 +157,12 @@ $focus-border: 2px;
           display: flex;
           align-items: center;
           margin: 0px 2px;
+          @media screen and (max-width: $break-registration-buttons) {
+            display: none;
+          }
+          @media screen and (max-width: $break-header) {
+            display: none;
+          }
           .divider {
             height: 60%;
             border-left: 1px solid #dedfe0;
@@ -135,7 +187,7 @@ $focus-border: 2px;
             height: 17px;
             border-radius: 10px;
             position: absolute;
-            top: 10px;
+            top: 2px;
             right: -5px;
             font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
             font-size: 11px;
@@ -151,11 +203,30 @@ $focus-border: 2px;
             cursor: pointer;
           }
         }
+        .person-container {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+          position: relative;
+          i {
+            cursor: pointer;
+            &:hover {
+              color: #408e2d;
+            }
+          }
+          display: none;
+          @media screen and (max-width: $break-registration-buttons) {
+            display: inherit;
+          }
+        }
         .user-section {
+          @media screen and (max-width: $break-registration-buttons) {
+            display: none;
+          }
           position: relative;
           display: flex;
           align-items: center;
-          width: 157.672px;
           justify-content: flex-end;
           .user-name-container {
             position: relative;
@@ -231,6 +302,9 @@ $focus-border: 2px;
           }
         }
         .register-section {
+          @media screen and (max-width: $break-registration-buttons) {
+            display: none;
+          }
           position: relative;
           display: flex;
           align-items: center;
@@ -290,6 +364,64 @@ $focus-border: 2px;
     }
   }
 }
+
+// Mobile menu
+.mobile-navigation-links {
+  // Uncoment for fixed header
+  /* position: fixed;
+  top: 64px; */
+  position: relative; // comment for fixed header
+  width: 100%; // comment for fixed header
+  box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1),
+    0 3px 1px 0 rgba(20, 23, 28, 0.1);
+  left: 0;
+  right: 0;
+  background: #4b4b50;
+  z-index: 3;
+  ul.mobilenav-links {
+    padding: 0 0 0 2px;
+    margin: 0px;
+    .mobilenav-link {
+      a {
+        height: 100%;
+        box-sizing: border-box;
+        display: inline-block;
+        padding: 16px;
+        text-decoration: none;
+        color: white;
+        // background-color: black;
+        width: 100%;
+        font-size: 0.75em;
+        margin-left: 2px solid transparent;
+        position: relative;
+        background-clip: padding-box;
+        &.active {
+          background-color: lighten(black, 20%);
+          &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+            margin-left: -2px;
+            border-radius: inherit;
+            background: linear-gradient(to bottom, #dc5500, #f59805);
+          }
+        }
+      }
+    }
+    .divider {
+      margin: 5px auto;
+      width: calc(100% - 30px);
+      height: 1px;
+      background-color: gray;
+    }
+  }
+}
+
+// Mat menu classes
 
 .category-container {
   display: flex;
@@ -506,8 +638,57 @@ $focus-border: 2px;
   }
 }
 
-::ng-deep {
+.email-warning {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid #ffeeba;
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 10px;
+  .warning-label-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    mat-icon {
+      margin: 0px 10px;
+    }
+    .texts {
+      display: flex;
+      justify-content: center;
+      .resend-phrase {
+        text-align: center;
+      }
+      .resend-label {
+        text-align: center;
+        font-style: italic;
+        margin-left: 10px;
+        font-weight: 500;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      @media screen and (max-width: 650px) {
+        flex-direction: column;
+        .resend-label {
+          margin-left: 0px;
+        }
+      }
+    }
+  }
+  button {
+    background-color: inherit;
+    box-shadow: none;
+    color: inherit;
+  }
+}
+
+// Modify Angular Material classes
+
+/* ::ng-deep {
   .mat-menu-panel {
     max-width: 400px !important;
   }
-}
+} */

@@ -1,0 +1,82 @@
+<div class="profile-header">
+  <div class="title">Account Settings</div>
+  <div>Edit your account settings and change you password here.</div>
+</div>
+<div class="content">
+  <div class="username-section">
+    <div style="margin-bottom: 15px;">Username:</div>
+    <div class="editable-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Your username</mat-label>
+        <input
+          matInput
+          placeholder="Your email address"
+          [formControl]="usernameControl"
+          (blur)="checkUsernameAvailability()"
+        />
+        <mat-error *ngIf="usernameControl.errors && usernameControl.errors['notAvailable']">{{usernameControl.errors['notAvailable'].errorMessage}}</mat-error>
+      </mat-form-field>
+      <button mat-flat-button (click)="onUpdateUsername()" [ngStyle]="getUpdateUsernameButtonStyles" [disabled]="!usernameFieldIsValid">Update</button>
+    </div>
+  </div>
+  <div class="email-section">
+    <div style="margin-bottom: 15px;">Email:</div>
+    <div class="editable-field">
+      <mat-form-field appearance="outline">
+        <mat-label>Your email address</mat-label>
+        <input
+          matInput
+          placeholder="Your email address"
+          [formControl]="emailControl"
+        />
+      </mat-form-field>
+      <!-- <button mat-flat-button (click)="onOpenEditEmailModal()">Change</button> -->
+    </div>
+  </div>
+  <div class="reset-password-section">
+    <div style="margin-bottom: 15px;">Password:</div>
+    <form [formGroup]="resetPasswordForm">
+      <mat-form-field appearance="outline">
+        <mat-label>Enter Current Password</mat-label>
+        <input
+          matInput
+          placeholder="Current Password"
+          formControlName="currentPasswordControl"
+          [type]="hide ? 'password' : 'text'"
+        />
+        <mat-icon style="cursor:pointer;" matSuffix (click)="hide = !hide">
+          {{ hide ? 'visibility' : 'visibility_off' }}</mat-icon
+        >
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Enter New Password</mat-label>
+        <input
+          matInput
+          placeholder="New Password"
+          formControlName="newPasswordControl"
+          [type]="hide ? 'password' : 'text'"
+          (blur)="validateNewPasswordControl()"
+        />
+        <mat-icon style="cursor:pointer;" matSuffix (click)="hide = !hide">
+          {{ hide ? 'visibility' : 'visibility_off' }}</mat-icon
+        >
+        <mat-error *ngIf="resetPasswordForm.controls.newPasswordControl.errors && resetPasswordForm.controls.newPasswordControl.errors['noMatchRegex']">{{resetPasswordForm.controls.newPasswordControl.errors['noMatchRegex']['errorMessage']}}</mat-error>
+        <mat-error *ngIf="resetPasswordForm.controls.newPasswordControl.errors && resetPasswordForm.controls.newPasswordControl.errors['newPassError']">{{resetPasswordForm.controls.newPasswordControl.errors['newPassError']['errorMessage']}}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Re-type New password</mat-label>
+        <input
+          matInput
+          placeholder="Re-type New password"
+          formControlName="retypeNewPasswordControl"
+          [type]="hide ? 'password' : 'text'"
+        />
+        <mat-icon style="cursor:pointer;" matSuffix (click)="hide = !hide">
+          {{ hide ? 'visibility' : 'visibility_off' }}</mat-icon
+        >
+        <mat-error *ngIf="resetPasswordForm.controls.retypeNewPasswordControl.errors && resetPasswordForm.controls.retypeNewPasswordControl.errors['passwordsMustBeEqual']">{{resetPasswordForm.controls.retypeNewPasswordControl.errors['passwordsMustBeEqual']['errorMessage']}}</mat-error>
+      </mat-form-field>
+      <button class="submit-button" *ngIf="resetPasswordForm.valid" mat-flat-button type="submit" (click)="onSubmit()">Change Password</button>
+    </form>
+  </div>
+</div>

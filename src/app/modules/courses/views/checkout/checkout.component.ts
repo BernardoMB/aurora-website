@@ -7,11 +7,18 @@ import { selectAuthCart, selectAuthIsAuthenticated, selectAuthUser } from '../..
 import { Router } from '@angular/router';
 import { removeCourseFromCart, purchaseCart } from '../../../../store/auth/auth.actions';
 import { User } from '../../../../shared/models/user.model';
+import { Page, PagedData } from '../../../../shared/utils';
+import { CoursesService } from '../../services/courses.service';
+import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.scss']
+  styleUrls: ['./checkout.component.scss'],
+  providers: [{
+    provide: MAT_RADIO_DEFAULT_OPTIONS,
+    useValue: { color: 'primary' },
+  }]
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
   isAuthenticatedSubscription: Subscription;
@@ -40,11 +47,22 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
     return 0;
   }
+  showPaymentForm = true;
+  expirationYears: number[];
+  rememberCard = true;
 
   constructor(
     private store: Store<AuthState>,
-    private router: Router
-  ) { }
+    private router: Router,
+    public coursesService: CoursesService
+  ) {
+    this.expirationYears = [];
+    const date = new Date();
+    const currentYear = date.getFullYear();
+    for (let i = 0; i <= 20; i++) {
+      this.expirationYears.push(currentYear + i);
+    }
+  }
 
   ngOnInit() {
     this.isAuthenticatedSubscription = this.store.pipe(select(selectAuthIsAuthenticated)).subscribe((isAuthenticated: boolean) => {
@@ -77,8 +95,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.userSubscription.unsubscribe();
   }
 
+  // Pay button
   onCompletePayment() {
+    // TODO: Validate form
     const courseIds = this.cart.map((course: Course) => course.id);
+    // TODO: Pay payment data here
     this.store.dispatch(purchaseCart({ courses: courseIds, userId: this.user.id }));
   }
 
@@ -86,6 +107,21 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     if (this.user) {
       this.store.dispatch(removeCourseFromCart({ courseId: course.id, userId: this.user.id }));
     }
+  }
+
+  cardSelected(card) {
+    console.log('Card selected', card);
+    this.showPaymentForm = false;
+  }
+
+  toggleRememberCard() {
+    console.log('Togglig');
+    this.rememberCard = !this.rememberCard;
+  }
+
+  toggleForm() {
+    console.log('Togglig');
+    this.showPaymentForm = !this.showPaymentForm;
   }
 
 }

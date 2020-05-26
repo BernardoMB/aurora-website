@@ -19,7 +19,7 @@ export class LessonCardComponent implements OnInit, AfterViewInit {
   @Input() lesson;
   @Input() lessonNumber;
   @Input() enrolled: boolean;
-  @ViewChild('description', { static: false }) el: ElementRef;
+  @ViewChild('description') el: ElementRef;
   @Output() navigateToLesson: EventEmitter<void> = new EventEmitter();
 
   height = '66px';

@@ -38,6 +38,15 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CategoryDetailResolver } from './resolvers/category-detail.resolver.service';
 import { MyCoursesResolver } from './resolvers/my-courses.resolver.service';
+import { SwiperModule } from 'ngx-swiper-wrapper';
+import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
+import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
+import { CourseSwiperCardComponent } from './components/course-swiper-card/course-swiper-card.component';
+
+const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
+  /* direction: 'horizontal',
+  slidesPerView: 'auto' */
+};
 
 @NgModule({
     declarations: [
@@ -62,7 +71,8 @@ import { MyCoursesResolver } from './resolvers/my-courses.resolver.service';
         ArchivedComponent,
         FavoriteComponent,
         StarRatingComponent,
-        ReviewModalComponent
+        ReviewModalComponent,
+        CourseSwiperCardComponent
     ],
     imports: [
       CommonModule,
@@ -72,7 +82,8 @@ import { MyCoursesResolver } from './resolvers/my-courses.resolver.service';
       FormsModule,
       ReactiveFormsModule,
       ScrollingModule,
-      NgxPaginationModule
+      NgxPaginationModule,
+      SwiperModule
     ],
     providers: [
       CoursesService,
@@ -83,7 +94,11 @@ import { MyCoursesResolver } from './resolvers/my-courses.resolver.service';
       LearnResolver,
       CourseDetailResolver,
       CategoryDetailResolver,
-      MyCoursesResolver
+      MyCoursesResolver,
+      {
+        provide: SWIPER_CONFIG,
+        useValue: DEFAULT_SWIPER_CONFIG
+      }
     ],
     entryComponents: [ReviewModalComponent]
 })

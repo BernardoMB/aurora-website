@@ -76,15 +76,17 @@
 
     <div class="title-container">
       <div class="title">Rencently wishlisted</div>
-      <a>View all</a>
+      <a [routerLink]="['./../my-courses/wishlist']">View all</a>
     </div>
-    <div *ngIf="wishList && wishList.length > 0" class="cards-container">
-      <div class="course-card" *ngFor="let course of wishList; let i = index">
+
+    <div *ngIf="wishedCourses && wishedCourses.length > 0" class="cards-container">
+      <div class="course-card" *ngFor="let course of wishedCourses; let i = index">
         <app-course-card [course]="course"></app-course-card>
       </div>
     </div>
-    <div *ngIf="!wishList || wishList.length === 0" class="empty-wishlist-phrase">
+    <div *ngIf="!wishedCourses || wishedCourses.length === 0" class="empty-wishlist-phrase">
       You haven't added any courses to you wishlist.
     </div>
+
   </div>
 </section>

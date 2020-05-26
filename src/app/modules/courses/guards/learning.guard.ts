@@ -39,6 +39,7 @@ export class LearningGuard implements CanActivate {
       return this.store.pipe(
         select(selectAuthUser),
         map((user: User) => {
+          //console.log('A como chingados no');
           if (user) {
             let index = 0;
             let found = false;
