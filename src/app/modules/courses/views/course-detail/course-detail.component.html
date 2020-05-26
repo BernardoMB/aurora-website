@@ -120,8 +120,6 @@
       <div class="description-title">Course overview</div>
       <div class="description-content" [innerHTML]="course.overview"></div>
     </div>
-
-
     <!-- Lessons tab content -->
     <div *ngIf="currentTab === 'lessons'" class="tab tab-lessons">
       <div class="lessons-title">{{ course.lessons.length }} lessons</div>
@@ -141,14 +139,8 @@
           class="lesson-card-small"
           *ngFor="let lesson of course.lessons; let i = index"
         >
-          <!-- <app-lesson-card
-            [lesson]="lesson"
-            [lessonNumber]="i + 1"
-            [enrolled]="enrolled"
-            (navigateToLesson)="navigateToLesson($event)"
-          ></app-lesson-card> -->
           <div class="lesson-card-container">
-            <div class="lesson-title">{{lesson.title}}</div>
+            <div class="lesson-title" (click)="navigateToLesson(lesson.id)">{{lesson.title}}</div>
             <div class="lesson-description">{{lesson.description}}</div>
             <div class="lesson-details">
               <i *ngIf="lesson.type === 'DOCUMENT'" class="material-icons">
@@ -179,6 +171,7 @@
       </div>
     </div>
 
+
     <!-- Reviews tab content -->
     <div *ngIf="currentTab === 'reviews'" class="tab tab-reviews">
       <div class="reviews-title-container">
@@ -196,8 +189,8 @@
           </div>
         </cdk-virtual-scroll-viewport>
       </div>
-      <div *ngIf="!reviews || reviews.length === 0" class="reviews-container-2">
-        <div class="no-review-cards-container-2">
+      <div *ngIf="!reviews || reviews.length === 0" class="no-reviews-container">
+        <div class="no-review-cards-container">
           <i class="material-icons">inbox</i>
           <div class="no-reviews-phrase">This course has no reviews</div>
         </div>
@@ -272,7 +265,7 @@
       *ngIf="currentTab === 'certificate' && showCertificateTab && !showCertificate"
       class="tab tab-no-certificate"
     >
-      <div class="reviews-container no-certificate">
+      <div class="no-certificate">
         <i class="material-icons">inbox</i>
         <div class="complete-phrase">Complete this course to download your certificate</div>
       </div>
