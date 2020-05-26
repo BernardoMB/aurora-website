@@ -95,7 +95,20 @@
           color: #1f5e11;
           font-size: 22px;
         }
+        @media screen and (max-width: 450px) {
+          flex-direction: row;
+          i {
+            margin-bottom: 0px;
+            margin-right: 5px;
+          }
+        }
       }
+      @media screen and (max-width: 450px) {
+        justify-content: flex-end;
+      }
+    }
+    @media screen and (max-width: 450px) {
+      flex-direction: column;
     }
   }
 }
