@@ -7,7 +7,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '
 })
 export class ReviewCardComponent implements OnInit, AfterViewInit {
   @Input() review;
-  @ViewChild('description', { static: false }) el: ElementRef;
+  @ViewChild('description') el: ElementRef;
 
   height = '66px';
   fixedHeight = true;

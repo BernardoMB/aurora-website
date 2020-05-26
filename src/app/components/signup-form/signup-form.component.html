@@ -1,1 +1,144 @@
-<p>signup-form works!</p>
+<div class="modal-container">
+  <div class="modal-header">
+    <div class="modal-title" style="margin-right: 20px;">
+      Create Your Invest Naija Account.
+    </div>
+    <i class="material-icons" (click)="onClose()">clear</i>
+  </div>
+  <div class="welcome-phrase">Welcome to Invest Naija!</div>
+  <form [formGroup]="signupForm">
+    <div class="field-row">
+      <mat-form-field appearance="outline" style="margin-right: 10px;">
+        <mat-label>Username</mat-label>
+        <input
+          matInput
+          placeholder="Username"
+          formControlName="usernameControl"
+          required
+          (blur)="checkUsernameAvailability()"
+        />
+        <mat-error *ngIf="signupForm.controls.usernameControl.errors && signupForm.controls.usernameControl.errors['required']">Username is required</mat-error>
+        <mat-error *ngIf="signupForm.controls.usernameControl.errors && signupForm.controls.usernameControl.errors['notAvailable']">{{signupForm.controls.usernameControl.errors['notAvailable'].errorMessage}}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          placeholder="Email"
+          formControlName="emailControl"
+          required
+          (blur)="checkEmailAvailability()"
+        />
+        <mat-error *ngIf="signupForm.controls.emailControl.errors && signupForm.controls.emailControl.errors['required']">Email is required</mat-error>
+        <mat-error *ngIf="signupForm.controls.emailControl.errors && signupForm.controls.emailControl.errors['notAvailable']">{{signupForm.controls.emailControl.errors['notAvailable'].errorMessage}}</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="password-indications">
+      Password must contain special characters, upper case and lower case letters.
+    </div>
+    <div class="field-row">
+      <mat-form-field appearance="outline" style="margin-right: 10px;">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          placeholder="Password"
+          formControlName="passwordControl"
+          [type]="hide ? 'password' : 'text'"
+          required
+        />
+        <mat-icon style="cursor:pointer;" matSuffix (click)="hide = !hide">
+          {{ hide ? 'visibility' : 'visibility_off' }}</mat-icon
+        >
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Reenter password</mat-label>
+        <input
+          matInput
+          placeholder="Password confirmation"
+          formControlName="retypePasswordControl"
+          [type]="hide ? 'password' : 'text'"
+          required
+        />
+        <mat-icon style="cursor:pointer;" matSuffix (click)="hide = !hide">
+          {{ hide ? 'visibility' : 'visibility_off' }}</mat-icon
+        >
+      </mat-form-field>
+    </div>
+    <div class="field-row">
+      <mat-form-field appearance="outline" style="margin-right: 10px;">
+        <mat-label>Country code</mat-label>
+        <mat-select formControlName="ccControl" required>
+          <mat-option style="color: gray;">Select an option</mat-option>
+          <mat-option *ngFor="let country of countries"  [value]="country.cc">{{country.name}} {{country.cc}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Phone number</mat-label>
+        <input
+          matInput
+          placeholder="Phone number"
+          formControlName="msisdnControl"
+          type="number"
+          required
+        />
+      </mat-form-field>
+    </div>
+    <div class="field-row">
+      <mat-form-field appearance="outline" style="margin-right: 10px;">
+        <mat-label>First name</mat-label>
+        <input
+          matInput
+          placeholder="First name"
+          formControlName="nameControl"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Last name</mat-label>
+        <input
+          matInput
+          placeholder="Last name"
+          formControlName="lastNameControl"
+          required
+        />
+      </mat-form-field>
+    </div>
+    <div class="field-row">
+      <mat-form-field appearance="outline" style="margin-right: 10px;">
+        <mat-label>Secret question</mat-label>
+        <mat-select formControlName="secretQuestionControl" required>
+          <mat-option style="color: gray;">Select an option</mat-option>
+          <mat-option [value]="'In what county were you born?'">In what county were you born?</mat-option>
+          <mat-option [value]="'What is your work address?'">What is your work address?</mat-option>
+          <mat-option [value]="'What is your favorite song?'">What is your favorite song?</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Secret answer</mat-label>
+        <input
+          matInput
+          placeholder="Your answer"
+          formControlName="secretAnswerControl"
+          required
+        />
+      </mat-form-field>
+    </div>
+    <div *ngIf="errorMessage" class="alert-message">
+      {{ errorMessage }}
+    </div>
+    <div class="login-button-container">
+      <button class="login-button focus-outline" *ngIf="isValid" (click)="onSubmit()">
+        Sign Up
+      </button>
+    </div>
+  </form>
+  <div class="signup-phrase">
+    Already have an account?
+    <a
+      tabindex="0"
+      class="focus-outline"
+      [mat-dialog-close]="{ showLoginModalOnClose: true }"
+      >log in</a
+    >
+  </div>
+</div>

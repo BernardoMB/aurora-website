@@ -1,8 +1,23 @@
+<section class="categories-header-mobile">
+  <div class="categories-header-container">
+    <div
+      *ngFor="let category of featuredCategories"
+      class="category-container focus-outline"
+      tabindex="0"
+      [routerLink]="['/courses/categories', category.id]"
+    >
+      <i class="material-icons">{{category.materialIcon}}</i>
+      <div>{{category.name}}</div>
+    </div>
+  </div>
+</section>
+
 <section class="categories-header">
   <div class="categories-header-container">
-    <div class="category-container focus-outline"
-      tabindex="0"
+    <div
       *ngFor="let category of featuredCategories"
+      class="category-container focus-outline"
+      tabindex="0"
       [routerLink]="['/courses/categories', category.id]"
     >
       <i class="material-icons">{{category.materialIcon}}</i>
@@ -28,16 +43,21 @@
   </div>
 </section>
 
-<section *ngIf="courses && courses.length > 0" class="featured-courses-section">
-  <div class="featured-courses-container">
-    <div class="featured-title-container">
-      <div class="featured-title">All Courses</div>
-    </div>
-    <div class="featured-cards-container">
-      <div class="course-card" *ngFor="let i = index; let course of courses | paginate: { itemsPerPage: page.size, currentPage: page.pageNumber, totalItems: page.totalElements }">
-        <app-course-card [course]="course"></app-course-card>
+<div *ngIf="courses">
+  <section *ngIf="courses.length > 0" class="category-courses-section">
+    <div class="featured-courses-container">
+      <div class="featured-title-container">
+        <div class="featured-title">All Courses</div>
       </div>
+      <div class="featured-cards-container">
+        <div
+          class="course-card"
+          *ngFor="let i = index; let course of courses | paginate: { id: 'recent', itemsPerPage: page.size, currentPage: page.pageNumber, totalItems: page.totalElements }"
+        >
+          <app-course-card [course]="course"></app-course-card>
+        </div>
+      </div>
+      <pagination-controls id="recent" class="pagination-controls" (pageChange)="pageChanged($event)"></pagination-controls>
     </div>
-    <pagination-controls class="pagination-controls" (pageChange)="pageChanged($event)"></pagination-controls>
-  </div>
-</section>
+  </section>
+</div>

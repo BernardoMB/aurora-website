@@ -17,7 +17,6 @@ const routes: Routes = [
       { path: 'events', loadChildren: () => import('./modules/events/events.module').then(mod => mod.EventsModule) },
       { path: 'invest', loadChildren: () => import('./modules/invest/invest.module').then(mod => mod.InvestModule) },
       { path: 'profile', loadChildren: () => import('./modules/profile/profile.module').then(mod => mod.ProfileModule) },
-      // TODO: This last child route 'profile' should have an auth guard
     ],
   },
   // Wildcard route.

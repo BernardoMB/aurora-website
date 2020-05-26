@@ -1,0 +1,38 @@
+<div class="profile-header">
+  <div class="title">Public profile</div>
+  <div>Add information about yourself</div>
+</div>
+<div class="content">
+  <form [formGroup]="profileInfoForm">
+    <mat-form-field appearance="outline">
+      <mat-label>First name</mat-label>
+      <input
+        matInput
+        placeholder="First name"
+        formControlName="nameControl"
+        autofocus
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Last name</mat-label>
+      <input
+        matInput
+        placeholder="Last name"
+        formControlName="lastNameControl"
+        autofocus
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Name title</mat-label>
+      <mat-select formControlName="nameTitleControl">
+        <mat-option [value]="''" style="color: gray;">Select an option</mat-option>
+        <mat-option [value]="'Mst.'">Mst.</mat-option>
+        <mat-option [value]="'Ms.'">Ms.</mat-option>
+        <mat-option [value]="'Mrs.'">Mrs.</mat-option>
+        <mat-option [value]="'Dr.'">Dr.</mat-option>
+        <mat-option [value]="'Chief'">Chief</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button class="submit-button" *ngIf="isValid" mat-flat-button type="submit" (click)="onSubmit()">Update</button>
+  </form>
+</div>

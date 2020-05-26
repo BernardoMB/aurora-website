@@ -78,17 +78,17 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError(error => {
-        // console.log('ErrorInterceptor: Response interceptor catched error!');
+        console.log('ErrorInterceptor: Response interceptor catched error!');
         if (error instanceof HttpErrorResponse && error.status === 401) {
           // console.log('ErrorInterceptor: Response status is 401 (unauthorized)');
           // console.log('ErrorInterceptor: Removeing userToken');
           console.log('TokenInterceptor: Deleting user token cookie');
           this.cookieService.delete('userToken', '/');
-          /**
-           * No redirecting is need
-           * // log('ErrorInterceptor: Redirecting to login page');
-           * // this.router.navigateByUrl('/log-in');
-           */
+          // No redirecting is need
+          /* console.log('ErrorInterceptor: Redirecting to home page');
+          this.router.navigateByUrl('/log-in'); */
+          // TODO: toastr service call here to warn the user that has been ridirected and logout action dhould be dispatched at some point.
+          // TODO: Verify thispatching logout action before implementing toastr
         }
         return throwError(error);
       }),

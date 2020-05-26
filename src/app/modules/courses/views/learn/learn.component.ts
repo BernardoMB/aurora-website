@@ -11,7 +11,7 @@ import { filter, throttleTime, mergeMap, scan, map, tap } from 'rxjs/operators';
 import * as html2canvas from 'html2canvas';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { IReview } from '../../interfaces/IReview';
-import { MatDialogConfig, MatDialog } from '@angular/material';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { ReviewModalComponent } from '../../components/review-modal/review-modal.component';
 import { CoursesService } from '../../services/courses.service';
 import { Review } from '../../../../shared/models/review.model';
@@ -41,7 +41,7 @@ export class LearnComponent implements OnInit, OnDestroy {
   isFavorite = false;
 
   // #region Reviews infinite scroll
-  @ViewChild(CdkVirtualScrollViewport, { static: false })
+  @ViewChild(CdkVirtualScrollViewport)
   viewport: CdkVirtualScrollViewport;
   batch = 5;
   theEnd = false;
