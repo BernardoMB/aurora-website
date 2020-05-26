@@ -23,7 +23,9 @@ export class LessonComponent implements OnInit, OnDestroy {
     private router: Router,
     private http: HttpClient,
     private sanitizer: DomSanitizer
-  ) {}
+  ) {
+    // TODO: request decryption key token.
+  }
 
   ngOnInit() {
     this.decryptionKeyToken = '';

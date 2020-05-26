@@ -29,6 +29,8 @@ export class AppComponent implements OnInit, OnDestroy {
     if (token) {
       console.log('AppComponent: User token found! Dispatching login action');
       this.store.dispatch(loginWithToken());
+    } else {
+      console.log('AppComponent: No user token found');
     }
 
     const cartCookie = this.cookieService.get('cartCookie');

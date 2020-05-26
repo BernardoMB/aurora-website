@@ -6,7 +6,7 @@ import { User, IPurchasedCourse } from '../../../../shared/models/user.model';
 import { selectAuthUser, selectAuthIsAuthenticated, selectAuthCart } from '../../../../store/auth/auth.selectors';
 import { Subscription, Observable, of, Subject } from 'rxjs';
 import { Course } from '../../../../shared/models/course.model';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
 import { SignupFormComponent } from '../../../../components/signup-form/signup-form.component';
 import { addCourseToCart, pushCourseToCarts, addCourseToFavorites, removeCourseFromFavorites, addCourseToWishlist, removeCourseFromWishlist, addCourseToArchive, removeCourseFromArchive } from '../../../../store/auth/auth.actions';
@@ -55,7 +55,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   }
 
   // #region Reviews infinite scroll
-  @ViewChild(CdkVirtualScrollViewport, { static: false })
+  @ViewChild(CdkVirtualScrollViewport)
   viewport: CdkVirtualScrollViewport;
   batch = 5;
   theEnd = false;

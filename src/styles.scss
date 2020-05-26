@@ -141,6 +141,7 @@ $alt-theme: mat-dark-theme($alt-primary, $alt-accent, $alt-warn);
 
 html,
 body {
+  min-height: 100vh;
   height: 100%;
   background-color: #fafbfc;
 }
@@ -234,3 +235,27 @@ $focus-outline-thickeness: 2px;
     }
   }
 }
+
+// Toasts
+
+// Option 1 (Regular style)
+
+/* @import '~ngx-toastr/toastr'; */
+
+// Option 2 (Bootstrap 4 styles)
+// Requires bootstrap
+
+/* @import '~bootstrap/scss/bootstrap';
+@import '~ngx-toastr/toastr-bs4-alert'; */
+
+// Option 2 [Alternative] (Bootstrap 4 styles)
+// if you'd like to use it without importing all of bootstrap it requires only functions, variables and mixins.
+
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+@import '~ngx-toastr/toastr-bs4-alert';
+
+// Swiper
+
+@import '~swiper/css/swiper.min.css';

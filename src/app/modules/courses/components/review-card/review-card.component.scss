@@ -12,7 +12,9 @@
     padding: 10px;
     border-radius: 5px;
     .review-type-container {
-      display: flex;
+      // TODO: Implement user profile pic
+      display: none; // TODO: Comment this line whenn user profile pictures are implemented
+      // display: flex; // TODO: Uncomment this line whenn user profile pictures are implemented
       align-items: center;
       padding: 0px 20px;
       .profile-pic-container {
@@ -31,7 +33,7 @@
       flex-direction: column;
       padding: 10px 0px;
       position: relative;
-      margin-right: 20px;
+      margin-right: 10px;
       margin-left: 10px;
       .review-title-container {
         display: flex;
@@ -93,7 +95,20 @@
           color: #1f5e11;
           font-size: 22px;
         }
+        @media screen and (max-width: 450px) {
+          flex-direction: row;
+          i {
+            margin-bottom: 0px;
+            margin-right: 5px;
+          }
+        }
       }
+      @media screen and (max-width: 450px) {
+        justify-content: flex-end;
+      }
+    }
+    @media screen and (max-width: 450px) {
+      flex-direction: column;
     }
   }
 }

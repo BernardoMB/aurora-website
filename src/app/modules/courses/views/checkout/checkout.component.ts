@@ -9,7 +9,7 @@ import { removeCourseFromCart, purchaseCart } from '../../../../store/auth/auth.
 import { User } from '../../../../shared/models/user.model';
 import { Page, PagedData } from '../../../../shared/utils';
 import { CoursesService } from '../../services/courses.service';
-import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material';
+import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 
 @Component({
   selector: 'app-checkout',

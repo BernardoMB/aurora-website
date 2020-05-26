@@ -1,8 +1,23 @@
+<section class="categories-header-mobile">
+  <div class="categories-header-container">
+    <div
+      *ngFor="let category of featuredCategories"
+      class="category-container focus-outline"
+      tabindex="0"
+      [routerLink]="['/courses/categories', category.id]"
+    >
+      <i class="material-icons">{{category.materialIcon}}</i>
+      <div>{{category.name}}</div>
+    </div>
+  </div>
+</section>
+
 <section class="categories-header">
   <div class="categories-header-container">
-    <div class="category-container focus-outline"
-      tabindex="0"
+    <div
       *ngFor="let category of featuredCategories"
+      class="category-container focus-outline"
+      tabindex="0"
       [routerLink]="['/courses/categories', category.id]"
     >
       <i class="material-icons">{{category.materialIcon}}</i>
@@ -26,21 +41,29 @@
   </div>
 </section>
 
-<section *ngIf="featuredCourses && featuredCourses.length > 0" class="courses-section">
+<section *ngIf="featuredCourses && featuredCourses.length > 0" class="courses-slider-section">
   <div class="courses-container">
     <div class="title-container">
       <div class="title">Featured</div>
-      <a class="focus-outline" [routerLink]="['/courses/all']" [queryParams]="{ page: 1 }">View all</a>
+      <a class="focus-outline" [routerLink]="['/courses/all']" [queryParams]="{ page: 1 }" style="margin: 0px;">View all</a>
     </div>
-    <div class="cards-container">
-      <div
-        class="course-card"
-        *ngFor="let i = index; let course of featuredCourses | paginate: { id: 'featured', itemsPerPage: featuredCoursesPage.size, currentPage: featuredCoursesPage.pageNumber, totalItems: featuredCoursesPage.totalElements }"
-      >
-        <app-course-card [course]="course"></app-course-card>
+    <div
+      class="swiper-container"
+      #featuredCoursesSwiper
+      [swiper]="config"
+      (indexChange)="onIndexChange($event)"
+      style="width: 100%; margin-top: 20px;"
+      (reachEnd)="onReachEnd()"
+    >
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" *ngFor="let i = index; let course of featuredCourses">
+          <app-course-swiper-card [course]="course"></app-course-swiper-card>
+        </div>
       </div>
+      <div class="swiper-scrollbar"></div>
     </div>
-    <pagination-controls id="featured" class="pagination-controls" (pageChange)="featuredCoursesPageChanged($event)"></pagination-controls>
+    <div class="swiper-button-prev" *ngIf="showPrevBubtton" (click)="prevSlide()"></div>
+    <div class="swiper-button-next" *ngIf="showNextButton" (click)="nextSlide()"></div>
   </div>
 </section>
 
@@ -53,12 +76,6 @@
       <a>View all</a>
     </div>
     <div class="categories-cards-container">
-      <!-- <div
-        class="category-card"
-        *ngFor="let category of topCategories; let i = index"
-      >
-        <app-category-card [category]="category"></app-category-card>
-      </div> -->
       <div
         class="category-card-2"
         *ngFor="let category of topCategories; let i = index"
@@ -78,7 +95,7 @@
 
 <div class="divider"></div>
 
-<section *ngIf="recentCourses && recentCourses.length > 0" class="courses-section">
+<section *ngIf="recentCourses && recentCourses.length > 0" class="courses-recent-section">
   <div class="courses-container">
     <div class="title-container">
       <div class="title">Rencently Added</div>
@@ -92,27 +109,35 @@
         <app-course-card [course]="course"></app-course-card>
       </div>
     </div>
-    <pagination-controls id="recent" class="pagination-controls" (pageChange)="recentCoursesPageChanged($event)"></pagination-controls>
+    <pagination-controls maxSize="3" id="recent" class="pagination-controls" (pageChange)="recentCoursesPageChanged($event)"></pagination-controls>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<section *ngIf="trendingCourses && trendingCourses.length > 0" class="courses-section">
+<section *ngIf="trendingCourses && trendingCourses.length > 0" class="courses-slider-section">
   <div class="courses-container">
     <div class="title-container">
       <div class="title">Trending</div>
-      <a class="focus-outline" [routerLink]="['/courses/all']" [queryParams]="{ page: 1 }">View all</a>
+      <a class="focus-outline" [routerLink]="['/courses/all']" [queryParams]="{ page: 1 }" style="margin: 0px;">View all</a>
     </div>
-    <div class="cards-container">
-      <div
-        class="course-card"
-        *ngFor="let i = index; let course of trendingCourses | paginate: { id: 'trending', itemsPerPage: trendingCoursesPage.size, currentPage: trendingCoursesPage.pageNumber, totalItems: trendingCoursesPage.totalElements }"
-      >
-        <app-course-card [course]="course"></app-course-card>
+    <div
+      class="swiper-container"
+      #trendingCoursesSwiper
+      [swiper]="config"
+      (indexChange)="onIndexChangeTrending($event)"
+      style="width: 100%; margin-top: 20px;"
+      (reachEnd)="onReachEndTrending()"
+    >
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" *ngFor="let i = index; let course of trendingCourses">
+          <app-course-swiper-card [course]="course"></app-course-swiper-card>
+        </div>
       </div>
+      <div class="swiper-scrollbar"></div>
     </div>
-    <pagination-controls id="trending" class="pagination-controls" (pageChange)="trendingCoursesPageChanged($event)"></pagination-controls>
+    <div class="swiper-button-prev" *ngIf="showPrevBubttonTrending" (click)="prevSlideTrending()"></div>
+    <div class="swiper-button-next" *ngIf="showNextButtonTrending" (click)="nextSlideTrending()"></div>
   </div>
 </section>
 

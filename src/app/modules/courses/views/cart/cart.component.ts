@@ -8,7 +8,7 @@ import { User } from '../../../../shared/models/user.model';
 import { AuthState } from '../../../../store/auth/auth.state';
 import { CookieService } from 'ngx-cookie-service';
 import { pullCourseFromCarts, removeCourseFromCart } from '../../../../store/auth/auth.actions';
-import { MatDialogConfig, MatDialog } from '@angular/material';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
 import { SignupFormComponent } from '../../../../components/signup-form/signup-form.component';
 import { Router } from '@angular/router';

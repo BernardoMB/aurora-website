@@ -23,6 +23,10 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
 import { MainComponent } from './components/main/main.component';
+import { AuthGuard } from './guards/auth.guard';
+import { ToastrModule } from 'ngx-toastr';
+import { VerifyEmailModalComponent } from './components/verify-email-modal/verify-email-modal.component';
+import { EmailVerifiedActionModalComponent } from './components/email-verified-action-modal/email-verified-action-modal.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +37,8 @@ import { MainComponent } from './components/main/main.component';
     NotFoundComponent,
     LoginFormComponent,
     SignupFormComponent,
+    VerifyEmailModalComponent,
+    EmailVerifiedActionModalComponent,
     MainComponent
   ],
   imports: [
@@ -44,9 +50,18 @@ import { MainComponent } from './components/main/main.component';
     MaterialModule,
     SharedModule,
     AppRoutingModule, // <-- Routing modules should be imported in the correct order.c
-    RootStoreModule
+    RootStoreModule,
+    ToastrModule.forRoot({ // ToastrModule added
+      // Global options (any individual option can be a global option)
+      // disableTimeOut: true
+      progressBar: true,
+      closeButton: true,
+      enableHtml: true,
+      tapToDismiss: false
+    })
   ],
   providers: [
+    AuthGuard,
     ...DOCUMENT_PROVIDERS, // For header sections logic
     ...WINDOW_PROVIDERS, // For headers sections logic
     CookieService, // Service to store and retreive cookies
@@ -64,7 +79,7 @@ import { MainComponent } from './components/main/main.component';
       multi: true,
     }
   ],
-  entryComponents: [LoginFormComponent, SignupFormComponent],
+  entryComponents: [LoginFormComponent, SignupFormComponent, VerifyEmailModalComponent, EmailVerifiedActionModalComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

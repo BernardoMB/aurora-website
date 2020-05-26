@@ -11,7 +11,6 @@
     </i>
   </div>
   <div class="welcome-phrase">Welcome to Invest Naija!</div>
-
   <form [formGroup]="loginForm">
     <div class="credential-field">
       <mat-form-field appearance="outline">
@@ -20,13 +19,11 @@
           matInput
           placeholder="Username or email"
           formControlName="email"
-          autofocus
           required
         />
         <mat-icon matSuffix>person</mat-icon>
       </mat-form-field>
     </div>
-
     <div class="credential-field">
       <mat-form-field appearance="outline">
         <mat-label>Password</mat-label>
@@ -43,18 +40,15 @@
         >
       </mat-form-field>
     </div>
-
     <div *ngIf="errorMessage" class="alert-message">
       {{ errorMessage }}
     </div>
-
     <div class="login-button-container">
       <button class="login-button focus-outline" (click)="onSubmit()">
         Log In
       </button>
     </div>
   </form>
-
   <div class="signup-phrase">
     Don't have an account?
     <a

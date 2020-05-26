@@ -3,7 +3,7 @@ import {
   OnInit,
   ɵCompiler_compileModuleSync__POST_R3__,
 } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { ExpressionOfInterestModalComponent } from '../components/expression-of-interest-modal/expression-of-interest-modal.component';
 import { BehaviorSubject } from 'rxjs';
 import { Account } from '../models/account.model';

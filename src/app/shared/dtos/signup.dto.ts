@@ -3,12 +3,12 @@ export interface SignupDto {
     email: string;
     password: string;
     msisdn: string;
-    mcc: string;
+    cc: string;
     name: string;
-    middleName: string;
+    middleName?: string;
     lastName: string;
     gender: string;
-    nameTitle: string;
+    nameTitle?: string;
     secretQuestion: string;
     secretAnswer: string;
 }
