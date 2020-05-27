@@ -83,8 +83,10 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         // Prevent scrolling if changed tab.
         const fragment = event.url.split('#')[1];
         if (fragment) {
+          console.log('FRAGMENT', fragment);
           return;
         }
+        // console.log('Scrolling to top');
         window.scrollTo(0, 0);
       }
       return;

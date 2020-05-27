@@ -91,7 +91,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
         if (fragment) {
           return;
         }
-        window.scrollTo(0, 0);
+        //window.scrollTo(0, 0);
       }
       return;
     });
