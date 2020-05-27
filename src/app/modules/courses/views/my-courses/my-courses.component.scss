@@ -43,6 +43,12 @@
             height: 3px;
             bottom: -20px;
             background-color: darkorange;
+            @media screen and (max-width: 400px) {
+              top: 0px;
+              width: 4px;
+              left: 0px;
+              height: 100%;
+            }
           }
           &:hover {
             &:before {
@@ -52,6 +58,12 @@
               height: 3px;
               bottom: -20px;
               background-color: darkorange;
+              @media screen and (max-width: 400px) {
+                top: 0px;
+                width: 4px;
+                left: 0px;
+                height: 100%;
+              }
             }
           }
         }
@@ -64,17 +76,32 @@
             height: 3px;
             bottom: -20px;
             background-color: #cc7000;
+            @media screen and (max-width: 400px) {
+              top: 0px;
+              width: 4px;
+              left: 0px;
+              height: 100%;
+            }
           }
         }
         &:visited {
           color: white;
         }
+        @media screen and (max-width: 400px) {
+          padding-left: 8px;
+          margin-bottom: 10px;
+          font-size: 16px;
+        }
+      }
+      @media screen and (max-width: 400px) {
+        flex-direction: column;
+        padding: 2px;
       }
     }
   }
 }
 
-.courses-section {
+/* .courses-section {
   display: block;
   position: relative;
   .courses-container {
@@ -146,4 +173,116 @@
       }
     }
   }
+} */
+
+.courses-section {
+  display: block;
+  position: relative;
+  .courses-container {
+    padding: 40px 20px;
+    max-width: 1180px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    margin: auto;
+    a {
+      margin-top: 10px;
+      font-size: 18px;
+      color: darkgray;
+      text-decoration: underline;
+      cursor: pointer;
+      display: none;
+      justify-content: center;
+      @media screen and (max-width: 450px) {
+        display: inherit;
+      }
+    }
+    .title-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Trebuchet MS', Helvetica, sans-serif;
+      .title {
+        color: #1b4568;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      a {
+        //margin-right: 20px;
+        font-size: 18px;
+        color: darkgray;
+        text-decoration: underline;
+        cursor: pointer;
+        @media screen and (max-width: 450px) {
+          display: none;
+        }
+      }
+    }
+    .cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      .course-card {
+        margin: 10px;
+        flex-grow: 1;
+      }
+    }
+  }
+
+  .buttons-container {
+    padding: 40px 20px;
+    max-width: 1180px;
+    display: flex;
+    justify-content: space-evenly;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    margin: auto;
+    button {
+      display: inline-block;
+      font-weight: 600;
+      text-align: center;
+      vertical-align: middle;
+      white-space: nowrap;
+      padding: 11px 12px;
+      font-size: 15px;
+      line-height: 1.35135;
+      border-radius: 2px;
+      user-select: none;
+      cursor: pointer;
+      color: #fff;
+      background-color: #eb6c00;
+      border: 1px solid transparent;
+      &:hover {
+        background-color: #1f5e11;
+      }
+    }
+  }
+}
+
+
+:host ::ng-deep .course-card-wrapper {
+  display: flex;
+  flex-grow: 1;
+  max-width: 418px;
+}
+
+:host ::ng-deep .course-card-wrapper {
+  display: flex;
+  flex-grow: 1;
+}
+
+:host ::ng-deep .course-card-container {
+  display: flex;
+  flex-grow: 1;
+}
+
+:host ::ng-deep .gradient-overlay {
+  width: 100% !important;
+}
+
+:host ::ng-deep .course-name {
+  max-width: 220px;
 }

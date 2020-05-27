@@ -44,11 +44,27 @@
 
 <router-outlet></router-outlet>
 
-<section *ngIf="recommendedCourses.length > 0" class="courses-section">
+<!-- <section *ngIf="recommendedCourses.length > 0" class="courses-section">
   <div class="courses-container">
     <div class="title-container">
       <div class="title">You might also be interested in</div>
-      <!-- <a>View all</a> -->
+      <a>View all</a>
+    </div>
+    <div class="cards-container">
+      <div
+        class="course-card"
+        *ngFor="let course of recommendedCourses; let i = index"
+      >
+        <app-course-card [course]="course"></app-course-card>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<section *ngIf="recommendedCourses && recommendedCourses.length > 0" class="courses-section">
+  <div class="courses-container">
+    <div class="title-container">
+      <div class="title">You might also be interested in</div>
     </div>
     <div class="cards-container">
       <div
