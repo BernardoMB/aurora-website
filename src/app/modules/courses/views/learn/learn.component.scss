@@ -1116,6 +1116,9 @@
           @media screen and (max-width: 850px) {
             //flex-direction: row;
           }
+          &:nth-last-child {
+            background-color: red;
+          }
         }
         #item_direction {
           direction: ltr;

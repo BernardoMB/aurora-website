@@ -348,8 +348,7 @@
     <div class="sidebar">
       <div class="sidebar-header">Course content</div>
       <div *ngIf="course && course.lessons && course.lessons.length > 0" class="lesson-card-container">
-        <div *ngFor="let lesson of course.lessons; let i = index">
-          <div class="lesson-container">
+          <div class="lesson-container" *ngFor="let lesson of course.lessons; let i = index">
             <div class="left">
               <i *ngIf="lessonCompleted(lesson.id)" class="material-icons">
                 check_box
@@ -393,7 +392,6 @@
             </div>
             <div class="right"></div>
           </div>
-        </div>
       </div>
     </div>
   </div>

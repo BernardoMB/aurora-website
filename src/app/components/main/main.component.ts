@@ -90,7 +90,7 @@ export class MainComponent implements OnInit {
         })
         ).subscribe((user: User) => {
           if (user.emailVerified) {
-            this.toastr.success('Thank you for verifying your email');
+            // this.toastr.success('Thank you for verifying your email');
           }
           const dialogConfig = new MatDialogConfig();
           dialogConfig.autoFocus = true;

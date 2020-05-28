@@ -3,13 +3,22 @@
     <div class="course-title">My Courses</div>
     <div class="tabs-container">
       <a
-        class="tab-selector focus-outline"
+        class="tab-selector focus-outline all-big"
         (click)="currentTab = 'all-courses'"
         tabindex="0"
         routerLinkActive="active"
         [routerLink]="['./all']"
       >
         All courses
+      </a>
+      <a
+        class="tab-selector focus-outline all-small"
+        (click)="currentTab = 'all-courses'"
+        tabindex="0"
+        routerLinkActive="active"
+        [routerLink]="['./all']"
+      >
+        All
       </a>
       <a
         class="tab-selector focus-outline"

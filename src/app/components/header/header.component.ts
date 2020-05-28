@@ -120,6 +120,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       } */
       // #endregion
+      this.mobileNavBarOpen = false; // <-- default ui state
       this.showCategories = false; // <-- default ui state
       if (this.route.firstChild.snapshot.url[0].path === 'courses') {
         this.showCategories = true;
