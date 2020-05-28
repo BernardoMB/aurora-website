@@ -182,12 +182,10 @@ export class LearnComponent implements OnInit, OnDestroy {
           const userProgress = purchasedCourse.progress;
           this.userProgress = userProgress; // Update user progress
           if (userProgress.length === this.course.lessons.length) {
-            // User has completed this course
-            console.log('User has completed this course');
+            // console.log('User has completed this course');
             this.showCertificate = true;
           } else {
-            // User not yet completed this course
-            console.log('User not yet completed this course');
+            // console.log('User not yet completed this course');
             this.showCertificate = false;
           }
         }

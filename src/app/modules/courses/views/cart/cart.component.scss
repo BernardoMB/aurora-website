@@ -54,6 +54,8 @@
           margin-bottom: 20px;
           border-radius: 5px;
           .course-image {
+            min-width: 130px;
+            min-height: 80px;
             width: 130px;
             height: 80px;
             background-size: cover;
@@ -148,6 +150,10 @@
             }
           }
         }
+        @media screen and (max-width: 850px) {
+          margin-right: 0px;
+          width: 100%;
+        }
       }
       .checkout-card {
         display: flex;
@@ -190,6 +196,10 @@
             background-color: #1f5e11;
           }
         }
+      }
+      @media screen and (max-width: 850px) {
+        flex-direction: column;
+        align-items: center;
       }
     }
     .empty-container {
@@ -252,7 +262,7 @@
         font-weight: bold;
       }
       a {
-        margin-right: 20px;
+        margin-left: 20px;
         font-size: 18px;
         color: darkgray;
         text-decoration: underline;
