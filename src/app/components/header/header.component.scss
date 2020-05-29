@@ -694,8 +694,9 @@ $focus-border: 2px;
 
 // Modify Angular Material classes
 
-/* ::ng-deep {
+::ng-deep {
   .mat-menu-panel {
-    max-width: 400px !important;
+    // max-width: 400px !important;
+    max-width: unset !important;
   }
-} */
+}
