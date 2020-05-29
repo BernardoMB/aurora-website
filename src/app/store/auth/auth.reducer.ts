@@ -57,7 +57,6 @@ const authReducer = createReducer(
     }
   }),
   on(AuthActions.removeCourseFromCartSuccess, (state: AuthState, payload: { course: Course }) => {
-    console.log('EXECUTING REDUCER');
     const newUserCart = state.user.cart.filter((el: Course) => {
       return el.id !== payload.course.id;
     });
