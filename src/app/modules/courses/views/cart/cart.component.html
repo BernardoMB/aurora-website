@@ -124,12 +124,10 @@
         </button>
       </div>
     </div>
-
     <div class="title-container">
       <div class="title">Rencently wishlisted</div>
       <a [routerLink]="['./../my-courses/wishlist']">View all</a>
     </div>
-
     <div *ngIf="wishedCourses && wishedCourses.length > 0" class="cards-container">
       <div class="course-card" *ngFor="let course of wishedCourses; let i = index">
         <app-course-card [course]="course"></app-course-card>

@@ -47,7 +47,7 @@
               <input matInput type="number" placeholder="Card Number">
               <mat-icon style="color: gainsboro;" matSuffix>lock</mat-icon>
             </mat-form-field>
-            <div style="display: flex;">
+            <div class="fields-container">
               <mat-form-field appearance="outline" style="margin-right: 10px; flex-grow: 1;">
                 <mat-label>Expiry Month</mat-label>
                 <!-- TODO: add formControlName attribute to the following mat-select -->
@@ -139,7 +139,55 @@
           </div>
         </div>
       </div>
+      <div *ngFor="let course of cart; let i = index" class="course-item-small">
+        <div class="upper">
+          <div
+            class="course-image focus-outline"
+            tabindex="0"
+            [routerLink]="['/courses', course.id]"
+            [style.backgroundImage]="'url(' + course.imgUrl + ')'"
+          ></div>
+          <div class="course-details">
+            <div>
+              <div class="course-name focus-outline" tabindex="0" [routerLink]="['/courses', course.id]">{{ course.name }}</div>
+              <div class="category-container">
+                <div
+                  class="category-color-indicator"
+                  [style.backgroundColor]="course.category.hexColor"
+                ></div>
+                <div class="category-name">{{ course.category.name }}</div>
+              </div>
+            </div>
+            <div class="price-container">
+              <div class="price">
+                {{
+                  course.price * (1 - course.discount)
+                    | currency: 'NGN':'symbol-narrow'
+                }}<i class="material-icons">
+                  local_offer
+                </i>
+              </div>
+              <div *ngIf="course.discount > 0" class="discount-container">
+                <div class="list-price">
+                  {{ course.price | currency: 'NGN':'symbol-narrow' }}
+                </div>
+                <div class="discount">{{ course.discount * 100 }}% off</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lower">
+          <div class="action-items">
+            <a
+              class="focus-outline"
+              tabindex="0"
+              (click)="onRemoveCourseFromCart(course)"
+              (keyup.enter)="onRemoveCourseFromCart(course)"
+              >Remove</a
+            >
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
-
