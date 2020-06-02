@@ -19,6 +19,7 @@ import { throttleTime, mergeMap, tap, map, scan } from 'rxjs/operators';
 import * as faker from 'faker';
 import { IReview } from '../../interfaces/IReview';
 import { Review } from '../../../../shared/models/review.model';
+import { EmailWarningModalComponent } from '../../components/email-warning-modal/email-warning-modal.component';
 
 @Component({
   selector: 'app-course-detail',
@@ -73,6 +74,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     private loginDialog: MatDialog,
     private signupDialog: MatDialog,
     private reviewDialog: MatDialog,
+    private emailWarningDialog: MatDialog,
     private cookieService: CookieService,
     private coursesService: CoursesService
   ) {
@@ -273,8 +275,13 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         console.log(`CourseDetailComponent: Authenticated state is true, Redirecting to /courses/cart/checkout/express/course/${this.course.id}`);
         this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
       } else {
-        alert('Please verify you email addrres');
-        // TODO: Open verify email address modal.
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.autoFocus = true;
+        dialogConfig.panelClass = 'custom-mat-dialog-container';
+        dialogConfig.backdropClass = 'custom-modal-backdrop';
+        dialogConfig.maxHeight = '80vh';
+        let emailWarningDialogRef;
+        emailWarningDialogRef = this.emailWarningDialog.open(EmailWarningModalComponent, dialogConfig);
       }
     } else {
       const dialogConfig = new MatDialogConfig();
@@ -306,8 +313,13 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
                 console.log(`CourseDetailComponent: Authenticated state is true, Redirecting to /courses/cart/checkout/express/course/${this.course.id}`);
                 this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
               } else  {
-                alert('Please verify you email addrres');
-                // TODO: Open verify email address modal.
+                const dialogConfig = new MatDialogConfig();
+                dialogConfig.autoFocus = true;
+                dialogConfig.panelClass = 'custom-mat-dialog-container';
+                dialogConfig.backdropClass = 'custom-modal-backdrop';
+                dialogConfig.maxHeight = '80vh';
+                let emailWarningDialogRef;
+                emailWarningDialogRef = this.emailWarningDialog.open(EmailWarningModalComponent, dialogConfig);
               }
             }
           }

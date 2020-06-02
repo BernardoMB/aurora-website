@@ -14,6 +14,7 @@ import { SignupFormComponent } from '../../../../components/signup-form/signup-f
 import { Router } from '@angular/router';
 import { Page, PagedData } from '../../../../shared/utils';
 import { CoursesService } from '../../services/courses.service';
+import { EmailWarningModalComponent } from '../../components/email-warning-modal/email-warning-modal.component';
 
 @Component({
   selector: 'app-cart',
@@ -57,6 +58,7 @@ export class CartComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private loginDialog: MatDialog,
     private signupDialog: MatDialog,
+    private emailWarningDialog: MatDialog,
     private router: Router,
     private coursesService: CoursesService
   ) {
@@ -112,8 +114,13 @@ export class CartComponent implements OnInit, OnDestroy {
         console.log('CartComponent: Authenticated state is true. Navigating to /courses/cart/checkout');
         this.router.navigate(['./courses/cart/checkout']);
       } else {
-        alert('Please verify you email addrres');
-        // TODO: Open verify email address modal.
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.autoFocus = true;
+        dialogConfig.panelClass = 'custom-mat-dialog-container';
+        dialogConfig.backdropClass = 'custom-modal-backdrop';
+        dialogConfig.maxHeight = '80vh';
+        let emailWarningDialogRef;
+        emailWarningDialogRef = this.emailWarningDialog.open(EmailWarningModalComponent, dialogConfig);
       }
     } else {
       const dialogConfig = new MatDialogConfig();
@@ -133,8 +140,13 @@ export class CartComponent implements OnInit, OnDestroy {
               console.log('CartComponent: Authenticated state is true. Navigating to /courses/cart/checkout');
               this.router.navigate(['./courses/cart/checkout']);
             } else {
-              alert('Please verify you email addrres');
-              // TODO: Open verify email address modal.
+              const dialogConfig = new MatDialogConfig();
+              dialogConfig.autoFocus = true;
+              dialogConfig.panelClass = 'custom-mat-dialog-container';
+              dialogConfig.backdropClass = 'custom-modal-backdrop';
+              dialogConfig.maxHeight = '80vh';
+              let emailWarningDialogRef;
+              emailWarningDialogRef = this.emailWarningDialog.open(EmailWarningModalComponent, dialogConfig);
             }
           }
         }
