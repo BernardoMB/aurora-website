@@ -31,13 +31,13 @@ const routes: Routes = [
     path: 'cart/checkout/express/course/:courseId',
     component: ExpressCheckoutComponent,
     canActivate: [CheckoutGuard],
-    /* resolve: { checkoutInfo: CheckoutResolver } */
+    resolve: { checkoutInfo: CheckoutResolver }
   },
   {
     path: 'cart/checkout',
     component: CheckoutComponent,
     canActivate: [CheckoutGuard],
-    /* resolve: { checkoutInfo: CheckoutResolver } */
+    resolve: { checkoutInfo: CheckoutResolver }
   },
   { path: 'cart', component: CartComponent },
   { path: 'categories/:id', component: CourseCategoryDetailComponent, resolve: { categoryDetailInfo: CategoryDetailResolver }, },

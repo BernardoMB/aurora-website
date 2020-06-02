@@ -4,11 +4,12 @@ import { Course } from '../../../../shared/models/course.model';
 import { Store, select } from '@ngrx/store';
 import { AuthState } from '../../../../store/auth/auth.state';
 import { selectAuthCart, selectAuthIsAuthenticated, selectAuthUser } from '../../../../store/auth/auth.selectors';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { removeCourseFromCart, purchaseCart } from '../../../../store/auth/auth.actions';
 import { User } from '../../../../shared/models/user.model';
 import { CoursesService } from '../../services/courses.service';
 import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
+import { FormGroup, ValidationErrors, FormControl, Validators, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-checkout',
@@ -20,10 +21,13 @@ import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
   }]
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
+  routeDataSubscription: Subscription;
   isAuthenticatedSubscription: Subscription;
   isAuthenticated: boolean;
+  availableBanks;
   userSubscription: Subscription;
   user: User;
+  userCards; // TODO: Specify type
   cartSubscription: Subscription;
   cart: Course[];
   get subtotal() {
@@ -46,15 +50,86 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
     return 0;
   }
+  paymentMethod = 'NEW_CARD'; // Default payment method
   showBankPaymentForm = false;
   showNewCardPaymentForm = true;
   expirationYears: number[];
   rememberCard = true;
   selectedUserCard;
 
+  countryControl = new FormControl('', [Validators.required]);
+  newCardForm = new FormGroup({
+    nameOnCardControl: new FormControl('', [Validators.required]),
+    cardNumberControl: new FormControl('', [
+      Validators.required,
+      Validators.minLength(16),
+      Validators.maxLength(16),
+      (control: AbstractControl): {[key: string]: any} | null => {
+        let isValid: boolean;
+        if (control.value) {
+          const cardNumber = control.value.toString();
+          if (cardNumber) {
+            // console.log(cardNumber.toString().length);
+            if (cardNumber.length === 16) {
+              isValid = true;
+            } else {
+              isValid = false;
+            }
+            return isValid ? null : { notAValidNumber: {value: control.value}};
+          }
+        }
+      }
+    ]),
+    expiryMonthControl: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]),
+    expiryYearControl: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]),
+    securityCodeControl: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(3),
+      (control: AbstractControl): {[key: string]: any} | null => {
+        let isValid: boolean;
+        if (control.value) {
+          const securityCode = control.value.toString();
+          if (securityCode) {
+            // console.log(cardNumber.toString().length);
+            if (securityCode.length === 3) {
+              isValid = true;
+            } else {
+              isValid = false;
+            }
+            return isValid ? null : { notAValidNumber: {value: control.value}};
+          }
+        }
+      }
+    ]),
+    rememberCardControl: new FormControl('')
+  }, /* {
+    validators: (control: FormGroup): ValidationErrors | null => {
+      // control is the form group
+      const isValid = true;
+      return isValid ? null : { anyValue: true };
+    }
+  } */);
+
+  bankAccountForm = new FormGroup({
+    accountBankControl: new FormControl('', [Validators.required]),
+    accountNumbercontrol: new FormControl('', [Validators.required]),
+    bvnControl: new FormControl('', [Validators.required]),
+    passcodeControl: new FormControl(''),
+    firstNameControl: new FormControl('', [Validators.required]),
+    lastNameControl: new FormControl('', [Validators.required])
+  }, /* {
+    validators: (control: FormGroup): ValidationErrors | null => {
+      // control is the form group
+      const isValid = true;
+      return isValid ? null : { anyValue: true };
+    }
+  } */);
+
   constructor(
     private store: Store<AuthState>,
     private router: Router,
+    private route: ActivatedRoute,
     public coursesService: CoursesService
   ) {
     this.expirationYears = [];
@@ -66,6 +141,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.routeDataSubscription = this.route.data.subscribe((data) => {
+      if (data.checkoutInfo) {
+        const checkoutInfo: { availableBanks: any[], userCards: any[] } = data.checkoutInfo;
+        this.availableBanks = checkoutInfo.userCards;
+        this.userCards = checkoutInfo.userCards;
+      }
+    });
     this.isAuthenticatedSubscription = this.store.pipe(select(selectAuthIsAuthenticated)).subscribe((isAuthenticated: boolean) => {
       if (isAuthenticated) {
         this.isAuthenticated = true;
@@ -98,10 +180,32 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   // Pay button
   onCompletePayment() {
-    // TODO: Validate form
+    if (this.paymentMethod === 'NEW_CARD') {
+      // User is paying with a new card
+      if (this.newCardForm.valid && this.countryControl.valid) {
+        console.log('TODO: Dispatch purchase user cart action');
+      } else {
+        alert('New card form is not valid');
+      }
+    } else if (this.paymentMethod === 'USER_CARD') {
+      // User is paying with a card he has previously used
+      if (this.cardSelected && this.countryControl.valid) {
+        console.log('TODO: Dispatch purchase user cart action');
+      }
+    } else if (this.paymentMethod === 'BANK_ACCOUNT') {
+      // User is paying using a bank account
+      if (this.bankAccountForm.valid && this.countryControl.valid) {
+        console.log('TODO: Dispatch purchase user cart action');
+      } else {
+        alert('Bank account form is not valid');
+      }
+    } else {
+      alert('No payment method selected');
+    }
+    /* // TODO: Validate form
     const courseIds = this.cart.map((course: Course) => course.id);
     // TODO: Pay payment data here
-    this.store.dispatch(purchaseCart({ courses: courseIds, userId: this.user.id }));
+    this.store.dispatch(purchaseCart({ courses: courseIds, userId: this.user.id })); */
   }
 
   toggleRememberCard() {
@@ -111,8 +215,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   toggleNewCardForm() {
     if (this.showNewCardPaymentForm) {
       this.showNewCardPaymentForm = false;
+      this.paymentMethod = null;
     } else {
       this.showNewCardPaymentForm = true;
+      this.paymentMethod = 'NEW_CARD';
       this.showBankPaymentForm = false;
       this.selectedUserCard = null;
     }
@@ -121,8 +227,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   toggleBankForm() {
     if (this.showBankPaymentForm) {
       this.showBankPaymentForm = false;
+      this.paymentMethod = null;
     } else {
       this.showBankPaymentForm = true;
+      this.paymentMethod = 'BANK_ACCOUNT';
       this.showNewCardPaymentForm = false;
       this.selectedUserCard = null;
     }
@@ -130,6 +238,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   cardSelected(card) {
     this.selectedUserCard = card;
+    this.paymentMethod = 'USER_CARD';
     this.showNewCardPaymentForm = false;
     this.showBankPaymentForm = false;
   }

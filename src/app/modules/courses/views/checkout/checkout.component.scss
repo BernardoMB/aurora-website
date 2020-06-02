@@ -122,7 +122,7 @@
           background-color: #f8f8f9;
           border: 1px solid #dedfe0;
           border-radius: 4px;
-          form {
+          .new-card-form {
             display: flex;
             flex-direction: column;
             ::ng-deep {
@@ -153,6 +153,9 @@
               @media screen and (max-width: 1060px) {
                 flex-direction: column;
               }
+            }
+            mat-icon {
+              color: gainsboro;
             }
           }
           .secure-connection-container {
