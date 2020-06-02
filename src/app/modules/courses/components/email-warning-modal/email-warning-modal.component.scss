@@ -40,6 +40,11 @@ $modal-break: 630px;
     color: white;
     font-weight: 500;
   }
+  ::ng-deep {
+    .mat-button-focus-overlay {
+      background-color: transparent!important;
+  }
+  }
 }
 
 ::ng-deep {
