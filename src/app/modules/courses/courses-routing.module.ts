@@ -21,13 +21,24 @@ import { LearnResolver } from './resolvers/learn-resolver.service';
 import { CourseDetailResolver } from './resolvers/course-detail.resolver.service';
 import { CategoryDetailResolver } from './resolvers/category-detail.resolver.service';
 import { MyCoursesResolver } from './resolvers/my-courses.resolver.service';
+import { CheckoutResolver } from './resolvers/checkout.resolver.service';
 
 /* courses/  */
 const routes: Routes = [
   { path: '', component: CoursesComponent, data: { animation: 'courses' } },
   { path: 'all', component: AllCoursesComponent },
-  { path: 'cart/checkout/express/course/:courseId', component: ExpressCheckoutComponent, canActivate: [CheckoutGuard] },
-  { path: 'cart/checkout', component: CheckoutComponent, canActivate: [CheckoutGuard] },
+  {
+    path: 'cart/checkout/express/course/:courseId',
+    component: ExpressCheckoutComponent,
+    canActivate: [CheckoutGuard],
+    /* resolve: { checkoutInfo: CheckoutResolver } */
+  },
+  {
+    path: 'cart/checkout',
+    component: CheckoutComponent,
+    canActivate: [CheckoutGuard],
+    /* resolve: { checkoutInfo: CheckoutResolver } */
+  },
   { path: 'cart', component: CartComponent },
   { path: 'categories/:id', component: CourseCategoryDetailComponent, resolve: { categoryDetailInfo: CategoryDetailResolver }, },
   /**

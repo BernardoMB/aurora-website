@@ -234,6 +234,7 @@
                 }
                 .discount-container {
                   display: flex;
+                  align-items: center;
                   .list-price {
                     font-weight: 400;
                     color: grey;
@@ -374,8 +375,9 @@
       }
     }
     .empty-wishlist-phrase {
-      margin: 10px 0px;
+      margin: 30px 0px;
       font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
       text-align: center;
       color: #29303b;
     }

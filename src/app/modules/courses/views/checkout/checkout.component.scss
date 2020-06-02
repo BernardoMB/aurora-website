@@ -93,6 +93,10 @@
               width: 64px;
               height: 30px;
             }
+            mat-icon {
+              color: gray;
+              margin-left: 10px;
+            }
           }
           mat-radio-group {
             display: flex;
@@ -139,6 +143,9 @@
               mat-form-field {
                 margin-right: 10px;
                 flex-grow: 1;
+                &:nth-last-child(1) {
+                  margin-right: 0px;
+                }
                 @media screen and (max-width: 1060px) {
                   margin-right: 0px !important;
                 }
@@ -418,6 +425,7 @@
               }
               .discount-container {
                 display: flex;
+                align-items: center;
                 .list-price {
                   font-weight: 400;
                   color: grey;

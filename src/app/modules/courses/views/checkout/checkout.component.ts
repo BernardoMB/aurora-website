@@ -7,7 +7,6 @@ import { selectAuthCart, selectAuthIsAuthenticated, selectAuthUser } from '../..
 import { Router } from '@angular/router';
 import { removeCourseFromCart, purchaseCart } from '../../../../store/auth/auth.actions';
 import { User } from '../../../../shared/models/user.model';
-import { Page, PagedData } from '../../../../shared/utils';
 import { CoursesService } from '../../services/courses.service';
 import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 
@@ -47,9 +46,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
     return 0;
   }
-  showPaymentForm = true;
+  showBankPaymentForm = false;
+  showNewCardPaymentForm = true;
   expirationYears: number[];
   rememberCard = true;
+  selectedUserCard;
 
   constructor(
     private store: Store<AuthState>,
@@ -103,25 +104,40 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.store.dispatch(purchaseCart({ courses: courseIds, userId: this.user.id }));
   }
 
-  onRemoveCourseFromCart(course: Course) {
-    if (this.user) {
-      this.store.dispatch(removeCourseFromCart({ courseId: course.id, userId: this.user.id }));
+  toggleRememberCard() {
+    this.rememberCard = !this.rememberCard;
+  }
+
+  toggleNewCardForm() {
+    if (this.showNewCardPaymentForm) {
+      this.showNewCardPaymentForm = false;
+    } else {
+      this.showNewCardPaymentForm = true;
+      this.showBankPaymentForm = false;
+      this.selectedUserCard = null;
+    }
+  }
+
+  toggleBankForm() {
+    if (this.showBankPaymentForm) {
+      this.showBankPaymentForm = false;
+    } else {
+      this.showBankPaymentForm = true;
+      this.showNewCardPaymentForm = false;
+      this.selectedUserCard = null;
     }
   }
 
   cardSelected(card) {
-    console.log('Card selected', card);
-    this.showPaymentForm = false;
+    this.selectedUserCard = card;
+    this.showNewCardPaymentForm = false;
+    this.showBankPaymentForm = false;
   }
 
-  toggleRememberCard() {
-    console.log('Togglig');
-    this.rememberCard = !this.rememberCard;
-  }
-
-  toggleForm() {
-    console.log('Togglig');
-    this.showPaymentForm = !this.showPaymentForm;
+  onRemoveCourseFromCart(course: Course) {
+    if (this.user) {
+      this.store.dispatch(removeCourseFromCart({ courseId: course.id, userId: this.user.id }));
+    }
   }
 
 }

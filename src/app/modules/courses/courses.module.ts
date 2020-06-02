@@ -42,6 +42,7 @@ import { SwiperModule } from 'ngx-swiper-wrapper';
 import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { CourseSwiperCardComponent } from './components/course-swiper-card/course-swiper-card.component';
+import { CheckoutResolver } from './resolvers/checkout.resolver.service';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   /* direction: 'horizontal',
@@ -95,6 +96,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
       CourseDetailResolver,
       CategoryDetailResolver,
       MyCoursesResolver,
+      CheckoutResolver,
       {
         provide: SWIPER_CONFIG,
         useValue: DEFAULT_SWIPER_CONFIG

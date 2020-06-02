@@ -268,9 +268,14 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   onBuyNow() {
     if (this.isAuthenticated) {
-      // tslint:disable-next-line: max-line-length
-      console.log(`CourseDetailComponent: Authenticated state is true, Redirecting to /courses/cart/checkout/express/course/${this.course.id}`);
-      this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
+      if (this.user.emailVerified) {
+        // tslint:disable-next-line: max-line-length
+        console.log(`CourseDetailComponent: Authenticated state is true, Redirecting to /courses/cart/checkout/express/course/${this.course.id}`);
+        this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
+      } else {
+        alert('Please verify you email addrres');
+        // TODO: Open verify email address modal.
+      }
     } else {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.autoFocus = true;
@@ -286,6 +291,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
             signupDialogRef = this.signupDialog.open(SignupFormComponent, dialogConfig);
           }
           if (this.isAuthenticated) {
+            // Check if user owns this course
             let index = 0;
             let found = false;
             while (index < this.user.courses.length && !found) {
@@ -295,9 +301,14 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
                 index++;
             }
             if (!found) {
-              // tslint:disable-next-line: max-line-length
-              console.log(`CourseDetailComponent: Authenticated state is true, Redirecting to /courses/cart/checkout/express/course/${this.course.id}`);
-              this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
+              if (this.user.emailVerified) {
+                // tslint:disable-next-line: max-line-length
+                console.log(`CourseDetailComponent: Authenticated state is true, Redirecting to /courses/cart/checkout/express/course/${this.course.id}`);
+                this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
+              } else  {
+                alert('Please verify you email addrres');
+                // TODO: Open verify email address modal.
+              }
             }
           }
         }

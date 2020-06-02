@@ -107,7 +107,7 @@ export class LearnComponent implements OnInit, OnDestroy {
     });
     // #endregion
 
-    // Set the current tab getting rote fragment if any
+    // Set the current tab getting route fragment if any
     this.routeFragmentSubscription = this.route.fragment.subscribe((fragment: string) => {
       if (fragment) {
         this.currentTab = fragment;

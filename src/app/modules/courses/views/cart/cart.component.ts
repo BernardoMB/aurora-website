@@ -108,9 +108,13 @@ export class CartComponent implements OnInit, OnDestroy {
 
   onCheckout() {
     if (this.isAuthenticated) {
-      /* alert('Redirect courses/cart/checkout/'); */
-      console.log('CartComponent: Authenticated state is true. Navigating to /courses/cart/checkout');
-      this.router.navigate(['./courses/cart/checkout']);
+      if (this.user.emailVerified) {
+        console.log('CartComponent: Authenticated state is true. Navigating to /courses/cart/checkout');
+        this.router.navigate(['./courses/cart/checkout']);
+      } else {
+        alert('Please verify you email addrres');
+        // TODO: Open verify email address modal.
+      }
     } else {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.autoFocus = true;
@@ -125,9 +129,13 @@ export class CartComponent implements OnInit, OnDestroy {
             signupDialogRef = this.signupDialog.open(SignupFormComponent, dialogConfig);
           }
           if (this.isAuthenticated) {
-            /* alert('Redirect courses/cart/checkout/'); */
-            console.log('CartComponent: Authenticated state is true. Navigating to /courses/cart/checkout');
-            this.router.navigate(['./courses/cart/checkout']);
+            if (this.user.emailVerified) {
+              console.log('CartComponent: Authenticated state is true. Navigating to /courses/cart/checkout');
+              this.router.navigate(['./courses/cart/checkout']);
+            } else {
+              alert('Please verify you email addrres');
+              // TODO: Open verify email address modal.
+            }
           }
         }
       });

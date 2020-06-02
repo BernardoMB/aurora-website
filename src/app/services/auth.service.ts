@@ -70,6 +70,19 @@ export class AuthService {
     ) */;
   }
 
+  getUserCards(): Observable<any> { // TODO: Sepecify type to receive here
+    // TODO: This endpoint does not exists on server
+    console.log('Auth service: Getting user cards');
+    const url = `${this.host}/${this.apiVersion}/auth/user/me/cards`;
+    // return this.http.get<User>(url); // TODO: Uncomment this line when edpoint redy
+    return new Observable(obs => {
+      setTimeout(() => {
+        obs.next([1, 2, 3]);
+        obs.complete();
+      }, 2000);
+    });
+  }
+
   signinWithToken(): Observable<any> {
     console.log('Auth service: Loging in sending user token');
     const url = `${this.host}/${this.apiVersion}/auth/signinWithToken`;
