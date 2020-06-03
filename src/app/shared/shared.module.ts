@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { ReadTimePipe } from './pipes/read-time.pipe';
+import { CreditCardNumberPipe } from './pipes/credit-card-number.pipe';
 @NgModule({
-  declarations: [ReadTimePipe],
+  declarations: [ReadTimePipe, CreditCardNumberPipe],
   imports: [CommonModule, FlexLayoutModule],
-  exports: [FlexLayoutModule, ReadTimePipe],
+  exports: [FlexLayoutModule, ReadTimePipe, CreditCardNumberPipe],
   providers: []
 })
 export class SharedModule {}

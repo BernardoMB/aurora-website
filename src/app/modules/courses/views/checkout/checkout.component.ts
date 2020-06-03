@@ -10,6 +10,7 @@ import { User } from '../../../../shared/models/user.model';
 import { CoursesService } from '../../services/courses.service';
 import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 import { FormGroup, ValidationErrors, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-checkout',
@@ -62,14 +63,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     nameOnCardControl: new FormControl('', [Validators.required]),
     cardNumberControl: new FormControl('', [
       Validators.required,
-      Validators.minLength(16),
-      Validators.maxLength(16),
       (control: AbstractControl): {[key: string]: any} | null => {
         let isValid: boolean;
         if (control.value) {
-          const cardNumber = control.value.toString();
+          const cardNumber = control.value.toString().trim().replace(/\s/g, '');
           if (cardNumber) {
-            // console.log(cardNumber.toString().length);
             if (cardNumber.length === 16) {
               isValid = true;
             } else {
@@ -85,14 +83,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     securityCodeControl: new FormControl('', [
       Validators.required,
       Validators.minLength(3),
-      Validators.maxLength(3),
+      Validators.maxLength(4),
       (control: AbstractControl): {[key: string]: any} | null => {
         let isValid: boolean;
         if (control.value) {
           const securityCode = control.value.toString();
           if (securityCode) {
             // console.log(cardNumber.toString().length);
-            if (securityCode.length === 3) {
+            if (3 <= securityCode.length && securityCode.length <= 4) {
               isValid = true;
             } else {
               isValid = false;
@@ -181,14 +179,29 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   // Pay button
   onCompletePayment() {
     if (this.paymentMethod === 'NEW_CARD') {
-      // User is paying with a new card
       if (this.newCardForm.valid && this.countryControl.valid) {
         console.log('TODO: Dispatch purchase user cart action');
+        const courseIds = this.cart.map((course: Course) => course.id);
+        this.store.dispatch(purchaseCart({
+          userId: this.user.id,
+          courses: courseIds,
+          paymentMethod: this.paymentMethod,
+          country: this.countryControl.value,
+          paymentInfo: {
+            nameOnCard: this.newCardForm.get('nameOnCardControl').value.toString().trim(),
+            cardNumber: this.newCardForm.get('cardNumberControl').value.toString().trim().replace(/\s/g, ''),
+            expiryMonth: this.newCardForm.get('expiryMonthControl').value.toString().trim(),
+            expiryYear: this.newCardForm.get('expiryYearControl').value.toString().trim(),
+            securityCode: this.newCardForm.get('securityCodeControl').value.toString().trim(),
+            rememberCard: this.newCardForm.get('rememberCardControl').value
+          }
+        }));
       } else {
-        alert('New card form is not valid');
+        alert('Payment form is invalid');
       }
     } else if (this.paymentMethod === 'USER_CARD') {
       // User is paying with a card he has previously used
+      alert('Implement this payment method');
       if (this.cardSelected && this.countryControl.valid) {
         console.log('TODO: Dispatch purchase user cart action');
       }
@@ -202,10 +215,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     } else {
       alert('No payment method selected');
     }
-    /* // TODO: Validate form
-    const courseIds = this.cart.map((course: Course) => course.id);
-    // TODO: Pay payment data here
-    this.store.dispatch(purchaseCart({ courses: courseIds, userId: this.user.id })); */
   }
 
   toggleRememberCard() {
@@ -247,6 +256,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     if (this.user) {
       this.store.dispatch(removeCourseFromCart({ courseId: course.id, userId: this.user.id }));
     }
+  }
+
+  logFormValue() {
+    console.log(this.newCardForm.value);
   }
 
 }

@@ -44,7 +44,13 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Card Number</mat-label>
-              <input matInput type="number" placeholder="Card Number" formControlName="cardNumberControl" required>
+              <input
+                matInput
+                placeholder="Card Number"
+                formControlName="cardNumberControl"
+                required
+                [value]="newCardForm.get('cardNumberControl').value | creditCardNumber"
+              >
               <mat-error *ngIf="newCardForm.controls.cardNumberControl.errors && newCardForm.controls.cardNumberControl.errors['notAValidNumber']">Please enter a valid credit card number</mat-error>
               <mat-icon matSuffix>lock</mat-icon>
             </mat-form-field>
@@ -52,21 +58,21 @@
               <mat-form-field appearance="outline">
                 <mat-label>Expiry Month</mat-label>
                 <mat-select formControlName="expiryMonthControl" required>
-                  <mat-option>MM</mat-option>
+                  <mat-option style="color: gray;">MM</mat-option>
                   <mat-option *ngFor="let month of ['01','02','03','04','05','06','07','08','09','10','11','12']" [value]="month">{{month}}</mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field appearance="outline">
                 <mat-label>Expiry Year</mat-label>
                 <mat-select formControlName="expiryYearControl" required>
-                  <mat-option>YYYY</mat-option>
+                  <mat-option style="color: gray;">YYYY</mat-option>
                   <mat-option *ngFor="let year of expirationYears" [value]="year">{{year}}</mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field appearance="outline">
-                <mat-label>Security Code</mat-label>
-                <input matInput type="number" placeholder="Security Code" formControlName="securityCodeControl" required>
-                <mat-error *ngIf="newCardForm.controls.securityCodeControl.errors && newCardForm.controls.securityCodeControl.errors['notAValidNumber']">Please enter a valid security code</mat-error>
+                <mat-label>CVV</mat-label>
+                <input matInput type="number" placeholder="CVV" formControlName="securityCodeControl" required>
+                <mat-error *ngIf="newCardForm.controls.securityCodeControl.errors && newCardForm.controls.securityCodeControl.errors['notAValidNumber']">Please enter a valid security code (CVV)</mat-error>
                 <mat-icon matSuffix>help</mat-icon>
               </mat-form-field>
             </div>
@@ -201,3 +207,5 @@
     </div>
   </div>
 </section>
+
+<button (click)="logFormValue()">Wey ya!</button>

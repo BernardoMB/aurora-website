@@ -2,8 +2,9 @@ import { createAction, props } from '@ngrx/store';
 import { User } from '../../shared/models/user.model';
 import { SignupDto } from '../../shared/dtos/signup.dto';
 import { Course } from '../../shared/models/course.model';
+import { IPaymentInfo } from '../../shared/interfaces/payment-info.interface';
 
-// TODO: Error handling
+// TODO: Better Error handling
 
 export const getStatus = createAction('[Auth] GetStatus', props<{}>());
 
@@ -60,7 +61,13 @@ export const getCoursesFrommCookiesFailure = createAction('[Auth] GetCoursesFrom
 export const pushCourseToCarts = createAction('[Auth] PushCourseToCarts', props<{ course: Course }>());
 export const pullCourseFromCarts = createAction('[Auth] PullCourseFromCarts', props<{ course: Course }>());
 
-export const purchaseCart = createAction('[Auth] PurchaseCart', props<{courses: string[], userId: string}>());
+export const purchaseCart = createAction('[Auth] PurchaseCart', props<{
+  userId: string,
+  courses: string[],
+  paymentMethod: string,
+  country: string,
+  paymentInfo: IPaymentInfo
+}>());
 export const purchaseCartSuccess = createAction('[Auth] PurchaseCartSuccess', props<User>());
 export const purchaseCartFailure = createAction('[Auth] PurchaseCartFailure', props<{ error: any; message: string }>());
 
