@@ -68,6 +68,7 @@ export class LearnComponent implements OnInit, OnDestroy {
         if (fragment) {
           return;
         }
+        // console.log('Scrolling to top');
         window.scrollTo(0, 0);
       }
       return;
@@ -106,7 +107,7 @@ export class LearnComponent implements OnInit, OnDestroy {
     });
     // #endregion
 
-    // Set the current tab getting rote fragment if any
+    // Set the current tab getting route fragment if any
     this.routeFragmentSubscription = this.route.fragment.subscribe((fragment: string) => {
       if (fragment) {
         this.currentTab = fragment;
@@ -151,7 +152,7 @@ export class LearnComponent implements OnInit, OnDestroy {
           }
         });
       } else {
-        console.log(`LearnComponent: No route first child url. LessonId not imputed on router.`);
+        // console.log(`LearnComponent: No route first child url. LessonId not imputed on router.`);
         if (this.lessonIds && this.lessonIds.length > 0) {
           const lessonId = this.lessonIds[0];
           console.log(`LearnComponent:  Redirecting to /lesson/${lessonId}.`);
@@ -179,11 +180,12 @@ export class LearnComponent implements OnInit, OnDestroy {
         const purchasedCourse = user.purchasedCourses.find((el: IPurchasedCourse) => el.course === this.course.id);
         if (purchasedCourse) {
           const userProgress = purchasedCourse.progress;
+          this.userProgress = userProgress; // Update user progress
           if (userProgress.length === this.course.lessons.length) {
-            // User has completed this course
+            // console.log('User has completed this course');
             this.showCertificate = true;
           } else {
-            // User not yet completed this course
+            // console.log('User not yet completed this course');
             this.showCertificate = false;
           }
         }
@@ -223,15 +225,10 @@ export class LearnComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('fragment');
     this.routeFragmentSubscription.unsubscribe();
-    console.log('user');
     this.userSubscription.unsubscribe();
-    console.log('router');
     this.routerSubscription.unsubscribe();
-    console.log('url');
     if (this.urlSubscription) {
-      console.log('url subcription was instanciated');
       this.urlSubscription.unsubscribe();
     }
   }
@@ -315,9 +312,6 @@ export class LearnComponent implements OnInit, OnDestroy {
               totalReviews: newTotalReviews
             };
             this.course = course; // Esto hace que se actualice la lista de reviews
-            console.log('COURSEEEEEE', this.course);
-
-
             // TODO: Lo de arriba se tiene que modificar
             const createdReview = {
               rating: review.rating,
@@ -340,7 +334,7 @@ export class LearnComponent implements OnInit, OnDestroy {
 
   // Reviews infinite scroll
   getBatch(courseId, offset) {
-    console.log(`Fetching batch. CourseId: ${courseId}, Offset: ${offset}`);
+    // console.log(`Fetching batch. CourseId: ${courseId}, Offset: ${offset}`);
     return this.coursesService.getCourseReviews(courseId, offset, this.batch).pipe(
       tap((reviews: any[]) => {
         reviews.length ? null : this.theEnd = true;
@@ -363,18 +357,18 @@ export class LearnComponent implements OnInit, OnDestroy {
   }
 
   nextBatch(e, offset) {
-    console.log('ScrollIndexChanged. Event:', e);
+    // console.log('ScrollIndexChanged. Event:', e);
     if (this.theEnd) {
-      console.log('There are no more reviews to fetch');
+      // console.log('There are no more reviews to fetch');
       return;
     }
     const end = this.viewport.getRenderedRange().end;
     const total = this.viewport.getDataLength();
-    console.log(`${end}, '>=', ${total}`);
+    // console.log(`${end}, '>=', ${total}`);
     if (end === total) {
-      console.log('All fetched elements were rendered. Asking for more elements. Offset:', offset);
+      // console.log('All fetched elements were rendered. Asking for more elements. Offset:', offset);
       const value = { courseId: this.course.id, offset };
-      console.log('Nexting value', value);
+      // console.log('Nexting value', value);
       this.offset.next(value);
     }
   }
@@ -390,7 +384,7 @@ export class LearnComponent implements OnInit, OnDestroy {
   }
 
   onUnfavoriteCourse() {
-    console.log('Dispatching action removeCourseFromFavorites');
+    // console.log('Dispatching action removeCourseFromFavorites');
     this.store.dispatch(removeCourseFromFavorites({ courseId: this.course.id, userId: this.user.id }));
   }
 

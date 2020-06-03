@@ -36,6 +36,7 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot,
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this.isAutehnticated) {
+      console.log('AuthGuard: Authenticated state is true. Access granted');
       return true;
     }
     const userToken = this.cookieService.get('userToken');

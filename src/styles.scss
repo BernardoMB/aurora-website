@@ -189,6 +189,9 @@ $focus-outline-thickeness: 2px;
   &:focus {
     outline: $focus-outline-thickeness solid greenyellow;
     outline-style: dashed;
+    @media screen and (max-width: 450px) {
+      outline: none;
+    }
   }
 }
 

@@ -18,7 +18,7 @@ export class MyCoursesComponent implements OnInit {
     this.router.events.subscribe(event => {
       // console.log('Navigation event:', event);
       if (event instanceof NavigationEnd) {
-        window.scrollTo(0, 0);
+        ///window.scrollTo(0, 0);
       }
       return;
     });

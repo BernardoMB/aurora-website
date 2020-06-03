@@ -114,7 +114,7 @@
 </section>
 
 <section class="tab-content-section">
-  <div *ngIf="course" class="tab-content-container">
+  <div *ngIf="course">
     <!-- About tab content -->
     <div *ngIf="currentTab === 'about'" class="tab tab-about">
       <div class="description-title">Course overview</div>
@@ -170,8 +170,6 @@
         </div>
       </div>
     </div>
-
-
     <!-- Reviews tab content -->
     <div *ngIf="currentTab === 'reviews'" class="tab tab-reviews">
       <div class="reviews-title-container">
@@ -205,11 +203,8 @@
         </div>
       </div>
     </div>
-
-
     <!-- Certificate tab content -->
-    <div
-      *ngIf="currentTab === 'certificate' && showCertificateTab && showCertificate"
+    <div *ngIf="currentTab === 'certificate' && showCertificateTab && showCertificate"
       class="tab tab-certificate"
     >
       <div class="certificate-wrapper">
@@ -261,8 +256,7 @@
       </div>
       <button class="download-certificate-button focus-outline" (click)="onDownloadCertificate()">Download certificate</button>
     </div>
-    <div
-      *ngIf="currentTab === 'certificate' && showCertificateTab && !showCertificate"
+    <div *ngIf="currentTab === 'certificate' && showCertificateTab && !showCertificate"
       class="tab tab-no-certificate"
     >
       <div class="no-certificate">

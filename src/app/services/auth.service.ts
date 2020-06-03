@@ -6,6 +6,7 @@ import { SignupDto } from '../shared/dtos/signup.dto';
 import { environment } from '../../environments/environment';
 import { Course } from '../shared/models/course.model';
 import { tap, catchError } from 'rxjs/operators';
+import { IPaymentInfo } from '../shared/interfaces/payment-info.interface';
 
 /**
  * TODO: Add changeUsername function
@@ -136,11 +137,49 @@ export class AuthService {
     return this.http.post<User>(url, { courses });
   }
 
-  purchaseCart(courses: string[], userId: string): Observable<User> {
-    console.log('Auth service: Adding courses to user shooping cart');
-    const url = `${this.host}/${this.apiVersion}/users/${userId}/purchasedCourses`;
-    return this.http.post<User>(url, { courses });
+
+
+
+
+
+
+
+
+
+
+
+  getUserCards(): Observable<any> { // TODO: Sepecify type to receive here
+    // TODO: This endpoint does not exists on server
+    console.log('Auth service: Getting user cards');
+    const url = `${this.host}/${this.apiVersion}/auth/user/me/cards`;
+    // return this.http.get<User>(url); // TODO: Uncomment this line when edpoint redy
+    return new Observable(obs => {
+      setTimeout(() => {
+        obs.next([1, 2, 3]);
+        obs.complete();
+      }, 2000);
+    });
   }
+
+  purchaseCart(userId: string, courses: string[], paymentMethod: string, country: string, paymentInfo: IPaymentInfo): Observable<User> {
+    console.log('Auth service: Purchasing user cart');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/purchasedCourses`;
+    return this.http.post<User>(url, { courses, paymentMethod, country, ...paymentInfo });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   purchaseCourse(course: string, userId: string): Observable<Course> {
     console.log('Auth service: Adding courses to user shooping cart');

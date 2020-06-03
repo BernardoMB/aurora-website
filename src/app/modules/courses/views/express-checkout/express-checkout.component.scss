@@ -24,6 +24,12 @@
       font-size: 18px;
       font-weight: 400;
       font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      @media screen and (max-width: 650px) {
+        margin-left: 0px;
+      }
+    }
+    @media screen and (max-width: 650px) {
+      flex-direction: column;
     }
   }
 }
@@ -128,6 +134,19 @@
             .checkbox {
               color: grey;
             }
+            .fields-container {
+              display: flex;
+              mat-form-field {
+                margin-right: 10px;
+                flex-grow: 1;
+                @media screen and (max-width: 1060px) {
+                  margin-right: 0px !important;
+                }
+              }
+              @media screen and (max-width: 1060px) {
+                flex-direction: column;
+              }
+            }
           }
           .secure-connection-container {
             display: flex;
@@ -149,6 +168,9 @@
               }
             }
           }
+        }
+        @media screen and (max-width: 750px) {
+          margin-right: 0px;
         }
       }
       .checkout-card {
@@ -193,6 +215,12 @@
             background-color: #1f5e11;
           }
         }
+        @media screen and (max-width: 750px) {
+          align-items: center;
+        }
+      }
+      @media screen and (max-width: 650px) {
+        flex-direction: column;
       }
     }
     .order-summary {
@@ -304,6 +332,129 @@
               color: grey;
             }
           }
+        }
+        @media screen and (max-width: 500px) {
+          display: none;
+        }
+      }
+      .course-item-small {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        border: 1px solid gainsboro;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        .upper {
+          display: flex;
+          .course-image {
+            min-width: 100px;
+            min-height: 100px;
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            resize: both;
+            background-position-x: center;
+            background-position-y: center;
+            position: relative;
+            cursor: pointer;
+            &:after {
+              content: '';
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: 0;
+              right: 0;
+            }
+            &:hover {
+              &:after {
+                background-color: rgba($color: #000000, $alpha: 0.3);
+              }
+            }
+          }
+          .course-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            margin-left: 10px;
+            justify-content: space-between;
+            .course-name {
+              color: #29303b;
+              font-weight: 700;
+              font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+              font-size: 15px;
+              cursor: pointer;
+                &:hover {
+                  text-decoration: underline;
+                }
+            }
+            .category-container {
+              display: flex;
+              align-items: center;
+              margin-top: 5px;
+              .category-color-indicator {
+                width: 10px;
+                height: 10px;
+                border-radius: 10px;
+                margin-right: 10px;
+              }
+              .category-name {
+                font-size: 13px;
+              }
+            }
+            .price-container {
+              display: flex;
+              font-family: open sans, helvetica neue, Helvetica, Arial;
+              flex-direction: row-reverse;
+              .price {
+                font-weight: 700;
+                color: #408e2d;
+                font-size: 15px;
+                display: flex;
+                align-items: center;
+                i {
+                  margin-left: 2px;
+                  font-size: 14px;
+                }
+              }
+              .discount-container {
+                display: flex;
+                align-items: center;
+                .list-price {
+                  font-weight: 400;
+                  color: grey;
+                  font-size: 12px;
+                  display: flex;
+                  align-items: center;
+                  text-decoration: line-through;
+                }
+                .discount {
+                  margin: 0px 3px;
+                  font-size: 8px;
+                  color: grey;
+                }
+              }
+            }
+          }
+        }
+        .lower {
+          display: flex;
+          margin-top: 5px;
+          .action-items {
+            display: flex;
+            flex-direction: column;
+            a {
+              cursor: pointer;
+              color: #1f5e11;
+              font-size: 14px;
+              &:hover {
+                color: #408e2d;
+              }
+            }
+          }
+        }
+        display: none;
+        @media screen and (max-width: 500px) {
+          display: inherit;
         }
       }
     }

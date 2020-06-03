@@ -485,6 +485,8 @@ $focus-border: 2px;
       background-color: #f2f3f5;
     }
     .course-image {
+      min-width: 80px;
+      min-height: 60px;
       width: 80px;
       height: 60px;
       background-size: cover;
@@ -606,6 +608,8 @@ $focus-border: 2px;
       display: flex;
       justify-content: center;
       align-items: center;
+      min-width: 50px;
+      min-height: 50px;
       width: 50px;
       height: 50px;
       border: 1px solid grey;
@@ -620,6 +624,9 @@ $focus-border: 2px;
       .user-email {
         color: grey;
         font-size: 14px;
+        @media screen and (max-width: 400px) {
+          font-size: 12px;
+        }
       }
     }
   }
@@ -687,8 +694,9 @@ $focus-border: 2px;
 
 // Modify Angular Material classes
 
-/* ::ng-deep {
+::ng-deep {
   .mat-menu-panel {
-    max-width: 400px !important;
+    // max-width: 400px !important;
+    max-width: unset !important;
   }
-} */
+}

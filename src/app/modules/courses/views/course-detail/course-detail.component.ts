@@ -19,6 +19,7 @@ import { throttleTime, mergeMap, tap, map, scan } from 'rxjs/operators';
 import * as faker from 'faker';
 import { IReview } from '../../interfaces/IReview';
 import { Review } from '../../../../shared/models/review.model';
+import { EmailWarningModalComponent } from '../../components/email-warning-modal/email-warning-modal.component';
 
 @Component({
   selector: 'app-course-detail',
@@ -73,6 +74,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     private loginDialog: MatDialog,
     private signupDialog: MatDialog,
     private reviewDialog: MatDialog,
+    private emailWarningDialog: MatDialog,
     private cookieService: CookieService,
     private coursesService: CoursesService
   ) {
@@ -83,8 +85,10 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         // Prevent scrolling if changed tab.
         const fragment = event.url.split('#')[1];
         if (fragment) {
+          console.log('FRAGMENT', fragment);
           return;
         }
+        // console.log('Scrolling to top');
         window.scrollTo(0, 0);
       }
       return;
@@ -266,14 +270,25 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   onBuyNow() {
     if (this.isAuthenticated) {
-      // tslint:disable-next-line: max-line-length
-      console.log(`CourseDetailComponent: Authenticated state is true, Redirecting to /courses/cart/checkout/express/course/${this.course.id}`);
-      this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
+      if (this.user.emailVerified) {
+        // tslint:disable-next-line: max-line-length
+        console.log(`CourseDetailComponent: Authenticated state is true, Redirecting to /courses/cart/checkout/express/course/${this.course.id}`);
+        this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
+      } else {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.autoFocus = true;
+        dialogConfig.panelClass = 'custom-mat-dialog-container';
+        dialogConfig.backdropClass = 'custom-modal-backdrop';
+        dialogConfig.maxHeight = '80vh';
+        let emailWarningDialogRef;
+        emailWarningDialogRef = this.emailWarningDialog.open(EmailWarningModalComponent, dialogConfig);
+      }
     } else {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.autoFocus = true;
       dialogConfig.panelClass = 'custom-mat-dialog-container';
       dialogConfig.backdropClass = 'custom-modal-backdrop';
+      dialogConfig.maxHeight = '80vh';
       let loginDialogRef;
       let signupDialogRef;
       loginDialogRef = this.loginDialog.open(LoginFormComponent, dialogConfig);
@@ -283,6 +298,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
             signupDialogRef = this.signupDialog.open(SignupFormComponent, dialogConfig);
           }
           if (this.isAuthenticated) {
+            // Check if user owns this course
             let index = 0;
             let found = false;
             while (index < this.user.courses.length && !found) {
@@ -292,9 +308,19 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
                 index++;
             }
             if (!found) {
-              // tslint:disable-next-line: max-line-length
-              console.log(`CourseDetailComponent: Authenticated state is true, Redirecting to /courses/cart/checkout/express/course/${this.course.id}`);
-              this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
+              if (this.user.emailVerified) {
+                // tslint:disable-next-line: max-line-length
+                console.log(`CourseDetailComponent: Authenticated state is true, Redirecting to /courses/cart/checkout/express/course/${this.course.id}`);
+                this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
+              } else  {
+                const dialogConfig = new MatDialogConfig();
+                dialogConfig.autoFocus = true;
+                dialogConfig.panelClass = 'custom-mat-dialog-container';
+                dialogConfig.backdropClass = 'custom-modal-backdrop';
+                dialogConfig.maxHeight = '80vh';
+                let emailWarningDialogRef;
+                emailWarningDialogRef = this.emailWarningDialog.open(EmailWarningModalComponent, dialogConfig);
+              }
             }
           }
         }

@@ -1,4 +1,4 @@
-.featured-courses-section {
+/* .featured-courses-section {
   display: block;
   position: relative;
   .featured-courses-container {
@@ -58,6 +58,7 @@
         }
         .shopping-phrase {
           margin-bottom: 20px;
+          text-align: center;
           color: #29303b;
         }
         .keep-shopping-button {
@@ -83,4 +84,183 @@
       }
     }
   }
+} */
+
+
+
+.category-courses-section {
+  display: block;
+  position: relative;
+  .featured-courses-container {
+    padding: 40px;
+    max-width: 1180px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    margin: auto;
+    .featured-title-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Trebuchet MS', Helvetica, sans-serif;
+      .featured-title {
+        color: #1b4568;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      a {
+        margin-right: 20px;
+        font-size: 18px;
+        color: darkgray;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+    .featured-cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      .course-card {
+        // margin: 10px 0px;
+        // margin-right: 15px;
+        margin: 10px;
+        flex-grow: 1;
+      }
+    }
+    .pagination-controls ::ng-deep .ngx-pagination {
+      padding-left: 0px;
+      display: flex;
+      justify-content: center;
+      .current {
+        border-radius: 10px;
+        background: #1f5e11;
+      }
+      li {
+        a {
+          outline: unset;
+          &:focus {
+            $focus-outline-thickeness: 2px;
+            outline: $focus-outline-thickeness solid greenyellow;
+            outline-style: dashed;
+          }
+          &:hover {
+            border-radius: 10px;
+          }
+        }
+      }
+    }
+    .empty-container {
+      border: 1px solid gainsboro;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      margin: 30px 0px;
+      .empty-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px 0px;
+        i {
+          margin-bottom: 20px;
+          font-size: 120px;
+          color: #e8e9eb;
+        }
+        .shopping-phrase {
+          margin-bottom: 20px;
+          text-align: center;
+          color: #29303b;
+        }
+        .keep-shopping-button {
+          display: inline-block;
+          font-weight: 600;
+          font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+          text-align: center;
+          vertical-align: middle;
+          white-space: nowrap;
+          padding: 11px 12px;
+          font-size: 15px;
+          line-height: 1.35135;
+          border-radius: 2px;
+          user-select: none;
+          cursor: pointer;
+          color: #fff;
+          background-color: #eb6c00;
+          border: 1px solid transparent;
+          &:hover {
+            background-color: #1f5e11;
+          }
+        }
+      }
+    }
+    @media screen and (max-width: 500px) {
+      padding: 40px 15px;
+    }
+  }
+}
+
+// Custom swiper classes
+
+::ng-deep {
+  $button-radius: 46px;
+  .swiper-button-prev {
+    background-color: white;
+    height: $button-radius;
+    width: $button-radius;
+    box-shadow: 0 0 1px 1px rgba(20,23,28,.1), 0 3px 1px 0 rgba(20,23,28,.1);
+    border-radius: $button-radius;
+    top: 53%;
+    left: 14px;
+    &:after {
+      font-size: 18px;
+      font-weight: 900;
+      color: darkorange;
+    }
+    @media screen and (max-width: 500px) {
+      display: none;
+    }
+  }
+  .swiper-button-next {
+    background-color: white;
+    height: $button-radius;
+    width: $button-radius;
+    box-shadow: 0 0 1px 1px rgba(20,23,28,.1), 0 3px 1px 0 rgba(20,23,28,.1);
+    border-radius: $button-radius;
+    top: 53%;
+    right: 14px;
+    &:after {
+      font-size: 18px;
+      font-weight: 900;
+      color: darkorange;
+    }
+    @media screen and (max-width: 500px) {
+      display: none;
+    }
+  }
+}
+
+:host ::ng-deep .course-card-wrapper {
+  display: flex;
+  flex-grow: 1;
+}
+
+:host ::ng-deep .course-card-wrapper {
+  display: flex;
+  flex-grow: 1;
+}
+
+:host ::ng-deep .course-card-container {
+  display: flex;
+  flex-grow: 1;
+}
+
+:host ::ng-deep .gradient-overlay {
+  width: 100% !important;
+}
+
+:host ::ng-deep .course-name {
+  max-width: 220px;
 }

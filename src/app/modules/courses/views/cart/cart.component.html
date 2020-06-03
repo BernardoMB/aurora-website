@@ -52,6 +52,57 @@
             </div>
           </div>
         </div>
+        <div *ngFor="let course of cart; let i = index" class="course-item-small">
+
+          <div class="upper">
+            <div
+              class="course-image focus-outline"
+              tabindex="0"
+              [routerLink]="['/courses', course.id]"
+              [style.backgroundImage]="'url(' + course.imgUrl + ')'"
+            ></div>
+            <div class="course-details">
+              <div>
+                <div class="course-name focus-outline" tabindex="0" [routerLink]="['/courses', course.id]">{{ course.name }}</div>
+                <div class="category-container">
+                  <div
+                    class="category-color-indicator"
+                    [style.backgroundColor]="course.category.hexColor"
+                  ></div>
+                  <div class="category-name">{{ course.category.name }}</div>
+                </div>
+              </div>
+              <div class="price-container">
+                <div class="price">
+                  {{
+                    course.price * (1 - course.discount)
+                      | currency: 'NGN':'symbol-narrow'
+                  }}<i class="material-icons">
+                    local_offer
+                  </i>
+                </div>
+                <div *ngIf="course.discount > 0" class="discount-container">
+                  <div class="list-price">
+                    {{ course.price | currency: 'NGN':'symbol-narrow' }}
+                  </div>
+                  <div class="discount">{{ course.discount * 100 }}% off</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lower">
+            <div class="action-items">
+              <a
+                class="focus-outline"
+                tabindex="0"
+                (click)="onRemoveCourseFromCart(course)"
+                (keyup.enter)="onRemoveCourseFromCart(course)"
+                >Remove</a
+              >
+            </div>
+          </div>
+
+        </div>
       </div>
       <div class="checkout-card">
         <div class="total-label">Total:</div>
@@ -73,19 +124,17 @@
         </button>
       </div>
     </div>
-
     <div class="title-container">
       <div class="title">Rencently wishlisted</div>
       <a [routerLink]="['./../my-courses/wishlist']">View all</a>
     </div>
-
     <div *ngIf="wishedCourses && wishedCourses.length > 0" class="cards-container">
       <div class="course-card" *ngFor="let course of wishedCourses; let i = index">
         <app-course-card [course]="course"></app-course-card>
       </div>
     </div>
     <div *ngIf="!wishedCourses || wishedCourses.length === 0" class="empty-wishlist-phrase">
-      You haven't added any courses to you wishlist.
+      You haven't added any courses to your wishlist.
     </div>
 
   </div>
