@@ -13,7 +13,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-devkit/build-angular": "~0.900.5",
+    "@angular-devkit/build-angular": "^0.901.7",
     "@angular/animations": "~9.0.5",
     "@angular/cdk": "^9.1.1",
     "@angular/cli": "~9.0.5",
@@ -37,6 +37,7 @@
     "faker": "^4.1.0",
     "file-saver": "^2.0.2",
     "html2canvas": "^1.0.0-rc.5",
+    "jquery": "^3.5.1",
     "material-design-icons": "^3.0.1",
     "moment": "^2.24.0",
     "ngx-cookie-service": "^2.3.0",
@@ -45,7 +46,8 @@
     "ngx-toastr": "^12.0.1",
     "rxjs": "~6.5.5",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "typescript": "^3.7.5"
   },
   "devDependencies": {
     "@types/azure": "^0.9.20",
@@ -62,7 +64,6 @@
     "karma-jasmine-html-reporter": "^1.4.0",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
-    "tslint": "~5.15.0",
-    "typescript": "^3.7.5"
+    "tslint": "~5.15.0"
   }
 }
