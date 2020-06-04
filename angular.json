@@ -23,12 +23,16 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
-            "assets": ["src/favicon.ico", "src/assets", "src/web.config"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/web.config"
+            ],
             "styles": [
               "src/styles.scss",
-              "node_modules/animate.css/animate.min.css"
+              "./node_modules/animate.css/animate.min.css"
             ],
-            "scripts": ["node_modules/animate.css/animate.min.css"]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -96,12 +100,16 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": ["src/favicon.ico", "src/assets", "src/web.config"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/web.config"
+            ],
             "styles": [
               "src/styles.scss",
-              "node_modules/animate.css/animate.min.css"
+              "./node_modules/animate.css/animate.min.css"
             ],
-            "scripts": ["node_modules/animate.css/animate.min.css"]
+            "scripts": []
           }
         },
         "lint": {
@@ -112,7 +120,9 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "e2e": {
