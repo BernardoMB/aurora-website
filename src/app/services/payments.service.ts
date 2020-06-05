@@ -32,6 +32,6 @@ export class PaymentsService {
 
   validatePayment(dto: ValidatePaymentDto) {
     console.log('Payments service: Validating payment');
-    return this.http.post(`${this.url}/validate`, dto);
+    return this.http.post(`${this.url}/validate/courses`, dto);
   }
 }
