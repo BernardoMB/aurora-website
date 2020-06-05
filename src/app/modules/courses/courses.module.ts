@@ -44,6 +44,8 @@ import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { CourseSwiperCardComponent } from './components/course-swiper-card/course-swiper-card.component';
 import { CheckoutResolver } from './resolvers/checkout.resolver.service';
 import { EmailWarningModalComponent } from './components/email-warning-modal/email-warning-modal.component';
+import { EnterPinModalComponent } from './components/enter-pin-modal/enter-pin-modal.component';
+import { EnterOtpModalComponent } from './components/enter-otp-modal/enter-otp-modal.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   /* direction: 'horizontal',
@@ -75,7 +77,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         StarRatingComponent,
         ReviewModalComponent,
         CourseSwiperCardComponent,
-        EmailWarningModalComponent
+        EmailWarningModalComponent,
+        EnterPinModalComponent,
+        EnterOtpModalComponent
     ],
     imports: [
       CommonModule,
@@ -104,6 +108,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         useValue: DEFAULT_SWIPER_CONFIG
       }
     ],
-    entryComponents: [ReviewModalComponent, EmailWarningModalComponent]
+    entryComponents: [ReviewModalComponent, EmailWarningModalComponent, EnterPinModalComponent]
 })
 export class CoursesModule {}
