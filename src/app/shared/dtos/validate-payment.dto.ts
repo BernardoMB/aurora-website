@@ -1,6 +1,6 @@
 export interface ValidatePaymentDto {
   transactionReference: string;
-  paymentReference: string;
+  internalTransactionReference: string;
   otp: string;
   isBankAccount?: boolean;
 }

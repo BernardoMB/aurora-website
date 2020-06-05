@@ -4,6 +4,7 @@ export interface IPaymentInfo {
   expiryMonth?: string;
   expiryYear?: string;
   securityCode?: string;
+  pin?: string;
   rememberCard?: boolean;
   userCardId?: string;
   accountBank?: string;

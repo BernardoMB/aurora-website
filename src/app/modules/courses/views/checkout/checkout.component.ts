@@ -1,16 +1,23 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 import { Course } from '../../../../shared/models/course.model';
 import { Store, select } from '@ngrx/store';
 import { AuthState } from '../../../../store/auth/auth.state';
 import { selectAuthCart, selectAuthIsAuthenticated, selectAuthUser } from '../../../../store/auth/auth.selectors';
 import { Router, ActivatedRoute } from '@angular/router';
-import { removeCourseFromCart, purchaseCart } from '../../../../store/auth/auth.actions';
+import { removeCourseFromCart } from '../../../../store/auth/auth.actions';
 import { User } from '../../../../shared/models/user.model';
 import { CoursesService } from '../../services/courses.service';
 import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
-import { FormGroup, ValidationErrors, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { take } from 'rxjs/operators';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { take, catchError } from 'rxjs/operators';
+import { AuthService } from '../../../../services/auth.service';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { EnterPinModalComponent } from '../../components/enter-pin-modal/enter-pin-modal.component';
+import { IPaymentInfo } from '../../../../shared/interfaces/payment-info.interface';
+import { EnterOtpModalComponent } from '../../components/enter-otp-modal/enter-otp-modal.component';
+import { PaymentsService } from '../../../../services/payments.service';
+import { ValidatePaymentDto } from '../../../../shared/dtos/validate-payment.dto';
 
 @Component({
   selector: 'app-checkout',
@@ -31,6 +38,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   userCards; // TODO: Specify type
   cartSubscription: Subscription;
   cart: Course[];
+  dialogConfig = new MatDialogConfig();
   get subtotal() {
     let subtotal = 0;
     if (this.cart) {
@@ -128,14 +136,24 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private store: Store<AuthState>,
     private router: Router,
     private route: ActivatedRoute,
-    public coursesService: CoursesService
+    public coursesService: CoursesService,
+    private authService: AuthService,
+    private paymentsService: PaymentsService,
+    private enterPinModal: MatDialog,
+    private enterOtpModal: MatDialog
   ) {
+    // Define set of expiration years
     this.expirationYears = [];
     const date = new Date();
     const currentYear = date.getFullYear();
     for (let i = 0; i <= 20; i++) {
       this.expirationYears.push(currentYear + i);
     }
+    // Define dialogs configuration
+    this.dialogConfig.autoFocus = true;
+    this.dialogConfig.panelClass = 'custom-mat-dialog-container';
+    this.dialogConfig.backdropClass = 'custom-modal-backdrop';
+    this.dialogConfig.maxHeight = '80vh';
   }
 
   ngOnInit() {
@@ -178,24 +196,42 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   // Pay button
   onCompletePayment() {
-    if (this.paymentMethod === 'NEW_CARD') {
+    this.countryControl.setValue('NG');
+    const courseIds = this.cart.map((course: Course) => course.id);
+    const paymentInfo = {
+      nameOnCard: 'Bernardo Mondragon',
+      cardNumber: '5531886652142950',
+      expiryMonth: '09',
+      expiryYear: '22',
+      securityCode: '564',
+      rememberCard: true
+    };
+    this.purchaseCart(
+      this.user.id,
+      courseIds,
+      this.paymentMethod,
+      'MX', // TODO: should be iso format
+      paymentInfo
+    );
+
+    /* if (this.paymentMethod === 'NEW_CARD') {
       if (this.newCardForm.valid && this.countryControl.valid) {
         console.log('TODO: Dispatch purchase user cart action');
         const courseIds = this.cart.map((course: Course) => course.id);
-        this.store.dispatch(purchaseCart({
-          userId: this.user.id,
-          courses: courseIds,
-          paymentMethod: this.paymentMethod,
-          country: this.countryControl.value,
-          paymentInfo: {
+        this.purchaseCart(
+          this.user.id,
+          courseIds,
+          this.paymentMethod,
+          this.countryControl.value, // TODO: should be iso format
+          {
             nameOnCard: this.newCardForm.get('nameOnCardControl').value.toString().trim(),
             cardNumber: this.newCardForm.get('cardNumberControl').value.toString().trim().replace(/\s/g, ''),
             expiryMonth: this.newCardForm.get('expiryMonthControl').value.toString().trim(),
-            expiryYear: this.newCardForm.get('expiryYearControl').value.toString().trim(),
+            expiryYear: this.newCardForm.get('expiryYearControl').value.toString().trim().slice(-2),
             securityCode: this.newCardForm.get('securityCodeControl').value.toString().trim(),
             rememberCard: this.newCardForm.get('rememberCardControl').value
           }
-        }));
+        );
       } else {
         alert('Payment form is invalid');
       }
@@ -214,7 +250,62 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       }
     } else {
       alert('No payment method selected');
-    }
+    } */
+  }
+
+  purchaseCart(userId: string, courses: string[], paymentMethod: string, country: string, paymentInfo: IPaymentInfo) {
+    this.authService.purchaseCart(userId, courses, paymentMethod, country, paymentInfo).pipe(
+      catchError((error) => {
+        // Determine type of error (user Aurora API returned data)
+        // Retry case 1
+        if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'PIN') {
+          const enterPinDialogRef = this.enterPinModal.open(EnterPinModalComponent, this.dialogConfig);
+          enterPinDialogRef.afterClosed().subscribe((pin: string) => {
+            if (pin) {
+              this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, pin });
+            }
+          });
+        }
+        // Retry case 2
+        if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'PINOAUTH_INTERNATIONALN') {
+          // TODO: Implement case
+        }
+        // Retry case 3
+        if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'AVS_VBVSECURECODE') {
+          // TODO: Implement case
+        }
+        // Proceed with validation Scenario 1
+        if (error.error.error.status === 'success' && error.error.error.data.authModelUsed === 'PIN') {
+          const transactionReference = error.error.error.data.flwRef;
+          const internalTransactionReference = error.error.error.data.txRef;
+          const enterOtpDialogRef = this.enterOtpModal.open(EnterOtpModalComponent, this.dialogConfig);
+          enterOtpDialogRef.afterClosed().subscribe((otp: string) => {
+            if (otp) {
+              const validatePaymentDto: ValidatePaymentDto = {
+                transactionReference,
+                internalTransactionReference,
+                otp
+              };
+              this.paymentsService.validatePayment(validatePaymentDto).pipe(
+                catchError((validatePaymentError) => {
+                  console.log('Validate payment error', validatePaymentError);
+                  throw validatePaymentError;
+                })
+              ).subscribe((response) => {
+                console.log('Validate payment response', response);
+              });
+            }
+          });
+        }
+        // Proceed with validation Scenario 2
+        if (error.error.error.status === 'success' && error.error.error.data.authModelUsed === 'VBVSECURECODE ') {
+          alert('Unsupported card');
+        }
+        throw error;
+      })
+    ).subscribe((response) => {
+      console.log('No error response', response);
+    });
   }
 
   toggleRememberCard() {
@@ -256,10 +347,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     if (this.user) {
       this.store.dispatch(removeCourseFromCart({ courseId: course.id, userId: this.user.id }));
     }
-  }
-
-  logFormValue() {
-    console.log(this.newCardForm.value);
   }
 
 }

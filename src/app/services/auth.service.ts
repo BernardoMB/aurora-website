@@ -7,6 +7,8 @@ import { environment } from '../../environments/environment';
 import { Course } from '../shared/models/course.model';
 import { tap, catchError } from 'rxjs/operators';
 import { IPaymentInfo } from '../shared/interfaces/payment-info.interface';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { EnterPinModalComponent } from '../modules/courses/components/enter-pin-modal/enter-pin-modal.component';
 
 /**
  * TODO: Add changeUsername function
@@ -29,7 +31,9 @@ export class AuthService {
   private signupIsSuccessfullSubject = new BehaviorSubject<boolean>(false);
   public signupIsSuccessfull$ = this.signupIsSuccessfullSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+  ) {}
 
   getStatus(): Observable<any> {
     const url = `${this.host}/status`;

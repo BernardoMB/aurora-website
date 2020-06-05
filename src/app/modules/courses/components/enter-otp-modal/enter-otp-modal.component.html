@@ -1,0 +1,19 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <div class="modal-title" style="margin-right: 20px;">
+      OTP Authentication
+    </div>
+    <!-- <i class="material-icons" (click)="onClose()">clear</i> -->
+  </div>
+  <div class="welcome-phrase">Please enter the code sent via email or SMS.</div>
+  <mat-form-field appearance="outline">
+    <mat-label>One Time Pin</mat-label>
+    <input
+      matInput
+      placeholder="One Time Pin"
+      [formControl]="otpControl"
+      required
+    />
+  </mat-form-field>
+  <button mat-flat-button color="accent" [disabled]="!otpControl.valid" (click)="onSubmit()">Enter</button>
+</div>

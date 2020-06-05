@@ -392,6 +392,7 @@ export class AuthEffects {
     ), { dispatch: false }
   );
 
+  // TODO: delete this effect. Payment logic should be handled with no effects
   purchaseCoursesEffect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(purchaseCart),

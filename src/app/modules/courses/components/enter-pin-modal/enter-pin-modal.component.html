@@ -1,0 +1,19 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <div class="modal-title" style="margin-right: 20px;">
+      Authentication PIN
+    </div>
+    <!-- <i class="material-icons" (click)="onClose()">clear</i> -->
+  </div>
+  <div class="welcome-phrase">Please enter your card's PIN.</div>
+  <mat-form-field appearance="outline">
+    <mat-label>PIN</mat-label>
+    <input
+      matInput
+      placeholder="Security PIN"
+      [formControl]="pinControl"
+      required
+    />
+  </mat-form-field>
+  <button mat-flat-button color="accent" [disabled]="!pinControl.valid" (click)="onSubmit()">Enter</button>
+</div>
