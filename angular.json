@@ -29,6 +29,7 @@
               "src/web.config"
             ],
             "styles": [
+              "node_modules/animate.css/animate.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -105,6 +106,7 @@
               "src/web.config"
             ],
             "styles": [
+              "node_modules/animate.css/animate.css",
               "src/styles.scss"
             ],
             "scripts": []
