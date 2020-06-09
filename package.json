@@ -11,6 +11,10 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "engines": {
+    "node": "13.3.0",
+    "npm": "6.13.1"
+  },
   "private": true,
   "dependencies": {
     "@angular-devkit/build-angular": "^0.901.7",
