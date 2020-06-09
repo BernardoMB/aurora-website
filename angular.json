@@ -29,6 +29,7 @@
               "src/web.config"
             ],
             "styles": [
+              "node_modules/animate.css/animate.css",
               "src/styles.scss",
               "node_modules/swiper/css/swiper.css"
             ],
@@ -106,6 +107,7 @@
               "src/web.config"
             ],
             "styles": [
+              "node_modules/animate.css/animate.css",
               "src/styles.scss",
               "node_modules/swiper/css/swiper.css"
             ],

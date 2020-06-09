@@ -69,5 +69,13 @@ Library ued: https://www.npmjs.com/package/ngx-pagination
   ```
   - Route guards should not grant access if they found a user token. founding a user token is not enough. Guards should validate the found token to see if it is valid and then decide to grant access. That is now possible because observables of true or false can be returned in the canActivate function.
 
+## Swiper JS
 
-  Hola
+Install Swiper packages added into package.json. 
+
+Check `angular.json` file to know how to import the styles.
+
+Dont forget to add the SwiperModule `ngx-swiper-wrapper` into the application module.
+
+Visit `ngx-swiper-wrapper` documentation
+
