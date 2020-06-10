@@ -13,4 +13,10 @@ export interface IPaymentInfo {
   passcode?: string;
   firstName?: string;
   lastName?: string;
+  billingzip?: string;
+  billingcity?: string;
+  billingaddress?: string;
+  billingstate?: string;
+  billingcountry?: string;
+  suggested_auth?: string;
 }

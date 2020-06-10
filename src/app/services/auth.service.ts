@@ -165,7 +165,13 @@ export class AuthService {
     });
   }
 
-  purchaseCart(userId: string, courses: string[], paymentMethod: string, country: string, paymentInfo: IPaymentInfo): Observable<User> {
+  purchaseCart(
+    userId: string,
+    courses: string[],
+    paymentMethod: string,
+    country: string,
+    paymentInfo: IPaymentInfo
+  ): Observable<User> {
     console.log('Auth service: Purchasing user cart');
     const url = `${this.host}/${this.apiVersion}/users/${userId}/purchasedCourses`;
     return this.http.post<User>(url, { courses, paymentMethod, country, ...paymentInfo });

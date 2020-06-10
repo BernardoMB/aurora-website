@@ -5,19 +5,22 @@ import { Store, select } from '@ngrx/store';
 import { AuthState } from '../../../../store/auth/auth.state';
 import { selectAuthCart, selectAuthIsAuthenticated, selectAuthUser } from '../../../../store/auth/auth.selectors';
 import { Router, ActivatedRoute } from '@angular/router';
-import { removeCourseFromCart } from '../../../../store/auth/auth.actions';
+import { removeCourseFromCart, purchaseCartSuccess } from '../../../../store/auth/auth.actions';
 import { User } from '../../../../shared/models/user.model';
 import { CoursesService } from '../../services/courses.service';
 import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { take, catchError } from 'rxjs/operators';
 import { AuthService } from '../../../../services/auth.service';
-import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { EnterPinModalComponent } from '../../components/enter-pin-modal/enter-pin-modal.component';
 import { IPaymentInfo } from '../../../../shared/interfaces/payment-info.interface';
 import { EnterOtpModalComponent } from '../../components/enter-otp-modal/enter-otp-modal.component';
 import { PaymentsService } from '../../../../services/payments.service';
 import { ValidatePaymentDto } from '../../../../shared/dtos/validate-payment.dto';
+import { ToastrService } from 'ngx-toastr';
+import { EnterBillingInfoModalComponent, IBillingInfo } from '../../components/enter-billing-info-modal/enter-billing-info-modal.component';
+import { IframeModalComponent } from '../../components/iframe-modal/iframe-modal.component';
 
 @Component({
   selector: 'app-checkout',
@@ -29,6 +32,7 @@ import { ValidatePaymentDto } from '../../../../shared/dtos/validate-payment.dto
   }]
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
+  iframeDialogRef: MatDialogRef<IframeModalComponent>;
   routeDataSubscription: Subscription;
   isAuthenticatedSubscription: Subscription;
   isAuthenticated: boolean;
@@ -76,7 +80,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         if (control.value) {
           const cardNumber = control.value.toString().trim().replace(/\s/g, '');
           if (cardNumber) {
-            if (cardNumber.length === 16) {
+            // 19 because Verve cards are 19 digits
+            if (16 <= cardNumber.length || cardNumber.length <= 19) {
               isValid = true;
             } else {
               isValid = false;
@@ -89,7 +94,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     expiryMonthControl: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]),
     expiryYearControl: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]),
     securityCodeControl: new FormControl('', [
-      Validators.required,
       Validators.minLength(3),
       Validators.maxLength(4),
       (control: AbstractControl): {[key: string]: any} | null => {
@@ -140,7 +144,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private paymentsService: PaymentsService,
     private enterPinModal: MatDialog,
-    private enterOtpModal: MatDialog
+    private enterOtpModal: MatDialog,
+    private enterBillingInfoModal: MatDialog,
+    private iframeModal: MatDialog,
+    private toastrService: ToastrService
   ) {
     // Define set of expiration years
     this.expirationYears = [];
@@ -196,7 +203,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   // Pay button
   onCompletePayment() {
-    this.countryControl.setValue('NG');
+    // Code for testing porpuses:
+    //#region Case: (PIN and OTP)
+    /* this.countryControl.setValue('NG');
     const courseIds = this.cart.map((course: Course) => course.id);
     const paymentInfo = {
       nameOnCard: 'Bernardo Mondragon',
@@ -212,8 +221,66 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.paymentMethod,
       'MX', // TODO: should be iso format
       paymentInfo
+    ); */
+    //#endregion
+    //#region Case: Visa Card (No auth)
+    /* this.countryControl.setValue('NG');
+    const courseIds = this.cart.map((course: Course) => course.id);
+    const paymentInfo = {
+      nameOnCard: 'Bernardo Mondragon',
+      cardNumber: '4751763236699647',
+      expiryMonth: '09',
+      expiryYear: '21',
+      rememberCard: true
+    };
+    this.purchaseCart(
+      this.user.id,
+      courseIds,
+      this.paymentMethod,
+      'MX', // TODO: should be iso format
+      paymentInfo
+    ); */
+    //#endregion
+    //#region Case: Verve Card (PIN)
+    /* this.countryControl.setValue('NG');
+    const courseIds = this.cart.map((course: Course) => course.id);
+    const paymentInfo = {
+      nameOnCard: 'Bernardo Mondragon',
+      cardNumber: '5061460410120223210',
+      expiryMonth: '12',
+      expiryYear: '21',
+      rememberCard: true
+    };
+    this.purchaseCart(
+      this.user.id,
+      courseIds,
+      this.paymentMethod,
+      'MX', // TODO: should be iso format
+      paymentInfo
+    ); */
+    //#endregion
+    //#region Case: Visa Card (Address Verification)
+    this.countryControl.setValue('NG');
+    const courseIds = this.cart.map((course: Course) => course.id);
+    const paymentInfo = {
+      nameOnCard: 'Bernardo Mondragon',
+      cardNumber: '4556052704172643',
+      expiryMonth: '01',
+      expiryYear: '21',
+      securityCode: '899',
+      rememberCard: true
+    };
+    this.purchaseCart(
+      this.user.id,
+      courseIds,
+      this.paymentMethod,
+      'MX', // TODO: should be iso format
+      paymentInfo
     );
+    //#endregion
+    // TODO: Implement 3DSercure cases
 
+    // TODO: Uncomment code below for production
     /* if (this.paymentMethod === 'NEW_CARD') {
       if (this.newCardForm.valid && this.countryControl.valid) {
         console.log('TODO: Dispatch purchase user cart action');
@@ -257,8 +324,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.authService.purchaseCart(userId, courses, paymentMethod, country, paymentInfo).pipe(
       catchError((error) => {
         // Determine type of error (user Aurora API returned data)
+        console.log('Chinga tu madre! Ocurrio un error: ', error);
+
         // Retry case 1
         if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'PIN') {
+          console.error('Retry request sending PIN');
           const enterPinDialogRef = this.enterPinModal.open(EnterPinModalComponent, this.dialogConfig);
           enterPinDialogRef.afterClosed().subscribe((pin: string) => {
             if (pin) {
@@ -266,15 +336,30 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             }
           });
         }
+
         // Retry case 2
-        if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'PINOAUTH_INTERNATIONALN') {
-          // TODO: Implement case
+        if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'NOAUTH_INTERNATIONAL') {
+          console.error('Retry request sending Billing info');
+          const enterbillingInfoDialogRef = this.enterBillingInfoModal.open(EnterBillingInfoModalComponent, this.dialogConfig);
+          enterbillingInfoDialogRef.afterClosed().subscribe((billingInfo: IBillingInfo) => {
+            if (billingInfo) {
+              this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, ...billingInfo, suggested_auth: 'NOAUTH_INTERNATIONAL' });
+            }
+          });
         }
+
         // Retry case 3
         if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'AVS_VBVSECURECODE') {
-          // TODO: Implement case
+          console.error('Retry request sending Billing info');
+          const enterbillingInfoDialogRef = this.enterBillingInfoModal.open(EnterBillingInfoModalComponent, this.dialogConfig);
+          enterbillingInfoDialogRef.afterClosed().subscribe((billingInfo: IBillingInfo) => {
+            if (billingInfo) {
+              this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, ...billingInfo, suggested_auth: 'NOAUTH_INTERNATIONAL' });
+            }
+          });
         }
-        // Proceed with validation Scenario 1
+
+        // Proceed with validation Scenario 1 (Validate sending OTP)
         if (error.error.error.status === 'success' && error.error.error.data.authModelUsed === 'PIN') {
           const transactionReference = error.error.error.data.flwRef;
           const internalTransactionReference = error.error.error.data.txRef;
@@ -289,22 +374,39 @@ export class CheckoutComponent implements OnInit, OnDestroy {
               this.paymentsService.validatePayment(validatePaymentDto).pipe(
                 catchError((validatePaymentError) => {
                   console.log('Validate payment error', validatePaymentError);
+                  this.toastrService.success('Could not validate your payment');
                   throw validatePaymentError;
                 })
-              ).subscribe((response) => {
-                console.log('Validate payment response', response);
+              ).subscribe((user: User) => {
+                console.log('Validate payment response', user);
+                if (user.cart.length === 0) {
+                  this.succesfullPurchase(user);
+                }
               });
             }
           });
         }
-        // Proceed with validation Scenario 2
-        if (error.error.error.status === 'success' && error.error.error.data.authModelUsed === 'VBVSECURECODE ') {
-          alert('Unsupported card');
+
+        // Proceed with validation Scenario 2 (Validate entering OTP in iframe)
+        if (error.error.error.status === 'success' && error.error.error.data.authModelUsed === 'VBVSECURECODE') {
+          console.error('Validate payment by oppening iframe');
+          // TODO: Open instanciate socket connection to transaction's room
+          // TODO: Open iframe
+          /* console.log('Error data', error.error.error.data); */
+          const dialogConfig = {
+            ...(this.dialogConfig),
+            data: error.error.error.data.authurl
+          };
+          this.iframeDialogRef = this.enterOtpModal.open(IframeModalComponent, dialogConfig);
         }
+
         throw error;
       })
-    ).subscribe((response) => {
-      console.log('No error response', response);
+    ).subscribe((user: User) => {
+      console.log('No error response', user);
+      if (user.cart.length === 0) {
+        this.succesfullPurchase(user);
+      }
     });
   }
 
@@ -347,6 +449,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     if (this.user) {
       this.store.dispatch(removeCourseFromCart({ courseId: course.id, userId: this.user.id }));
     }
+  }
+
+  // * Utility functions
+  succesfullPurchase(user: User) {
+    this.toastrService.success('Successful purchase.', 'Enjoy!');
+    this.store.dispatch(purchaseCartSuccess(user));
+    this.router.navigate(['courses/my-courses']);
   }
 
 }

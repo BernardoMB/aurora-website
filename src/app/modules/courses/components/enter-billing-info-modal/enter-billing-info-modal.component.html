@@ -1,0 +1,57 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <div class="modal-title" style="margin-right: 20px;">
+      Address Verification
+    </div>
+    <!-- <i class="material-icons" (click)="onClose()">clear</i> -->
+  </div>
+  <div class="welcome-phrase">Please enter the following billing info:</div>
+  <form [formGroup]="billingInfoForm">
+    <mat-form-field appearance="outline">
+      <mat-label>Zip code</mat-label>
+      <input
+        matInput
+        placeholder="Zip code"
+        formControlName="billingzip"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>City</mat-label>
+      <input
+        matInput
+        placeholder="City"
+        formControlName="billingcity"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Address</mat-label>
+      <input
+        matInput
+        placeholder="Address"
+        formControlName="billingaddress"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>State</mat-label>
+      <input
+        matInput
+        placeholder="State"
+        formControlName="billingstate"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Country</mat-label>
+      <input
+        matInput
+        placeholder="Country"
+        formControlName="billingcountry"
+        required
+      />
+    </mat-form-field>
+  </form>
+  <button mat-flat-button color="accent" [disabled]="!isValid" (click)="onSubmit()">Enter</button>
+</div>

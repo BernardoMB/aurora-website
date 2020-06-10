@@ -293,10 +293,10 @@ export class SignupFormComponent implements OnInit {
     secretQuestionControl: new FormControl('', [Validators.required]),
     secretAnswerControl: new FormControl('', [Validators.required])
   });
-  errorMessage: string | null;
   get isValid(): boolean {
     return this.signupForm.valid && !this.signupForm.pristine;
   }
+  errorMessage: string | null;
   hide = true;
 
   constructor(
