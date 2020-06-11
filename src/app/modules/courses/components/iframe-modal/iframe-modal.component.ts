@@ -15,7 +15,6 @@ export class IframeModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: string,
     private sanitizer: DomSanitizer
   ) {
-      console.log('Dialog data', data);
       if (data) {
         this.authurl = this.sanitizer.bypassSecurityTrustResourceUrl(data);
       }

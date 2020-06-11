@@ -21,6 +21,8 @@ import { ValidatePaymentDto } from '../../../../shared/dtos/validate-payment.dto
 import { ToastrService } from 'ngx-toastr';
 import { EnterBillingInfoModalComponent, IBillingInfo } from '../../components/enter-billing-info-modal/enter-billing-info-modal.component';
 import { IframeModalComponent } from '../../components/iframe-modal/iframe-modal.component';
+import * as io from 'socket.io-client';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-checkout',
@@ -33,6 +35,10 @@ import { IframeModalComponent } from '../../components/iframe-modal/iframe-modal
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
   iframeDialogRef: MatDialogRef<IframeModalComponent>;
+  socketConnection;
+  connectionId;
+  host = environment.host;
+  apiVersion = environment.apiVersion;
   routeDataSubscription: Subscription;
   isAuthenticatedSubscription: Subscription;
   isAuthenticated: boolean;
@@ -161,6 +167,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.dialogConfig.panelClass = 'custom-mat-dialog-container';
     this.dialogConfig.backdropClass = 'custom-modal-backdrop';
     this.dialogConfig.maxHeight = '80vh';
+
+
+    /* this.socket = io.connect(`${this.host}/${this.apiVersion}`);
+    this.socket.on('connect', function() {
+      const sessionID = this.socket.socket.sessionid;
+      console.log(sessionID);
+    }); */
+
+
   }
 
   ngOnInit() {
@@ -203,6 +218,21 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   // Pay button
   onCompletePayment() {
+    // TODO: Instanciate socket connection
+    this.socketConnection = io(`${this.host}`);
+    this.socketConnection.on('connect', () => {
+      this.connectionId = this.socketConnection.id;
+    });
+    this.socketConnection.on('payment_success', () => {
+      this.iframeDialogRef.close();
+      this.user.cart = [];
+      this.succesfullPurchase(this.user);
+    });
+    this.socketConnection.on('payment_failure', () => {
+      alert('Unsuccesful payment. Try again later');
+    });
+
+
     // Code for testing porpuses:
     //#region Case: (PIN and OTP)
     /* this.countryControl.setValue('NG');
@@ -323,10 +353,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   purchaseCart(userId: string, courses: string[], paymentMethod: string, country: string, paymentInfo: IPaymentInfo) {
     this.authService.purchaseCart(userId, courses, paymentMethod, country, paymentInfo).pipe(
       catchError((error) => {
-        // Determine type of error (user Aurora API returned data)
-        console.log('Chinga tu madre! Ocurrio un error: ', error);
+        // Determine type of error (user Aurora API returned data):
 
-        // Retry case 1
+        //#region Card requires PIN authentication
         if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'PIN') {
           console.error('Retry request sending PIN');
           const enterPinDialogRef = this.enterPinModal.open(EnterPinModalComponent, this.dialogConfig);
@@ -336,30 +365,33 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             }
           });
         }
-
-        // Retry case 2
+        //#endregion
+        //#region Card requires sending billing info (NOAUTH_INTERNATIONAL method)
         if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'NOAUTH_INTERNATIONAL') {
           console.error('Retry request sending Billing info');
           const enterbillingInfoDialogRef = this.enterBillingInfoModal.open(EnterBillingInfoModalComponent, this.dialogConfig);
           enterbillingInfoDialogRef.afterClosed().subscribe((billingInfo: IBillingInfo) => {
             if (billingInfo) {
-              this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, ...billingInfo, suggested_auth: 'NOAUTH_INTERNATIONAL' });
+              const redirectUrl = `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`;
+              this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, ...billingInfo, suggested_auth: 'NOAUTH_INTERNATIONAL', redirect_url: redirectUrl });
             }
           });
         }
-
-        // Retry case 3
+        //#endregion
+        //#region Card requires sending billing info (AVS_VBVSECURECODE method)
         if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'AVS_VBVSECURECODE') {
           console.error('Retry request sending Billing info');
           const enterbillingInfoDialogRef = this.enterBillingInfoModal.open(EnterBillingInfoModalComponent, this.dialogConfig);
           enterbillingInfoDialogRef.afterClosed().subscribe((billingInfo: IBillingInfo) => {
             if (billingInfo) {
-              this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, ...billingInfo, suggested_auth: 'NOAUTH_INTERNATIONAL' });
+              const redirectUrl = `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`;
+              this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, ...billingInfo, suggested_auth: 'AVS_VBVSECURECODE', redirect_url: redirectUrl });
             }
           });
         }
+        //#endregion
 
-        // Proceed with validation Scenario 1 (Validate sending OTP)
+        //#region Card requires OTP validation
         if (error.error.error.status === 'success' && error.error.error.data.authModelUsed === 'PIN') {
           const transactionReference = error.error.error.data.flwRef;
           const internalTransactionReference = error.error.error.data.txRef;
@@ -374,7 +406,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
               this.paymentsService.validatePayment(validatePaymentDto).pipe(
                 catchError((validatePaymentError) => {
                   console.log('Validate payment error', validatePaymentError);
-                  this.toastrService.success('Could not validate your payment');
+                  this.toastrService.error('Could not validate your payment');
                   throw validatePaymentError;
                 })
               ).subscribe((user: User) => {
@@ -386,19 +418,16 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             }
           });
         }
-
-        // Proceed with validation Scenario 2 (Validate entering OTP in iframe)
+        //#endregion
+        //#region Card requires 3DSecure validation
         if (error.error.error.status === 'success' && error.error.error.data.authModelUsed === 'VBVSECURECODE') {
-          console.error('Validate payment by oppening iframe');
-          // TODO: Open instanciate socket connection to transaction's room
-          // TODO: Open iframe
-          /* console.log('Error data', error.error.error.data); */
           const dialogConfig = {
             ...(this.dialogConfig),
             data: error.error.error.data.authurl
           };
           this.iframeDialogRef = this.enterOtpModal.open(IframeModalComponent, dialogConfig);
         }
+        //#endregion
 
         throw error;
       })

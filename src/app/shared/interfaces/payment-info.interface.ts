@@ -19,4 +19,5 @@ export interface IPaymentInfo {
   billingstate?: string;
   billingcountry?: string;
   suggested_auth?: string;
+  redirect_url?: string;
 }
