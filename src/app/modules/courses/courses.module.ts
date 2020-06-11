@@ -46,6 +46,8 @@ import { CheckoutResolver } from './resolvers/checkout.resolver.service';
 import { EmailWarningModalComponent } from './components/email-warning-modal/email-warning-modal.component';
 import { EnterPinModalComponent } from './components/enter-pin-modal/enter-pin-modal.component';
 import { EnterOtpModalComponent } from './components/enter-otp-modal/enter-otp-modal.component';
+import { EnterBillingInfoModalComponent } from './components/enter-billing-info-modal/enter-billing-info-modal.component';
+import { IframeModalComponent } from './components/iframe-modal/iframe-modal.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   /* direction: 'horizontal',
@@ -79,7 +81,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         CourseSwiperCardComponent,
         EmailWarningModalComponent,
         EnterPinModalComponent,
-        EnterOtpModalComponent
+        EnterOtpModalComponent,
+        EnterBillingInfoModalComponent,
+        IframeModalComponent
     ],
     imports: [
       CommonModule,
@@ -108,6 +112,11 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         useValue: DEFAULT_SWIPER_CONFIG
       }
     ],
-    entryComponents: [ReviewModalComponent, EmailWarningModalComponent, EnterPinModalComponent]
+    entryComponents: [
+      ReviewModalComponent,
+      EmailWarningModalComponent,
+      EnterPinModalComponent,
+      EnterBillingInfoModalComponent
+    ]
 })
 export class CoursesModule {}

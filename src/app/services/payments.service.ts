@@ -5,6 +5,8 @@ import { PayWithTokenDto } from '../shared/dtos/pay-with-token.dto';
 import { PayWithCardDto } from '../shared/dtos/pay-with-card.dto';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
+import { User } from '../shared/models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -30,8 +32,8 @@ export class PaymentsService {
     return this.http.post(`${this.url}/bank`, dto);
   }
 
-  validatePayment(dto: ValidatePaymentDto) {
+  validatePayment(dto: ValidatePaymentDto): Observable<User> {
     console.log('Payments service: Validating payment');
-    return this.http.post(`${this.url}/validate/courses`, dto);
+    return this.http.post<User>(`${this.url}/validate/courses`, dto);
   }
 }
