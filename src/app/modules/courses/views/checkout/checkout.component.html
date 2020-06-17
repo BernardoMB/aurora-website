@@ -107,7 +107,9 @@
         <div *ngIf="total !== subtotal" class="subtotal">
           {{ subtotal | currency: 'NGN':'symbol-narrow' }}
         </div>
-        <button class="checkout-button focus-outline" (click)="onCompletePayment()">Complete Payment</button>
+        <button class="checkout-button focus-outline" (click)="onCompletePayment()">
+          Complete Payment
+        </button>
       </div>
     </div>
     <div class="order-summary">
@@ -207,3 +209,7 @@
     </div>
   </div>
 </section>
+
+<div class="spinner-overlay" *ngIf="showProgressSpinner">
+  <mat-spinner aria-label="progress indicator"></mat-spinner>
+</div>

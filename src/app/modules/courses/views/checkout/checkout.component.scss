@@ -206,7 +206,8 @@
           font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
         }
         .checkout-button {
-          display: inline-block;
+          display: flex;
+          align-items: center;
           font-weight: 600;
           font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
           text-align: center;
@@ -223,6 +224,9 @@
           border: 1px solid transparent;
           &:hover {
             background-color: #1f5e11;
+          }
+          mat-spinner {
+            margin-left: 10px;
           }
         }
         @media screen and (max-width: 750px) {
@@ -469,4 +473,16 @@
       }
     }
   }
+}
+
+.spinner-overlay {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
