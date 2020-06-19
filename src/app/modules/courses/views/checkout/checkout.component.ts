@@ -217,7 +217,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.socketConnection = io(`${this.host}`);
     this.socketConnection.on('connect', () => {
       this.connectionId = this.socketConnection.id;
-      // TODO: Start progress spinner indicator
       this.showProgressSpinner = true;
 
       // ! Testcards
@@ -723,6 +722,71 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       // TODO: Stop progress spinner
       this.showProgressSpinner = false;
     });
+  }
+
+  onCompletePayment2() {
+    // * Real case obtain datra from form
+    if (this.paymentMethod === 'NEW_CARD') {
+      if (this.newCardForm.valid && this.countryControl.valid) {
+        const courseIds = this.cart.map((course: Course) => course.id);
+        this.socketConnection = io(`${this.host}`);
+        this.socketConnection.on('connect', () => {
+          this.connectionId = this.socketConnection.id;
+          this.showProgressSpinner = true;
+          this.purchaseCart(
+            this.user.id,
+            courseIds,
+            this.paymentMethod,
+            this.countryControl.value,
+            {
+              nameOnCard: this.newCardForm.get('nameOnCardControl').value.toString().trim(),
+              cardNumber: this.newCardForm.get('cardNumberControl').value.toString().trim().replace(/\s/g, ''),
+              expiryMonth: this.newCardForm.get('expiryMonthControl').value.toString().trim(),
+              expiryYear: this.newCardForm.get('expiryYearControl').value.toString().trim().slice(-2),
+              securityCode: this.newCardForm.get('securityCodeControl').value.toString().trim(),
+              rememberCard: this.newCardForm.get('rememberCardControl').value ? true : false,
+              redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+            }
+          );
+        });
+        this.socketConnection.on('payment_success', () => {
+          this.iframeDialogRef.close();
+          this.user.cart = [];
+          this.succesfullPurchase(this.user);
+          this.socketConnection.disconnect();
+          this.showProgressSpinner = false;
+        });
+        this.socketConnection.on('payment_failure', (message) => {
+          this.iframeDialogRef.close();
+          const dialogConfig = {
+            ...(this.dialogConfig),
+            data: {
+              errorMessage: message
+            }
+          };
+          this.paymentErrorModal.open(PaymentErrorModalComponent, dialogConfig);
+          this.socketConnection.disconnect();
+          this.showProgressSpinner = false;
+        });
+      } else {
+        alert('Payment form is invalid');
+      }
+    } else if (this.paymentMethod === 'USER_CARD') {
+      // User is paying with a card he has previously used
+      alert('Implement this payment method');
+      if (this.cardSelected && this.countryControl.valid) {
+        console.log('TODO: Dispatch purchase user cart action');
+      }
+    } else if (this.paymentMethod === 'BANK_ACCOUNT') {
+      // User is paying using a bank account
+      if (this.bankAccountForm.valid && this.countryControl.valid) {
+        console.log('TODO: Dispatch purchase user cart action');
+      } else {
+        alert('Bank account form is not valid');
+      }
+    } else {
+      alert('No payment method selected');
+    }
   }
 
   purchaseCart(userId: string, courses: string[], paymentMethod: string, country: string, paymentInfo: IPaymentInfo) {

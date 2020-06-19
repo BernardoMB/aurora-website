@@ -42,6 +42,7 @@
 .column-container {
   display: flex;
   position: relative;
+  border-bottom: 1px solid gainsboro;
   .content-container {
     width: 75%;
     .content {
@@ -1043,6 +1044,7 @@
           .middle {
             display: flex;
             flex-direction: column;
+            justify-content: stretch;
             color: #29303b;
             font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
             .number-title-container {
@@ -1116,9 +1118,6 @@
           @media screen and (max-width: 850px) {
             //flex-direction: row;
           }
-          &:nth-last-child {
-            background-color: red;
-          }
         }
         #item_direction {
           direction: ltr;
@@ -1133,13 +1132,16 @@
       .lesson-card-container::-webkit-scrollbar {
         width: 8px;
         background-color: #f5f5f5;
+        border-bottom-left-radius: 4px;
       }
       .lesson-card-container::-webkit-scrollbar-track {
         box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
         background-color: #f5f5f5;
+        border-bottom-left-radius: 4px;
       }
       .lesson-card-container::-webkit-scrollbar-thumb {
         background-color: #c1c1c1;
+        border-bottom-left-radius: 4px;
       }
       @media screen and (max-width: 850px) {
         border-radius: 5px;
@@ -1156,6 +1158,38 @@
     flex-direction: column;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.lesson-card-container-2 {
+  display: flex;
+  flex-direction: column;
+  max-height: 100px;
+  overflow: auto;
+  .lesson-container-2 {
+    display: flex;
+    border-bottom: 1px solid gainsboro;
+  }
+}
+
+
+
+
+
+
+
+
 
 .courses-section {
   display: block;
