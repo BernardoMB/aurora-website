@@ -23,6 +23,8 @@ import { EnterBillingInfoModalComponent, IBillingInfo } from '../../components/e
 import { IframeModalComponent } from '../../components/iframe-modal/iframe-modal.component';
 import * as io from 'socket.io-client';
 import { environment } from '../../../../../environments/environment';
+import { PaymentErrorModalComponent } from '../../components/payment-error-modal/payment-error-modal.component';
+import { MyErrorStateMatcher } from './control.error-matcher';
 
 @Component({
   selector: 'app-checkout',
@@ -34,6 +36,8 @@ import { environment } from '../../../../../environments/environment';
   }]
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
+  matcher;
+  showProgressSpinner = false;
   iframeDialogRef: MatDialogRef<IframeModalComponent>;
   socketConnection;
   connectionId;
@@ -82,17 +86,23 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     cardNumberControl: new FormControl('', [
       Validators.required,
       (control: AbstractControl): {[key: string]: any} | null => {
-        let isValid: boolean;
+        let isValid = false;
         if (control.value) {
           const cardNumber = control.value.toString().trim().replace(/\s/g, '');
+          console.log('Card number', cardNumber);
           if (cardNumber) {
             // 19 because Verve cards are 19 digits
-            if (16 <= cardNumber.length || cardNumber.length <= 19) {
+            if (16 <= cardNumber.length && cardNumber.length <= 19) {
+              console.log(`${cardNumber.length} is valid :\)`);
               isValid = true;
+              console.log('Returning null');
+              return null;
             } else {
+              console.log(`${cardNumber.length} is not valid!`);
               isValid = false;
+              console.log('Returning error');
+              return { notAValidCardNumber: {value: control.value}};
             }
-            return isValid ? null : { notAValidNumber: {value: control.value}};
           }
         }
       }
@@ -120,6 +130,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     ]),
     rememberCardControl: new FormControl('')
   }, /* {
+    // ? Overall form validation needed?
     validators: (control: FormGroup): ValidationErrors | null => {
       // control is the form group
       const isValid = true;
@@ -127,6 +138,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
   } */);
 
+  // TODO: Setup bank account payments
   bankAccountForm = new FormGroup({
     accountBankControl: new FormControl('', [Validators.required]),
     accountNumbercontrol: new FormControl('', [Validators.required]),
@@ -152,6 +164,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private enterPinModal: MatDialog,
     private enterOtpModal: MatDialog,
     private enterBillingInfoModal: MatDialog,
+    private paymentErrorModal: MatDialog,
     private iframeModal: MatDialog,
     private toastrService: ToastrService
   ) {
@@ -167,15 +180,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.dialogConfig.panelClass = 'custom-mat-dialog-container';
     this.dialogConfig.backdropClass = 'custom-modal-backdrop';
     this.dialogConfig.maxHeight = '80vh';
-
-
-    /* this.socket = io.connect(`${this.host}/${this.apiVersion}`);
-    this.socket.on('connect', function() {
-      const sessionID = this.socket.socket.sessionid;
-      console.log(sessionID);
-    }); */
-
-
+    // Form form errors
+    this.matcher = new MyErrorStateMatcher();
   }
 
   ngOnInit() {
@@ -217,120 +223,571 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   // Pay button
-  onCompletePayment() {
-    // TODO: Instanciate socket connection
+  onCompletePaymentTest() {
     this.socketConnection = io(`${this.host}`);
     this.socketConnection.on('connect', () => {
       this.connectionId = this.socketConnection.id;
+      this.showProgressSpinner = true;
+
+      // ! Testcards
+      //#region Test card 1: Test MasterCard PIN authentication
+      // PIN modal, OTP modal // * Success
+      this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5531886652142950',
+        expiryMonth: '09',
+        expiryYear: '22',
+        securityCode: '564',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo,
+      );
+      //#endregion
+      //#region Test card 2: Test Visa Card 3D-Secure authentication
+      // OTP iframe // * Success
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '4187427415564246',
+        expiryMonth: '09',
+        expiryYear: '21',
+        securityCode: '828',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Test card 3: Test MasterCard 3DSecure authentication
+      // OTP iframe // * Success
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5438898014560229',
+        expiryMonth: '10',
+        expiryYear: '20',
+        securityCode: '564',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Test card 4: Test Mastercard 3DSecure authentication 2
+      // PIN modal and OTP modal // * Success
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5399838383838381',
+        expiryMonth: '10',
+        expiryYear: '22',
+        securityCode: '470',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Test card 5: Test NoAuth Visa Card
+      // No user prompt // * Success
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '4751763236699647',
+        expiryMonth: '09',
+        expiryYear: '21',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Test card 6: Test VisaCard 3D-Secure Authentication
+      // OTP iframe // * Success
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '4242424242424242',
+        expiryMonth: '01',
+        expiryYear: '21',
+        securityCode: '812',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Test card 7: Test Verve Card (PIN)
+      // PIN modal, OTP modal // * Success
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5061460410120223210',
+        expiryMonth: '12',
+        expiryYear: '21',
+        securityCode: '780',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Test card 8: Test VisaCard (Address Verification)
+      // Billing modal, OTP iframe // * Success
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '4556052704172643',
+        expiryMonth: '01',
+        expiryYear: '21',
+        securityCode: '899',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Test card 9: Test card Declined (Address Verification)
+      // Billing modal, Rave error response // ! Should fail
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5143010522339965',
+        expiryMonth: '08',
+        expiryYear: '21',
+        securityCode: '276',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Text card 10: Test Card Fraudulent
+      // Billing modal, Rave error response // ! Should fail
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5590131743294314',
+        expiryMonth: '11',
+        expiryYear: '20',
+        securityCode: '887',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Text card 11: Test Card Insufficient Funds
+      // Insuficient funds error // ! Should fail
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5258585922666506',
+        expiryMonth: '09',
+        expiryYear: '21',
+        securityCode: '883',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Text card 12: Pre-authorization Test Card
+      // Preauthorization iframe, Rave error notification // ! Should fail
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5377283645077450',
+        expiryMonth: '09',
+        expiryYear: '21',
+        securityCode: '789',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Text card 13: Test card - Do Not Honour
+      // Billing modal, Rave error response // ! Should fail
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5143010522339965',
+        expiryMonth: '08',
+        expiryYear: '21',
+        securityCode: '276',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Text card 14: Test Card - Insufficient Funds
+      // Insuficient funds error // ! Should fail
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5258585922666506',
+        expiryMonth: '09',
+        expiryYear: '21',
+        securityCode: '883',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Text card 15: Test Card - Invalid Transaction
+      // OTP iframe, Rave error notification // ! Should fail
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5551658157653822',
+        expiryMonth: '08',
+        expiryYear: '21',
+        securityCode: '276',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Text card 16: Test Card - Restricted Card, Retain Card
+      // OTP iframe, Rave error notification // ! Should fail
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5551651630381384',
+        expiryMonth: '08',
+        expiryYear: '21',
+        securityCode: '276',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Text card 17: Test Card - Function Not Permitted to Cardholder
+      // OTP iframe Rave error notification // ! Should fail
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5258582054729020',
+        expiryMonth: '11',
+        expiryYear: '20',
+        securityCode: '887',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Text card 18: Test Card - Function Not Permitted to Terminal
+      // OTP iframe, Rave error notification // ! Should fail
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5258588264565682',
+        expiryMonth: '11',
+        expiryYear: '20',
+        securityCode: '887',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Text card 20: Test Card - Transaction Error
+      // OTP iframe, Rave error notification // ! Should fail
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5258589130149016',
+        expiryMonth: '11',
+        expiryYear: '20',
+        securityCode: '887',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Text card 21: Test Card - Incorrect PIN
+      // PIN modal, Rave error response // ! Should fail
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5399834697894723',
+        expiryMonth: '09',
+        expiryYear: '21',
+        securityCode: '883',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+      //#region Text card 22: Test Verve Card - Card enrolment
+      // PIN modal, Rave error response // * Success
+      /* this.countryControl.setValue('NG');
+      const courseIds = this.cart.map((course: Course) => course.id);
+      const paymentInfo = {
+        nameOnCard: 'Bernardo Mondragon',
+        cardNumber: '5531882884804517',
+        expiryMonth: '10',
+        expiryYear: '22',
+        securityCode: '564',
+        rememberCard: true,
+        redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+      };
+      this.purchaseCart(
+        this.user.id,
+        courseIds,
+        this.paymentMethod,
+        'MX', // TODO: should be iso format
+        paymentInfo
+      ); */
+      //#endregion
+
+      // * Real case obtain datra from form
+      // TODO: Uncomment code below for production
+      /* if (this.paymentMethod === 'NEW_CARD') {
+        if (this.newCardForm.valid && this.countryControl.valid) {
+          console.log('TODO: Dispatch purchase user cart action');
+          const courseIds = this.cart.map((course: Course) => course.id);
+          this.purchaseCart(
+            this.user.id,
+            courseIds,
+            this.paymentMethod,
+            this.countryControl.value, // TODO: should be iso format
+            {
+              nameOnCard: this.newCardForm.get('nameOnCardControl').value.toString().trim(),
+              cardNumber: this.newCardForm.get('cardNumberControl').value.toString().trim().replace(/\s/g, ''),
+              expiryMonth: this.newCardForm.get('expiryMonthControl').value.toString().trim(),
+              expiryYear: this.newCardForm.get('expiryYearControl').value.toString().trim().slice(-2),
+              securityCode: this.newCardForm.get('securityCodeControl').value.toString().trim(),
+              rememberCard: this.newCardForm.get('rememberCardControl').value
+            }
+          );
+        } else {
+          alert('Payment form is invalid');
+        }
+      } else if (this.paymentMethod === 'USER_CARD') {
+        // User is paying with a card he has previously used
+        alert('Implement this payment method');
+        if (this.cardSelected && this.countryControl.valid) {
+          console.log('TODO: Dispatch purchase user cart action');
+        }
+      } else if (this.paymentMethod === 'BANK_ACCOUNT') {
+        // User is paying using a bank account
+        if (this.bankAccountForm.valid && this.countryControl.valid) {
+          console.log('TODO: Dispatch purchase user cart action');
+        } else {
+          alert('Bank account form is not valid');
+        }
+      } else {
+        alert('No payment method selected');
+      } */
     });
     this.socketConnection.on('payment_success', () => {
       this.iframeDialogRef.close();
       this.user.cart = [];
       this.succesfullPurchase(this.user);
+      this.socketConnection.disconnect();
+      // TODO: Stop progress spinner
+      this.showProgressSpinner = false;
     });
-    this.socketConnection.on('payment_failure', () => {
-      alert('Unsuccesful payment. Try again later');
+    this.socketConnection.on('payment_failure', (message) => {
+      this.iframeDialogRef.close();
+      const dialogConfig = {
+        ...(this.dialogConfig),
+        data: {
+          errorMessage: message
+        }
+      };
+      this.paymentErrorModal.open(PaymentErrorModalComponent, dialogConfig);
+      this.socketConnection.disconnect();
+      // TODO: Stop progress spinner
+      this.showProgressSpinner = false;
     });
+  }
 
-
-    // Code for testing porpuses:
-    //#region Case: (PIN and OTP)
-    /* this.countryControl.setValue('NG');
-    const courseIds = this.cart.map((course: Course) => course.id);
-    const paymentInfo = {
-      nameOnCard: 'Bernardo Mondragon',
-      cardNumber: '5531886652142950',
-      expiryMonth: '09',
-      expiryYear: '22',
-      securityCode: '564',
-      rememberCard: true
-    };
-    this.purchaseCart(
-      this.user.id,
-      courseIds,
-      this.paymentMethod,
-      'MX', // TODO: should be iso format
-      paymentInfo
-    ); */
-    //#endregion
-    //#region Case: Visa Card (No auth)
-    /* this.countryControl.setValue('NG');
-    const courseIds = this.cart.map((course: Course) => course.id);
-    const paymentInfo = {
-      nameOnCard: 'Bernardo Mondragon',
-      cardNumber: '4751763236699647',
-      expiryMonth: '09',
-      expiryYear: '21',
-      rememberCard: true
-    };
-    this.purchaseCart(
-      this.user.id,
-      courseIds,
-      this.paymentMethod,
-      'MX', // TODO: should be iso format
-      paymentInfo
-    ); */
-    //#endregion
-    //#region Case: Verve Card (PIN)
-    /* this.countryControl.setValue('NG');
-    const courseIds = this.cart.map((course: Course) => course.id);
-    const paymentInfo = {
-      nameOnCard: 'Bernardo Mondragon',
-      cardNumber: '5061460410120223210',
-      expiryMonth: '12',
-      expiryYear: '21',
-      rememberCard: true
-    };
-    this.purchaseCart(
-      this.user.id,
-      courseIds,
-      this.paymentMethod,
-      'MX', // TODO: should be iso format
-      paymentInfo
-    ); */
-    //#endregion
-    //#region Case: Visa Card (Address Verification)
-    this.countryControl.setValue('NG');
-    const courseIds = this.cart.map((course: Course) => course.id);
-    const paymentInfo = {
-      nameOnCard: 'Bernardo Mondragon',
-      cardNumber: '4556052704172643',
-      expiryMonth: '01',
-      expiryYear: '21',
-      securityCode: '899',
-      rememberCard: true
-    };
-    this.purchaseCart(
-      this.user.id,
-      courseIds,
-      this.paymentMethod,
-      'MX', // TODO: should be iso format
-      paymentInfo
-    );
-    //#endregion
-    // TODO: Implement 3DSercure cases
-
-    // TODO: Uncomment code below for production
-    /* if (this.paymentMethod === 'NEW_CARD') {
+  // TODO: Use this aproach
+  onCompletePayment() {
+    this.countryControl.markAsTouched();
+    this.newCardForm.markAsTouched();
+    this.newCardForm.controls.nameOnCardControl.markAsTouched();
+    this.newCardForm.controls.cardNumberControl.markAsTouched();
+    this.newCardForm.controls.expiryMonthControl.markAsTouched();
+    this.newCardForm.controls.expiryYearControl.markAsTouched();
+    this.newCardForm.controls.securityCodeControl.markAsTouched();
+    // * Real case obtain datra from form
+    if (this.paymentMethod === 'NEW_CARD') {
       if (this.newCardForm.valid && this.countryControl.valid) {
-        console.log('TODO: Dispatch purchase user cart action');
         const courseIds = this.cart.map((course: Course) => course.id);
-        this.purchaseCart(
-          this.user.id,
-          courseIds,
-          this.paymentMethod,
-          this.countryControl.value, // TODO: should be iso format
-          {
-            nameOnCard: this.newCardForm.get('nameOnCardControl').value.toString().trim(),
-            cardNumber: this.newCardForm.get('cardNumberControl').value.toString().trim().replace(/\s/g, ''),
-            expiryMonth: this.newCardForm.get('expiryMonthControl').value.toString().trim(),
-            expiryYear: this.newCardForm.get('expiryYearControl').value.toString().trim().slice(-2),
-            securityCode: this.newCardForm.get('securityCodeControl').value.toString().trim(),
-            rememberCard: this.newCardForm.get('rememberCardControl').value
-          }
-        );
+        this.socketConnection = io(`${this.host}`);
+        this.socketConnection.on('connect', () => {
+          this.connectionId = this.socketConnection.id;
+          this.showProgressSpinner = true;
+          this.purchaseCart(
+            this.user.id,
+            courseIds,
+            this.paymentMethod,
+            this.countryControl.value,
+            {
+              nameOnCard: this.newCardForm.get('nameOnCardControl').value.toString().trim(),
+              cardNumber: this.newCardForm.get('cardNumberControl').value.toString().trim().replace(/\s/g, ''),
+              expiryMonth: this.newCardForm.get('expiryMonthControl').value.toString().trim(),
+              expiryYear: this.newCardForm.get('expiryYearControl').value.toString().trim().slice(-2),
+              securityCode: this.newCardForm.get('securityCodeControl').value.toString().trim(),
+              rememberCard: this.newCardForm.get('rememberCardControl').value ? true : false,
+              redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+            }
+          );
+        });
+        this.socketConnection.on('payment_success', () => {
+          this.iframeDialogRef.close();
+          this.user.cart = [];
+          this.succesfullPurchase(this.user);
+          this.socketConnection.disconnect();
+          this.showProgressSpinner = false;
+        });
+        this.socketConnection.on('payment_failure', (message) => {
+          this.iframeDialogRef.close();
+          const dialogConfig = {
+            ...(this.dialogConfig),
+            data: {
+              errorMessage: message
+            }
+          };
+          this.paymentErrorModal.open(PaymentErrorModalComponent, dialogConfig);
+          this.socketConnection.disconnect();
+          this.showProgressSpinner = false;
+        });
       } else {
-        alert('Payment form is invalid');
+
       }
     } else if (this.paymentMethod === 'USER_CARD') {
       // User is paying with a card he has previously used
@@ -347,20 +804,23 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       }
     } else {
       alert('No payment method selected');
-    } */
+    }
   }
 
   purchaseCart(userId: string, courses: string[], paymentMethod: string, country: string, paymentInfo: IPaymentInfo) {
+    console.log('CheckoutComponent: purchaseCart function called');
     this.authService.purchaseCart(userId, courses, paymentMethod, country, paymentInfo).pipe(
       catchError((error) => {
         // Determine type of error (user Aurora API returned data):
+        console.error('Chinga tu madre! Ocurrio un error.');
 
         //#region Card requires PIN authentication
         if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'PIN') {
           console.error('Retry request sending PIN');
           const enterPinDialogRef = this.enterPinModal.open(EnterPinModalComponent, this.dialogConfig);
           enterPinDialogRef.afterClosed().subscribe((pin: string) => {
-            if (pin) {
+            if (pin && pin.length >= 3) {
+              console.log('Pin was entered. Purchasing cart');
               this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, pin });
             }
           });
@@ -373,6 +833,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           enterbillingInfoDialogRef.afterClosed().subscribe((billingInfo: IBillingInfo) => {
             if (billingInfo) {
               const redirectUrl = `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`;
+              console.log('Billing info was entered. Purchasing cart');
               this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, ...billingInfo, suggested_auth: 'NOAUTH_INTERNATIONAL', redirect_url: redirectUrl });
             }
           });
@@ -385,6 +846,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           enterbillingInfoDialogRef.afterClosed().subscribe((billingInfo: IBillingInfo) => {
             if (billingInfo) {
               const redirectUrl = `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`;
+              console.log('Billing info was entered. Purchasing cart');
               this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, ...billingInfo, suggested_auth: 'AVS_VBVSECURECODE', redirect_url: redirectUrl });
             }
           });
@@ -425,7 +887,33 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             ...(this.dialogConfig),
             data: error.error.error.data.authurl
           };
-          this.iframeDialogRef = this.enterOtpModal.open(IframeModalComponent, dialogConfig);
+          this.iframeDialogRef = this.iframeModal.open(IframeModalComponent, dialogConfig);
+        }
+        //#endregion
+
+        //#region Handling Rave error response
+        if (error.error.error.status === 'error' && error.error.error.message === 'Incorrect PIN') {
+          console.error('Retry request sending PIN');
+          this.toastrService.error('Enter PIN again', 'Incorrect PIN');
+          const enterPinDialogRef = this.enterPinModal.open(EnterPinModalComponent, this.dialogConfig);
+          enterPinDialogRef.afterClosed().subscribe((pin: string) => {
+            if (pin && pin.length >= 3) {
+              console.log('Pin was entered. Purchasing cart');
+              this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, pin });
+            }
+          });
+        } else if (error.error.error.status === 'error' && (error.error.error.data.code === 'FLW_ERR' || error.error.error.data.code === 'CARD_ERR')) {
+          this.toastrService.error('Payment error');
+          this.socketConnection.disconnect();
+          const dialogConfig = {
+            ...(this.dialogConfig),
+            data: {
+              errorMessage: error.error.error.data.message
+            }
+          };
+          this.paymentErrorModal.open(PaymentErrorModalComponent, dialogConfig);
+          // TODO: Stop progress spinner
+          this.showProgressSpinner = false;
         }
         //#endregion
 
@@ -485,6 +973,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.toastrService.success('Successful purchase.', 'Enjoy!');
     this.store.dispatch(purchaseCartSuccess(user));
     this.router.navigate(['courses/my-courses']);
+  }
+  pene() {
+    console.log('Control', this.countryControl);
+    console.log('Form valid', this.newCardForm.valid);
+    console.log(this.newCardForm);
   }
 
 }

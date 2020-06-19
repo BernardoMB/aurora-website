@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "serve-devices": "ng serve --host 0.0.0.0 --disable-host-check --port 4202 --configuration home",
+    "serve-devices": "ng serve --host 0.0.0.0 --disable-host-check --port 4203 --configuration home",
     "build": "ng build",
     "build:prod": "ng build --prod --extract-css=false",
     "test": "ng test",
@@ -41,6 +41,7 @@
     "faker": "^4.1.0",
     "file-saver": "^2.0.2",
     "html2canvas": "^1.0.0-rc.5",
+    "i18n-iso-countries": "^6.0.0",
     "jquery": "^3.5.1",
     "material-design-icons": "^3.0.1",
     "moment": "^2.24.0",

@@ -70,6 +70,11 @@
         }
         .billing-address-menu {
           margin-top: 20px;
+          mat-form-field {
+            @media screen and (max-width:420px) {
+              width: 100%;
+            }
+          }
         }
         .payment-options {
           display: flex;
@@ -78,20 +83,15 @@
             ::ng-deep {
               .mat-checkbox-label {
                 display: flex;
+                flex-wrap: wrap;
                 align-items: center;
               }
             }
-            .options {
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              margin-right: 20px;
-              font-family: open sans,helvetica neue,Helvetica,Arial,sans-serif;
-              font-size: 15px;
-            }
-            .mastercard, .visa, .amex {
-              width: 64px;
-              height: 30px;
+            .logos {
+              .mastercard, .visa, .amex {
+                width: 64px;
+                height: 30px;
+              }
             }
             mat-icon {
               color: gray;
@@ -125,6 +125,7 @@
           .new-card-form {
             display: flex;
             flex-direction: column;
+            margin-bottom: 20px;
             ::ng-deep {
               .mat-form-field-outline {
                 border-radius: 5px;
@@ -206,7 +207,8 @@
           font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
         }
         .checkout-button {
-          display: inline-block;
+          display: flex;
+          align-items: center;
           font-weight: 600;
           font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
           text-align: center;
@@ -223,6 +225,9 @@
           border: 1px solid transparent;
           &:hover {
             background-color: #1f5e11;
+          }
+          mat-spinner {
+            margin-left: 10px;
           }
         }
         @media screen and (max-width: 750px) {
@@ -469,4 +474,16 @@
       }
     }
   }
+}
+
+.spinner-overlay {
+  z-index: 10; // It has to be on top of the header too
+  position: fixed;
+  top: -64px;
+  height: calc(100vh + 64px);
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

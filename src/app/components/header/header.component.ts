@@ -8,6 +8,7 @@ import {
   PLATFORM_ID,
   OnDestroy,
   ViewChild,
+  HostListener,
 } from '@angular/core';
 import { WindowRef } from '../../providers/window.provider';
 import { DocumentRef } from '../../providers/document.provider';
@@ -85,6 +86,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
       return total;
     }
     return 0;
+  }
+
+  // Sticky header
+  isSticky = false;
+  @HostListener('window:scroll', ['$event'])
+  checkScroll() {
+    this.isSticky = window.pageYOffset >= 250;
   }
 
   constructor(

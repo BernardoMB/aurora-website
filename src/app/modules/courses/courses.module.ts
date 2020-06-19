@@ -48,6 +48,7 @@ import { EnterPinModalComponent } from './components/enter-pin-modal/enter-pin-m
 import { EnterOtpModalComponent } from './components/enter-otp-modal/enter-otp-modal.component';
 import { EnterBillingInfoModalComponent } from './components/enter-billing-info-modal/enter-billing-info-modal.component';
 import { IframeModalComponent } from './components/iframe-modal/iframe-modal.component';
+import { PaymentErrorModalComponent } from './components/payment-error-modal/payment-error-modal.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   /* direction: 'horizontal',
@@ -83,7 +84,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         EnterPinModalComponent,
         EnterOtpModalComponent,
         EnterBillingInfoModalComponent,
-        IframeModalComponent
+        IframeModalComponent,
+        PaymentErrorModalComponent
     ],
     imports: [
       CommonModule,
