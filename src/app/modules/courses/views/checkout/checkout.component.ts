@@ -24,6 +24,7 @@ import { IframeModalComponent } from '../../components/iframe-modal/iframe-modal
 import * as io from 'socket.io-client';
 import { environment } from '../../../../../environments/environment';
 import { PaymentErrorModalComponent } from '../../components/payment-error-modal/payment-error-modal.component';
+import { MyErrorStateMatcher } from './control.error-matcher';
 
 @Component({
   selector: 'app-checkout',
@@ -35,6 +36,7 @@ import { PaymentErrorModalComponent } from '../../components/payment-error-modal
   }]
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
+  matcher;
   showProgressSpinner = false;
   iframeDialogRef: MatDialogRef<IframeModalComponent>;
   socketConnection;
@@ -84,17 +86,23 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     cardNumberControl: new FormControl('', [
       Validators.required,
       (control: AbstractControl): {[key: string]: any} | null => {
-        let isValid: boolean;
+        let isValid = false;
         if (control.value) {
           const cardNumber = control.value.toString().trim().replace(/\s/g, '');
+          console.log('Card number', cardNumber);
           if (cardNumber) {
             // 19 because Verve cards are 19 digits
-            if (16 <= cardNumber.length || cardNumber.length <= 19) {
+            if (16 <= cardNumber.length && cardNumber.length <= 19) {
+              console.log(`${cardNumber.length} is valid :\)`);
               isValid = true;
+              console.log('Returning null');
+              return null;
             } else {
+              console.log(`${cardNumber.length} is not valid!`);
               isValid = false;
+              console.log('Returning error');
+              return { notAValidCardNumber: {value: control.value}};
             }
-            return isValid ? null : { notAValidNumber: {value: control.value}};
           }
         }
       }
@@ -172,6 +180,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.dialogConfig.panelClass = 'custom-mat-dialog-container';
     this.dialogConfig.backdropClass = 'custom-modal-backdrop';
     this.dialogConfig.maxHeight = '80vh';
+    // Form form errors
+    this.matcher = new MyErrorStateMatcher();
   }
 
   ngOnInit() {
@@ -213,7 +223,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   // Pay button
-  onCompletePayment() {
+  onCompletePaymentTest() {
     this.socketConnection = io(`${this.host}`);
     this.socketConnection.on('connect', () => {
       this.connectionId = this.socketConnection.id;
@@ -725,7 +735,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   // TODO: Use this aproach
-  onCompletePayment2() {
+  onCompletePayment() {
+    this.countryControl.markAsTouched();
+    this.newCardForm.markAsTouched();
+    this.newCardForm.controls.nameOnCardControl.markAsTouched();
+    this.newCardForm.controls.cardNumberControl.markAsTouched();
+    this.newCardForm.controls.expiryMonthControl.markAsTouched();
+    this.newCardForm.controls.expiryYearControl.markAsTouched();
+    this.newCardForm.controls.securityCodeControl.markAsTouched();
     // * Real case obtain datra from form
     if (this.paymentMethod === 'NEW_CARD') {
       if (this.newCardForm.valid && this.countryControl.valid) {
@@ -770,7 +787,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           this.showProgressSpinner = false;
         });
       } else {
-        alert('Payment form is invalid');
+
       }
     } else if (this.paymentMethod === 'USER_CARD') {
       // User is paying with a card he has previously used
@@ -885,7 +902,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
               this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, pin });
             }
           });
-        } else if (error.error.error.status === 'error' && error.error.error.data.code === 'FLW_ERR') {
+        } else if (error.error.error.status === 'error' && (error.error.error.data.code === 'FLW_ERR' || error.error.error.data.code === 'CARD_ERR')) {
           this.toastrService.error('Payment error');
           this.socketConnection.disconnect();
           const dialogConfig = {
@@ -956,6 +973,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.toastrService.success('Successful purchase.', 'Enjoy!');
     this.store.dispatch(purchaseCartSuccess(user));
     this.router.navigate(['courses/my-courses']);
+  }
+  pene() {
+    console.log('Control', this.countryControl);
+    console.log('Form valid', this.newCardForm.valid);
+    console.log(this.newCardForm);
   }
 
 }
