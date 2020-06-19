@@ -724,6 +724,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     });
   }
 
+  // TODO: Use this aproach
   onCompletePayment2() {
     // * Real case obtain datra from form
     if (this.paymentMethod === 'NEW_CARD') {

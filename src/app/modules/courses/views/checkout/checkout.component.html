@@ -22,9 +22,11 @@
         <div class="payment-options">
           <mat-checkbox class="checkbox" color="primary" [checked]="showNewCardPaymentForm" (change)="toggleNewCardForm()">
             <div>Credit or Debit Card</div>
-            <img class="mastercard" src="assets/img/payment/card-mc.svg" alt="MasterCard">
-            <img class="visa" src="assets/img/payment/card-visa.svg" alt="VISA">
-            <img class="amex" src="assets/img/payment/card-amex.svg" alt="AMEX">
+            <div class="logos">
+              <img class="mastercard" src="assets/img/payment/card-mc.svg" alt="MasterCard">
+              <img class="visa" src="assets/img/payment/card-visa.svg" alt="VISA">
+              <img class="amex" src="assets/img/payment/card-amex.svg" alt="AMEX">
+            </div>
           </mat-checkbox>
           <mat-checkbox class="checkbox" color="primary" [checked]="showBankPaymentForm" (change)="toggleBankForm()" style="margin-top: 5px;">
             <div>Bank account</div>

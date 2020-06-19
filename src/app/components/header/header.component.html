@@ -383,6 +383,391 @@
   </div>
 </div>
 
+<div class="sticky-header" [ngClass]="{'sticky' : isSticky}">
+  <div class="header-inner">
+    <div
+      class="hamburger"
+      [class.is-active]="mobileNavBarOpen"
+      (click)="mobileNavBarOpen = !mobileNavBarOpen"
+    >
+      <span class="line"></span>
+      <span class="line"></span>
+      <span class="line"></span>
+    </div>
+    <img
+      class="logotype focus-outline"
+      src="/assets/img/logos/logotype.svg"
+      alt="Invest Naija Logotype"
+      routerLink="/" (click)="mobileNavBarOpen = false"
+    />
+    <img
+      class="logomark focus-outline"
+      src="/assets/img/logos/logomark.svg"
+      alt="Invest Naija Logotype"
+      routerLink="/" (click)="mobileNavBarOpen = false"
+    />
+    <div class="header-left">
+      <button
+        *ngIf="showCategories"
+        class="category-menu-button focus-outline"
+        [matMenuTriggerFor]="categoriesMenu"
+        (click)="mobileNavBarOpen = false"
+      >
+        <i class="material-icons">apps</i>
+        <div class="button-label">
+          Categories
+        </div>
+      </button>
+      <mat-menu #categoriesMenu="matMenu">
+        <div
+          class="category-container focus-outline"
+          *ngFor="let category of categories; let i = index"
+          tabindex="0"
+          [routerLink]="['/courses/categories', category.id]"
+          routerLinkActive="active"
+        >
+          <i class="material-icons category-material-icon">{{
+            category.materialIcon
+          }}</i>
+          <div class="category-name">{{ category.name }}</div>
+          <i class="material-icons arrow">chevron_right</i>
+        </div>
+      </mat-menu>
+    </div>
+    <div class="header-right">
+      <div class="header-container">
+        <ul class="navigation-links">
+          <li class="nav-link">
+            <a
+              class="focus-outline"
+              routerLink="/courses"
+              routerLinkActive="active"
+              (click)="currentSection = undefined"
+              >Courses</a
+            >
+          </li>
+          <li class="nav-link">
+            <a
+              class="focus-outline"
+              routerLink="/news"
+              routerLinkActive="active"
+              (click)="currentSection = undefined"
+              >Explore</a
+            >
+          </li>
+          <li class="nav-link">
+            <a
+              class="focus-outline"
+              routerLink="/events"
+              routerLinkActive="active"
+              (click)="currentSection = undefined"
+              >Events</a
+            >
+          </li>
+          <li class="nav-link">
+            <a
+              class="focus-outline"
+              routerLink="/invest"
+              routerLinkActive="active"
+              >Invest</a
+            >
+          </li>
+          <li class="nav-link">
+            <a
+              class="focus-outline"
+              [routerLink]="['/home']"
+              fragment="contact"
+              [class.active]="currentSection === 'contact'"
+              >Community</a
+            >
+          </li>
+        </ul>
+        <div class="divider-container">
+          <div class="divider"></div>
+        </div>
+        <div class="cart-container">
+          <i
+            class="material-icons focus-outline"
+            tabindex="0"
+            #cartMenuTrigger="matMenuTrigger"
+            [matMenuTriggerFor]="cartMenu"
+            (keyup.enter)="cartMenuTrigger.openMenu()"
+            >shopping_cart</i
+          >
+          <div
+            class="cart-count-indicator"
+            *ngIf="cart && cart.length > 0"
+            #cartMenuTrigger="matMenuTrigger"
+            [matMenuTriggerFor]="cartMenu"
+            (keyup.enter)="cartMenuTrigger.openMenu()"
+          >
+            {{ cart.length }}
+          </div>
+          <mat-menu #cartMenu="matMenu">
+            <div *ngIf="!cart || cart.length === 0">
+              <div class="empty-cart-container">
+                <div>Your cart is empty.</div>
+                <div class="keep-shopping">
+                  <a
+                    class="focus-outline"
+                    [routerLink]="['/courses']"
+                    tabindex="0"
+                    (click)="mobileNavBarOpen = false"
+                    >Keep shopping</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div *ngIf="cart.length > 0">
+              <div class="courses-container">
+                <div
+                  *ngFor="let course of cart"
+                  class="course-item focus-outline"
+                  tabindex="0"
+                  (click)="onGoToCourse(course.id)"
+                >
+                  <div
+                    class="course-image"
+                    [style.backgroundImage]="'url(' + course.imgUrl + ')'"
+                  ></div>
+                  <div class="course-details">
+                    <div class="course-name">{{ course.name }}</div>
+                    <div class="course-prices">
+                      <div class="final-price">
+                        {{
+                          course.price * (1 - course.discount)
+                            | currency: 'NGN':'symbol-narrow'
+                        }}
+                      </div>
+                      <div class="original-price" *ngIf="course.discount > 0">
+                        {{ course.price | currency: 'NGN':'symbol-narrow' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="menu-footer">
+                  <div class="total-container">
+                    <div class="label">Total:</div>
+                    <div class="total">
+                      {{ total | currency: 'NGN':'symbol-narrow' }}
+                    </div>
+                    <div class="subtotal" *ngIf="total !== subtotal">
+                      {{ subtotal | currency: 'NGN':'symbol-narrow' }}
+                    </div>
+                  </div>
+                  <button
+                    class="cart-button focus-outline"
+                    *ngIf="showGoToCartButton"
+                    [routerLink]="['/courses/cart']"
+                  >
+                    Go to cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-menu>
+        </div>
+        <div *ngIf="user" class="person-container">
+          <i
+            class="material-icons focus-outline"
+            tabindex="0"
+            #userMenuTrigger="matMenuTrigger"
+            [matMenuTriggerFor]="userMenu"
+            (keyup.enter)="userMenuTrigger.openMenu()"
+            >person</i
+          >
+          <mat-menu #userMenu="matMenu">
+            <div class="user-menu">
+              <div
+                class="user-details-container focus-outline"
+                tabindex="0"
+                (keyup.enter)="onViewProfile()"
+                (click)="onViewProfile()"
+              >
+                <div class="profile-pic-container">
+                  <i class="material-icons">
+                    person
+                  </i>
+                </div>
+                <div class="user-names-container">
+                  <div class="user-names">
+                    {{ user.name }} {{ user.lastName }}
+                  </div>
+                  <div class="user-email">{{ user.email }}</div>
+                </div>
+              </div>
+              <div
+                class="menu-section focus-outline"
+                tabindex="0"
+                [routerLink]="['/courses/my-courses']"
+              >
+                My Courses
+              </div>
+              <div class="menu-separator"></div>
+              <div
+                class="menu-section focus-outline"
+                (click)="onHelp()"
+                tabindex="0"
+                (keyup.enter)="onHelp()"
+              >
+                Help
+              </div>
+              <div
+                class="menu-section focus-outline"
+                (click)="onLogout()"
+                tabindex="0"
+                (keyup.enter)="onLogout()"
+              >
+                Log out
+              </div>
+            </div>
+          </mat-menu>
+          <!-- <i
+            class="material-icons focus-outline"
+            tabindex="0"
+            #cartMenuTrigger="matMenuTrigger"
+            [matMenuTriggerFor]="cartMenu"
+            (keyup.enter)="cartMenuTrigger.openMenu()"
+            >shopping_cart</i
+          >
+          <mat-menu #cartMenu="matMenu">
+            <div *ngIf="!cart || cart.length === 0">
+              <div class="empty-cart-container">
+                <div>Your cart is empty.</div>
+                <div class="keep-shopping">
+                  <a
+                    class="focus-outline"
+                    [routerLink]="['/courses']"
+                    tabindex="0"
+                    (click)="mobileNavBarOpen = false"
+                    >Keep shopping</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div *ngIf="cart.length > 0">
+              <div class="courses-container">
+                <div
+                  *ngFor="let course of cart"
+                  class="course-item focus-outline"
+                  tabindex="0"
+                  (click)="onGoToCourse(course.id)"
+                >
+                  <div
+                    class="course-image"
+                    [style.backgroundImage]="'url(' + course.imgUrl + ')'"
+                  ></div>
+                  <div class="course-details">
+                    <div class="course-name">{{ course.name }}</div>
+                    <div class="course-prices">
+                      <div class="final-price">
+                        {{
+                          course.price * (1 - course.discount)
+                            | currency: 'NGN':'symbol-narrow'
+                        }}
+                      </div>
+                      <div class="original-price" *ngIf="course.discount > 0">
+                        {{ course.price | currency: 'NGN':'symbol-narrow' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="menu-footer">
+                  <div class="total-container">
+                    <div class="label">Total:</div>
+                    <div class="total">
+                      {{ total | currency: 'NGN':'symbol-narrow' }}
+                    </div>
+                    <div class="subtotal" *ngIf="total !== subtotal">
+                      {{ subtotal | currency: 'NGN':'symbol-narrow' }}
+                    </div>
+                  </div>
+                  <button
+                    class="cart-button focus-outline"
+                    *ngIf="showGoToCartButton"
+                    [routerLink]="['/courses/cart']"
+                  >
+                    Go to cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-menu> -->
+        </div>
+        <div *ngIf="user" class="user-section">
+          <div
+            class="user-name-container focus-outline"
+            tabindex="0"
+            #userMenuTrigger="matMenuTrigger"
+            [matMenuTriggerFor]="userMenu"
+            (keyup.enter)="userMenuTrigger.openMenu()"
+          >
+            {{ user.username }}
+          </div>
+          <mat-menu #userMenu="matMenu">
+            <div class="user-menu">
+              <div
+                class="user-details-container focus-outline"
+                tabindex="0"
+                (keyup.enter)="onViewProfile()"
+                (click)="onViewProfile()"
+              >
+                <div class="profile-pic-container">
+                  <i class="material-icons">
+                    person
+                  </i>
+                </div>
+                <div class="user-names-container">
+                  <div class="user-names">
+                    {{ user.name }} {{ user.lastName }}
+                  </div>
+                  <div class="user-email">{{ user.email }}</div>
+                </div>
+              </div>
+              <div
+                class="menu-section focus-outline"
+                tabindex="0"
+                [routerLink]="['/courses/my-courses']"
+              >
+                My Courses
+              </div>
+              <div class="menu-separator"></div>
+              <div
+                class="menu-section focus-outline"
+                (click)="onHelp()"
+                tabindex="0"
+                (keyup.enter)="onHelp()"
+              >
+                Help
+              </div>
+              <div
+                class="menu-section focus-outline"
+                (click)="onLogout()"
+                tabindex="0"
+                (keyup.enter)="onLogout()"
+              >
+                Log out
+              </div>
+            </div>
+          </mat-menu>
+        </div>
+        <div *ngIf="!user" class="register-section">
+          <div class="login-button-container">
+            <button class="login-button focus-outline" (click)="onLogin()">
+              Log In
+            </button>
+          </div>
+          <div class="signup-button-container">
+            <button class="signup-button focus-outline" (click)="onRegister()">
+              Sign Up
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div *ngIf="mobileNavBarOpen" class="mobile-navigation-links">
   <ul class="mobilenav-links">
     <li class="mobilenav-link">
@@ -459,6 +844,8 @@
     </li>
   </ul>
 </div>
+
+<!-- TODO: Place loading bar here -->
 
 <div *ngIf="showEmailWarning" class="email-warning">
   <div class="warning-label-container">

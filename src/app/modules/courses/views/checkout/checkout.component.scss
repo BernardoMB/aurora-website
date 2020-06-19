@@ -70,6 +70,11 @@
         }
         .billing-address-menu {
           margin-top: 20px;
+          mat-form-field {
+            @media screen and (max-width:420px) {
+              width: 100%;
+            }
+          }
         }
         .payment-options {
           display: flex;
@@ -78,20 +83,15 @@
             ::ng-deep {
               .mat-checkbox-label {
                 display: flex;
+                flex-wrap: wrap;
                 align-items: center;
               }
             }
-            .options {
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              margin-right: 20px;
-              font-family: open sans,helvetica neue,Helvetica,Arial,sans-serif;
-              font-size: 15px;
-            }
-            .mastercard, .visa, .amex {
-              width: 64px;
-              height: 30px;
+            .logos {
+              .mastercard, .visa, .amex {
+                width: 64px;
+                height: 30px;
+              }
             }
             mat-icon {
               color: gray;
@@ -125,6 +125,7 @@
           .new-card-form {
             display: flex;
             flex-direction: column;
+            margin-bottom: 20px;
             ::ng-deep {
               .mat-form-field-outline {
                 border-radius: 5px;
