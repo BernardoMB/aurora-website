@@ -27,6 +27,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { ToastrModule } from 'ngx-toastr';
 import { VerifyEmailModalComponent } from './components/verify-email-modal/verify-email-modal.component';
 import { EmailVerifiedActionModalComponent } from './components/email-verified-action-modal/email-verified-action-modal.component';
+import { LoaderInterceptorService } from './services/loader.interceptor';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,12 @@ import { EmailVerifiedActionModalComponent } from './components/email-verified-a
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true,
+    },
+    {
+      // Loading bar
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptorService,
+      multi: true
     }
   ],
   entryComponents: [LoginFormComponent, SignupFormComponent, VerifyEmailModalComponent, EmailVerifiedActionModalComponent],
