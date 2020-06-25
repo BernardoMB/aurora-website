@@ -95,19 +95,25 @@
       }
     }
   }
-  .signup-phrase {
-    margin-bottom: 20px;
+  .other-actions {
     padding: 20px;
-    a {
-      color: #289e50;
-      cursor: pointer;
-      font-weight: 500;
-      &:hover {
-        text-decoration: underline;
+    padding-top: 0px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    .signup-phrase {
+      margin-bottom: 10px;
+      a {
+        color: #289e50;
+        cursor: pointer;
+        font-weight: 500;
+        &:hover {
+          text-decoration: underline;
+        }
       }
-    }
-    @media screen and (max-width: 400px) {
-      font-size: 14px;
+      @media screen and (max-width: 400px) {
+        font-size: 14px;
+      }
     }
   }
 }

@@ -28,6 +28,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { VerifyEmailModalComponent } from './components/verify-email-modal/verify-email-modal.component';
 import { EmailVerifiedActionModalComponent } from './components/email-verified-action-modal/email-verified-action-modal.component';
 import { LoaderInterceptorService } from './services/loader.interceptor';
+import { ResertEmaiModalComponent } from './components/resert-emai-modal/resert-emai-modal.component';
+import { ForgotEmailSentComponent } from './components/forgot-email-sent/forgot-email-sent.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +43,9 @@ import { LoaderInterceptorService } from './services/loader.interceptor';
     SignupFormComponent,
     VerifyEmailModalComponent,
     EmailVerifiedActionModalComponent,
+    ResertEmaiModalComponent,
+    ForgotEmailSentComponent,
+    ResetPasswordComponent,
     MainComponent
   ],
   imports: [
@@ -86,7 +92,13 @@ import { LoaderInterceptorService } from './services/loader.interceptor';
       multi: true
     }
   ],
-  entryComponents: [LoginFormComponent, SignupFormComponent, VerifyEmailModalComponent, EmailVerifiedActionModalComponent],
+  entryComponents: [
+    LoginFormComponent,
+    SignupFormComponent,
+    VerifyEmailModalComponent,
+    EmailVerifiedActionModalComponent,
+    ResertEmaiModalComponent
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

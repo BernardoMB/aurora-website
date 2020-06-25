@@ -1,0 +1,27 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <div class="modal-title" style="margin-right: 20px;">
+      Forgot Password
+    </div>
+    <i class="material-icons" (click)="onClose()">clear</i>
+  </div>
+  <div class="welcome-phrase">Type your email address</div>
+  <mat-form-field class="credential-field" appearance="outline">
+    <mat-label>Email</mat-label>
+    <input
+      matInput
+      placeholder="Email"
+      [formControl]="emailControl"
+      required
+    />
+    <mat-icon matSuffix>person</mat-icon>
+  </mat-form-field>
+  <div *ngIf="errorMessage" class="alert-message">
+    {{ errorMessage }}
+  </div>
+  <div class="login-button-container">
+    <button mat-flat-button class="login-button focus-outline" (click)="onSubmit()" [disabled]="emailControl.invalid">
+      Reset Password
+    </button>
+  </div>
+</div>

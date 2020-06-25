@@ -95,6 +95,12 @@ export class AuthService {
     );
   }
 
+  changeUserPasswordWithToken(token: string, newPassword: string, newPasswordConfirmation: string): Observable<User> {
+    console.log('Auth service: changing user password with token');
+    const url = `${this.host}/${this.apiVersion}/auth/user/changePasswordWithToken`;
+    return this.http.post<User>(url, { token, newPassword, newPasswordConfirmation });
+  }
+
   checkUsernameAvailability(username: string): Observable<{ usernameIsAvailable: boolean }> {
     console.log('Auth service: Checking username availability');
     const url = `${this.host}/${this.apiVersion}/auth/checkUsernameAvalability`;
@@ -243,6 +249,12 @@ export class AuthService {
     console.log('Auth service: Removing course from user archive');
     const url = `${this.host}/${this.apiVersion}/users/${userId}/archivedCourses/${courseId}`;
     return this.http.delete<User>(url, {});
+  }
+
+  requestPasswordResetEmail(email: string): Observable<void> {
+    console.log('Auth service: Requesting reset password email');
+    const url = `${this.host}/${this.apiVersion}/auth/user/resetPasswordEmail`;
+    return this.http.post<void>(url, { email });
   }
 
   resendEmailVerification(): Observable<boolean> {
