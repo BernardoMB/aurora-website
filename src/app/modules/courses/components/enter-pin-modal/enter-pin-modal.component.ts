@@ -19,7 +19,11 @@ export class EnterPinModalComponent implements OnInit {
   }
 
   onSubmit() {
-    this.dialogRef.close(this.pinControl.value);
+    if (this.pinControl.valid) {
+      this.dialogRef.close(this.pinControl.value);
+    } else {
+      this.pinControl.setErrors({ invalidPin: 'Invalid PIN. Please enter a valid PIN number'});
+    }
   }
 
 }

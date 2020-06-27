@@ -19,7 +19,11 @@ export class EnterOtpModalComponent implements OnInit {
   }
 
   onSubmit() {
-    this.dialogRef.close(this.otpControl.value);
+    if (this.otpControl.valid) {
+      this.dialogRef.close(this.otpControl.value);
+    } else {
+      this.otpControl.setErrors({ invalidOtp: 'Invalid OTP. Please enter a valid OTP number'});
+    }
   }
 
 }
