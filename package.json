@@ -65,6 +65,8 @@
     "@types/lodash": "^4.14.157",
     "@types/node": "^12.11.1",
     "@types/socket.io-client": "^1.4.33",
+    "browserslist": "^4.12.2",
+    "browserslist-config-google": "^2.0.0",
     "codelyzer": "^5.1.2",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",

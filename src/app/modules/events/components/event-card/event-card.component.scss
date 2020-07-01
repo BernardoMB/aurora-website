@@ -1,12 +1,22 @@
+$offset: 187;
+$duration: 1.4s;
+
+.text-center {
+  text-align: center;
+  #invest_naija_inner_logo {
+    animation: iconRotate ($duration) ease-in-out forwards infinite alternate,
+      fillColors ($duration * 4) ease-in-out infinite;
+    transform-origin: center;
+    animation-iteration-count: infinite;
+  }
+}
+
 .event-card-wrapper {
-  .event-card-container {
-    border-radius: 5px;
-    background-size: cover;
-    resize: both;
-    background-position-x: center;
-    background-position-y: center;
+  border-radius: 5px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  &:not(.loading) {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: pointer;
     &:hover {
       box-shadow: 0 7px 14px rgba(0, 0, 0, 0.25),
         0 10px 10px rgba(0, 0, 0, 0.22);
@@ -15,15 +25,50 @@
         transition-delay: 0s;
       }
     }
+  }
+
+  .spiner {
+    position: absolute;
+    z-index: 99;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    background-color: #ffffffb3;
+    border-radius: 5px;
+    transition: opacity cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    h1 {
+      text-align: center;
+      margin: 0 auto;
+    }
+    &.loading {
+      opacity: 1;
+    }
+  }
+  .event-card-container {
+    background-color: transparent;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-radius: 5px;
+    min-height: 194px;
+    display: flex;
+    flex-direction: column;
+    background-size: cover;
+    resize: both;
+    min-width: 220px;
+    background-position-x: center;
+    background-position-y: center;
     .gradient-overlay {
       border-radius: 5px;
       display: flex;
+      flex: 1 1 autp;
+      height: 100%;
       flex-direction: column;
       justify-content: space-between;
-      height: 180px;
-      width: 210px;
       position: relative;
-      cursor: pointer;
       /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,fbfbfb+29&0.4+0,0+100 */
       background: -moz-linear-gradient(
         top,
@@ -44,9 +89,11 @@
         rgba(251, 251, 251, 0) 100%
       ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#66000000', endColorstr='#00fbfbfb',GradientType=0 ); /* IE6-9 */
+      background-color: transparent;
 
       .organizer-container {
         padding: 10px;
+        margin-bottom: 40px;
         border-top-right-radius: 5px;
         border-top-left-radius: 5px;
         display: flex;
@@ -89,6 +136,7 @@
         }
       }
       .event-details {
+        flex: 1 1 auto;
         background: rgba(0, 0, 0.5);
         background: linear-gradient(
           180deg,
@@ -104,13 +152,16 @@
         border-bottom-left-radius: 5px;
         display: flex;
         flex-direction: column;
+        max-width: 100%;
         .event-name-container {
-          margin-top: 15px;
-          margin-bottom: 10px;
+          max-width: 80%;
+          min-height: 75px;
           .event-name {
+            max-width: 220px;
+            width: 100%;
             cursor: pointer;
             font-weight: lighter;
-            font-size: 18px;
+            font-size: 22px;
             text-overflow: ellipsis;
             overflow: hidden;
             &:hover {
@@ -121,6 +172,8 @@
         .extra-info-container {
           display: flex;
           flex-direction: row-reverse;
+          border-bottom-right-radius: 5px;
+          border-bottom-left-radius: 5px;
           justify-content: space-between;
           align-items: center;
           .subs-container {
@@ -139,5 +192,135 @@
         }
       }
     }
+  }
+
+  &.loading {
+    .event-card-container {
+      .gradient-overlay {
+        cursor: initial;
+        .organizer-container,
+        .event-details {
+          opacity: 0.4;
+        }
+      }
+    }
+  }
+}
+
+.spacer {
+  flex: 1 1 auto;
+  min-height: 40px;
+}
+
+.spinner {
+  animation: rotator $duration linear infinite;
+  position: absolute;
+  top: calc(50% - 32px);
+  left: calc(50% - 32px);
+}
+
+.path {
+  stroke-dasharray: $offset;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  animation: dash $duration ease-in-out infinite,
+    strokeCollors ($duration * 4) ease-in-out infinite;
+}
+
+@keyframes rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+
+@keyframes rotator2 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes strokeCollors {
+  0% {
+    stroke: #6cc5a4;
+  }
+  25% {
+    stroke: #ec5a5a;
+  }
+  50% {
+    stroke: #f0b52b;
+  }
+  75% {
+    stroke: #032c43;
+  }
+  100% {
+    stroke: #6cc5a4;
+  }
+}
+
+@keyframes iconRotate {
+  0% {
+    transform: rotate(0) scale(1);
+  }
+  50% {
+    transform: rotate(360deg) scale(0.6);
+  }
+  0% {
+    transform: rotate(0) scale(1);
+  }
+}
+
+@keyframes fillColors {
+  0% {
+    fill: #6cc5a4;
+  }
+  25% {
+    fill: #ec5a5a;
+  }
+  50% {
+    fill: #f0b52b;
+  }
+  75% {
+    fill: #083a55;
+  }
+  100% {
+    fill: #6cc5a4;
+  }
+}
+
+@keyframes textColors {
+  0% {
+    color: #6cc5a4;
+  }
+  25% {
+    color: #ec5a5a;
+  }
+  50% {
+    color: #f0b52b;
+  }
+  75% {
+    color: #083a55;
+  }
+  100% {
+    color: #6cc5a4;
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: $offset;
+  }
+  50% {
+    stroke-dashoffset: $offset/4;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: $offset;
+    transform: rotate(450deg);
   }
 }

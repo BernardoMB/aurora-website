@@ -61,20 +61,20 @@
 </section>
 <div class="divider"></div>
 
-<section
-  *ngIf="closeByEvents && closeByEvents.length > 0"
-  class="events-recent-section"
->
-  <div class="events-container">
-    <div class="title-container">
-      <div class="title">Nearby</div>
-      <a
-        class="focus-outline"
-        [routerLink]="['/events/all']"
-        [queryParams]="{ page: 1 }"
-        >View all</a
-      >
-    </div>
+<section class="events-recent-section">
+  <div class="title-container">
+    <div class="title">Nearby</div>
+    <a
+      class="focus-outline"
+      [routerLink]="['/events/all']"
+      [queryParams]="{ page: 1 }"
+      >View all</a
+    >
+  </div>
+  <div
+    class="events-container"
+    *ngIf="closeByEvents && closeByEvents.length > 0; else closeByEventsLoading"
+  >
     <div class="cards-container">
       <div
         class="event-card"
@@ -101,6 +101,9 @@
       (pageChange)="closeByEventsPageChanged($event)"
     ></pagination-controls>
   </div>
+  <ng-template #closeByEventsLoading>
+    <app-loader class="events-loader"></app-loader>
+  </ng-template>
 </section>
 
 <div class="divider"></div>

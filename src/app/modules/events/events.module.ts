@@ -10,6 +10,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { MaterialModule } from '../../material.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 import {
   SwiperModule,
   SWIPER_CONFIG,
@@ -38,6 +40,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     MaterialModule,
     ScrollingModule,
     NgxPaginationModule,
+    MatProgressSpinnerModule,
     SwiperModule,
   ],
   providers: [
