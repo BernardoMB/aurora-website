@@ -107,7 +107,7 @@ export class LearnComponent implements OnInit, OnDestroy {
     });
     // #endregion
 
-    // Set the current tab getting route fragment if any
+    // Set the current tab getting the route fragment if any
     this.routeFragmentSubscription = this.route.fragment.subscribe((fragment: string) => {
       if (fragment) {
         this.currentTab = fragment;
@@ -121,6 +121,7 @@ export class LearnComponent implements OnInit, OnDestroy {
     // console.log('%c Activated route snapshot resolved data ', 'background: #222; color: #bada55');
     // console.log(data);
     if (data.learningInfo) {
+      console.log('LearnComponent: learningInfo', data.learningInfo);
       const learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } = data.learningInfo;
       this.course = learningInfo.course;
       this.lessonIds = (learningInfo.course.lessons as any[]).map(lesson => lesson.id);

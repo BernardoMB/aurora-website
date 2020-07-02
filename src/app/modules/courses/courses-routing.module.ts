@@ -63,7 +63,9 @@ const routes: Routes = [
     canActivate: [LearningGuard],
     resolve: { learningInfo: LearnResolver },
     children: [
-      { path: 'lesson/:id', component: LessonComponent, resolve: { lesson: LessonResolver } }
+      { path: 'lesson/:id', component: LessonComponent, resolve: { lesson: LessonResolver } },
+      // TODO: Add route:
+      // { path: 'quiz/:id', component: QuizComponent, resolve: { lesson: QuizResolver } },
     ],
   },
   {
