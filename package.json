@@ -9,7 +9,9 @@
     "build:prod": "ng build --prod --extract-css=false",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "engines": {
     "node": "12.15.0",
@@ -38,6 +40,7 @@
     "@ngrx/store-devtools": "^9.1.2",
     "animate.css": "^3.7.2",
     "bootstrap": "^4.5.0",
+    "class-transformer": "^0.2.3",
     "faker": "^4.1.0",
     "file-saver": "^2.0.2",
     "html2canvas": "^1.0.0-rc.5",
@@ -59,12 +62,20 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.10.4",
+    "@storybook/addon-actions": "^5.3.19",
+    "@storybook/addon-links": "^5.3.19",
+    "@storybook/addon-notes": "^5.3.19",
+    "@storybook/addon-viewport": "^5.3.19",
+    "@storybook/addons": "^5.3.19",
+    "@storybook/angular": "^5.3.19",
     "@types/azure": "^0.9.20",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/lodash": "^4.14.157",
     "@types/node": "^12.11.1",
     "@types/socket.io-client": "^1.4.33",
+    "babel-loader": "^8.1.0",
     "browserslist": "^4.12.2",
     "browserslist-config-google": "^2.0.0",
     "codelyzer": "^5.1.2",

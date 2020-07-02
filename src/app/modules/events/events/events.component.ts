@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { AuthState } from '../../../store/auth/auth.state';
-import { Event } from '../models/event.model';
+import { Event, EventParams } from '../models/event.model';
 import { Store } from '@ngrx/store';
 import { SwiperConfigInterface, SwiperDirective } from 'ngx-swiper-wrapper';
 import { Subscription } from 'rxjs';
@@ -8,6 +8,7 @@ import { selectAuthIsAuthenticated } from '../../../store/auth/auth.selectors';
 import { EventsService } from '../services/events.service';
 import { Page } from '../../../shared/models/page.model';
 import { PagedData } from '../../../shared/models/paged-data.model';
+import { toPlainObject } from 'lodash';
 
 @Component({
   selector: 'app-events',
@@ -61,7 +62,7 @@ export class EventsComponent implements OnInit {
   recentEventsPage = new Page();
 
   // Recent events pagination
-  closeByEvents: Event[];
+  closeByEvents: EventParams[];
   closeByEventsPage = new Page();
 
   // Trending events pagination
@@ -257,7 +258,10 @@ export class EventsComponent implements OnInit {
       .subscribe((pagedData: PagedData<Event>) => {
         // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
         this.closeByEventsPage = pagedData.page;
-        this.closeByEvents = pagedData.data.asImmutable().toJS();
+        this.closeByEvents = pagedData.data
+          .asImmutable()
+          .toJS()
+          .map<EventParams>(toPlainObject);
       });
   }
 

@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Event } from '../../models/event.model';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { IEvent } from '../../models/interfaces/event.interface';
 
 @Component({
   selector: 'app-event-card',
@@ -7,10 +7,20 @@ import { Event } from '../../models/event.model';
   styleUrls: ['./event-card.component.scss'],
 })
 export class EventCardComponent implements OnInit {
-  @Input() event: Event;
+  @Input() set loading(val: boolean) {
+    this._loading = val;
+    this._valueOverriden = true;
+  }
+  get loading() {
+    return this._loading;
+  }
 
-  isLoading = true;
+  @Input() event: IEvent;
+  @Output() imageLoaded = new EventEmitter<string>();
+  @Output() dateCardClicked = new EventEmitter<string>();
 
+  private _loading = true;
+  private _valueOverriden = false;
   constructor() {}
 
   ngOnInit(): void {}
@@ -19,18 +29,13 @@ export class EventCardComponent implements OnInit {
     console.log(e);
     e?.preventDefault();
     e?.stopPropagation();
+    this.dateCardClicked.next(this.event?.id ?? undefined);
   }
 
   onHandleImageLoaded(e) {
     console.log(e);
-    const values = Object.values(e);
-    const keys = Object.keys(e);
-    console.table([
-      ['Key', 'Value'],
-      Object.keys(e).map((val: any, index) => []),
-    ]);
-    setTimeout(() => {
-      // this.isLoading = false;
-    }, 5000);
+    this.imageLoaded.next();
+    this.loading = this._valueOverriden ? this.loading : false;
   }
 }
+``

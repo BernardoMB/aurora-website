@@ -155,7 +155,9 @@ $duration: 1.4s;
         max-width: 100%;
         .event-name-container {
           max-width: 80%;
+          max-height: 80px;
           min-height: 75px;
+          overflow: hidden;
           .event-name {
             max-width: 220px;
             width: 100%;

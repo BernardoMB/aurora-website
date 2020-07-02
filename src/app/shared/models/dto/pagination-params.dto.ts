@@ -43,10 +43,16 @@ export default class PaginationDto extends ImmutableRecord<PaginationParams>
   }
 
   constructor(params?: Partial<PaginationParams>) {
-    super({
-      ...params,
-      ...defaultParams,
-    });
+    if (params) {
+      super({
+        ...params,
+        ...defaultParams,
+      });
+    } else {
+      super({
+        ...defaultParams,
+      });
+    }
   }
 
   *[Symbol.iterator](): Iterator<[string, number], any, undefined> {
