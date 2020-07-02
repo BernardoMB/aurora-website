@@ -52,7 +52,7 @@ export class CoursesService {
    */
   getCourse(courseId: string): Observable<Course> {
     console.log(`Courses service: Getting course with id ${courseId}`);
-    const url = `${this.host}/${this.apiVersion}/courses/${courseId}?populate=category,lessons,reviews`;
+    const url = `${this.host}/${this.apiVersion}/courses/${courseId}?populate=category,lessons,reviews,courseObjects`;
     return this.http.get<Course>(url);
   }
 
