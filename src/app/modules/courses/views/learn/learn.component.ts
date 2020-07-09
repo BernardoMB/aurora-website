@@ -26,18 +26,23 @@ export class LearnComponent implements OnInit, OnDestroy {
   currentTab = 'about'; // Default tab when page loads
   routerSubscription: Subscription;
   urlSubscription: Subscription;
-  relatedCourses: Course[];
-  course: Course;
   userSubscription: Subscription;
   user: User;
   userProgress: string[]; // Array of lessons
+  course: Course;
   lessonIds: string[];
   currentLessonId: string;
+
+  // ! Here
+  courseObjectIds: string[];
+  currentCourseObjectId: string;
+
+  relatedCourses: Course[];
+  userReview: IReview;
+  canRateCourse = false;
   showPrevButton = false;
   showNextButton = true;
   showCertificate = false;
-  canRateCourse = false;
-  userReview: IReview;
   isFavorite = false;
 
   // #region Reviews infinite scroll
@@ -59,7 +64,7 @@ export class LearnComponent implements OnInit, OnDestroy {
     private reviewDialog: MatDialog,
     private coursesService: CoursesService
   ) {
-    // Scroll to top
+    // Stop scroll when route #fragment change
     this.router.events.subscribe(event => {
       // console.log('Navigation event:', event);
       if (event instanceof NavigationEnd) {
@@ -107,7 +112,7 @@ export class LearnComponent implements OnInit, OnDestroy {
     });
     // #endregion
 
-    // Set the current tab getting the route fragment if any
+    // Set the current tab getting the route #fragment if any
     this.routeFragmentSubscription = this.route.fragment.subscribe((fragment: string) => {
       if (fragment) {
         this.currentTab = fragment;
@@ -118,13 +123,15 @@ export class LearnComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     const data = this.route.snapshot.data;
-    // console.log('%c Activated route snapshot resolved data ', 'background: #222; color: #bada55');
-    // console.log(data);
     if (data.learningInfo) {
-      console.log('LearnComponent: learningInfo', data.learningInfo);
+      console.log('%c LearnComponent: learningInfo', 'background: #222; color: #bada55', data.learningInfo);
       const learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } = data.learningInfo;
       this.course = learningInfo.course;
       this.lessonIds = (learningInfo.course.lessons as any[]).map(lesson => lesson.id);
+
+      // ! Here
+      //this.courseObjectIds = (learningInfo.course.courseObjects).map(courseObject => courseObject.id);
+
       this.userProgress = learningInfo.userProgress;
       this.relatedCourses = learningInfo.relatedCourses;
       // #region Reviews infinite scroll
@@ -135,7 +142,7 @@ export class LearnComponent implements OnInit, OnDestroy {
       // #endregion
     }
 
-    // Lesson id in route logic
+    // Lesson/Quizes id in route logic
     // * Function
     const updateCurrentLessonState = () => {
       if (this.route.firstChild) {
@@ -144,8 +151,9 @@ export class LearnComponent implements OnInit, OnDestroy {
             const lessonId = childUrl[1].path;
             this.currentLessonId = lessonId;
             const index = this.lessonIds.indexOf(lessonId);
-            index === 0 ? this.showPrevButton = false : this.showPrevButton = true;
+
             index === this.lessonIds.length - 1 ? this.showNextButton = false : this.showNextButton = true;
+            index === 0 ? this.showPrevButton = false : this.showPrevButton = true;
             if (this.lessonIds.indexOf(lessonId) === this.lessonIds.length - 1 && this.userProgress.indexOf(lessonId) === -1) {
               // Navigated to last lesson of the course and user has not yet completed this lesson.
               this.store.dispatch(completeLesson({ courseId: this.course.id, lessonId }));
@@ -235,6 +243,17 @@ export class LearnComponent implements OnInit, OnDestroy {
   }
 
   lessonCompleted(lessonId: string): boolean {
+    if (this.userProgress) {
+      const found = this.userProgress.find(el => el === lessonId);
+      if (found) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+
+  objectCompleted(lessonId: string): boolean {
     if (this.userProgress) {
       const found = this.userProgress.find(el => el === lessonId);
       if (found) {
