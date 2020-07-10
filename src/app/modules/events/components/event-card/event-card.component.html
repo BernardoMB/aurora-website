@@ -1,4 +1,4 @@
-<div class="event-card-wrapper" [class.loading]="isLoading">
+<div class="event-card-wrapper" [class.loading]="loading">
   <div
     class="event-card-container"
     [style.backgroundImage]="'url(' + event.imgUrl + ')'"
@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <app-animated-logo-spinner-component *ngIf="isLoading">
+      <app-animated-logo-spinner-component *ngIf="loading">
       </app-animated-logo-spinner-component>
       <div class="spacer"></div>
       <div class="event-details">
