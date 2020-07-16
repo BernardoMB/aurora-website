@@ -49,6 +49,9 @@ import { EnterOtpModalComponent } from './components/enter-otp-modal/enter-otp-m
 import { EnterBillingInfoModalComponent } from './components/enter-billing-info-modal/enter-billing-info-modal.component';
 import { IframeModalComponent } from './components/iframe-modal/iframe-modal.component';
 import { PaymentErrorModalComponent } from './components/payment-error-modal/payment-error-modal.component';
+import { QuizComponent } from './views/quiz/quiz.component';
+import { QuizResolver } from './resolvers/quiz-resolver.service';
+import { QuizzesService } from './services/quizzes.service';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   /* direction: 'horizontal',
@@ -85,7 +88,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         EnterOtpModalComponent,
         EnterBillingInfoModalComponent,
         IframeModalComponent,
-        PaymentErrorModalComponent
+        PaymentErrorModalComponent,
+        QuizComponent
     ],
     imports: [
       CommonModule,
@@ -112,7 +116,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
       {
         provide: SWIPER_CONFIG,
         useValue: DEFAULT_SWIPER_CONFIG
-      }
+      },
+      QuizResolver,
+      QuizzesService
     ],
     entryComponents: [
       ReviewModalComponent,

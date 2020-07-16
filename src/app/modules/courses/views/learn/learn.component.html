@@ -23,13 +23,15 @@
     </div>
     <div class="navigation-container">
       <div>
-        <div *ngIf="showPrevButton" class="navigation-button" tabindex="0" (click)="goToPrevLesson()">
+        <!-- <div *ngIf="showPrevButton" class="navigation-button" tabindex="0" (click)="goToPrevLesson()"> -->
+        <div *ngIf="showPrevButton" class="navigation-button" tabindex="0" (click)="goToPrevCourseObject()">
           <i class="material-icons">keyboard_arrow_left</i>
           <div class="navigation-label">Previous</div>
         </div>
       </div>
       <div>
-        <div *ngIf="showNextButton" class="navigation-button" tabindex="0" (click)="goToNextLesson()">
+        <!-- <div *ngIf="showNextButton" class="navigation-button" tabindex="0" (click)="goToNextLesson()"> -->
+        <div *ngIf="showNextButton" class="navigation-button" tabindex="0" (click)="goToNextCourseObject()">
           <div class="navigation-label">Complete</div>
           <i class="material-icons">keyboard_arrow_right</i>
         </div>
@@ -353,7 +355,7 @@
               <i *ngIf="objectCompleted(courseObject.courseObject.id)" class="material-icons">
                 check_box
               </i>
-              <i *ngIf="!objectCompleted(courseObject.courseObject.id.id)" class="material-icons">
+              <i *ngIf="!objectCompleted(courseObject.courseObject.id)" class="material-icons">
                 check_box_outline_blank
               </i>
             </div>

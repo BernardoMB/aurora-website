@@ -1,0 +1,30 @@
+.quiz-container {
+  padding: 20px;
+  .start-quiz-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .assesment-container {
+    display: flex;
+    flex-direction: column;
+    .result-indicator {
+      border: 1px solid black;
+    }
+    .correct {
+      color: green;
+      border-color: green;
+    }
+    .incorrect {
+      color: red;
+      border-color: red;
+    }
+    .options-group {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .stats-container {
+    display: flex;
+    flex-direction: column;
+  }
+}

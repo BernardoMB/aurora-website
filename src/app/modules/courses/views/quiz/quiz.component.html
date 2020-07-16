@@ -1,0 +1,48 @@
+<div class="quiz-container">
+  <div *ngIf="showStartQuiz" class="start-quiz-container">
+    <div>Quiz - {{quiz.title}}</div>
+    <div>{{quiz.assesments.length}} questions</div>
+    <div>
+      <button (click)="onStartQuiz()">Start quiz</button>
+      <button>Skip quiz</button>
+    </div>
+  </div>
+  <div *ngIf="showAssesmentView && currentAssesment" class="assesment-container">
+    <div *ngIf="showCorrectIndicator" class="result-indicator correct">Correct!</div>
+    <div *ngIf="showIncorrectIndicator" class="result-indicator incorrect">Incorrect ):</div>
+    <div>Question {{assesmentsIds.indexOf(currentAssesment.id) + 1}}</div>
+    <div>{{ currentAssesment.prompt.question }}</div>
+    <mat-radio-group class="options-group" [formControl]="radioGroupControl" aria-label="Select an option">
+      <mat-radio-button *ngFor="let option of currentAssesment.prompt.answers; let i = index" [value]="i + 1">{{option}}</mat-radio-button>
+    </mat-radio-group>
+    <div>Question {{assesmentsIds.indexOf(currentAssesment.id) + 1}} of {{assesmentsIds.length}}</div>
+    <button *ngIf="showSkipAssesmentButton" (click)="onSkipAssesment()">Skip</button>
+    <button *ngIf="showCheckAnswerButton" (click)="onCheckAnswer()" [disabled]="checkAnswerButtonDisabled">Check answer</button>
+    <button *ngIf="showNextButton" (click)="onNextAssesment()">Next</button>
+    <button *ngIf="showSeeResultsButton" (click)="onViewResults()">See results</button>
+  </div>
+  <div *ngIf="showStatsView" class="stats-container">
+    <div *ngIf="totalCorrect === quiz.assesments.length">
+      <div>Great job! You are ready to move on to the next lecture.</div>
+      <div>You got {{totalCorrect > 0 ? totalCorrect : 0 }} out of {{quiz.assesments.length}} on this attempt.</div>
+    </div>
+    <div *ngIf="totalCorrect !== quiz.assesments.length">
+      <div>Review the course materials to expand your learning.</div>
+      <div>You got {{totalCorrect > 0 ? totalCorrect : 0 }} out of {{quiz.assesments.length}} on this attempt.</div>
+    </div>
+    <div *ngIf="correct.length > 0">
+      <div>What you know</div>
+      <div *ngFor="let assesment of correct">{{assesment.prompt.question}}</div>
+    </div>
+    <div *ngIf="review.length > 0">
+      <div>What you should review</div>
+      <div *ngFor="let assesment of review">{{assesment.prompt.question}}</div>
+    </div>
+    <div *ngIf="skipped.length > 0">
+      <div>What you have missed</div>
+      <div *ngFor="let assesment of skipped">{{assesment.prompt.question}}</div>
+    </div>
+    <button (click)="onRetryQuiz()">Retry quiz</button>
+    <button (click)="onContinue()">Continue</button>
+  </div>
+</div>
