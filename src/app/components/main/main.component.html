@@ -1,4 +1,4 @@
-<div class="header-container">
+<!-- <div class="header-container"> -->
   <app-header
     [user]="user"
     (login)="onLogin()"
@@ -7,7 +7,7 @@
     (viewProfile)="onViewProfile()"
     (viewShoppingKart)="onViewShoppingKart()"
   ></app-header>
-</div>
+<!-- </div> -->
 <div class="router-outlet-container" [@routeAnimation]="getAnimationData(routerOutlet)">
   <router-outlet #routerOutlet="outlet"></router-outlet>
 </div>

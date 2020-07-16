@@ -1,5 +1,4 @@
-
-<div class="header">
+<div class="static-header">
   <app-loadingbar></app-loadingbar>
   <div class="header-inner">
     <div
@@ -385,7 +384,7 @@
   </div>
 </div>
 
-<div class="sticky-header" [ngClass]="{'sticky' : isSticky}">
+<!-- <div class="sticky-header" [ngClass]="{'sticky' : isSticky}">
   <app-loadingbar></app-loadingbar>
   <div class="header-inner">
     <div
@@ -625,77 +624,6 @@
               </div>
             </div>
           </mat-menu>
-          <!-- <i
-            class="material-icons focus-outline"
-            tabindex="0"
-            #cartMenuTrigger="matMenuTrigger"
-            [matMenuTriggerFor]="cartMenu"
-            (keyup.enter)="cartMenuTrigger.openMenu()"
-            >shopping_cart</i
-          >
-          <mat-menu #cartMenu="matMenu">
-            <div *ngIf="!cart || cart.length === 0">
-              <div class="empty-cart-container">
-                <div>Your cart is empty.</div>
-                <div class="keep-shopping">
-                  <a
-                    class="focus-outline"
-                    [routerLink]="['/courses']"
-                    tabindex="0"
-                    (click)="mobileNavBarOpen = false"
-                    >Keep shopping</a
-                  >
-                </div>
-              </div>
-            </div>
-            <div *ngIf="cart.length > 0">
-              <div class="courses-container">
-                <div
-                  *ngFor="let course of cart"
-                  class="course-item focus-outline"
-                  tabindex="0"
-                  (click)="onGoToCourse(course.id)"
-                >
-                  <div
-                    class="course-image"
-                    [style.backgroundImage]="'url(' + course.imgUrl + ')'"
-                  ></div>
-                  <div class="course-details">
-                    <div class="course-name">{{ course.name }}</div>
-                    <div class="course-prices">
-                      <div class="final-price">
-                        {{
-                          course.price * (1 - course.discount)
-                            | currency: 'NGN':'symbol-narrow'
-                        }}
-                      </div>
-                      <div class="original-price" *ngIf="course.discount > 0">
-                        {{ course.price | currency: 'NGN':'symbol-narrow' }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="menu-footer">
-                  <div class="total-container">
-                    <div class="label">Total:</div>
-                    <div class="total">
-                      {{ total | currency: 'NGN':'symbol-narrow' }}
-                    </div>
-                    <div class="subtotal" *ngIf="total !== subtotal">
-                      {{ subtotal | currency: 'NGN':'symbol-narrow' }}
-                    </div>
-                  </div>
-                  <button
-                    class="cart-button focus-outline"
-                    *ngIf="showGoToCartButton"
-                    [routerLink]="['/courses/cart']"
-                  >
-                    Go to cart
-                  </button>
-                </div>
-              </div>
-            </div>
-          </mat-menu> -->
         </div>
         <div *ngIf="user" class="user-section">
           <div
@@ -769,7 +697,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 <div *ngIf="mobileNavBarOpen" class="mobile-navigation-links">
   <ul class="mobilenav-links">
