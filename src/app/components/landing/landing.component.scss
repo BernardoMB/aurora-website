@@ -5,7 +5,7 @@
   img {
     width: 100%;
     height: auto;
-    $animation-time: 25s;
+    $animation-time: 15s;
     animation: kenburns1 $animation-time ease-in-out infinite alternate;
     @media screen and (max-width: 950px) {
       animation: kenburns2 $animation-time ease-in-out infinite alternate;
@@ -14,15 +14,16 @@
       animation: kenburns3 $animation-time ease-in-out infinite alternate;
     }
     @media screen and (max-width: 420px) {
+      height: 100%;
       animation: kenburns4 $animation-time ease-in-out infinite alternate;
     }
     @media screen and (max-width: 360px) {
+      height: 100%;
       animation: kenburns5 $animation-time ease-in-out infinite alternate;
     }
     @media screen and (max-width: 320px) {
-      //animation: none;
       height: 100%;
-      animation: kenburns5 15s ease-in-out infinite alternate;
+      animation: kenburns5 $animation-time ease-in-out infinite alternate;
     }
   }
   .gradient-wrapper {

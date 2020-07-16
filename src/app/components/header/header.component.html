@@ -699,7 +699,7 @@
   </div>
 </div> -->
 
-<div *ngIf="mobileNavBarOpen" class="mobile-navigation-links">
+<div *ngIf="mobileNavBarOpen && !user" class="mobile-navigation-links" [@inOutAnimation1]>
   <ul class="mobilenav-links">
     <li class="mobilenav-link">
       <a
@@ -771,6 +771,68 @@
         class="focus-outline"
         (click)="onRegister()"
         >Sign Up</a
+      >
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="mobileNavBarOpen && user" class="mobile-navigation-links" [@inOutAnimation2]>
+  <ul class="mobilenav-links">
+    <li class="mobilenav-link">
+      <a
+        class="focus-outline"
+        routerLink="/home"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}"
+        (click)="handleMobileLinkClick()">
+        Home
+      </a>
+    </li>
+    <li class="mobilenav-link">
+      <a
+        class="focus-outline"
+        [routerLink]="['/home']"
+        fragment="contact"
+        [class.active]="currentSection === 'contact'"
+        (click)="handleMobileLinkClick()"
+        >Community</a
+      >
+    </li>
+    <div class="divider"></div>
+    <li class="mobilenav-link">
+      <a
+        class="focus-outline"
+        routerLink="/courses"
+        routerLinkActive="active"
+        (click)="handleMobileLinkClick()">
+        Courses
+      </a>
+    </li>
+    <li class="mobilenav-link">
+      <a
+        class="focus-outline"
+        routerLink="/news"
+        routerLinkActive="active"
+        (click)="handleMobileLinkClick()"
+      >
+        Explore
+      </a>
+    </li>
+    <li class="mobilenav-link">
+      <a
+        class="focus-outline"
+        routerLink="/events"
+        routerLinkActive="active"
+        (click)="handleMobileLinkClick()"
+      >Events</a>
+    </li>
+    <li class="mobilenav-link">
+      <a
+        class="focus-outline"
+        routerLink="/invest"
+        routerLinkActive="active"
+        (click)="handleMobileLinkClick()"
+        >Invest</a
       >
     </li>
   </ul>

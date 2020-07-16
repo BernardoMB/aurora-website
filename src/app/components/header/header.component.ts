@@ -25,6 +25,7 @@ import { selectAuthCart, selectAuthUser } from '../../store/auth/auth.selectors'
 import { MatMenuTrigger } from '@angular/material/menu';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 /**
  * The header of the application.
@@ -35,6 +36,46 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
+  animations: [
+    trigger(
+      'inOutAnimation1',
+      [
+        transition(
+          ':enter',
+          [
+            style({ height: 0, opacity: 0 }),
+            animate('0.3s ease-out', style({ height: 394, opacity: 1 }))
+          ]
+        ),
+        transition(
+          ':leave',
+          [
+            style({ opacity: 1 }),
+            animate('0.3s ease-in', style({ height: 0, opacity: 0 }))
+          ]
+        )
+      ]
+    ),
+    trigger(
+      'inOutAnimation2',
+      [
+        transition(
+          ':enter',
+          [
+            style({ height: 0, opacity: 0 }),
+            animate('0.3s ease-out', style({ height: 290, opacity: 1 }))
+          ]
+        ),
+        transition(
+          ':leave',
+          [
+            style({ opacity: 1 }),
+            animate('0.3s ease-in', style({ height: 0, opacity: 0 }))
+          ]
+        )
+      ]
+    )
+  ]
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   mobileNavBarOpen = false;

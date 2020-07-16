@@ -750,12 +750,17 @@ $focus-border: 2px;
   position: fixed;
   top: 64px;
 
+  transition: opacity .65s ease-out, height .25s ease;
+
   width: 100%;
   box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1), 0 3px 1px 0 rgba(20, 23, 28, 0.1);
   left: 0;
   right: 0;
   background: #4b4b50;
   z-index: 5; // Could be 3 but azure media player was getting on top so it had to be changed to 5
+  padding-bottom: 20px;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
   ul.mobilenav-links {
     padding: 0 0 0 2px;
     margin: 0px;
