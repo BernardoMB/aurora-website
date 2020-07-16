@@ -2,7 +2,7 @@
   visibility: hidden;
 }
 .loader-overlay {
-  position: absolute;
+  position: fixed;
   width: 100%;
   z-index: 500000;
   top: 61px;
