@@ -126,7 +126,7 @@ export class LearnComponent implements OnInit, OnDestroy {
 
     const data = this.route.snapshot.data;
     if (data.learningInfo) {
-      console.log('%cLearnComponent: learningInfo', 'background: greenyellow; color: #ff25e5', data.learningInfo);
+      // console.log('%cLearnComponent: learningInfo', 'background: greenyellow; color: #ff25e5', data.learningInfo);
       const learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } = data.learningInfo;
       this.course = learningInfo.course;
       this.lessonIds = (learningInfo.course.lessons as any[]).map(lesson => lesson.id);
@@ -278,7 +278,6 @@ export class LearnComponent implements OnInit, OnDestroy {
           this.isFavorite = false;
         }
 
-        // TODO: Determine if the user is able to add this course to its wishlist (there is already a view and logic for that)
         // TODO: Determine if the user is able to archive this course (there is already a view and logic for that)
       } else {
         this.canRateCourse = false;

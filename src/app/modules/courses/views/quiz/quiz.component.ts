@@ -50,7 +50,7 @@ export class QuizComponent implements OnInit {
     private quizzesService: QuizzesService
   ) {
     this.route.data.subscribe((data) => {
-      console.log('%cActivatedRoute data:', 'color: red', data);
+      // console.log('%cActivatedRoute data:', 'color: red', data);
       if (data.quizInfo) {
         if (data.quizInfo.quiz) {
           this.quiz = data.quizInfo.quiz;
@@ -70,28 +70,28 @@ export class QuizComponent implements OnInit {
           this.quiz.id
         ).pipe(
           catchError((error) => {
-            console.log('QuizComponent: User has not attempted this course');
+            // console.log('QuizComponent: User has not attempted this course');
             this.userSubscription.unsubscribe();
             this.showStartQuiz = true;
             throw error;
           })
         ).subscribe((attemptedQuiz: AttemptedQuiz) => {
           if (attemptedQuiz) {
-            console.log('QuizComponent: User latest attempted quiz', attemptedQuiz);
+            // console.log('QuizComponent: User latest attempted quiz', attemptedQuiz);
             this.currentAttemptedQuiz = attemptedQuiz;
             if (attemptedQuiz.completedAssesments.length === this.quiz.assesments.length) {
               // All assesments where completed
-              console.log('All assesments where completed. Showing stats view');
+              // console.log('All assesments where completed. Showing stats view');
               this.handleStats(attemptedQuiz);
             } else {
               // There are incompleted assesments. Determine which incomplete assesment to display.
               // tslint:disable-next-line: prefer-for-of
               for (let i = 0; i < this.quiz.assesments.length; i++) {
-                console.log('Checando si assesment ya fue completado');
+                // console.log('Checando si assesment ya fue completado');
                 if (attemptedQuiz.completedAssesments.indexOf(this.quiz.assesments[i].id) === -1) {
-                  console.log('El assesment no ha sido completado');
+                  // console.log('El assesment no ha sido completado');
                   if (i === 0) {
-                    console.log('El assesment no fue completado y es el primero');
+                    // console.log('El assesment no fue completado y es el primero');
                     this.showStartQuiz = true;
                     break;
                   } else {
@@ -108,7 +108,7 @@ export class QuizComponent implements OnInit {
               }
             }
           } else  {
-            console.log('QuizComponent: User has not attempted this course');
+            // console.log('QuizComponent: User has not attempted this course');
             this.showStartQuiz = true;
           }
           this.userSubscription.unsubscribe();
@@ -136,7 +136,7 @@ export class QuizComponent implements OnInit {
       this.skipped = [];
       this.quizzesService.userAttemptedQuiz(this.quiz).subscribe((attemptedQuiz: AttemptedQuiz) => {
         if (attemptedQuiz) {
-          console.log('QuizComponent: Created attempted quiz', attemptedQuiz);
+          // console.log('QuizComponent: Created attempted quiz', attemptedQuiz);
           this.currentAttemptedQuiz = attemptedQuiz;
         }
       });
@@ -153,7 +153,7 @@ export class QuizComponent implements OnInit {
       // User skiped the last assesment
       this.skipped.push(this.currentAssesment);
       this.quizzesService.getUserQuizResults(this.quiz, this.currentAttemptedQuiz).subscribe((attemptedQuiz: AttemptedQuiz) => {
-        console.log('User skipped the last assesment. Displaying stats view');
+        // console.log('User skipped the last assesment. Displaying stats view');
         this.handleStats(attemptedQuiz);
       });
       this.showAssesmentView = false;
@@ -199,7 +199,7 @@ export class QuizComponent implements OnInit {
 
   onViewResults() {
     this.quizzesService.getUserQuizResults(this.quiz, this.currentAttemptedQuiz).subscribe((attemptedQuiz: AttemptedQuiz) => {
-      console.log('User resquested results. Displaying stats view');
+      // console.log('User resquested results. Displaying stats view');
       this.handleStats(attemptedQuiz);
     });
   }
