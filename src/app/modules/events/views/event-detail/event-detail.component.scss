@@ -114,14 +114,14 @@
             .isFavorite {
               display: flex;
               justify-content: flex-end;
-              i {
+              mat-icon {
                 color: hotpink;
               }
             }
             .notFavorite {
               display: flex;
               justify-content: flex-end;
-              i {
+              mat-icon {
                 color: hotpink;
               }
             }
@@ -253,42 +253,6 @@
           align-items: flex-end;
           .date-container {
             color: white;
-          }
-          .price-container {
-            .free-container {
-              /* background-color: white; */
-              border-radius: 5px;
-              padding: 1px;
-              .free {
-                background-color: gold;
-                color: black;
-                border-radius: 5px;
-                border: 1px solid black;
-                padding: 1px 5px;
-                font-weight: bold;
-                font-size: 12px;
-              }
-            }
-            .price {
-              color: $font-color;
-              font-weight: $font-weight;
-              font-size: 20px;
-            }
-          }
-          .rating-container {
-            display: flex;
-            align-items: center;
-            color: $font-color;
-            font-size: 20px;
-            font-weight: $font-weight;
-            div {
-              line-height: 1;
-            }
-            i {
-              color: goldenrod;
-              font-size: 26px;
-              margin-right: 5px;
-            }
           }
         }
       }

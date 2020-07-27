@@ -9,14 +9,14 @@
           </div>
           <div class="favorite-container">
             <div *ngIf="isFavourite" class="isFavorite">
-              <i class="material-icons" (click)="onUnfavouriteEvent()">
-                favorite
-              </i>
+              <button mat-icon-button (click)="onUnfavouriteEvent()">
+                <mat-icon>favorite</mat-icon>
+              </button>
             </div>
             <div *ngIf="!isFavourite" class="notFavorite">
-              <i class="material-icons" (click)="favouriteEvent()">
-                favorite_border
-              </i>
+              <button mat-icon-button (click)="favouriteEvent()">
+                <mat-icon>favorite_border</mat-icon>
+              </button>
             </div>
           </div>
         </div>
