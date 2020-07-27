@@ -215,10 +215,10 @@ export class EventsComponent implements OnInit {
     });
   }
   prevSlide() {
-    this.swiperDirective.first.prevSlide();
+    this.swiperDirective?.first?.prevSlide();
   }
   nextSlide() {
-    this.swiperDirective.first.nextSlide();
+    this.swiperDirective?.first?.nextSlide();
   }
   onReachEnd() {
     if (this.featuredReachedEnd) {

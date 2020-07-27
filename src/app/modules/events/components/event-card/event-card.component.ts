@@ -38,4 +38,3 @@ export class EventCardComponent implements OnInit {
     this.loading = this._valueOverriden ? this.loading : false;
   }
 }
-``
