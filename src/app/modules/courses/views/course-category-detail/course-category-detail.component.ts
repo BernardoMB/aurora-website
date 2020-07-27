@@ -1,11 +1,18 @@
-import { Component, OnInit, OnDestroy, ViewChildren, QueryList } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChildren,
+  QueryList,
+} from '@angular/core';
 import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
 import { CoursesService } from '../../services/courses.service';
 import { Category } from 'src/app/shared/models/category.model';
 import { Subscription } from 'rxjs';
 import { Course } from '../../../../shared/models/course.model';
-import { Page, PagedData } from '../../../../shared/utils';
 import { SwiperDirective, SwiperConfigInterface } from 'ngx-swiper-wrapper';
+import { Page } from '../../../../shared/models/page.model';
+import { PagedData } from '../../../../shared/models/paged-data.model';
 
 @Component({
   selector: 'app-course-category-detail',
@@ -14,6 +21,8 @@ import { SwiperDirective, SwiperConfigInterface } from 'ngx-swiper-wrapper';
 })
 export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
   category: Category;
+
+  subscription = new Subscription();
 
   // Sliders configuration
   @ViewChildren(SwiperDirective) swiperDirective: QueryList<SwiperDirective>;
@@ -38,12 +47,12 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
     scrollbar: {
       el: '.swiper-scrollbar',
       hide: true,
-    }
+    },
   };
 
   // Featured courses pagination
   featuredCourses: Course[] = [];
-  featuredCoursesPage = new Page();
+  featuredCoursesPage = new Page({ size: 4, pageNumber: 1 });
   showPrevBubtton = false;
   showNextButton = true;
   featuredReachedEnd = false;
@@ -52,61 +61,68 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
 
   // Recent courses pagination
   recentCourses: Course[];
-  recentCoursesPage = new Page();
+  recentCoursesPage = new Page({ size: 15, pageNumber: 1 });
 
   constructor(
     private coursesService: CoursesService,
-    private readonly route: ActivatedRoute
-  ) {
-  }
+    private readonly route: ActivatedRoute,
+  ) {}
 
   ngOnInit() {
-    this.route.data.subscribe((data) => {
-      // console.log('%c Activated route snapshot resolved data ', 'background: #222; color: #bada55');
-      // console.log(data);
-      if (data.categoryDetailInfo) {
-        const categoryDetailInfo: { category: Category } = data.categoryDetailInfo;
-        this.category = categoryDetailInfo.category;
+    this.subscription?.add(
+      this.route.data.subscribe((data) => {
+        if (data.categoryDetailInfo) {
+          const categoryDetailInfo: { category: Category } =
+            data.categoryDetailInfo;
+          this.category = categoryDetailInfo.category;
 
-        // Featured courses pagination infinite slider
-        this.featuredCoursesPage.size = 4;
-        this.featuredCoursesPage.pageNumber = 1;
-        this.setFeaturedCoursesPage({ offset: this.featuredCoursesPage.pageNumber }, categoryDetailInfo.category.id);
-        // Request second page
-        this.featuredCoursesPage.pageNumber = 2;
-        this.setFeaturedCoursesPage({ offset: this.featuredCoursesPage.pageNumber }, categoryDetailInfo.category.id);
+          // Featured courses pagination infinite slider
+          this.setFeaturedCoursesPage(
+            { offset: this.featuredCoursesPage.pageNumber },
+            categoryDetailInfo.category.id,
+          );
+          // Request second page
+          this.setFeaturedCoursesPage(
+            { offset: this.featuredCoursesPage.pageNumber + 1 },
+            categoryDetailInfo.category.id,
+          );
 
-        // Recent courses pagination
-        this.recentCoursesPage.size = 15;
-        this.recentCoursesPage.pageNumber = 1;
-        this.setRecentCoursesPage({ offset: this.recentCoursesPage.pageNumber }, categoryDetailInfo.category.id);
-      }
-    });
-
+          // Recent courses pagination
+          this.setRecentCoursesPage(
+            { offset: this.recentCoursesPage.pageNumber },
+            categoryDetailInfo.category.id,
+          );
+        }
+      }),
+    );
   }
 
   ngOnDestroy() {
+    this.subscription?.unsubscribe();
   }
 
   // * Featured courses
   setFeaturedCoursesPage(pageInfo: { offset: number }, categoryId: string) {
-    this.featuredCoursesPage.pageNumber = pageInfo.offset;
-    this.coursesService.getCategoryFeaturedCoursesPageData(this.featuredCoursesPage, categoryId).subscribe((pagedData: PagedData<Course>) => {
-      // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
-      this.featuredCoursesPage = pagedData.page;
-      this.featuredCourses = [
-        ...(this.featuredCourses),
-        ...(pagedData.data)
-      ];
-      if (pagedData.page.totalPages === pagedData.page.pageNumber) {
-        this.featuredReachedEnd = true;
-      } else {
-        this.showNextButton = true;
-      }
-      setTimeout(() => {
-        this.swiperDirective.first.update();
-      }, 0);
+    this.featuredCoursesPage = this.featuredCoursesPage.copyWith({
+      pageNumber: pageInfo.offset,
     });
+    this.coursesService
+      .getCategoryFeaturedCoursesPageData(this.featuredCoursesPage, categoryId)
+      .subscribe((pagedData: PagedData<Course>) => {
+        this.featuredCoursesPage = pagedData.page;
+        this.featuredCourses = [
+          ...this.featuredCourses,
+          ...pagedData.data.asImmutable(),
+        ];
+        if (pagedData.page.totalPages === pagedData.page.pageNumber) {
+          this.featuredReachedEnd = true;
+        } else {
+          this.showNextButton = true;
+        }
+        setTimeout(() => {
+          this.swiperDirective.first.update();
+        }, 0);
+      });
   }
   onIndexChange(e) {
     const i = e;
@@ -138,7 +154,7 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
       } else {
         value = 3; // 4 slides
       }
-      if ((i % 4) === value) {
+      if (i % 4 === value) {
         if (!this.featuredReachedEnd) {
           this.requestNextPage();
         }
@@ -147,8 +163,12 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
     this.lastIndex = e;
   }
   requestNextPage() {
-    this.featuredCoursesPage.size = 4;
-    this.setFeaturedCoursesPage({offset: this.featuredCoursesPage.pageNumber + 1}, this.category.id);
+    this.featuredCoursesPage = this.featuredCoursesPage.copyWith({ size: 4 });
+
+    this.setFeaturedCoursesPage(
+      { offset: this.featuredCoursesPage.pageNumber + 1 },
+      this.category.id,
+    );
   }
   prevSlide() {
     this.swiperDirective.first.prevSlide();
@@ -166,16 +186,19 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
 
   // * Recent courses
   recentCoursesPageChanged(pageNumber: number) {
-    this.recentCoursesPage.pageNumber = pageNumber;
     this.setRecentCoursesPage({ offset: pageNumber }, this.category.id);
   }
-  setRecentCoursesPage(pageInfo: { offset: number }, categoryId: string) {
-    this.recentCoursesPage.pageNumber = pageInfo.offset;
-    this.coursesService.getCategoryCoursesPageData(this.recentCoursesPage, categoryId).subscribe((pagedData: PagedData<Course>) => {
-      // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
-      this.recentCoursesPage = pagedData.page;
-      this.recentCourses = pagedData.data;
-    });
-  }
 
+  setRecentCoursesPage(pageInfo: { offset: number }, categoryId: string) {
+    this.recentCoursesPage = this.recentCoursesPage.copyWith({
+      pageNumber: pageInfo.offset,
+    });
+    this.coursesService
+      .getCategoryCoursesPageData(this.recentCoursesPage, categoryId)
+      .subscribe((pagedData: PagedData<Course>) => {
+        // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
+        this.recentCoursesPage = pagedData.page;
+        this.recentCourses = pagedData.data.asImmutable().toJS();
+      });
+  }
 }

@@ -1,0 +1,50 @@
+<section class="courses-jumbotron-section">
+  <div class="jumbotron-wrapper">
+    <div class="jumbotron-wrapper-overlay">
+      <div class="jumbotron-conatiner">
+        <div class="jumbotron-texts">
+          <div class="jumbotron-title">Events</div>
+          <div class="jumbotron-description">
+            Check out all of the events that Invest Naija &copy; has available
+            for you
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div *ngIf="events">
+  <section *ngIf="events.length > 0" class="events-section">
+    <div class="events-container">
+      <div class="events-title-container">
+        <div class="events-title">All Events</div>
+      </div>
+      <div class="events-cards-container">
+        <div
+          class="event-card"
+          *ngFor="
+            let i = index;
+            let event;
+            of: events
+              | paginate
+                : {
+                    id: 'recent',
+                    itemsPerPage: page.size,
+                    currentPage: page.pageNumber,
+                    totalItems: page.totalElements
+                  }
+          "
+        >
+          <app-event-card [event]="event"></app-event-card>
+        </div>
+      </div>
+      <pagination-controls
+        id="recent"
+        responsive
+        class="pagination-controls"
+        (pageChange)="pageChanged($event)"
+      ></pagination-controls>
+    </div>
+  </section>
+</div>

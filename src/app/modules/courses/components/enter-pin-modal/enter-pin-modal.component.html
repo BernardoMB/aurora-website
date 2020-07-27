@@ -12,6 +12,7 @@
       matInput
       placeholder="Security PIN"
       [formControl]="pinControl"
+      (keydown.enter)="onSubmit()"
       required
     />
   </mat-form-field>

@@ -12,6 +12,7 @@
       matInput
       placeholder="One Time Pin"
       [formControl]="otpControl"
+      (keydown.enter)="onSubmit()"
       required
     />
   </mat-form-field>
