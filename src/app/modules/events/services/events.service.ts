@@ -33,7 +33,7 @@ export class EventsService {
   getEvent(eventId: string): Observable<Event> {
     console.log(`Event service: Getting event with id ${eventId}`);
     // return this.http.get<Event>(`${this.baseUrl}/${eventId}`);
-    return this.getFakeEvent(`${this.baseUrl}/${eventId}`);
+    return this.getFakeEvent(eventId);
   }
 
   /**
@@ -123,6 +123,30 @@ export class EventsService {
     );
   }
 
+  /**
+   * Get related events page.
+   *
+   * @param {Page} page
+   * @param {Event} event
+   * @returns {Observable<PagedData<Event>>}
+   * @memberof EventsService
+   */
+  getRelatedEventsPageData(
+    page: Page,
+    event: Event,
+  ): Observable<PagedData<Event>> {
+    console.log('Events service: Getting related events page');
+    const query = {
+      ...page.toPaginationParams(),
+      sort: { 'subscribed.length': 'desc' },
+      event,
+    };
+    return this.getFakeEvents(this.getUrl(query), true).pipe(
+      // return this.http.get<ServerPagedDataDto<Event>>(url).pipe(
+      map((res) => new PagedData<Event>(res, page)),
+    );
+  }
+
   subscribeToEvent() {
     // TODO: Implement this method
     throw new Error('Not Implemented!');
@@ -182,6 +206,7 @@ export class EventsService {
   }
 
   private getFakeEvent(id: string): Observable<Event> {
+    console.log(id);
     return this.http.get<Event[]>('/assets/fake-data/fake-events.json').pipe(
       switchMap((items) => {
         const index = items.findIndex((i) => i.id === id);

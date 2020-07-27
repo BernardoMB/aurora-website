@@ -19,6 +19,7 @@ import {
 } from 'ngx-swiper-wrapper';
 import { EventCardComponent } from './components/event-card/event-card.component';
 import { EventSwiperCardComponent } from './components/event-swiper-card/event-swiper-card.component';
+import { EventDetailResolver } from './resolvers/event-detail-resolver.service';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   /* direction: 'horizontal',
@@ -44,6 +45,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     SwiperModule,
   ],
   providers: [
+    EventDetailResolver,
     {
       provide: SWIPER_CONFIG,
       useValue: DEFAULT_SWIPER_CONFIG,

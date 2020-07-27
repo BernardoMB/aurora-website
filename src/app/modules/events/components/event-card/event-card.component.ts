@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IEvent } from '../../models/interfaces/event.interface';
+import { Event } from '../../models/event.model';
 
 @Component({
   selector: 'app-event-card',
@@ -15,7 +16,7 @@ export class EventCardComponent implements OnInit {
     return this._loading;
   }
 
-  @Input() event: IEvent;
+  @Input() event: Event;
   @Output() imageLoaded = new EventEmitter<string>();
   @Output() dateCardClicked = new EventEmitter<string>();
 
