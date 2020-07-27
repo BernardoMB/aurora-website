@@ -112,11 +112,12 @@ export class EventsService {
         longitude,
         meterRadius: 5000,
       })),
-      switchMap((query) =>
-        // this.getFakeEvents(this.getUrl(query, '/near/location'), true)
-        this.http.get<ServerPagedDataDto<Event>>(
-          this.getUrl(query, '/near/location'),
-        ),
+      switchMap(
+        (query) =>
+          this.getFakeEvents(this.getUrl(query, '/near/location'), true),
+        // this.http.get<ServerPagedDataDto<Event>>(
+        //   this.getUrl(query, '/near/location'),
+        // ),
       ),
       map((res) => new PagedData<Event>(res, page)),
     );
