@@ -87,6 +87,9 @@
           border: 1px solid gainsboro;
           border-radius: 4px;
           ::ng-deep {
+            .mat-radio-label {
+              white-space: unset !important;
+            }
             .mat-radio-label-content {
               margin-left: 5px;
             }
