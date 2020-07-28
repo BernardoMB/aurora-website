@@ -1,0 +1,88 @@
+<section class="event-jumbotron">
+  <div class="event-jumbotron-wrapper">
+    <div class="event-jumbotron-overlay">
+      <div *ngIf="event" class="event-jumbotron-container">
+        <div class="top-container">
+          <div class="organizer-name">
+            <mat-icon inline>business</mat-icon>
+            {{ event.organizer }}
+          </div>
+          <div class="favorite-container">
+            <div *ngIf="isFavourite" class="isFavorite">
+              <button mat-icon-button (click)="onUnfavouriteEvent()">
+                <mat-icon>favorite</mat-icon>
+              </button>
+            </div>
+            <div *ngIf="!isFavourite" class="notFavorite">
+              <button mat-icon-button (click)="favouriteEvent()">
+                <mat-icon>favorite_border</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="middle-container">
+          <div class="event-image-section">
+            <div class="image-wrapper">
+              <div
+                class="event-image-container"
+                [style.backgroundImage]="'url(' + event.imgUrl + ')'"
+              >
+                <div class="image-overlay"></div>
+              </div>
+            </div>
+          </div>
+          <div class="event-name">{{ event.name }}</div>
+          <div class="buttons-container">
+            <button class="enroll-button focus-outline" (click)="(null)">
+              Subscribe <i class="material-icons">subscriptions</i>
+            </button>
+          </div>
+        </div>
+        <div class="bottom-container">
+          <div class="date-container">
+            <mat-icon inline>
+              today
+            </mat-icon>
+            {{ event.startDate | date }} - {{ event.endDate | date }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="event-content-section">
+  <div class="about-wrapper">
+    <div *ngIf="event">
+      <div class="description-title">Event description</div>
+      <div class="description-content" [innerHTML]="event.description"></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section
+  *ngIf="relatedEvents && relatedEvents.length > 0"
+  class="events-section"
+>
+  <div class="events-container">
+    <div class="title-container">
+      <div class="title">You might also be interested in</div>
+      <a
+        class="focus-outline"
+        [routerLink]="['/events/all/']"
+        [queryParams]="{ page: 1 }"
+        >View all</a
+      >
+    </div>
+    <div class="cards-container">
+      <div
+        class="event-card"
+        *ngFor="let event of relatedEvents; let i = index"
+      >
+        <app-event-card [event]="event"></app-event-card>
+      </div>
+    </div>
+  </div>
+</section>

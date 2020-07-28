@@ -1,0 +1,120 @@
+$offset: 187;
+$duration: 1.4s;
+
+h1 {
+  text-align: center;
+  margin: calc(50% - 16px) auto;
+}
+
+.spinner {
+  animation: rotator $duration linear infinite;
+  position: absolute;
+  top: calc(50% - 32px);
+  left: calc(50% - 32px);
+}
+
+.path {
+  stroke-dasharray: $offset;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  animation: dash $duration ease-in-out infinite,
+    strokeCollors ($duration * 4) ease-in-out infinite;
+}
+
+@keyframes rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+
+@keyframes rotator2 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes strokeCollors {
+  0% {
+    stroke: #6cc5a4;
+  }
+  25% {
+    stroke: #ec5a5a;
+  }
+  50% {
+    stroke: #f0b52b;
+  }
+  75% {
+    stroke: #032c43;
+  }
+  100% {
+    stroke: #6cc5a4;
+  }
+}
+
+@keyframes iconRotate {
+  0% {
+    transform: rotate(0) scale(1);
+  }
+  50% {
+    transform: rotate(360deg) scale(0.6);
+  }
+  0% {
+    transform: rotate(0) scale(1);
+  }
+}
+
+@keyframes fillColors {
+  0% {
+    fill: #6cc5a4;
+  }
+  25% {
+    fill: #ec5a5a;
+  }
+  50% {
+    fill: #f0b52b;
+  }
+  75% {
+    fill: #083a55;
+  }
+  100% {
+    fill: #6cc5a4;
+  }
+}
+
+@keyframes textColors {
+  0% {
+    color: #6cc5a4;
+  }
+  25% {
+    color: #ec5a5a;
+  }
+  50% {
+    color: #f0b52b;
+  }
+  75% {
+    color: #083a55;
+  }
+  100% {
+    color: #6cc5a4;
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: $offset;
+  }
+  50% {
+    stroke-dashoffset: $offset/4;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: $offset;
+    transform: rotate(450deg);
+  }
+}

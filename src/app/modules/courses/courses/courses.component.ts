@@ -12,7 +12,6 @@ import { CoursesService } from '../services/courses.service';
 import { Subscription, Observable } from 'rxjs';
 import { Course } from '../../../shared/models/course.model';
 import { Category } from '../../../shared/models/category.model';
-import { Page, PagedData } from '../../../shared/utils';
 import { Store } from '@ngrx/store';
 import { AuthState } from '../../../store/auth/auth.state';
 import { selectAuthIsAuthenticated } from '../../../store/auth/auth.selectors';
@@ -24,6 +23,8 @@ import {
   SwiperScrollbarInterface,
   SwiperPaginationInterface,
 } from 'ngx-swiper-wrapper';
+import { PagedData } from '../../../shared/models/paged-data.model';
+import { Page } from '../../../shared/models/page.model';
 
 @Component({
   selector: 'app-courses',
@@ -62,7 +63,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   // Featured courses pagination
   featuredCourses: Course[] = [];
-  featuredCoursesPage = new Page();
+  featuredCoursesPage = new Page({ pageNumber: 1, size: 4 });
   showPrevBubtton = false;
   showNextButton = true;
   featuredReachedEnd = false;
@@ -80,7 +81,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   // Trending courses pagination
   trendingCourses: Course[] = [];
-  trendingCoursesPage = new Page();
+  trendingCoursesPage = new Page({ pageNumber: 1, size: 4 });
   showPrevBubttonTrending = false;
   showNextButtonTrending = true;
   trendingReachedEnd = false;
@@ -116,41 +117,34 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Featured courses infinite
-    this.featuredCoursesPage.size = 4;
-    this.featuredCoursesPage.pageNumber = 1;
     this.setFeaturedCoursesPage({
-      offset: this.featuredCoursesPage.pageNumber,
+      offset: 1,
     });
     // Request second page
-    this.featuredCoursesPage.pageNumber = 2;
     this.setFeaturedCoursesPage({
-      offset: this.featuredCoursesPage.pageNumber,
+      offset: 2,
     });
 
     // Recent courses pagination
     const vw = window.innerWidth; // Viewport with
-    if (0 <= vw && vw <= 500) {
-      this.recentCoursesPage.size = 2;
-    } else if (500 < vw && vw <= 700) {
-      this.recentCoursesPage.size = 2;
+    let size = 2;
+    if (500 < vw && vw <= 700) {
+      size = 2;
     } else if (700 < vw && vw <= 1020) {
-      this.recentCoursesPage.size = 3;
+      size = 3;
     } else {
-      this.recentCoursesPage.size = 4;
+      size = 4;
     }
-    this.recentCoursesPage.pageNumber = 1;
-    this.setRecentCoursesPage({ offset: this.recentCoursesPage.pageNumber });
+    this.recentCoursesPage = this.recentCoursesPage.copyWith({ size });
+    this.setRecentCoursesPage({ offset: 1 });
 
     // Featured courses infinite
-    this.trendingCoursesPage.size = 4;
-    this.trendingCoursesPage.pageNumber = 1;
     this.setTrendingCoursesPage({
-      offset: this.trendingCoursesPage.pageNumber,
+      offset: 1,
     });
     // Request second page
-    this.trendingCoursesPage.pageNumber = 2;
     this.setTrendingCoursesPage({
-      offset: this.trendingCoursesPage.pageNumber,
+      offset: 2,
     });
 
     this.categoriesSubscription = this.coursesService
@@ -180,13 +174,18 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   // * Featured courses
   setFeaturedCoursesPage(pageInfo: { offset: number }) {
-    this.featuredCoursesPage.pageNumber = pageInfo.offset;
+    this.featuredCoursesPage = this.featuredCoursesPage.copyWith({
+      pageNumber: pageInfo.offset,
+    });
     this.coursesService
       .getFeaturedCoursesPageData(this.featuredCoursesPage)
       .subscribe((pagedData: PagedData<Course>) => {
         // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
         this.featuredCoursesPage = pagedData.page;
-        this.featuredCourses = [...this.featuredCourses, ...pagedData.data];
+        this.featuredCourses = [
+          ...this.featuredCourses,
+          ...pagedData.data.asImmutable(),
+        ];
         if (pagedData.page.totalPages === pagedData.page.pageNumber) {
           this.featuredReachedEnd = true;
         } else {
@@ -238,7 +237,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.lastIndex = e;
   }
   requestNextPage() {
-    this.featuredCoursesPage.size = 4;
+    this.featuredCoursesPage = this.featuredCoursesPage.copyWith({ size: 4 });
     this.setFeaturedCoursesPage({
       offset: this.featuredCoursesPage.pageNumber + 1,
     });
@@ -259,29 +258,35 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   // * Recent courses
   recentCoursesPageChanged(pageNumber: number) {
-    this.recentCoursesPage.pageNumber = pageNumber;
     this.setRecentCoursesPage({ offset: pageNumber });
   }
   setRecentCoursesPage(pageInfo: { offset: number }) {
-    this.recentCoursesPage.pageNumber = pageInfo.offset;
+    this.recentCoursesPage = this.recentCoursesPage.copyWith({
+      pageNumber: pageInfo.offset,
+    });
     this.coursesService
       .getCoursesPageData(this.recentCoursesPage)
       .subscribe((pagedData: PagedData<Course>) => {
         // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
         this.recentCoursesPage = pagedData.page;
-        this.recentCourses = pagedData.data;
+        this.recentCourses = pagedData.data.asImmutable().toJS();
       });
   }
 
   // * Trending courses
   setTrendingCoursesPage(pageInfo: { offset: number }) {
-    this.trendingCoursesPage.pageNumber = pageInfo.offset;
+    this.trendingCoursesPage = this.trendingCoursesPage.copyWith({
+      pageNumber: pageInfo.offset,
+    });
     this.coursesService
       .getTrendingCoursesPageData(this.trendingCoursesPage)
       .subscribe((pagedData: PagedData<Course>) => {
         // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
         this.trendingCoursesPage = pagedData.page;
-        this.trendingCourses = [...this.trendingCourses, ...pagedData.data];
+        this.trendingCourses = [
+          ...this.trendingCourses,
+          ...pagedData.data.asImmutable(),
+        ];
         if (pagedData.page.totalPages === pagedData.page.pageNumber) {
           this.trendingReachedEnd = true;
         } else {
@@ -334,7 +339,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.trendingLastIndex = e;
   }
   requestNextPageTrending() {
-    this.trendingCoursesPage.size = 4;
+    this.trendingCoursesPage = this.trendingCoursesPage.copyWith({ size: 4 });
     this.setTrendingCoursesPage({
       offset: this.trendingCoursesPage.pageNumber + 1,
     });

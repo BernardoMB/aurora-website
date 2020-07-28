@@ -1,0 +1,22 @@
+<section
+  class="article-jumbotron"
+  [style.backgroundImage]="'url(' + article?.imgUrl + ')'"
+>
+  <div class="article-jumbotron-wrapper">
+    <div class="article-jumbotron-overlay"></div>
+    <div class="article-title-container">
+      {{ article?.title }}
+    </div>
+    <div class="article-date-container">
+      {{ article?.createdAt | date }}
+    </div>
+  </div>
+</section>
+<section class="article-content-section">
+  <div class="about-wrapper">
+    <div class="description-sub-title">{{ article?.subtitle }}</div>
+    <div class="description-content" [innerHTML]="article?.data"></div>
+  </div>
+</section>
+<div class="divider"></div>
+<div class="article-comments"></div>

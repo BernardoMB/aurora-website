@@ -1,6 +1,18 @@
 {
-    "javascript.preferences.importModuleSpecifier": "relative",
-    "typescript.preferences.importModuleSpecifier": "relative",
-    "workbench.colorTheme": "Pink Cat Boo",
-    "workbench.preferredDarkColorTheme": "Hackpot Garden Of Atlantis"
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "html.validate.styles": true,
+  // JSON
+
+  // Enable/disable default JSON formatter
+  "json.format.enable": true,
+
+  // The maximum number of outline symbols and folding regions computed (limited for performance reasons).
+  "json.maxItemsComputed": 5000,
+
+  // When enabled, JSON schemas can be fetched from http and https locations.
+  "json.schemaDownload.enable": true,
+
+  // Associate schemas to JSON files in the current project
+  "json.schemas": []
 }

@@ -1,11 +1,11 @@
 <section class="lerning-header">
   <div class="header-container">
-    <div class="course-title">News</div>
+    <div class="news-title">News</div>
   </div>
 </section>
 
-<section class="courses-section">
-  <div class="courses-container">
+<section class="news-section">
+  <div class="news-container">
     <div class="cards">
       <div *ngFor="let article of featuredArticles" class="card content">
         <div class="card-content">
@@ -21,10 +21,10 @@
               {{ article.title }}
             </div>
             <div class="card-subtitle">
-              <a class="read-more">
+              <a class="read-more" [routerLink]="article.id">
                 read more
               </a>
-                    <!-- <div class="subtitle">
+              <!-- <div class="subtitle">
                       {{ article.subtitle }}
                     </div> -->
             </div>
@@ -35,15 +35,37 @@
   </div>
 </section>
 
-<section *ngIf="articles.length > 0" class="featured-courses-section">
-  <div class="featured-courses-container">
-    <div class="featured-title-container">
-      <div class="featured-title">Older news</div>
-    </div>
-    <div class="featured-cards-container">
-      <div class="course-card" *ngFor="let article of articles; let i = index">
-        <app-article-card [article]="article"></app-article-card>
+<div *ngIf="articles">
+  <section *ngIf="articles.length > 0" class="featured-news-section">
+    <div class="featured-news-container">
+      <div class="featured-title-container">
+        <div class="featured-title">Older News</div>
       </div>
+      <div class="featured-cards-container">
+        <div
+          class="event-card"
+          *ngFor="
+            let i = index;
+            let article;
+            of: articles
+              | paginate
+                : {
+                    id: 'recent',
+                    itemsPerPage: page.size,
+                    currentPage: page.pageNumber,
+                    totalItems: page.totalElements
+                  }
+          "
+        >
+          <app-article-card [article]="article"></app-article-card>
+        </div>
+      </div>
+      <pagination-controls
+        id="recent"
+        responsive
+        class="pagination-controls"
+        (pageChange)="pageChanged($event)"
+      ></pagination-controls>
     </div>
-  </div>
-</section>
+  </section>
+</div>
