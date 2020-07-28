@@ -2,17 +2,20 @@
   visibility: hidden;
 }
 .loader-overlay {
-  position: absolute;
+  position: fixed;
   width: 100%;
   z-index: 500000;
-  top: 0;
+  top: 61px;
 }
 .loader {
   height: 4px;
   width: 100%;
   position: relative;
   overflow: hidden;
-  background-color: #7be466;
+  background-color: #84ff3d;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(132,255,61,1);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(132,255,61,1);
+  box-shadow: 0px 0px 10px 0px rgba(132,255,61,1);
 }
 .loader:before {
   display: block;

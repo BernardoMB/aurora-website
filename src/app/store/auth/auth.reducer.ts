@@ -172,7 +172,31 @@ const authReducer = createReducer(
         ]
       }
     };
-
+  }),
+  on(AuthActions.addQuizToProgress, (state: AuthState, payload: { courseId: string, quizId: string }) => {
+    const purchasedCourse = state.user.purchasedCourses.filter((el: IPurchasedCourse) => el.course === payload.courseId)[0];
+    let progress;
+    if (purchasedCourse.progress.indexOf(payload.quizId) === -1) {
+      progress = [ ...(purchasedCourse.progress), payload.quizId ];
+    } else {
+      progress = [ ...(purchasedCourse.progress) ];
+    }
+    console.log('NEW PROGRESS', progress);
+    const newPurchasedcourse = {
+      course: payload.courseId,
+      progress
+    };
+    const purchasedCourses = state.user.purchasedCourses.filter((el: IPurchasedCourse) => el.course !== payload.courseId);
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        purchasedCourses: [
+          ...purchasedCourses,
+          newPurchasedcourse
+        ]
+      }
+    };
   }),
   on(AuthActions.addCourseToFavoritesSuccess, (state: AuthState, payload: { courseId: string }) => {
     return {

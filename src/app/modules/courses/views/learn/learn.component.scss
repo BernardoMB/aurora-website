@@ -313,7 +313,7 @@
           .review-card {
             margin-bottom: 40px;
             &:nth-last-child(1) {
-              margin-bottom: 0px;
+              // margin-bottom: 0px;
             }
           }
           @media screen and (max-width: 700px) {
@@ -543,6 +543,7 @@
     }
     @media screen and (max-width: 850px) {
       width: 100%;
+      border-right: 0px;
     }
   }
   .sidebar-container {
@@ -659,6 +660,9 @@
                   i {
                     font-size: 20px;
                     margin-left: 5px;
+                  }
+                  .label {
+                    direction: ltr;
                   }
                 }
               }

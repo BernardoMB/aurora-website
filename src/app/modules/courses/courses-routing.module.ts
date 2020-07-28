@@ -22,6 +22,8 @@ import { CourseDetailResolver } from './resolvers/course-detail.resolver.service
 import { CategoryDetailResolver } from './resolvers/category-detail.resolver.service';
 import { MyCoursesResolver } from './resolvers/my-courses.resolver.service';
 import { CheckoutResolver } from './resolvers/checkout.resolver.service';
+import { QuizComponent } from './views/quiz/quiz.component';
+import { QuizResolver } from './resolvers/quiz-resolver.service';
 
 /* courses/  */
 const routes: Routes = [
@@ -64,8 +66,7 @@ const routes: Routes = [
     resolve: { learningInfo: LearnResolver },
     children: [
       { path: 'lesson/:id', component: LessonComponent, resolve: { lesson: LessonResolver } },
-      // TODO: Add route:
-      // { path: 'quiz/:id', component: QuizComponent, resolve: { lesson: QuizResolver } },
+      { path: 'quiz/:id', component: QuizComponent, resolve: { quizInfo: QuizResolver } },
     ],
   },
   {

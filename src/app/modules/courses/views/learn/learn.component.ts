@@ -15,6 +15,7 @@ import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { ReviewModalComponent } from '../../components/review-modal/review-modal.component';
 import { CoursesService } from '../../services/courses.service';
 import { Review } from '../../../../shared/models/review.model';
+import { QuizzesService } from '../../services/quizzes.service';
 
 @Component({
   selector: 'app-learn',
@@ -26,18 +27,23 @@ export class LearnComponent implements OnInit, OnDestroy {
   currentTab = 'about'; // Default tab when page loads
   routerSubscription: Subscription;
   urlSubscription: Subscription;
-  relatedCourses: Course[];
-  course: Course;
   userSubscription: Subscription;
   user: User;
   userProgress: string[]; // Array of lessons
+  course: Course;
   lessonIds: string[];
   currentLessonId: string;
+
+  // ! Here
+  courseObjectIds: string[];
+  currentCourseObjectId: string;
+
+  relatedCourses: Course[];
+  userReview: IReview;
+  canRateCourse = false;
   showPrevButton = false;
   showNextButton = true;
   showCertificate = false;
-  canRateCourse = false;
-  userReview: IReview;
   isFavorite = false;
 
   // #region Reviews infinite scroll
@@ -57,9 +63,10 @@ export class LearnComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private reviewDialog: MatDialog,
-    private coursesService: CoursesService
+    private coursesService: CoursesService,
+    public quizzesService: QuizzesService
   ) {
-    // Scroll to top
+    // Stop scroll when route #fragment change
     this.router.events.subscribe(event => {
       // console.log('Navigation event:', event);
       if (event instanceof NavigationEnd) {
@@ -107,7 +114,7 @@ export class LearnComponent implements OnInit, OnDestroy {
     });
     // #endregion
 
-    // Set the current tab getting the route fragment if any
+    // Set the current tab getting the route #fragment if any
     this.routeFragmentSubscription = this.route.fragment.subscribe((fragment: string) => {
       if (fragment) {
         this.currentTab = fragment;
@@ -118,15 +125,18 @@ export class LearnComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     const data = this.route.snapshot.data;
-    // console.log('%c Activated route snapshot resolved data ', 'background: #222; color: #bada55');
-    // console.log(data);
     if (data.learningInfo) {
-      console.log('LearnComponent: learningInfo', data.learningInfo);
+      // console.log('%cLearnComponent: learningInfo', 'background: greenyellow; color: #ff25e5', data.learningInfo);
       const learningInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } = data.learningInfo;
       this.course = learningInfo.course;
       this.lessonIds = (learningInfo.course.lessons as any[]).map(lesson => lesson.id);
+
+      // ! Here;
+      this.courseObjectIds = (learningInfo.course.courseObjects as any[]).map(courseObject => courseObject.courseObject.id);
+
       this.userProgress = learningInfo.userProgress;
       this.relatedCourses = learningInfo.relatedCourses;
+
       // #region Reviews infinite scroll
       // console.log('Fetching first reviews page');
       const value = { courseId: learningInfo.course.id, offset: 0 };
@@ -135,17 +145,19 @@ export class LearnComponent implements OnInit, OnDestroy {
       // #endregion
     }
 
-    // Lesson id in route logic
+    // Lesson/Quizes id in route logic
     // * Function
-    const updateCurrentLessonState = () => {
+    /* const updateCurrentLessonState = () => {
       if (this.route.firstChild) {
         this.urlSubscription = this.route.firstChild.url.subscribe((childUrl: UrlSegment[]) => {
           if (childUrl && childUrl[1] && this.lessonIds.length > 0) {
             const lessonId = childUrl[1].path;
             this.currentLessonId = lessonId;
             const index = this.lessonIds.indexOf(lessonId);
-            index === 0 ? this.showPrevButton = false : this.showPrevButton = true;
+
             index === this.lessonIds.length - 1 ? this.showNextButton = false : this.showNextButton = true;
+            index === 0 ? this.showPrevButton = false : this.showPrevButton = true;
+
             if (this.lessonIds.indexOf(lessonId) === this.lessonIds.length - 1 && this.userProgress.indexOf(lessonId) === -1) {
               // Navigated to last lesson of the course and user has not yet completed this lesson.
               this.store.dispatch(completeLesson({ courseId: this.course.id, lessonId }));
@@ -162,14 +174,53 @@ export class LearnComponent implements OnInit, OnDestroy {
           alert('Course has no lessons');
         }
       }
+    }; */
+
+    // ! Here
+    const updateCurrentObjectsState = () => {
+      if (this.route.firstChild) {
+        this.urlSubscription = this.route.firstChild.url.subscribe((childUrl: UrlSegment[]) => {
+          if (childUrl && childUrl[1] && this.courseObjectIds.length > 0) {
+            const courseObjectId = childUrl[1].path;
+            this.currentCourseObjectId = courseObjectId;
+            const index = this.courseObjectIds.indexOf(courseObjectId);
+            index === this.courseObjectIds.length - 1 ? this.showNextButton = false : this.showNextButton = true;
+            index === 0 ? this.showPrevButton = false : this.showPrevButton = true;
+            if (this.courseObjectIds.indexOf(courseObjectId) === this.courseObjectIds.length - 1 && this.userProgress.indexOf(courseObjectId) === -1) {
+              // Navigated to last lesson of the course and user has not yet completed this lesson.
+              console.log('Completing course object...');
+              // ! TODO: create complete course object actions and store flow
+              this.store.dispatch(completeLesson({ courseId: this.course.id, lessonId: courseObjectId }));
+            }
+          }
+        });
+      } else {
+        // console.log(`LearnComponent: No route first child url. courseObjectId not imputed on router.`);
+        if (this.courseObjectIds && this.courseObjectIds.length > 0) {
+          const courseObjectId = this.courseObjectIds[0];
+          const courseObject = this.course.courseObjects.filter((courseObj) => courseObj.courseObject.id === courseObjectId)[0];
+          if (courseObject.type === 'LESSON') {
+            console.log(`LearnComponent:  Redirecting to /lesson/${courseObjectId}.`);
+            this.router.navigate(['lesson', courseObjectId], { relativeTo: this.route });
+          } else if (courseObject.type === 'QUIZ') {
+            console.log(`LearnComponent:  Redirecting to /quiz/${courseObjectId}.`);
+            this.router.navigate(['quiz', courseObjectId], { relativeTo: this.route });
+          }
+        } else {
+          alert('Course has no courseObjects');
+        }
+      }
     };
-    updateCurrentLessonState();
+
+    // updateCurrentLessonState();
+    updateCurrentObjectsState(); // ! Here
     this.routerSubscription = this.router.events.pipe(
       filter((event: Event) => {
         return event instanceof NavigationEnd;
       })
     ).subscribe((event: NavigationEnd) => {
-      updateCurrentLessonState();
+      // updateCurrentLessonState();
+      updateCurrentObjectsState(); // ! Here
     });
 
     this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
@@ -182,13 +233,23 @@ export class LearnComponent implements OnInit, OnDestroy {
         if (purchasedCourse) {
           const userProgress = purchasedCourse.progress;
           this.userProgress = userProgress; // Update user progress
-          if (userProgress.length === this.course.lessons.length) {
+          /* if (userProgress.length === this.course.lessons.length) {
+            // console.log('User has completed this course');
+            this.showCertificate = true;
+          } else {
+            // console.log('User not yet completed this course');
+            this.showCertificate = false;
+          } */
+
+          // ! Here
+          if (userProgress.length === this.course.courseObjects.length) {
             // console.log('User has completed this course');
             this.showCertificate = true;
           } else {
             // console.log('User not yet completed this course');
             this.showCertificate = false;
           }
+
         }
 
         // Determine if the user is able to add review
@@ -217,10 +278,15 @@ export class LearnComponent implements OnInit, OnDestroy {
           this.isFavorite = false;
         }
 
-        // TODO: Determine if the user is able to add this course to its wishlist
-        // TODO: Determine if the user is able to archive this course
+        // TODO: Determine if the user is able to archive this course (there is already a view and logic for that)
       } else {
         this.canRateCourse = false;
+      }
+    });
+
+    this.quizzesService.nextCourseObject$.subscribe((goToNextCourseObject: boolean) => {
+      if (goToNextCourseObject) {
+        this.goToNextCourseObject();
       }
     });
   }
@@ -237,6 +303,18 @@ export class LearnComponent implements OnInit, OnDestroy {
   lessonCompleted(lessonId: string): boolean {
     if (this.userProgress) {
       const found = this.userProgress.find(el => el === lessonId);
+      if (found) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+
+  // ! Here
+  objectCompleted(courseObjectId: string): boolean {
+    if (this.userProgress) {
+      const found = this.userProgress.find(el => el === courseObjectId);
       if (found) {
         return true;
       }
@@ -262,6 +340,42 @@ export class LearnComponent implements OnInit, OnDestroy {
     }
   }
 
+  // ! Here
+  goToPrevCourseObject() {
+    const index = this.courseObjectIds.indexOf(this.currentCourseObjectId);
+    const targetCourseObjectId = this.courseObjectIds[index - 1];
+    const courseObject = this.course.courseObjects.filter((courseObj) => courseObj.courseObject.id === targetCourseObjectId)[0];
+    if (courseObject.type === 'LESSON') {
+      console.log(`LearnComponent: Go to prev course object. Redirecting to /lesson/${targetCourseObjectId}.`);
+      this.router.navigate(['lesson', targetCourseObjectId], { relativeTo: this.route });
+    } else if (courseObject.type === 'QUIZ') {
+      console.log(`LearnComponent: Go to prev course object. Redirecting to /quiz/${targetCourseObjectId}.`);
+      this.router.navigate(['quiz', targetCourseObjectId], { relativeTo: this.route });
+    }
+  }
+
+  // ! Here
+  goToNextCourseObject() {
+    const index = this.courseObjectIds.indexOf(this.currentCourseObjectId);
+    console.log('ids', this.courseObjectIds);
+    const targetCourseObjectId = this.courseObjectIds[index + 1];
+
+    console.log('target', targetCourseObjectId);
+    console.log(this.course.courseObjects);
+
+    const courseObject = this.course.courseObjects.filter((courseObj) => courseObj.courseObject.id === targetCourseObjectId)[0];
+    if (courseObject.type === 'LESSON') {
+      console.log(`LearnComponent: Go to next course object. Redirecting to /lesson/${targetCourseObjectId}.`);
+      this.router.navigate(['lesson', targetCourseObjectId], { relativeTo: this.route });
+    } else if (courseObject.type === 'QUIZ') {
+      console.log(`LearnComponent: Go to next course object. Redirecting to /quiz/${targetCourseObjectId}.`);
+      this.router.navigate(['quiz', targetCourseObjectId], { relativeTo: this.route });
+    }
+    if (this.userProgress.indexOf(this.currentCourseObjectId) === -1) {
+      this.store.dispatch(completeLesson({ courseId: this.course.id, lessonId: this.currentCourseObjectId }));
+    }
+  }
+
   async onDownloadCertificate() {
     window.scrollTo(0, 0);
     setTimeout(async () => {
@@ -279,6 +393,19 @@ export class LearnComponent implements OnInit, OnDestroy {
     const lessonId = $event;
     console.log(`LearnComponent: Navigating to lesson/${lessonId}`);
     this.router.navigate(['lesson/', lessonId], { relativeTo: this.route });
+  }
+
+  // TODO: The GUI (template) should call this function to navigate into a course object
+  navigateToCourseObject($event: string) {
+    const courseObjectId = $event;
+    const courseObject = this.course.courseObjects.filter((courseObj) => courseObj.courseObject.id === courseObjectId)[0];
+    if (courseObject.type === 'LESSON') {
+      console.log(`LearnComponent: Go to course object. Redirecting to /lesson/${courseObjectId}.`);
+      this.router.navigate(['lesson', courseObjectId], { relativeTo: this.route });
+    } else if (courseObject.type === 'QUIZ') {
+      console.log(`LearnComponent: Go to course object. Redirecting to /quiz/${courseObjectId}.`);
+      this.router.navigate(['quiz', courseObjectId], { relativeTo: this.route });
+    }
   }
 
   onRateCourse() {
