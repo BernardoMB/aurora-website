@@ -77,5 +77,11 @@ Check `angular.json` file to know how to import the styles.
 
 Dont forget to add the SwiperModule `ngx-swiper-wrapper` into the application module.
 
-Visit `ngx-swiper-wrapper` documentation
+Visit `ngx-swiper-wrapper` documentation.
+
+## Azure app Service deployment
+
+See the following tutorial: https://www.youtube.com/watch?v=YlHPyvP5bKU.
+
+
 
