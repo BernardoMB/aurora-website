@@ -13,7 +13,7 @@
     display: flex;
     justify-content: space-between;
     padding: 20px 60px;
-    .course-title {
+    .news-title {
       color: white;
       font-size: 24px;
       font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
@@ -21,10 +21,10 @@
   }
 }
 
-.courses-section {
+.news-section {
   display: block;
   position: relative;
-  .courses-container {
+  .news-container {
     padding: 60px 60px;
     max-width: 1220px;
     display: flex;
@@ -176,10 +176,10 @@
   }
 }
 
-.featured-courses-section {
+.featured-news-section {
   display: block;
   position: relative;
-  .featured-courses-container {
+  .featured-news-container {
     padding: 20px 60px;
     max-width: 1220px;
     display: flex;
@@ -204,7 +204,7 @@
       justify-content: space-between;
       flex-wrap: wrap;
       margin-top: 20px;
-      .course-card {
+      .news-card {
         margin: 10px 0px;
         margin-right: 15px;
         margin-bottom: 40px;

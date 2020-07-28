@@ -151,6 +151,7 @@ export class EventsService {
     // TODO: Implement this method
     throw new Error('Not Implemented!');
   }
+
   /**
    * @param  {any={}} query - the query to be passed to the [query-string library]{@link https://github.com/sindresorhus/query-string#readme}
    * @param  {} subUrlSegment='' - the suburl segment to concatenate to the baseUrl
