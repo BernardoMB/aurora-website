@@ -1,0 +1,50 @@
+<div class="event-card-wrapper">
+  <div
+    class="event-card-container"
+    [style.backgroundImage]="'url(' + event.imgUrl + ')'"
+  >
+    <div
+      class="gradient-overlay focus-outline"
+      [routerLink]="['/events', event.id]"
+    >
+      <div class="organizer-container">
+        <div class="organizer-name">
+          <mat-icon inline>business</mat-icon>
+          {{ event.organizer }}
+        </div>
+      </div>
+      <div class="date-container">
+        <div class="date">
+          <span class="day">{{ event.startDate | date: 'dd' }}</span
+          ><span class="month">{{ event.startDate | date: 'MMM' }}</span>
+        </div>
+      </div>
+      <div class="event-details">
+        <div class="event-name-container">
+          <div
+            class="event-name focus-outline"
+            [routerLink]="['/events', event.id]"
+          >
+            {{ event.name }}
+          </div>
+        </div>
+        <div class="extra-info-container">
+          <!-- <div class="dates-container">
+            <div class="date">
+              {{ event.startDate | date: 'shortDate' }}
+            </div>
+            <div class="date">
+              {{ event.endDate | date: 'shortDate' }}
+            </div>
+          </div> -->
+          <div class="subs-container">
+            <span class="material-icons">
+              supervisor_account
+            </span>
+            <div>{{ event.subscribed.count }} Subscribed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

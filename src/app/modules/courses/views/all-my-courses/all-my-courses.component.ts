@@ -8,12 +8,12 @@ import { selectAuthUser } from '../../../../store/auth/auth.selectors';
 import { Course } from '../../../../shared/models/course.model';
 import { CoursesService } from '../../services/courses.service';
 import { Page } from '../../../../shared/models/page.model';
-import { PagedData } from '../../../../shared/utils';
+import { PagedData } from '../../../../shared/models/paged-data.model';
 
 @Component({
   selector: 'app-all-my-courses',
   templateUrl: './all-my-courses.component.html',
-  styleUrls: ['./all-my-courses.component.scss']
+  styleUrls: ['./all-my-courses.component.scss'],
 })
 export class AllMyCoursesComponent implements OnInit, OnDestroy {
   queryParamsSubscription: Subscription;
@@ -22,37 +22,40 @@ export class AllMyCoursesComponent implements OnInit, OnDestroy {
 
   // User courses pagination
   courses: Course[];
-  page = new Page();
+  page = new Page({ size: 10 });
 
   constructor(
     private store: Store<AuthState>,
     private router: Router,
     private route: ActivatedRoute,
-    private coursesService: CoursesService
-  ) { }
+    private coursesService: CoursesService,
+  ) {}
 
   ngOnInit() {
-    this.userSubscription = this.store.pipe(select(selectAuthUser)).subscribe((user: User) => {
-      if (user) {
-        this.user = user;
-        if (this.route.snapshot.queryParams.page) {
-          const page = this.route.snapshot.queryParams.page;
-          this.page.size = 10;
-          this.page.pageNumber = page;
-          this.setPage({ offset: page });
-        } else {
-          this.router.navigate(['./'], { relativeTo: this.route, queryParams: { page: 1 } });
-        }
-        this.queryParamsSubscription = this.route.queryParams.subscribe((queryParams: any) => {
-          if (queryParams.page) {
-            const page = queryParams.page;
-            this.page.size = 10;
-            this.page.pageNumber = page;
-            this.setPage({ offset: page });
+    this.userSubscription = this.store
+      .pipe(select(selectAuthUser))
+      .subscribe((user: User) => {
+        if (user) {
+          this.user = user;
+          if (this.route.snapshot.queryParams.page) {
+            const pageNumber = this.route.snapshot.queryParams.page;
+            this.setPage({ offset: pageNumber });
+          } else {
+            this.router.navigate(['./'], {
+              relativeTo: this.route,
+              queryParams: { page: 1 },
+            });
           }
-        });
-      }
-    });
+        }
+      });
+    this.queryParamsSubscription = this.route.queryParams.subscribe(
+      (queryParams: any) => {
+        if (queryParams.page) {
+          const pageNumber = queryParams.page;
+          this.setPage({ offset: pageNumber });
+        }
+      },
+    );
   }
 
   ngOnDestroy() {
@@ -61,8 +64,11 @@ export class AllMyCoursesComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(pageNumber: number) {
-    this.page.pageNumber = pageNumber;
-    this.router.navigate(['./'], { relativeTo: this.route, queryParams: { page: pageNumber } });
+    this.page = this.page.copyWith({ pageNumber: pageNumber });
+    this.router.navigate(['./'], {
+      relativeTo: this.route,
+      queryParams: { page: pageNumber },
+    });
   }
 
   /**
@@ -70,12 +76,15 @@ export class AllMyCoursesComponent implements OnInit, OnDestroy {
    * @param pageInfo The page to select
    */
   setPage(pageInfo: { offset: number }) {
-    this.page.pageNumber = pageInfo.offset;
-    this.coursesService.getUserCoursesPagedData(this.page).subscribe((pagedData: PagedData<Course>) => {
-      console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
-      this.page = pagedData.page;
-      this.courses = pagedData.data;
-    });
+    this.page = this.page.copyWith({ pageNumber: pageInfo.offset });
+    this.coursesService
+      .getUserCoursesPagedData(this.page)
+      .subscribe((pagedData: PagedData<Course>) => {
+        console.log(
+          `Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`,
+        );
+        this.page = pagedData.page;
+        this.courses = pagedData.data.asImmutable().toJS();
+      });
   }
-
 }

@@ -1,0 +1,148 @@
+.event-card-wrapper {
+  padding: 10px;
+  @media screen and (max-width: 500px) {
+    padding: 10px 6px;
+    padding-bottom: 20px;
+  }
+  padding-bottom: 20px;
+  .event-card-container {
+    border-radius: 5px;
+    background-size: cover;
+    resize: both;
+    background-position-x: center;
+    background-position-y: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    &:hover {
+      box-shadow: 0 7px 14px rgba(0, 0, 0, 0.25),
+        0 10px 10px rgba(0, 0, 0, 0.22);
+      .date {
+        transform: rotateY(90deg);
+        transition-delay: 0s;
+      }
+    }
+    .gradient-overlay {
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 180px;
+      width: 100%;
+      position: relative;
+      cursor: pointer;
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,fbfbfb+29&0.4+0,0+100 */
+      background: -moz-linear-gradient(
+        top,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(251, 251, 251, 0.28) 29%,
+        rgba(251, 251, 251, 0) 100%
+      ); /* FF3.6-15 */
+      background: -webkit-linear-gradient(
+        top,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(251, 251, 251, 0.28) 29%,
+        rgba(251, 251, 251, 0) 100%
+      ); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(251, 251, 251, 0.28) 29%,
+        rgba(251, 251, 251, 0) 100%
+      ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#66000000', endColorstr='#00fbfbfb',GradientType=0 ); /* IE6-9 */
+      .organizer-container {
+        padding: 10px;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        display: flex;
+        align-items: center;
+        .organizer-name {
+          color: white;
+          font-size: 12px;
+          .material-icons {
+            position: relative;
+            bottom: -2px;
+          }
+        }
+      }
+      .date-container {
+        position: absolute;
+        top: -13px;
+        right: 95px;
+        .date {
+          background-color: #357d24;
+          top: 25px;
+          color: #fff;
+          left: 25px;
+          min-height: 60px;
+          min-width: 60px;
+          position: absolute;
+          text-align: center;
+          transition-delay: 0.2s;
+          font-size: 22px;
+          font-weight: 700;
+          text-transform: uppercase;
+          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+          span {
+            display: block;
+            line-height: 30px;
+          }
+          .month {
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.1);
+          }
+        }
+      }
+      .event-details {
+        background: rgba(0, 0, 0.5);
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(0, 0, 0, 0.3) 9%,
+          rgba(0, 0, 0, 0.4) 23%,
+          rgba(0, 0, 0, 0.5) 33%
+        );
+        padding: 10px;
+        color: white;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        .event-name-container {
+          margin-top: 15px;
+          margin-bottom: 10px;
+          .event-name {
+            cursor: pointer;
+            font-weight: lighter;
+            font-size: 18px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+        .extra-info-container {
+          display: flex;
+          flex-direction: row-reverse;
+          justify-content: space-between;
+          align-items: center;
+          .subs-container {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            div {
+              line-height: 1;
+            }
+            .material-icons {
+              color: #35a881;
+              font-size: 13px;
+              margin-right: 5px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

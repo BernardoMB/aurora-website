@@ -5,11 +5,13 @@ import { Course } from 'src/app/shared/models/course.model';
 import { Category } from 'src/app/shared/models/category.model';
 import { environment } from '../../../../environments/environment';
 import { tap, map } from 'rxjs/operators';
-import { Page, PagedData } from '../../../shared/utils';
 import { Review } from '../../../shared/models/review.model';
+import { Page } from '../../../shared/models/page.model';
+import { PagedData } from '../../../shared/models/paged-data.model';
+import { ServerPagedDataDto } from '../../../shared/models/dto/server-paged-data.dto';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CoursesService {
   host = environment.host;
@@ -68,7 +70,7 @@ export class CoursesService {
   getCourses(courseIds: string[]): Observable<Course[]> {
     console.log('Courses service: Getting courses providing array of ids');
     const url = `${this.host}/${this.apiVersion}/courses/getByIds`;
-    return this.http.post<Course[]>(url, {courseIds});
+    return this.http.post<Course[]>(url, { courseIds });
   }
 
   /**
@@ -83,18 +85,9 @@ export class CoursesService {
     const skip = page.size * (page.pageNumber - 1);
     const limit = page.size;
     const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=+createdAt`;
-    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
-      map(responseBody => {
-        // console.log('Got data', responseBody);
-        const pagedData = new PagedData<Course>();
-        page.totalElements = responseBody.count;
-        page.totalPages = Math.ceil(page.totalElements / page.size);
-        pagedData.data = responseBody.data;
-        pagedData.page = page;
-        // console.log(pagedData);
-        return pagedData;
-      })
-    );
+    return this.http
+      .get<ServerPagedDataDto<Course>>(url)
+      .pipe(map((res) => new PagedData<Course>(res, page)));
   }
 
   /**
@@ -109,18 +102,9 @@ export class CoursesService {
     const skip = page.size * (page.pageNumber - 1);
     const limit = page.size;
     const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=+createdAt&featured=true`;
-    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
-      map(responseBody => {
-        // console.log('Got data', responseBody);
-        const pagedData = new PagedData<Course>();
-        page.totalElements = responseBody.count;
-        page.totalPages = Math.ceil(page.totalElements / page.size);
-        pagedData.data = responseBody.data;
-        pagedData.page = page;
-        // console.log(pagedData);
-        return pagedData;
-      })
-    );
+    return this.http
+      .get<ServerPagedDataDto<Course>>(url)
+      .pipe(map((res) => new PagedData<Course>(res, page)));
   }
 
   /**
@@ -135,18 +119,9 @@ export class CoursesService {
     const skip = page.size * (page.pageNumber - 1);
     const limit = page.size;
     const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=+createdAt&featured=true`;
-    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
-      map(responseBody => {
-        // console.log('Got data', responseBody);
-        const pagedData = new PagedData<Course>();
-        page.totalElements = responseBody.count;
-        page.totalPages = Math.ceil(page.totalElements / page.size);
-        pagedData.data = responseBody.data;
-        pagedData.page = page;
-        // console.log(pagedData);
-        return pagedData;
-      })
-    );
+    return this.http
+      .get<ServerPagedDataDto<Course>>(url)
+      .pipe(map((res) => new PagedData<Course>(res, page)));
   }
 
   /**
@@ -157,21 +132,16 @@ export class CoursesService {
    * @returns {Observable<PagedData<Course>>}
    * @memberof CoursesService
    */
-  getCategoryCoursesPageData(page: Page, categoryId: string): Observable<PagedData<Course>> {
+  getCategoryCoursesPageData(
+    page: Page,
+    categoryId: string,
+  ): Observable<PagedData<Course>> {
     console.log(`Courses service: Getting category courses page`);
-    const skip = page.size * (page.pageNumber - 1);
-    const limit = page.size;
+    const { skip, limit } = page.toPaginationParams();
     const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=+createdAt&category=${categoryId}`;
-    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
-      map(responseBody => {
-        const pagedData = new PagedData<Course>();
-        page.totalElements = responseBody.count;
-        page.totalPages = Math.ceil(page.totalElements / page.size);
-        pagedData.data = responseBody.data;
-        pagedData.page = page;
-        return pagedData;
-      })
-    );
+    return this.http
+      .get<ServerPagedDataDto<Course>>(url)
+      .pipe(map((res) => new PagedData<Course>(res, page)));
   }
 
   /**
@@ -181,21 +151,16 @@ export class CoursesService {
    * @returns {Observable<Array<Course>>}
    * @memberof CoursesService
    */
-  getCategoryFeaturedCoursesPageData(page: Page, categoryId: string): Observable<PagedData<Course>> {
+  getCategoryFeaturedCoursesPageData(
+    page: Page,
+    categoryId: string,
+  ): Observable<PagedData<Course>> {
     console.log(`Courses service: Getting category featured courses page`);
-    const skip = page.size * (page.pageNumber - 1);
-    const limit = page.size;
+    const { skip, limit } = page.toPaginationParams();
     const url = `${this.host}/${this.apiVersion}/courses/public?skip=${skip}&limit=${limit}&populate=category&sort=+createdAt&featured=true&category=${categoryId}`;
-    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
-      map(responseBody => {
-        const pagedData = new PagedData<Course>();
-        page.totalElements = responseBody.count;
-        page.totalPages = Math.ceil(page.totalElements / page.size);
-        pagedData.data = responseBody.data;
-        pagedData.page = page;
-        return pagedData;
-      })
-    );
+    return this.http
+      .get<ServerPagedDataDto<Course>>(url)
+      .pipe(map((res) => new PagedData<Course>(res, page)));
   }
 
   /**
@@ -220,7 +185,11 @@ export class CoursesService {
    * @returns {Observable<Review>}
    * @memberof CoursesService
    */
-  reviewCourse(courseId: string, rating: number, review: string): Observable<Review> {
+  reviewCourse(
+    courseId: string,
+    rating: number,
+    review: string,
+  ): Observable<Review> {
     console.log('Courses service: Creating course review');
     const url = `${this.host}/${this.apiVersion}/courses/${courseId}/review`;
     const body = { review, rating };
@@ -236,8 +205,14 @@ export class CoursesService {
    * @returns {Observable<any[]>}
    * @memberof CoursesService
    */
-  getCourseReviews(courseId: string, skip: number, limit: number): Observable<Review[]> {
-    console.log(`Courses service: Getting course reviews skiping ${skip} elements and limiting to ${limit} elements`);
+  getCourseReviews(
+    courseId: string,
+    skip: number,
+    limit: number,
+  ): Observable<Review[]> {
+    console.log(
+      `Courses service: Getting course reviews skiping ${skip} elements and limiting to ${limit} elements`,
+    );
     const url = `${this.host}/${this.apiVersion}/reviews?course=${courseId}&skip=${skip}&limit=${limit}&populate=user`;
     return this.http.get<Review[]>(url);
   }
@@ -251,19 +226,11 @@ export class CoursesService {
    */
   getUserCoursesPagedData(page: Page): Observable<PagedData<Course>> {
     console.log(`Courses service: Getting user courses page`);
-    const skip = page.size * (page.pageNumber - 1);
-    const limit = page.size;
+    const { skip, limit } = page.toPaginationParams();
     const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}`;
-    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
-      map(responseBody => {
-        const pagedData = new PagedData<Course>();
-        page.totalElements = responseBody.count;
-        page.totalPages = Math.ceil(page.totalElements / page.size);
-        pagedData.data = responseBody.data;
-        pagedData.page = page;
-        return pagedData;
-      })
-    );
+    return this.http
+      .get<ServerPagedDataDto<Course>>(url)
+      .pipe(map((res) => new PagedData<Course>(res, page)));
   }
 
   /**
@@ -275,19 +242,11 @@ export class CoursesService {
    */
   getUserFavoriteCoursesPagedData(page: Page): Observable<PagedData<Course>> {
     console.log(`Courses service: Getting user favorite courses page`);
-    const skip = page.size * (page.pageNumber - 1);
-    const limit = page.size;
+    const { skip, limit } = page.toPaginationParams();
     const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=favoriteCourses`;
-    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
-      map(responseBody => {
-        const pagedData = new PagedData<Course>();
-        page.totalElements = responseBody.count;
-        page.totalPages = Math.ceil(page.totalElements / page.size);
-        pagedData.data = responseBody.data;
-        pagedData.page = page;
-        return pagedData;
-      })
-    );
+    return this.http
+      .get<ServerPagedDataDto<Course>>(url)
+      .pipe(map((res) => new PagedData<Course>(res, page)));
   }
 
   /**
@@ -299,19 +258,11 @@ export class CoursesService {
    */
   getUserWishlistCoursesPagedData(page: Page): Observable<PagedData<Course>> {
     console.log(`Courses service: Getting user whishlist courses page`);
-    const skip = page.size * (page.pageNumber - 1);
-    const limit = page.size;
+    const { skip, limit } = page.toPaginationParams();
     const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=wishList`;
-    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
-      map(responseBody => {
-        const pagedData = new PagedData<Course>();
-        page.totalElements = responseBody.count;
-        page.totalPages = Math.ceil(page.totalElements / page.size);
-        pagedData.data = responseBody.data;
-        pagedData.page = page;
-        return pagedData;
-      })
-    );
+    return this.http
+      .get<ServerPagedDataDto<Course>>(url)
+      .pipe(map((res) => new PagedData<Course>(res, page)));
   }
 
   /**
@@ -323,19 +274,10 @@ export class CoursesService {
    */
   getUserArchivedCoursesPagedData(page: Page): Observable<PagedData<Course>> {
     console.log(`Courses service: Getting user archived courses page`);
-    const skip = page.size * (page.pageNumber - 1);
-    const limit = page.size;
+    const { skip, limit } = page.toPaginationParams();
     const url = `${this.host}/${this.apiVersion}/users/me/courses?skip=${skip}&limit=${limit}&list=archivedCourses`;
-    return this.http.get<{ count: number, data: Course[]}>(url).pipe(
-      map(responseBody => {
-        const pagedData = new PagedData<Course>();
-        page.totalElements = responseBody.count;
-        page.totalPages = Math.ceil(page.totalElements / page.size);
-        pagedData.data = responseBody.data;
-        pagedData.page = page;
-        return pagedData;
-      })
-    );
+    return this.http
+      .get<ServerPagedDataDto<Course>>(url)
+      .pipe(map((res) => new PagedData<Course>(res, page)));
   }
-
 }
