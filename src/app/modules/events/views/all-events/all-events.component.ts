@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { PagedData } from '../../../../shared/models/paged-data.model';
   templateUrl: './all-events.component.html',
   styleUrls: ['./all-events.component.scss'],
 })
-export class AllEventsComponent implements OnInit {
+export class AllEventsComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
   events: Event[];
 
