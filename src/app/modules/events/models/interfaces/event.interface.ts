@@ -11,7 +11,7 @@ export interface IEvent {
   readonly address: string;
   readonly organizer: string;
   readonly location: PointLocation;
-  readonly subscribed: ImmutableSet<string>;
+  readonly subscribed: string[];
   readonly createdAt: Date;
   readonly updatedAt: Date;
 }

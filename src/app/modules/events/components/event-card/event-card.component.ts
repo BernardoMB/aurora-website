@@ -16,7 +16,7 @@ export class EventCardComponent implements OnInit {
     return this._loading;
   }
 
-  @Input() event: Event;
+  @Input() event: IEvent;
   @Output() imageLoaded = new EventEmitter<string>();
   @Output() dateCardClicked = new EventEmitter<string>();
 
