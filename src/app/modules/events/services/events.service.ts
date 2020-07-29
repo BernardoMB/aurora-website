@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError, of, from } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { stringifyUrl, parseUrl } from 'query-string';
 
 import { Event } from '../models/event.model';
@@ -32,8 +32,8 @@ export class EventsService {
    */
   getEvent(eventId: string): Observable<Event> {
     console.log(`Event service: Getting event with id ${eventId}`);
-    // return this.http.get<Event>(`${this.baseUrl}/${eventId}`);
-    return this.getFakeEvent(eventId);
+    return this.http.get<Event>(`${this.baseUrl}/${eventId}`);
+    // return this.getFakeEvent(eventId);
   }
 
   /**
@@ -47,12 +47,12 @@ export class EventsService {
     console.log('Events service: Getting events page');
     const query = {
       ...page.toPaginationParams(),
-      sort: { 'createdAt': 'desc' },
+      // sort: { 'createdAt': 'desc' },
     };
-    return this.getFakeEvents(this.getUrl(query)).pipe(
-      // return this.http.get<ServerPagedDataDto<Event>>(this.getUrl(query)).pipe(
-      map((res) => new PagedData<Event>(res, page)),
-    );
+    // return this.getFakeEvents(this.getUrl(query)).pipe(
+    return this.http
+      .get<ServerPagedDataDto<Event>>(this.getUrl(query))
+      .pipe(map((res) => new PagedData<Event>(res, page)));
   }
 
   /**
@@ -66,13 +66,14 @@ export class EventsService {
     console.log('Events service: Getting featured events page');
     const query = {
       ...page.toPaginationParams(),
-      sort: { 'createdAt': 'desc' },
-      featured: true,
+      // sort: { 'createdAt': 'desc' },
+      // TODO: add Featured filtering
+      // featured: true,
     };
-    return this.getFakeEvents(this.getUrl(query), true).pipe(
-      // return this.http.get<ServerPagedDataDto<Event>>(url).pipe(
-      map((res) => new PagedData<Event>(res, page)),
-    );
+    // return this.getFakeEvents(this.getUrl(query), true).pipe(
+    return this.http
+      .get<ServerPagedDataDto<Event>>(this.getUrl(query))
+      .pipe(map((res) => new PagedData<Event>(res, page)));
   }
 
   /**
@@ -86,13 +87,14 @@ export class EventsService {
     console.log('Events service: Getting featured events page');
     const query = {
       ...page.toPaginationParams(),
-      sort: { 'subscribed.length': 'desc' },
-      featured: true,
+      // TODO
+      // sort: { 'subscribed.length': 'desc' },
+      // featured: true,
     };
-    return this.getFakeEvents(this.getUrl(query), true).pipe(
-      // return this.http.get<ServerPagedDataDto<Event>>(url).pipe(
-      map((res) => new PagedData<Event>(res, page)),
-    );
+    // return this.getFakeEvents(this.getUrl(query), true).pipe(
+    return this.http
+      .get<ServerPagedDataDto<Event>>(this.getUrl(query))
+      .pipe(map((res) => new PagedData<Event>(res, page)));
   }
 
   /**
@@ -112,12 +114,11 @@ export class EventsService {
         longitude,
         meterRadius: 5000,
       })),
-      switchMap(
-        (query) =>
-          this.getFakeEvents(this.getUrl(query, '/near/location'), true),
-        // this.http.get<ServerPagedDataDto<Event>>(
-        //   this.getUrl(query, '/near/location'),
-        // ),
+      switchMap((query) =>
+        // this.getFakeEvents(this.getUrl(query, '/near/location'), true),
+        this.http.get<ServerPagedDataDto<Event>>(
+          this.getUrl(query, '/near/location'),
+        ),
       ),
       map((res) => new PagedData<Event>(res, page)),
     );
@@ -141,10 +142,10 @@ export class EventsService {
       sort: { 'subscribed.length': 'desc' },
       event,
     };
-    return this.getFakeEvents(this.getUrl(query), true).pipe(
-      // return this.http.get<ServerPagedDataDto<Event>>(url).pipe(
-      map((res) => new PagedData<Event>(res, page)),
-    );
+    // return this.getFakeEvents(this.getUrl(query), true).pipe(
+    return this.http
+      .get<ServerPagedDataDto<Event>>(this.getUrl(query))
+      .pipe(map((res) => new PagedData<Event>(res, page)));
   }
 
   subscribeToEvent() {

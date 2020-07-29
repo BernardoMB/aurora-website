@@ -32,7 +32,7 @@ export class Event implements IEvent {
   readonly address: string;
   readonly organizer: string;
   readonly location: PointLocation;
-  readonly subscribed: ImmutableSet<string>;
+  readonly subscribed: string[];
   readonly createdAt: Date;
   readonly updatedAt: Date;
   /**
@@ -48,11 +48,8 @@ export class Event implements IEvent {
       (this.address = options?.address ?? '');
     this.organizer = options?.organizer ?? '';
     (this.location = options?.location ?? undefined),
-      (this.subscribed = ImmutableSet<string>(
-        cloneDeep<Collection.Indexed<string>>(fromJS(options?.subscribed)) ??
-          [],
-      ));
-    (this.createdAt = options?.createdAt ?? new Date()),
+      (this.subscribed = cloneDeep(options?.subscribed ?? [])),
+      (this.createdAt = options?.createdAt ?? new Date()),
       (this.updatedAt = options?.updatedAt ?? new Date());
   }
 
@@ -70,7 +67,7 @@ export class Event implements IEvent {
       address: this.address,
       organizer: this.organizer,
       location: this.location,
-      subscribed: this.subscribed.toSet(),
+      subscribed: this.subscribed,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     });
@@ -85,7 +82,7 @@ export class Event implements IEvent {
       cloneDeep({ ...values } as Event),
       cloneDeep({
         ...this,
-        subscribed: cloneDeep(this.subscribed.toSet()) as ImmutableSet<string>,
+        subscribed: cloneDeep(this.subscribed),
       }),
     );
   }
