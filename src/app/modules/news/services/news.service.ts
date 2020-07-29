@@ -44,7 +44,7 @@ export class NewsService {
     console.log('News service: Getting articles page');
     const query = {
       ...page.toPaginationParams(),
-      sort: { 'createdAt': 'desc' },
+      // sort: { 'createdAt': 'desc' },
     };
     // return this.getFakeArticles(this.getUrl(query)).pipe(
     return this.http
@@ -64,11 +64,12 @@ export class NewsService {
     //   map((res) => {
     //     return res.data.slice(0, 4);
     //   }),
-    return this.http
-      .get<Article[]>(this.getUrl())
-      .pipe
+    return this.http.get<ServerPagedDataDto<Article>>(this.getUrl()).pipe(
+      map((res) => {
+        return res.data.slice(0, 4);
+      }),
       // map((res) => new PagedData<Article>(res, page)),
-      ();
+    );
   }
 
   /**
