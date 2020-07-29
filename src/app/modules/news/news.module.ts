@@ -10,9 +10,10 @@ import { MaterialModule } from '../../material.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ArticleDetailResolver } from './resolvers/article-detail.resolver';
+import { ArticleDetailCommentsComponent } from './components/article-detail-comments/article-detail-comments.component';
 
 @NgModule({
-  declarations: [NewsComponent, ArticleCardComponent, ArticleDetailComponent],
+  declarations: [NewsComponent, ArticleCardComponent, ArticleDetailComponent, ArticleDetailCommentsComponent],
   imports: [
     CommonModule,
     SharedModule,

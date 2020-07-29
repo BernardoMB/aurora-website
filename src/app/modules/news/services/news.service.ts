@@ -29,8 +29,8 @@ export class NewsService {
    */
   getArticle(articleId: string): Observable<Article> {
     console.log(`News service: Getting article with id ${articleId}`);
-    // return this.http.get<Article>(`${this.baseUrl}/${articleId}`);
-    return this.getFakeArticle(articleId);
+    return this.http.get<Article>(`${this.baseUrl}/${articleId}`);
+    // return this.getFakeArticle(articleId);
   }
 
   /**
@@ -42,6 +42,7 @@ export class NewsService {
    */
   getArticlesPageData(page: Page): Observable<PagedData<Article>> {
     console.log('News service: Getting articles page');
+    // TODO: fix filtering
     const query = {
       ...page.toPaginationParams(),
       // sort: { 'createdAt': 'desc' },
