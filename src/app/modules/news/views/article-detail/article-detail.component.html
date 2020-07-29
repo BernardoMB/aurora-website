@@ -7,13 +7,13 @@
     <div class="article-title-container">
       {{ article?.title }}
     </div>
-    <div class="article-date-container">
-      {{ article?.createdAt | date }}
-    </div>
   </div>
 </section>
 <section class="article-content-section">
   <div class="about-wrapper">
+    <div class="article-date-container">
+      {{ article?.createdAt | date }}
+    </div>
     <div class="description-sub-title">{{ article?.subtitle }}</div>
     <div
       class="description-content"
@@ -37,4 +37,8 @@
   </div>
 </section>
 <div class="divider"></div>
-<div class="article-comments"></div>
+<div class="article-comments">
+  <app-article-detail-comments
+    [comments]="article?.comments"
+  ></app-article-detail-comments>
+</div>
