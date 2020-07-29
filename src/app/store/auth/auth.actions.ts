@@ -102,3 +102,5 @@ export const addCourseToArchiveFailure = createAction('[Auth] AddCourseToArchive
 export const removeCourseFromArchive = createAction('[Auth] RemoveCourseFromArchive', props<{ courseId: string, userId: string }>());
 export const removeCourseFromArchiveSuccess = createAction('[Auth] RemoveCourseFromArchiveSuccess', props<{ courseId: string }>());
 export const removeCourseFromArchiveFailure = createAction('[Auth] RemoveCourseFromArchiveFailure', props<{ error: any; message: string }>());
+
+export const addQuizToProgress = createAction('[Auth] AddQuizToProgress', props<{  courseId: string, quizId: string }>());
