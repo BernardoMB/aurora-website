@@ -12,12 +12,17 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
   article: Article;
   sub: Subscription;
 
+  get isExternal() {
+    return !!this.article && this.article.type === 'ExternalArticle';
+  }
+
   constructor(private readonly route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.sub = this.route.data.subscribe(
       ({ article }: { article: Article }) => {
         this.article = article;
+        console.log(article);
       },
     );
   }

@@ -27,14 +27,12 @@ export class EventCardComponent implements OnInit {
   ngOnInit(): void {}
 
   onHandleClick(e) {
-    console.log(e);
     e?.preventDefault();
     e?.stopPropagation();
     this.dateCardClicked.next(this.event?.id ?? undefined);
   }
 
   onHandleImageLoaded(e) {
-    console.log(e);
     this.imageLoaded.next();
     this.loading = this._valueOverriden ? this.loading : false;
   }
