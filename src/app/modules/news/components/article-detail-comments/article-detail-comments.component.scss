@@ -1,0 +1,24 @@
+.comments-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: -20vh;
+  margin-bottom: 60px;
+
+  .no-comments-container {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    h2 {
+      text-align: center;
+    }
+    & > mat-icon {
+      font-size: 4em;
+      color: rgba($color: #000000, $alpha: 0.75);
+      line-height: 11px;
+      margin: -29px auto 0;
+      transform: translateX(-29px);
+    }
+  }
+}

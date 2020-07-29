@@ -1,8 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,600,700,800');
-
+.article-date-container {
+  color: white;
+  width: 100%;
+  margin: 32px auto;
+  max-width: 900px;
+}
 .article-jumbotron {
   overflow: hidden;
-  height: 400px;
+  height: 50vh;
   background-attachment: fixed;
   background-size: cover;
   resize: both;
@@ -16,26 +21,40 @@
     left: 0;
     right: 0;
     z-index: 1;
-    background: linear-gradient(to bottom, #dc5500, #f59805);
+    background: linear-gradient(
+      to bottom,
+      rgba(53, 168, 129, 0.7) 0%,
+      rgba(22, 96, 71, 0.5) 100%
+    );
   }
   .article-jumbotron-wrapper {
     background-size: cover;
+
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
     height: 100%;
     .article-title-container {
-      font-size: 2em;
+      font-size: 3em;
+      font-weight: bold;
       color: white;
       max-width: 900px;
       font-family: Raleway;
       margin-top: auto;
+      position: absolute;
+      top: 5vh;
+      z-index: 9;
     }
+
     .article-jumbotron-overlay {
-      background: linear-gradient(#29303b, #29303b, #29303b);
+      position: absolute;
       display: block;
-      position: relative;
+      background: linear-gradient(
+        to bottom,
+        rgba(53, 168, 129, 0.7) 0%,
+        rgba(22, 96, 71, 0.5) 100%
+      );
       $opacity: 0.1;
       $font-color: white;
       $font-weight: 500;
@@ -285,42 +304,43 @@
         }
       }
     }
-    .article-date-container {
-      color: white;
-      width: 100%;
-      margin: 32px auto;
-      max-width: 900px;
-    }
   }
 }
 
 .article-content-section {
   position: relative;
+  top: -255px;
+  z-index: 9;
 }
 
 .about-wrapper {
   max-width: 900px;
   margin: 32px auto;
-  color: grey;
   .description-title {
+    position: relative;
+    margin-top: -20vh;
     font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
-    font-size: 22px;
+    font-size: 2em;
     font-weight: 600;
     margin: 0 0 10px;
-    color: #29303b;
+    color: rgba($color: #ffffff, $alpha: 0.86);
   }
 
   .description-sub-title {
     margin: 32px 0;
-    font-size: 1.2em;
-    color: rgba(0, 0, 0, 0.75);
+    font-size: 1.8em;
+    font-weight: lighter;
+    color: rgba(255, 255, 255, 0.95);
   }
   .description-content {
     padding: 40px;
     border-radius: 5px;
     background-color: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     border: 1px solid gainsboro;
+    color: rgba(0, 0, 0, 0.75);
     overflow: auto;
+    font-family: 'Raleway' sans-serif;
     @media screen and (max-width: 600px) {
       padding: 40px 15px;
     }
@@ -350,4 +370,22 @@
 .article-link-wrapper {
   display: flex;
   justify-content: center;
+}
+
+@media only screen and (max-width: 1200px) {
+  .article-title-container {
+    font-size: 1.8em !important;
+  }
+  .description-title {
+    font-size: 2.5em !important;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .article-jumbotron-wrapper,
+  .description-title,
+  .article-date-container,
+  .description-sub-title {
+    margin-left: 20px !important;
+  }
 }
