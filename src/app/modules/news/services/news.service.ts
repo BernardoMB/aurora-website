@@ -44,12 +44,12 @@ export class NewsService {
     console.log('News service: Getting articles page');
     const query = {
       ...page.toPaginationParams(),
-      sort: { 'createdAt': 'desc' },
+      // sort: { 'createdAt': 'desc' },
     };
-    return this.getFakeArticles(this.getUrl(query)).pipe(
-      // return this.http.get<ServerPagedDataDto<Event>>(this.getUrl(query)).pipe(
-      map((res) => new PagedData<Article>(res, page)),
-    );
+    // return this.getFakeArticles(this.getUrl(query)).pipe(
+    return this.http
+      .get<ServerPagedDataDto<Article>>(this.getUrl(query))
+      .pipe(map((res) => new PagedData<Article>(res, page)));
   }
 
   /**
@@ -60,11 +60,15 @@ export class NewsService {
    */
   getFeaturedArticles(): Observable<Article[]> {
     console.log('News service: Getting featured articles');
-    return this.getFakeArticles(this.getUrl(''), true).pipe(
+    // return this.getFakeArticles(this.getUrl(''), true).pipe(
+    //   map((res) => {
+    //     return res.data.slice(0, 4);
+    //   }),
+    return this.http.get<ServerPagedDataDto<Article>>(this.getUrl()).pipe(
       map((res) => {
         return res.data.slice(0, 4);
       }),
-      // return this.http.get<Article[]>(this.getUrl(query)).pipe(
+      // map((res) => new PagedData<Article>(res, page)),
     );
   }
 

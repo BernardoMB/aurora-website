@@ -56,7 +56,6 @@ export class NewsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.newsService.getFeaturedArticles().subscribe((res) => {
-      console.log(res);
       this.featuredArticles = res;
     });
   }
@@ -82,9 +81,6 @@ export class NewsComponent implements OnInit, OnDestroy {
     this.newsService
       .getArticlesPageData(this.page)
       .subscribe((pagedData: PagedData<Article>) => {
-        console.log(
-          `Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`,
-        );
         this.page = pagedData.page;
         this.articles = pagedData.data.toJS();
       });

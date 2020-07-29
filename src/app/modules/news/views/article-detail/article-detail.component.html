@@ -15,7 +15,25 @@
 <section class="article-content-section">
   <div class="about-wrapper">
     <div class="description-sub-title">{{ article?.subtitle }}</div>
-    <div class="description-content" [innerHTML]="article?.data"></div>
+    <div
+      class="description-content"
+      *ngIf="!isExternal"
+      [innerHTML]="article?.data"
+    ></div>
+    <div
+      class="article-link-wrapper"
+      *ngIf="isExternal && !!article.externalUrl"
+    >
+      <a
+        mat-raised-button
+        [href]="article?.externalUrl"
+        target="_blank"
+        color="primary"
+      >
+        <mat-icon inline>link</mat-icon>
+        View Article</a
+      >
+    </div>
   </div>
 </section>
 <div class="divider"></div>
