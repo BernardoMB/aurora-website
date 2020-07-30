@@ -1,0 +1,44 @@
+<section
+  class="article-jumbotron"
+  [style.backgroundImage]="'url(' + article?.imgUrl + ')'"
+>
+  <div class="article-jumbotron-wrapper">
+    <div class="article-jumbotron-overlay"></div>
+    <div class="article-title-container">
+      {{ article?.title }}
+    </div>
+  </div>
+</section>
+<section class="article-content-section">
+  <div class="about-wrapper">
+    <div class="article-date-container">
+      {{ article?.createdAt | date }}
+    </div>
+    <div class="description-sub-title">{{ article?.subtitle }}</div>
+    <div
+      class="description-content"
+      *ngIf="!isExternal"
+      [innerHTML]="article?.data"
+    ></div>
+    <div
+      class="article-link-wrapper"
+      *ngIf="isExternal && !!article.externalUrl"
+    >
+      <a
+        mat-raised-button
+        [href]="article?.externalUrl"
+        target="_blank"
+        color="primary"
+      >
+        <mat-icon inline>link</mat-icon>
+        View Article</a
+      >
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+<div class="article-comments">
+  <app-article-detail-comments
+    [comments]="article?.comments"
+  ></app-article-detail-comments>
+</div>

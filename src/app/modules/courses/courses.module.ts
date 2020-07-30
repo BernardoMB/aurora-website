@@ -42,6 +42,16 @@ import { SwiperModule } from 'ngx-swiper-wrapper';
 import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { CourseSwiperCardComponent } from './components/course-swiper-card/course-swiper-card.component';
+import { CheckoutResolver } from './resolvers/checkout.resolver.service';
+import { EmailWarningModalComponent } from './components/email-warning-modal/email-warning-modal.component';
+import { EnterPinModalComponent } from './components/enter-pin-modal/enter-pin-modal.component';
+import { EnterOtpModalComponent } from './components/enter-otp-modal/enter-otp-modal.component';
+import { EnterBillingInfoModalComponent } from './components/enter-billing-info-modal/enter-billing-info-modal.component';
+import { IframeModalComponent } from './components/iframe-modal/iframe-modal.component';
+import { PaymentErrorModalComponent } from './components/payment-error-modal/payment-error-modal.component';
+import { QuizComponent } from './views/quiz/quiz.component';
+import { QuizResolver } from './resolvers/quiz-resolver.service';
+import { QuizzesService } from './services/quizzes.service';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   /* direction: 'horizontal',
@@ -72,7 +82,14 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         FavoriteComponent,
         StarRatingComponent,
         ReviewModalComponent,
-        CourseSwiperCardComponent
+        CourseSwiperCardComponent,
+        EmailWarningModalComponent,
+        EnterPinModalComponent,
+        EnterOtpModalComponent,
+        EnterBillingInfoModalComponent,
+        IframeModalComponent,
+        PaymentErrorModalComponent,
+        QuizComponent
     ],
     imports: [
       CommonModule,
@@ -95,11 +112,19 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
       CourseDetailResolver,
       CategoryDetailResolver,
       MyCoursesResolver,
+      CheckoutResolver,
       {
         provide: SWIPER_CONFIG,
         useValue: DEFAULT_SWIPER_CONFIG
-      }
+      },
+      QuizResolver,
+      QuizzesService
     ],
-    entryComponents: [ReviewModalComponent]
+    entryComponents: [
+      ReviewModalComponent,
+      EmailWarningModalComponent,
+      EnterPinModalComponent,
+      EnterBillingInfoModalComponent
+    ]
 })
 export class CoursesModule {}

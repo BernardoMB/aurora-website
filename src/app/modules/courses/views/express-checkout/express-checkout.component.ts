@@ -5,8 +5,8 @@ import { Course } from '../../../../shared/models/course.model';
 import { Store, select } from '@ngrx/store';
 import { AuthState } from '../../../../store/auth/auth.state';
 import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
-import { selectAuthIsAuthenticated, selectAuthUser, selectAuthCart } from '../../../../store/auth/auth.selectors';
-import { purchaseCart, removeCourseFromCart, purchaseCourse } from '../../../../store/auth/auth.actions';
+import { selectAuthIsAuthenticated, selectAuthUser } from '../../../../store/auth/auth.selectors';
+import { purchaseCourse } from '../../../../store/auth/auth.actions';
 import { CoursesService } from '../../services/courses.service';
 
 @Component({

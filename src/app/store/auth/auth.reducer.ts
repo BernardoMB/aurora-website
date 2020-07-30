@@ -57,7 +57,6 @@ const authReducer = createReducer(
     }
   }),
   on(AuthActions.removeCourseFromCartSuccess, (state: AuthState, payload: { course: Course }) => {
-    console.log('EXECUTING REDUCER');
     const newUserCart = state.user.cart.filter((el: Course) => {
       return el.id !== payload.course.id;
     });
@@ -157,6 +156,7 @@ const authReducer = createReducer(
   on(AuthActions.completeLessonSuccess, (state: AuthState, payload: { courseId: string, lessonId: string }) => {
     const purchasedCourse = state.user.purchasedCourses.filter((el: IPurchasedCourse) => el.course === payload.courseId)[0];
     const progress = [ ...(purchasedCourse.progress), payload.lessonId ];
+    console.log('NEW PROGRESS', progress);
     const newPurchasedcourse = {
       course: payload.courseId,
       progress
@@ -172,7 +172,31 @@ const authReducer = createReducer(
         ]
       }
     };
-
+  }),
+  on(AuthActions.addQuizToProgress, (state: AuthState, payload: { courseId: string, quizId: string }) => {
+    const purchasedCourse = state.user.purchasedCourses.filter((el: IPurchasedCourse) => el.course === payload.courseId)[0];
+    let progress;
+    if (purchasedCourse.progress.indexOf(payload.quizId) === -1) {
+      progress = [ ...(purchasedCourse.progress), payload.quizId ];
+    } else {
+      progress = [ ...(purchasedCourse.progress) ];
+    }
+    console.log('NEW PROGRESS', progress);
+    const newPurchasedcourse = {
+      course: payload.courseId,
+      progress
+    };
+    const purchasedCourses = state.user.purchasedCourses.filter((el: IPurchasedCourse) => el.course !== payload.courseId);
+    return {
+      ...state,
+      user: {
+        ...(state.user),
+        purchasedCourses: [
+          ...purchasedCourses,
+          newPurchasedcourse
+        ]
+      }
+    };
   }),
   on(AuthActions.addCourseToFavoritesSuccess, (state: AuthState, payload: { courseId: string }) => {
     return {

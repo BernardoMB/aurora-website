@@ -46,6 +46,10 @@ export class LoginFormComponent implements OnInit {
         this.dialogRef.close({ userIsLoggedIn: true });
       }
     });
+
+    this.loginForm.get('password').valueChanges.subscribe(() => {
+      this.errorMessage = undefined;
+    });
   }
 
   onSubmit(): void {

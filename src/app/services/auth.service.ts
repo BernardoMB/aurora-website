@@ -6,6 +6,9 @@ import { SignupDto } from '../shared/dtos/signup.dto';
 import { environment } from '../../environments/environment';
 import { Course } from '../shared/models/course.model';
 import { tap, catchError } from 'rxjs/operators';
+import { IPaymentInfo } from '../shared/interfaces/payment-info.interface';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { EnterPinModalComponent } from '../modules/courses/components/enter-pin-modal/enter-pin-modal.component';
 
 /**
  * TODO: Add changeUsername function
@@ -28,7 +31,9 @@ export class AuthService {
   private signupIsSuccessfullSubject = new BehaviorSubject<boolean>(false);
   public signupIsSuccessfull$ = this.signupIsSuccessfullSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+  ) {}
 
   getStatus(): Observable<any> {
     const url = `${this.host}/status`;
@@ -90,6 +95,12 @@ export class AuthService {
     );
   }
 
+  changeUserPasswordWithToken(token: string, newPassword: string, newPasswordConfirmation: string): Observable<User> {
+    console.log('Auth service: changing user password with token');
+    const url = `${this.host}/${this.apiVersion}/auth/user/changePasswordWithToken`;
+    return this.http.post<User>(url, { token, newPassword, newPasswordConfirmation });
+  }
+
   checkUsernameAvailability(username: string): Observable<{ usernameIsAvailable: boolean }> {
     console.log('Auth service: Checking username availability');
     const url = `${this.host}/${this.apiVersion}/auth/checkUsernameAvalability`;
@@ -136,11 +147,55 @@ export class AuthService {
     return this.http.post<User>(url, { courses });
   }
 
-  purchaseCart(courses: string[], userId: string): Observable<User> {
-    console.log('Auth service: Adding courses to user shooping cart');
-    const url = `${this.host}/${this.apiVersion}/users/${userId}/purchasedCourses`;
-    return this.http.post<User>(url, { courses });
+
+
+
+
+
+
+
+
+
+
+
+  getUserCards(): Observable<any> { // TODO: Sepecify type to receive here
+    // TODO: This endpoint does not exists on server
+    console.log('Auth service: Getting user cards');
+    const url = `${this.host}/${this.apiVersion}/auth/user/me/cards`;
+    // return this.http.get<User>(url); // TODO: Uncomment this line when edpoint redy
+    return new Observable(obs => {
+      setTimeout(() => {
+        obs.next([1, 2, 3]);
+        obs.complete();
+      }, 2000);
+    });
   }
+
+  purchaseCart(
+    userId: string,
+    courses: string[],
+    paymentMethod: string,
+    country: string,
+    paymentInfo: IPaymentInfo
+  ): Observable<User> {
+    console.log('Auth service: Purchasing user cart');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/purchasedCourses`;
+    return this.http.post<User>(url, { courses, paymentMethod, country, ...paymentInfo });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   purchaseCourse(course: string, userId: string): Observable<Course> {
     console.log('Auth service: Adding courses to user shooping cart');
@@ -194,6 +249,12 @@ export class AuthService {
     console.log('Auth service: Removing course from user archive');
     const url = `${this.host}/${this.apiVersion}/users/${userId}/archivedCourses/${courseId}`;
     return this.http.delete<User>(url, {});
+  }
+
+  requestPasswordResetEmail(email: string): Observable<void> {
+    console.log('Auth service: Requesting reset password email');
+    const url = `${this.host}/${this.apiVersion}/auth/user/resetPasswordEmail`;
+    return this.http.post<void>(url, { email });
   }
 
   resendEmailVerification(): Observable<boolean> {

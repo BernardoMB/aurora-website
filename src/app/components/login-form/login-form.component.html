@@ -29,7 +29,7 @@
         <mat-label>Password</mat-label>
         <input
           matInput
-          placeholder="Placeholder"
+          placeholder="Password"
           formControlName="password"
           [type]="hide ? 'password' : 'text'"
           required
@@ -49,13 +49,22 @@
       </button>
     </div>
   </form>
-  <div class="signup-phrase">
-    Don't have an account?
-    <a
-      tabindex="0"
-      class="focus-outline"
-      [mat-dialog-close]="{ showSignUpModalOnClose: true }"
-      >Sign up</a
-    >
+  <div class="other-actions">
+    <div class="signup-phrase">
+      Don't have an account?
+      <a
+        tabindex="0"
+        class="focus-outline"
+        [mat-dialog-close]="{ showSignUpModalOnClose: true }"
+        >Sign up</a
+      >
+    </div>
+    <div class="signup-phrase">
+      <a
+        tabindex="0"
+        class="focus-outline"
+        [mat-dialog-close]="{ showResetPasswordModalOnClose: true }"
+      >Reset</a> your password
+    </div>
   </div>
 </div>

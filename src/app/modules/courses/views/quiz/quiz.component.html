@@ -1,0 +1,85 @@
+<div class="quiz-container">
+  <div *ngIf="showStartQuiz" class="start-quiz-container">
+    <div class="quiz-title">Quiz - {{quiz.title}}</div>
+    <div class="questions-count">{{quiz.assesments.length}} questions</div>
+    <div class="buttons-container">
+      <!-- <button (click)="onStartQuiz()">Start quiz</button> -->
+      <button class="start-quiz-button" mat-flat-button (click)="onStartQuiz()" color="accent">Start quiz</button>
+      <!-- <button>Skip quiz</button> -->
+      <button class="skip-button" mat-flat-button (click)="onContinue()">Skip quiz</button>
+    </div>
+  </div>
+  <div *ngIf="showAssesmentView && currentAssesment" class="assesment-container">
+    <div class="assesment-content">
+      <div class="question-number">Question {{assesmentsIds.indexOf(currentAssesment.id) + 1}}:</div>
+      <div class="question-prompt" [innerHTML]="currentAssesment.prompt.question"></div>
+      <mat-radio-group class="options-group" [formControl]="radioGroupControl" aria-label="Select an option">
+        <mat-radio-button *ngFor="let option of currentAssesment.prompt.answers; let i = index" [value]="i + 1">{{option}}</mat-radio-button>
+      </mat-radio-group>
+      <div *ngIf="showCorrectIndicator" class="result-indicator correct">
+        <mat-icon>check_circle_outline</mat-icon>
+        <div>Correct! Good job</div>
+      </div>
+      <div *ngIf="showIncorrectIndicator" class="result-indicator incorrect">
+        <mat-icon>check_circle_outline</mat-icon>
+        <div>Incorrect. Try again</div>
+      </div>
+    </div>
+    <div class="assesment-toolbar">
+      <div class="question-number">Question {{assesmentsIds.indexOf(currentAssesment.id) + 1}} of {{assesmentsIds.length}}</div>
+      <div class="buttons-container">
+        <button mat-flat-button class="skip-assesment-button" *ngIf="showSkipAssesmentButton" (click)="onSkipAssesment()">Skip question</button>
+        <button mat-flat-button class="check-answer-button" *ngIf="showCheckAnswerButton" (click)="onCheckAnswer()" color="accent" [disabled]="checkAnswerButtonDisabled">Check answer</button>
+        <button mat-flat-button class="next-answer-button" *ngIf="showNextButton" (click)="onNextAssesment()" color="accent">
+          <div>Next</div>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+        <button mat-flat-button class="next-answer-button" *ngIf="showSeeResultsButton" (click)="onViewResults()" color="accent">See results</button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showStatsView" class="stats-container">
+    <div class="stats-header-all-correct">
+      <div class="all-correct-container" *ngIf="totalCorrect === quiz.assesments.length">
+        <div class="learning-phrase">Great job! You are ready to move on to the next lecture.</div>
+        <div>You got {{totalCorrect > 0 ? totalCorrect : 0 }} out of {{quiz.assesments.length}} on this attempt.</div>
+      </div>
+    </div>
+    <div class="stats-header-incorrect">
+      <div class="review-container" *ngIf="totalCorrect !== quiz.assesments.length">
+        <div class="learning-phrase">Review the course materials to expand your learning.</div>
+        <div>You got {{totalCorrect > 0 ? totalCorrect : 0 }} out of {{quiz.assesments.length}} on this attempt.</div>
+      </div>
+    </div>
+    <div class="stats-content">
+      <div *ngIf="correct.length > 0">
+        <div class="feedback">
+          <mat-icon class="check">check</mat-icon>
+          <div>What you know</div>
+        </div>
+        <div class="item" *ngFor="let assesment of correct">{{assesment.prompt.question}}</div>
+      </div>
+      <div *ngIf="review.length > 0">
+        <div class="feedback">
+          <mat-icon class="bad">close</mat-icon>
+          <div>What you should review</div>
+        </div>
+        <div class="item" *ngFor="let assesment of review">{{assesment.prompt.question}}</div>
+      </div>
+      <div *ngIf="skipped.length > 0">
+        <div class="feedback">
+          <mat-icon class="refresh">refresh</mat-icon>
+          <div>What you have missed</div>
+        </div>
+        <div class="item" *ngFor="let assesment of skipped">{{assesment.prompt.question}}</div>
+      </div>
+    </div>
+    <div class="stats-toolbar">
+      <div></div>
+      <div class="buttons-container">
+        <button mat-flat-button class="skip-assesment-button" (click)="onContinue()">Continue</button>
+        <button mat-flat-button class="next-answer-button" (click)="onRetryQuiz()" color="accent">Retry quiz</button>
+      </div>
+    </div>
+  </div>
+</div>

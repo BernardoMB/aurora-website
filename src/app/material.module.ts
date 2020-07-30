@@ -8,7 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   // Add material components the application uses
@@ -23,7 +24,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatCheckboxModule,
     MatTooltipModule,
     MatRadioModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     MatMenuModule,
@@ -36,7 +38,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatCheckboxModule,
     MatTooltipModule,
     MatRadioModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatProgressSpinnerModule
   ],
 })
 export class MaterialModule {}

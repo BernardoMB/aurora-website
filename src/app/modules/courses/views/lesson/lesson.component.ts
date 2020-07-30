@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
+import * as fileSaver from 'file-saver';
 
 @Component({
   selector: 'app-lesson',
@@ -48,5 +49,16 @@ export class LessonComponent implements OnInit, OnDestroy {
     link.click();
     window.URL.revokeObjectURL(this.lesson.documentUrl);
     window.open(this.lesson.documentUrl);
+
+    // Alternative CORS Issues
+    /* this.http.get(this.lesson.documentUrl, {responseType: 'blob', headers: {'Access-Control-Allow-Origin': '*'}}).subscribe(response => {
+      const blob: any = new Blob([response]);
+      const url = window.URL.createObjectURL(blob);
+      // window.open(url);
+      // window.location.href = response.url;
+      const fileName = this.lesson.documentUrl.split('lessondocuments/')[1];
+      fileSaver.saveAs(blob, fileName);
+    }); */
   }
+
 }

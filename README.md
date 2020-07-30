@@ -40,23 +40,7 @@ Library ued: https://www.npmjs.com/package/ngx-pagination
 
 ## TODOS:
 
-- Add course Categories to store for more efficiency usign NgRx Entity
-- Pagination on all views
-- Implement auth guards on the following routes:
-  * my courses
-  * checkout
-- Implement propper redirections when the user logs out
-- Delete unused certificate images inside assets directory
-- Components that require authentication (Ej. AllMycoursesComponent) should not redirect to any route when they receive no user inside the user subscription. The login with token failure effect should take care of the redirection the a not authenticated route.
-- Test refreshing every route in the following cases:
-  * logged in
-  * not logged in
-  * logged in and invalid token
-- Test loggin out on every route
-- Test accesing every route in the following cases:
-  * logged in
-  * not logged in
-  * logged in and invalid token
+- Delete unused certificate images inside Azure assets directory
 - Implement safe navigation. Here is an example: 
   ```html
   <h2>{{contact?.name}}</h2>
@@ -67,7 +51,15 @@ Library ued: https://www.npmjs.com/package/ngx-pagination
     <dd>{{contact?.website}}</dd>
   </dl>
   ```
-  - Route guards should not grant access if they found a user token. founding a user token is not enough. Guards should validate the found token to see if it is valid and then decide to grant access. That is now possible because observables of true or false can be returned in the canActivate function.
+- Route guards should not grant access if they found a user token. founding a user token is not enough. Guards should validate the found token to see if it is valid and then decide to grant access. That is now possible because observables of true or false can be returned in the canActivate function.
 
+## Swiper JS
 
-  Hola
+Install Swiper packages added into package.json. 
+
+Check `angular.json` file to know how to import the styles.
+
+Dont forget to add the SwiperModule `ngx-swiper-wrapper` into the application module.
+
+Visit `ngx-swiper-wrapper` documentation
+

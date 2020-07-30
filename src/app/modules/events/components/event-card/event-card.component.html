@@ -1,0 +1,58 @@
+<div class="event-card-wrapper" [class.loading]="loading">
+  <div
+    class="event-card-container"
+    [style.backgroundImage]="'url(' + event.imgUrl + ')'"
+    (click)="onHandleClick($event)"
+  >
+    <div
+      class="gradient-overlay focus-outline"
+      [routerLink]="['/events', event.id]"
+    >
+      <div class="organizer-container">
+        <div class="organizer-name">
+          <mat-icon inline>business</mat-icon>
+          {{ event.organizer }}
+        </div>
+        <div class="date-container">
+          <div class="date">
+            <span class="day">{{ event.startDate | date: 'dd' }}</span
+            ><span class="month">{{ event.startDate | date: 'MMM' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <app-animated-logo-spinner-component *ngIf="loading">
+      </app-animated-logo-spinner-component>
+      <div class="spacer"></div>
+      <div class="event-details">
+        <div class="event-name-container">
+          <div
+            class="event-name focus-outline"
+            [routerLink]="['/events', event.id]"
+          >
+            {{ event.name }}
+          </div>
+        </div>
+        <div class="extra-info-container">
+          <!-- <div class="dates-container">
+            <div class="date">
+              {{ event.startDate | date: 'shortDate' }}
+            </div>
+            <div class="date">
+              {{ event.endDate | date: 'shortDate' }}
+            </div>
+          </div> -->
+          <div class="subs-container">
+            <mat-icon>supervisor_account</mat-icon>
+            <div>{{ event?.subscribed?.length }} Subscribed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img
+    style="display: none;"
+    [src]="event.imgUrl"
+    (load)="onHandleImageLoaded($event)"
+  />
+</div>

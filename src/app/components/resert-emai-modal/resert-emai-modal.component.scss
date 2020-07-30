@@ -1,0 +1,67 @@
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+  color: #29303b;
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid gainsboro;
+    width: 100%;
+    margin: 24px 0px;
+    padding-bottom: 24px;
+    .modal-title {
+      margin: 0px 24px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    i {
+      margin-right: 24px;
+      cursor: pointer;
+      &:hover {
+        color: darkorange;
+      }
+    }
+  }
+  .welcome-phrase {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .credential-field {
+    padding: 0px 20px;
+    width: calc(100% - 40px);
+    mat-form-field {
+      width: 100%;
+    }
+    mat-icon {
+      margin-left: 10px;
+    }
+  }
+  mat-icon {
+    color: grey;
+  }
+  .alert-message {
+    margin-bottom: 20px;
+    margin-right:  20px;
+    margin-left: 20px;
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 0.75rem 20px;
+    border-radius: 0.25rem;
+    text-align: center;
+  }
+  .login-button-container {
+    margin-bottom: 20px;
+    .login-button {
+      color: #fff;
+      background-color: #eb6c00;
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
+  }
+}

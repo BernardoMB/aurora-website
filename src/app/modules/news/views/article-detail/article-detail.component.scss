@@ -1,0 +1,391 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,600,700,800');
+.article-date-container {
+  color: white;
+  width: 100%;
+  margin: 32px auto;
+  max-width: 900px;
+}
+.article-jumbotron {
+  overflow: hidden;
+  height: 50vh;
+  background-attachment: fixed;
+  background-size: cover;
+  resize: both;
+  background-position-x: center;
+  background-position-y: center;
+  position: relative;
+  .article-jumbotron-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to bottom,
+      rgba(53, 168, 129, 0.7) 0%,
+      rgba(22, 96, 71, 0.5) 100%
+    );
+  }
+  .article-jumbotron-wrapper {
+    background-size: cover;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    .article-title-container {
+      font-size: 3em;
+      font-weight: bold;
+      color: white;
+      max-width: 900px;
+      font-family: Raleway;
+      margin-top: auto;
+      position: absolute;
+      top: 5vh;
+      z-index: 9;
+    }
+
+    .article-jumbotron-overlay {
+      position: absolute;
+      display: block;
+      background: linear-gradient(
+        to bottom,
+        rgba(53, 168, 129, 0.7) 0%,
+        rgba(22, 96, 71, 0.5) 100%
+      );
+      $opacity: 0.1;
+      $font-color: white;
+      $font-weight: 500;
+      .article-jumbotron-container {
+        padding: 20px 20px;
+        max-width: 1180px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-sizing: border-box;
+        position: relative;
+        margin: auto;
+        $font-color: white;
+        $font-weight: 500;
+        .top-container {
+          display: flex;
+          justify-content: space-between;
+          z-index: 1;
+          .organizer-name {
+            color: white;
+          }
+          .category-container {
+            display: flex;
+            align-items: center;
+            .category-indicator {
+              /* width: 56px;
+                  height: 56px; */
+              width: 10px;
+              height: 10px;
+              border-radius: 56px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              box-shadow: rgba(0, 0, 0, 0.75) -2px 2px 5px 0px;
+              .image-container {
+                background-size: cover;
+                resize: both;
+                background-position-x: center;
+                background-position-y: center;
+                width: 50px;
+                height: 50px;
+                border-radius: 50px;
+                position: relative;
+                .overlay {
+                  width: 100%;
+                  height: 100%;
+                  border-radius: 100px;
+                  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,fbfbfb+29&0.4+0,0+100 */
+                  background: -moz-linear-gradient(
+                    top,
+                    rgba(0, 0, 0, 0.4) 0%,
+                    rgba(251, 251, 251, 0.28) 29%,
+                    rgba(251, 251, 251, 0) 100%
+                  ); /* FF3.6-15 */
+                  background: -webkit-linear-gradient(
+                    top,
+                    rgba(0, 0, 0, 0.4) 0%,
+                    rgba(251, 251, 251, 0.28) 29%,
+                    rgba(251, 251, 251, 0) 100%
+                  ); /* Chrome10-25,Safari5.1-6 */
+                  background: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0.4) 0%,
+                    rgba(251, 251, 251, 0.28) 29%,
+                    rgba(251, 251, 251, 0) 100%
+                  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#66000000', endColorstr='#00fbfbfb',GradientType=0 ); /* IE6-9 */
+                }
+              }
+            }
+            .category-name-container {
+              padding: 0px 10px;
+              display: flex;
+              align-items: center;
+              .category-name {
+                text-decoration: none;
+                font-family: 'Trebuchet MS', 'Bree Serif', serif;
+                color: $font-color;
+                font-weight: bold;
+                cursor: pointer;
+                &:hover {
+                  text-decoration: underline;
+                }
+              }
+            }
+          }
+          .favorite-container {
+            display: flex;
+            align-items: center;
+            .wishlist-button {
+              cursor: pointer;
+              border: 2px solid white;
+              padding: 2px 10px;
+              border-radius: 20px;
+              color: white;
+              margin-right: 10px;
+              font-size: 12px;
+              &:hover {
+                color: #29303b;
+                background-color: white;
+                font-weight: bold;
+              }
+            }
+            .isFavorite {
+              display: flex;
+              justify-content: flex-end;
+              mat-icon {
+                color: hotpink;
+              }
+            }
+            .notFavorite {
+              display: flex;
+              justify-content: flex-end;
+              mat-icon {
+                color: hotpink;
+              }
+            }
+          }
+        }
+        .middle-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-top: -20px;
+          margin-bottom: -20px;
+          .article-image-section {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            .image-wrapper {
+              border-radius: 5px;
+              padding: 5px;
+              background-color: white;
+              border: 1px solid gainsboro;
+              .article-image-container {
+                background-size: cover;
+                resize: both;
+                background-position-x: center;
+                background-position-y: center;
+                .image-overlay {
+                  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+0,0+54 */
+                  background: -moz-linear-gradient(
+                    top,
+                    rgba(0, 0, 0, 0.65) 0%,
+                    rgba(0, 0, 0, 0) 54%,
+                    rgba(0, 0, 0, 0) 100%
+                  ); /* FF3.6-15 */
+                  background: -webkit-linear-gradient(
+                    top,
+                    rgba(0, 0, 0, 0.65) 0%,
+                    rgba(0, 0, 0, 0) 54%,
+                    rgba(0, 0, 0, 0) 100%
+                  ); /* Chrome10-25,Safari5.1-6 */
+                  background: linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0.65) 0%,
+                    rgba(0, 0, 0, 0) 54%,
+                    rgba(0, 0, 0, 0) 100%
+                  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+                  width: 175px;
+                  height: 130px;
+                }
+              }
+            }
+          }
+          .article-name {
+            padding: 10px;
+            font-family: 'Open Sans';
+            font-size: 36px;
+            font-weight: 300;
+            line-height: 1.1;
+            color: $font-color;
+            margin-bottom: 20px;
+            text-align: center;
+            max-width: 520px;
+          }
+          .buttons-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .enroll-button {
+              display: flex;
+              margin-bottom: 20px;
+              align-items: center;
+              font-weight: 600;
+              text-align: center;
+              vertical-align: middle;
+              white-space: nowrap;
+              padding: 6px 30px;
+              font-size: 15px;
+              line-height: 1.35135;
+              border-radius: 20px;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+              cursor: pointer;
+              color: #fff;
+              background-color: #eb6c00;
+              border: 1px solid transparent;
+              i {
+                margin-left: 10px;
+                font-size: 22px;
+              }
+            }
+            .buy-now-button {
+              margin-left: 10px;
+              display: flex;
+              margin-bottom: 20px;
+              align-items: center;
+              font-weight: 600;
+              text-align: center;
+              vertical-align: middle;
+              white-space: nowrap;
+              padding: 6px 30px;
+              font-size: 15px;
+              line-height: 1.35135;
+              border-radius: 20px;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+              cursor: pointer;
+              color: #fff;
+              background-color: unset;
+              border: 2px solid white;
+              @media screen and (max-width: 320px) {
+                margin-left: 0px;
+              }
+            }
+            @media screen and (max-width: 320px) {
+              flex-direction: column;
+            }
+          }
+          @media screen and (max-width: 650px) {
+            margin: 10px 0px;
+          }
+        }
+        .bottom-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          .date-container {
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}
+
+.article-content-section {
+  position: relative;
+  top: -255px;
+  z-index: 9;
+}
+
+.about-wrapper {
+  max-width: 900px;
+  margin: 32px auto;
+  .description-title {
+    position: relative;
+    margin-top: -20vh;
+    font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+    font-size: 2em;
+    font-weight: 600;
+    margin: 0 0 10px;
+    color: rgba($color: #ffffff, $alpha: 0.86);
+  }
+
+  .description-sub-title {
+    margin: 32px 0;
+    font-size: 1.8em;
+    font-weight: lighter;
+    color: rgba(255, 255, 255, 0.95);
+  }
+  .description-content {
+    padding: 40px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    border: 1px solid gainsboro;
+    color: rgba(0, 0, 0, 0.75);
+    overflow: auto;
+    font-family: 'Raleway' sans-serif;
+    @media screen and (max-width: 600px) {
+      padding: 40px 15px;
+    }
+  }
+  .description-content::-webkit-scrollbar {
+    width: 8px;
+    background-color: white;
+    position: relative;
+    border-radius: 5px;
+  }
+  .description-content::-webkit-scrollbar-track {
+    background-color: white;
+    position: relative;
+    padding: 5px 0px;
+    margin: 5px 0px;
+    margin-right: 5px;
+    padding-right: 5px;
+  }
+  .description-content::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border: 2px solid white;
+    border-radius: 5px;
+    margin: 5px 0px;
+  }
+}
+
+.article-link-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 1200px) {
+  .article-title-container {
+    font-size: 1.8em !important;
+  }
+  .description-title {
+    font-size: 2.5em !important;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .article-jumbotron-wrapper,
+  .description-title,
+  .article-date-container,
+  .description-sub-title {
+    margin-left: 20px !important;
+  }
+}

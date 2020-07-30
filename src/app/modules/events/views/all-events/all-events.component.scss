@@ -1,0 +1,192 @@
+.courses-jumbotron-section {
+  overflow: hidden;
+  .jumbotron-wrapper {
+    background-size: cover;
+    resize: both;
+    background-position-x: center;
+    background-position-y: center;
+    background-image: url('/assets/img/jumbotrons/events-all-jumbotron.jpg');
+    .jumbotron-wrapper-overlay {
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#134c00+0,4c2300+100&0.4+0,0.4+100 */
+
+      // Gradient option 1
+      background: -moz-linear-gradient(
+        left,
+        rgba(19, 76, 0, 0.4) 0%,
+        rgba(76, 35, 0, 0.4) 100%
+      ); // FF3.6-15
+      background: -webkit-linear-gradient(
+        left,
+        rgba(19, 76, 0, 0.4) 0%,
+        rgba(76, 35, 0, 0.4) 100%
+      ); // Chrome10-25,Safari5.1-6
+      background: linear-gradient(
+        to right,
+        rgba(19, 76, 0, 0.4) 0%,
+        rgba(76, 35, 0, 0.4) 100%
+      ); // W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#66134c00', endColorstr='#664c2300',GradientType=1 ); // IE6-9
+
+      .jumbotron-conatiner {
+        background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 280px;
+        .jumbotron-texts {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          font-family: 'Open Sans';
+          color: white;
+          margin: 20px;
+          .jumbotron-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 300;
+            line-height: 1.1;
+          }
+          .jumbotron-description {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 18px;
+            font-weight: lighter;
+            line-height: 1.1;
+          }
+        }
+      }
+    }
+  }
+}
+
+.events-section {
+  display: block;
+  position: relative;
+  .events-container {
+    padding: 40px;
+    max-width: 1180px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    margin: auto;
+    .events-title-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Trebuchet MS', Helvetica, sans-serif;
+      .events-title {
+        color: #1b4568;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      a {
+        margin-right: 20px;
+        font-size: 18px;
+        color: darkgray;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+    .events-cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      .event-card {
+        // margin: 10px 0px;
+        // margin-right: 15px;
+        margin: 10px;
+        flex-grow: 1;
+      }
+    }
+    .pagination-controls ::ng-deep .ngx-pagination {
+      padding-left: 0px;
+      display: flex;
+      justify-content: center;
+      .current {
+        border-radius: 10px;
+        background: #1f5e11;
+      }
+      li {
+        a {
+          outline: unset;
+          &:focus {
+            $focus-outline-thickeness: 2px;
+            outline: $focus-outline-thickeness solid greenyellow;
+            outline-style: dashed;
+          }
+          &:hover {
+            border-radius: 10px;
+          }
+        }
+      }
+    }
+    @media screen and (max-width: 500px) {
+      padding: 40px 15px;
+    }
+  }
+}
+
+// Custom swiper classes
+
+::ng-deep {
+  $button-radius: 46px;
+  .swiper-button-prev {
+    background-color: white;
+    height: $button-radius;
+    width: $button-radius;
+    box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1),
+      0 3px 1px 0 rgba(20, 23, 28, 0.1);
+    border-radius: $button-radius;
+    top: 53%;
+    left: 14px;
+    &:after {
+      font-size: 18px;
+      font-weight: 900;
+      color: darkorange;
+    }
+    @media screen and (max-width: 500px) {
+      display: none;
+    }
+  }
+  .swiper-button-next {
+    background-color: white;
+    height: $button-radius;
+    width: $button-radius;
+    box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1),
+      0 3px 1px 0 rgba(20, 23, 28, 0.1);
+    border-radius: $button-radius;
+    top: 53%;
+    right: 14px;
+    &:after {
+      font-size: 18px;
+      font-weight: 900;
+      color: darkorange;
+    }
+    @media screen and (max-width: 500px) {
+      display: none;
+    }
+  }
+}
+
+:host ::ng-deep .event-card-wrapper {
+  display: flex;
+  flex-grow: 1;
+  min-width: 255px;
+  //   max-width: 300px;
+}
+
+:host ::ng-deep .event-card-wrapper {
+  display: flex;
+  flex-grow: 1;
+}
+
+:host ::ng-deep .event-card-container {
+  display: flex;
+  flex-grow: 1;
+}
+
+:host ::ng-deep .gradient-overlay {
+  width: 100% !important;
+}
