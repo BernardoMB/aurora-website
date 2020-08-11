@@ -107,13 +107,16 @@ export class CartComponent implements OnInit, OnDestroy {
       );
     } else {
       let courseIds: string[] = [];
-      const cartCookie: string = this.cookieService.get('cartCookie');
+      // const cartCookie: string = this.cookieService.get('cartCookie');
+      const cartCookie: string = localStorage.getItem('cartCookie');
       if (cartCookie) {
         courseIds = JSON.parse(cartCookie);
       }
       const newCourseIds = courseIds.filter((id: string) => id !== course.id);
-      this.cookieService.delete('cartCookie');
-      this.cookieService.set('cartCookie', JSON.stringify(newCourseIds));
+      // this.cookieService.delete('cartCookie');
+      localStorage.removeItem('cartCookie');
+      // this.cookieService.set('cartCookie', JSON.stringify(newCourseIds));
+      localStorage.setItem('cartCookie', JSON.stringify(newCourseIds));
       this.store.dispatch(pullCourseFromCarts({ course }));
     }
   }

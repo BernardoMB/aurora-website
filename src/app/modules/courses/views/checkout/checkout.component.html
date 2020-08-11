@@ -20,7 +20,7 @@
               <mat-error *ngIf="countryControl.errors && countryControl.errors.required">Billing country is required</mat-error>
             </mat-form-field>
         </div>
-        <div class="payment-options">
+        <!-- <div class="payment-options">
           <mat-checkbox class="checkbox" color="primary" [checked]="showNewCardPaymentForm" (change)="toggleNewCardForm()">
             <div>Credit or Debit Card</div>
             <div class="logos">
@@ -38,7 +38,7 @@
               Option {{card}}
             </mat-radio-button>
           </mat-radio-group>
-        </div>
+        </div> -->
         <div *ngIf="showNewCardPaymentForm" class="form-container">
           <form class="new-card-form" [formGroup]="newCardForm">
             <mat-form-field appearance="outline">
@@ -83,9 +83,9 @@
                 <mat-icon matSuffix>help</mat-icon>
               </mat-form-field>
             </div>
-            <mat-checkbox class="checkbox" color="primary" [checked]="true" (change)="toggleRememberCard()" formControlName="rememberCardControl">
+            <!-- <mat-checkbox class="checkbox" color="primary" [checked]="true" (change)="toggleRememberCard()" formControlName="rememberCardControl">
               <div>Remember this card</div>
-            </mat-checkbox>
+            </mat-checkbox> -->
           </form>
           <div class="secure-connection-container">
             <mat-icon>lock</mat-icon>
@@ -220,5 +220,3 @@
 <div class="spinner-overlay" *ngIf="showProgressSpinner">
   <mat-spinner aria-label="progress indicator"></mat-spinner>
 </div>
-
-<!-- <button  (click)="pene()">Cick me</button> -->

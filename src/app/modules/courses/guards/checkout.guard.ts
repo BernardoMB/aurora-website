@@ -38,7 +38,8 @@ export class CheckoutGuard implements CanActivate {
       console.log('CheckoutGuard: Authenticated state is true. Access granted');
       return true;
     }
-    const userToken = this.cookieService.get('userToken');
+    // const userToken = this.cookieService.get('userToken');
+    const userToken = localStorage.getItem('userToken');
     if (userToken) {
       /* // TODO: A request should be made here to check if the user token found is valid
       console.log('CheckoutGuard: Authenticated state is false but user token found. Access granted');

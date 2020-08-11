@@ -257,13 +257,16 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       this.store.dispatch(addCourseToCart({ courseId, userId: this.user.id }));
     } else {
       let courseIds: string[] = [];
-      const cartCookie: string = this.cookieService.get('cartCookie');
+      // const cartCookie: string = this.cookieService.get('cartCookie');
+      const cartCookie: string = localStorage.getItem('cartCookie');
       if (cartCookie) {
         courseIds = JSON.parse(cartCookie);
       }
       courseIds.push(this.course.id);
-      this.cookieService.delete('cartCookie');
-      this.cookieService.set('cartCookie', JSON.stringify(courseIds));
+      // this.cookieService.delete('cartCookie');
+      localStorage.removeItem('cartCookie');
+      // this.cookieService.set('cartCookie', JSON.stringify(courseIds));
+      localStorage.setItem('cartCookie', JSON.stringify(courseIds));
       this.store.dispatch(pushCourseToCarts({ course: this.course }));
     }
   }
