@@ -25,7 +25,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const token = this.cookieService.get('userToken');
+    // const token = this.cookieService.get('userToken');
+    const token = localStorage.getItem('userToken');
     if (token) {
       console.log('AppComponent: User token found! Dispatching login action');
       this.store.dispatch(loginWithToken());
@@ -33,15 +34,19 @@ export class AppComponent implements OnInit, OnDestroy {
       console.log('AppComponent: No user token found');
     }
 
-    const cartCookie = this.cookieService.get('cartCookie');
+    // const cartCookie = this.cookieService.get('cartCookie');
+    const cartCookie = localStorage.getItem('cartCookie');
     if (cartCookie) {
       const cartCookieArray: string[] = JSON.parse(cartCookie);
       if (cartCookieArray && cartCookieArray.length > 0) {
         this.coursesService.getCourses(cartCookieArray).subscribe((courses: Course[]) => {
           if (courses && courses.length > 0) {
             this.store.dispatch(getCoursesFrommCookiesSuccess({courses}));
-            this.cookieService.delete('cartCookie');
-            this.cookieService.set('cartCookie', JSON.stringify(cartCookieArray));
+            // this.cookieService.delete('cartCookie');
+            localStorage.removeItem('cartCookie');
+            // this.cookieService.set('cartCookie', JSON.stringify(cartCookieArray));
+            localStorage.setItem('cartCookie', JSON.stringify(cartCookieArray));
+            // this.cookieService.set('cartCookie', JSON.stringify(cartCookieArray), new Date('01-01-5000'), '/', );
           }
         });
       }

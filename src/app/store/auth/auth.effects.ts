@@ -85,8 +85,10 @@ export class AuthEffects {
         this.authService.signin(action.username, action.password).pipe(
           map((responseBody: { accessToken: string }) => {
             console.log('LoginEffect: Replacing user token cookie');
-            this.cookieService.delete('userToken', '/');
-            this.cookieService.set('userToken', responseBody.accessToken, null, '/');
+            // this.cookieService.delete('userToken', '/');
+            localStorage.removeItem('userToken');
+            // this.cookieService.set('userToken', responseBody.accessToken);
+            localStorage.setItem('userToken', responseBody.accessToken);
             return loginSuccess();
           }),
           catchError((errorResponse: HttpErrorResponse) => {
@@ -141,7 +143,8 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(getUserInfoSuccess),
       tap(action => {
-        this.cookieService.delete('cartCookie');
+        // this.cookieService.delete('cartCookie');
+        localStorage.removeItem('cartCookie');
       }),
     ), { dispatch: false }
   );
@@ -201,7 +204,8 @@ export class AuthEffects {
         ofType(logout),
         tap(action => {
           console.log('LogoutEffect: Deleteing usert token cookie');
-          this.cookieService.delete('userToken', '/');
+          // this.cookieService.delete('userToken', '/');
+          localStorage.removeItem('userToken');
           // console.log('AuthEffects: logoutEffect$: Redirecting to landing page ("/")');
           this.router.navigate(['/']);
         }),
@@ -387,7 +391,8 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(addCoursesToCartSuccess),
       tap(action => {
-        this.cookieService.delete('cartCookie');
+        // this.cookieService.delete('cartCookie');
+        localStorage.removeItem('cartCookie');
       }),
     ), { dispatch: false }
   );

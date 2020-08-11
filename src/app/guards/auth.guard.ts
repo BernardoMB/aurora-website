@@ -39,7 +39,8 @@ export class AuthGuard implements CanActivate {
       console.log('AuthGuard: Authenticated state is true. Access granted');
       return true;
     }
-    const userToken = this.cookieService.get('userToken');
+    // const userToken = this.cookieService.get('userToken');
+    const userToken = localStorage.getItem('userToken');
     if (userToken) {
       return this.authService.signinWithToken().pipe(
         map((response) => {

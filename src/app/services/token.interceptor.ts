@@ -27,7 +27,8 @@ export class TokenInterceptor implements HttpInterceptor {
     // console.log('Token interceptor: Intercepting request', request.url);
     this.authService = this.injector.get(AuthService);
     // console.log('Token interceptor: Getting user token from cookie...');
-    const userToken: string = this.cookieService.get('userToken');
+    // const userToken: string = this.cookieService.get('userToken');
+    const userToken: string = localStorage.getItem('userToken');
     if (userToken) {
       // console.log('Token interceptor: User token found!');
       // console.log('Token interceptor: Modifiying request...');
@@ -53,14 +54,18 @@ export class TokenInterceptor implements HttpInterceptor {
             const incomingUserToken = authorizationHeader.split(' ')[1];
             // console.log('Refreshing token');
             // Refresh bearer token
-            const pastToken = this.cookieService.get('userToken');
+            // const pastToken = this.cookieService.get('userToken');
+            const pastToken = localStorage.getItem('userToken');
             if (pastToken) {
               console.log('TokenInterceptor: Deleting user token cookie');
-              this.cookieService.delete('userToken', '/');
+              // this.cookieService.delete('userToken', '/');
+              localStorage.removeItem('userToken');
             }
             console.log('TokenInterceptor: Replacing user token cookie');
-            this.cookieService.delete('userToken', '/');
-            this.cookieService.set('userToken', incomingUserToken, null, '/');
+            // this.cookieService.delete('userToken', '/');
+            localStorage.removeItem('userToken');
+            // this.cookieService.set('userToken', incomingUserToken);
+            localStorage.setItem('userToken', incomingUserToken);
           }
         }
         return event;
@@ -83,7 +88,8 @@ export class ErrorInterceptor implements HttpInterceptor {
           // console.log('ErrorInterceptor: Response status is 401 (unauthorized)');
           // console.log('ErrorInterceptor: Removeing userToken');
           console.log('TokenInterceptor: Deleting user token cookie');
-          this.cookieService.delete('userToken', '/');
+          // this.cookieService.delete('userToken', '/');
+          localStorage.removeItem('userToken');
           // No redirecting is need
           /* console.log('ErrorInterceptor: Redirecting to home page');
           this.router.navigateByUrl('/log-in'); */
