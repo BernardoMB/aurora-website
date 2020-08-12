@@ -1,6 +1,6 @@
 <div class="profile-header">
   <div class="title">Public profile</div>
-  <div>Add information about yourself</div>
+  <div class="phrase">Add information about yourself</div>
 </div>
 <div class="content">
   <form [formGroup]="profileInfoForm">
@@ -10,7 +10,6 @@
         matInput
         placeholder="First name"
         formControlName="nameControl"
-        autofocus
       />
     </mat-form-field>
     <mat-form-field appearance="outline">
@@ -19,7 +18,6 @@
         matInput
         placeholder="Last name"
         formControlName="lastNameControl"
-        autofocus
       />
     </mat-form-field>
     <mat-form-field appearance="outline">
