@@ -261,12 +261,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.userSubscription = this.authStore.pipe(select(selectAuthUser)).subscribe((user: User) => {
       if (user) {
         this.userV = user;
+        console.log('USER', user);
         if (!user.emailVerified) {
+          console.log('Showing email warning');
           this.showEmailWarning = true;
         } else {
+          console.log('Hiding email warning');
           this.showEmailWarning = false;
         }
       } else {
+        console.log('Hiding email warning');
         this.showEmailWarning = false;
       }
     });
@@ -323,15 +327,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   dismissEmailWarning() {
+    console.log('Dismissing email warning');
     this.showEmailWarning = false;
   }
 
   resendEmail() {
     this.authService.resendEmailVerification().pipe(
       catchError((error) => {
+        this.toastr.error('Could not send verification email');
         console.log(error);
         throw error;
-        this.toastr.error('Could not send verification email');
       })
       ).subscribe((emailVerificationSend: boolean) => {
         if (emailVerificationSend) {
