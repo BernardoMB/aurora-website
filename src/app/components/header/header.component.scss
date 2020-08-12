@@ -1031,6 +1031,10 @@ $focus-border: 2px;
 }
 
 .email-warning {
+  // Because header with position fixed
+  margin-top: 64px;
+  margin-bottom: -64px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
