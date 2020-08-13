@@ -28,7 +28,7 @@ export class EditProfileComponent implements OnInit {
         control.get('nameControl').value !== this.user.name ||
         control.get('lastNameControl').value !== this.user.lastName ||
         control.get('nameTitleControl').value !== this.user.nameTitle;
-      const isValid = this.profileInfoForm.touched && anyValueChanged;
+      const isValid = anyValueChanged;
       return isValid ? null : { anyValue: true };
     }
   });

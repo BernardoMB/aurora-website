@@ -99,7 +99,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
       newPassword: this.resetPasswordForm.get('newPasswordControl').value,
       newPasswordConfirmation: this.resetPasswordForm.get('retypeNewPasswordControl').value
     };
-    // TODO: Call change user password with token function in auth service.
     this.authService.changeUserPasswordWithToken(
       changePasswordWithTokenDto.token,
       changePasswordWithTokenDto.newPassword,
