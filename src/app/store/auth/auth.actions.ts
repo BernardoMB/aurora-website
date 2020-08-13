@@ -71,6 +71,13 @@ export const purchaseCart = createAction('[Auth] PurchaseCart', props<{
 export const purchaseCartSuccess = createAction('[Auth] PurchaseCartSuccess', props<User>());
 export const purchaseCartFailure = createAction('[Auth] PurchaseCartFailure', props<{ error: any; message: string }>());
 
+export const enrollCourse = createAction('[Auth] EnrollCourse', props<{
+  userId: string,
+  courseId: string
+}>());
+export const enrollCourseSuccess = createAction('[Auth] EnrollCourseSuccess', props<Course>());
+export const enrollCourseFailure = createAction('[Auth] EnrollCourseFailure', props<{ error: any; message: string }>());
+
 export const purchaseCourse = createAction('[Auth] PurchaseCourse', props<{course: string, userId: string}>());
 export const purchaseCourseSuccess = createAction('[Auth] PurchaseCourseSuccess', props<{ course: Course }>());
 export const purchasecourseFailure = createAction('[Auth] PurchaseCourseFailure', props<{ error: any; message: string }>());

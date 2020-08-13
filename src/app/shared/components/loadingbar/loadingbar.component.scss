@@ -7,15 +7,18 @@
   z-index: 500000;
   top: 61px;
 }
+$color1: #84ff3d;
+$color2: #56ae40;
+$loadingbar-height: 3px;
 .loader {
-  height: 4px;
+  height: $loadingbar-height;
   width: 100%;
   position: relative;
   overflow: hidden;
-  background-color: #84ff3d;
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(132,255,61,1);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(132,255,61,1);
-  box-shadow: 0px 0px 10px 0px rgba(132,255,61,1);
+  background-color: $color1;
+  -webkit-box-shadow: 0px 0px 10px 0px $color1;
+  -moz-box-shadow: 0px 0px 10px 0px $color1;
+  box-shadow: 0px 0px 10px 0px $color1;
 }
 .loader:before {
   display: block;
@@ -23,8 +26,8 @@
   content: "";
   left: -200px;
   width: 200px;
-  height: 4px;
-  background-color: #56ae40;
+  height: $loadingbar-height;
+  background-color: $color2;
   animation: loading 2s linear infinite;
 }
 @keyframes loading {

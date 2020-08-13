@@ -93,7 +93,7 @@ export class LearnComponent implements OnInit, OnDestroy {
         }
       }),
       scan((acc, batch) => {
-        return { ...acc, ...batch };
+        return { ...acc, ...(batch as any) };
       }, {})
     );
     this.infinite = batchMap.pipe(map(v => Object.values(v)));
