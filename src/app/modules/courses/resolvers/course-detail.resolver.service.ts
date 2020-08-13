@@ -44,7 +44,7 @@ export class CourseDetailResolver implements Resolve<any> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<any> | Promise<any> | any {
-    console.log('Runing resolver');
+    // console.log('Runing resolver');
     return this.coursesService.getCourse(route.params.id).pipe(
       mergeMap((course: Course) => {
         const page = new Page({ pageNumber: 1, size: 5 });

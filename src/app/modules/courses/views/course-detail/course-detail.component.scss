@@ -451,11 +451,14 @@
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
             font-weight: bold;
             color: #1f5e11;
+            cursor: pointer;
+            &:hover {
+              text-decoration: underline;
+            }
           }
           .lesson-description {
             color: gray;
             margin-top: 10px;
-            cursor: pointer;
             overflow: hidden;
             display: -webkit-box!important;
             -webkit-line-clamp: 2;

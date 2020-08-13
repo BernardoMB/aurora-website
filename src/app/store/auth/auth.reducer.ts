@@ -127,6 +127,23 @@ const authReducer = createReducer(
       cart2: []
     };
   }),
+  on(AuthActions.enrollCourseSuccess, (state: AuthState, course: Course) => {
+    // console.log('Modifying user');
+    const user = {
+      ...(state.user),
+      purchasedCourses: [
+        ...(state.user.purchasedCourses),
+        {
+          course: course.id,
+          progress: []
+        }
+      ]
+    };
+    return {
+      ...state,
+      user
+    };
+  }),
   on(AuthActions.purchaseCourseSuccess, (state: AuthState, payload: { course: Course }) => {
     // Pull out the just purchased course from all carts
     const cart = state.cart.filter(el => el.id !== payload.course.id);

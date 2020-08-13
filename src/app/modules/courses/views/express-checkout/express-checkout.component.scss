@@ -460,3 +460,15 @@
     }
   }
 }
+
+.spinner-overlay {
+  z-index: 10; // It has to be on top of the header too
+  position: fixed;
+  top: -64px;
+  height: calc(100vh + 64px);
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
