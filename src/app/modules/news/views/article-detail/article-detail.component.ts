@@ -39,7 +39,6 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.route.data.subscribe(({ article }: { article: Article }) => {
         this.article = article;
-        console.log(this.article);
       }),
     );
     this.user$ = this.store.pipe(select(selectAuthUser));
