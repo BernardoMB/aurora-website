@@ -12,8 +12,14 @@ import { selectAuthUser } from '../../../../store/auth/auth.selectors';
 import { NewsService } from '../../services/news.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { SignupFormComponent } from '../../../../components/signup-form/signup-form.component';
+import {
+  unlikeArticle,
+  likeArticle,
+  undislikeArticle,
+  dislikeArticle,
+} from '../../../../store/auth/auth.actions';
 @UntilDestroy({ arrayName: 'subscriptions' })
 @Component({
   selector: 'app-article-detail',
@@ -22,12 +28,23 @@ import { SignupFormComponent } from '../../../../components/signup-form/signup-f
 })
 export class ArticleDetailComponent implements OnInit, OnDestroy {
   article: Article;
+  user: User;
   subscriptions: Subscription[] = [];
-  user$: Observable<User>;
 
+  get userDislikes() {
+    return (
+      !!this.user && this.user.dislikedArticles.indexOf(this.article.id) !== -1
+    );
+  }
+  get userLikes() {
+    return (
+      !!this.user && this.user.likedArticles.indexOf(this.article.id) !== -1
+    );
+  }
   get isExternal() {
     return !!this.article && this.article.type === 'ExternalArticle';
   }
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly store: Store<State>,
@@ -40,8 +57,10 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
       this.route.data.subscribe(({ article }: { article: Article }) => {
         this.article = article;
       }),
+      this.store.pipe(select(selectAuthUser)).subscribe((user) => {
+        this.user = user;
+      }),
     );
-    this.user$ = this.store.pipe(select(selectAuthUser));
   }
 
   ngOnDestroy(): void {}
@@ -81,5 +100,49 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
 
   onOpenUpdateCommentModal(comment: Comment) {
     console.log('Update comment modal', comment);
+  }
+
+  onLikeArticle() {
+    const operation = this.userLikes
+      ? this.newsService.undoLike(this.article.id).pipe(
+          tap(() => {
+            this.store.dispatch(unlikeArticle({ articleId: this.article.id }));
+          }),
+        )
+      : this.newsService.likeArticle(this.article.id, this.userDislikes).pipe(
+          tap(() => {
+            this.store.dispatch(likeArticle({ articleId: this.article.id }));
+          }),
+        );
+    this.subscriptions.push(
+      operation.subscribe((updatedArticle) => {
+        this.article = updatedArticle;
+      }),
+    );
+  }
+
+  onDislikeArticle() {
+    const operation = this.userDislikes
+      ? this.newsService.undoDislike(this.article.id).pipe(
+          tap(() => {
+            this.store.dispatch(
+              undislikeArticle({ articleId: this.article.id }),
+            );
+          }),
+        )
+      : this.newsService
+          .dislikeArticle(this.article.id, this.userDislikes)
+          .pipe(
+            tap(() => {
+              this.store.dispatch(
+                dislikeArticle({ articleId: this.article.id }),
+              );
+            }),
+          );
+    this.subscriptions.push(
+      operation.subscribe((updatedArticle) => {
+        this.article = updatedArticle;
+      }),
+    );
   }
 }

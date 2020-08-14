@@ -171,6 +171,24 @@ export const unsubscribeFromEvent = createAction(
   props<{ eventId: string }>(),
 );
 
+export const likeArticle = createAction(
+  '[Auth] LikeArticle',
+  props<{ articleId: string }>(),
+);
+export const unlikeArticle = createAction(
+  '[Auth] UnlikeArticle',
+  props<{ articleId: string }>(),
+);
+
+export const dislikeArticle = createAction(
+  '[Auth] DislikeArticle',
+  props<{ articleId: string }>(),
+);
+export const undislikeArticle = createAction(
+  '[Auth] UndislikeArticle',
+  props<{ articleId: string }>(),
+);
+
 export const purchaseCart = createAction(
   '[Auth] PurchaseCart',
   props<{
