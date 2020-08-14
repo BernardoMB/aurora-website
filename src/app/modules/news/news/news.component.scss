@@ -24,6 +24,9 @@
 .news-section {
   display: block;
   position: relative;
+  @media screen and (max-width: 900px) {
+    display: none;
+  }
   .news-container {
     padding: 60px 60px;
     max-width: 1220px;

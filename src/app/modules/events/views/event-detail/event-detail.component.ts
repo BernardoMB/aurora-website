@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Event } from '../../models/event.model';
 import { EventsService } from '../../services/events.service';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, Observable, of } from 'rxjs';
+import { Subscription, Observable, of, from } from 'rxjs';
 import { Set } from 'immutable';
 import { Store, select } from '@ngrx/store';
 import { State } from '../../../../store/state';
@@ -21,6 +21,11 @@ import {
   selectAuthIsAuthenticated,
 } from '../../../../store/auth/auth.selectors';
 
+interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
+
 @UntilDestroy({ arrayName: 'subscriptions' })
 @Component({
   selector: 'app-event-detail',
@@ -31,6 +36,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   event: Event;
   relatedEvents: Event[] = [];
   subscriptions: Subscription[] = [];
+  location: Coordinates;
   isFavourite = true;
   user: User;
 
@@ -38,6 +44,12 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     return (
       !!this.user && this.user.eventSubscriptions.indexOf(this.event.id) >= 0
     );
+  }
+
+  get googleMapsUrl() {
+    return !!this.location
+      ? `https://www.google.com/maps/dir/${this.location.latitude},${this.location.longitude}/${this.event.location.coordinates[1]},${this.event.location.coordinates[0]}/@${this.location.latitude},${this.location.longitude}z`
+      : `https://www.google.com/maps/@${this.event.location.coordinates[1]},${this.event.location.coordinates[0]}z`;
   }
 
   constructor(
@@ -55,6 +67,10 @@ export class EventDetailComponent implements OnInit, OnDestroy {
       }),
       this.store.pipe(select(selectAuthUser)).subscribe((user) => {
         this.user = user;
+      }),
+      from(this.getPosition()).subscribe((location) => {
+        this.location = location;
+        console.log(this.location);
       }),
     );
   }
@@ -113,5 +129,21 @@ export class EventDetailComponent implements OnInit, OnDestroy {
         this.event = updatedEvent;
         this.store.dispatch(unsubscribeFromEvent({ eventId: updatedEvent.id }));
       });
+  }
+
+  getPosition(): Promise<Coordinates> {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        (resp) => {
+          resolve({
+            longitude: resp.coords.longitude,
+            latitude: resp.coords.latitude,
+          });
+        },
+        (err) => {
+          reject(err);
+        },
+      );
+    });
   }
 }

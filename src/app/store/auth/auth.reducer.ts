@@ -366,6 +366,54 @@ const authReducer = createReducer(
       },
     }),
   ),
+  on(
+    AuthActions.likeArticle,
+    (state: AuthState, payload: { articleId: string }) => ({
+      ...state,
+      user: {
+        ...state.user,
+        likedArticles: [payload.articleId, ...state.user.likedArticles],
+      },
+    }),
+  ),
+  on(
+    AuthActions.unlikeArticle,
+    (state: AuthState, payload: { articleId: string }) => ({
+      ...state,
+      user: {
+        ...state.user,
+        likedArticles: [
+          ...state.user.likedArticles.filter(
+            (article) => article !== payload.articleId,
+          ),
+        ],
+      },
+    }),
+  ),
+  on(
+    AuthActions.dislikeArticle,
+    (state: AuthState, payload: { articleId: string }) => ({
+      ...state,
+      user: {
+        ...state.user,
+        dislikedArticles: [payload.articleId, ...state.user.dislikedArticles],
+      },
+    }),
+  ),
+  on(
+    AuthActions.undislikeArticle,
+    (state: AuthState, payload: { articleId: string }) => ({
+      ...state,
+      user: {
+        ...state.user,
+        dislikedArticles: [
+          ...state.user.dislikedArticles.filter(
+            (article) => article !== payload.articleId,
+          ),
+        ],
+      },
+    }),
+  ),
 );
 
 export function reducer(state: AuthState | undefined, action: Action) {
