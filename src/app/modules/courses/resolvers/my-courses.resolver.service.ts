@@ -20,25 +20,6 @@ export class MyCoursesResolver implements Resolve<any> {
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
-    /* return this.store.pipe(
-      select(selectAuthUser),
-      take(1),
-      mergeMap((user: User) => {
-        if (user) {
-          return this.coursesService.getRecommendedCourses(user.id).pipe(
-            map((recommendedCourses: Course[]) => {
-              const myCoursesInfo = {
-                recommendedCourses
-              };
-              return myCoursesInfo;
-            })
-          );
-        } else {
-          console.log('My courses resolver: No user found in store. Access denied. Redirecting to /courses');
-          this.router.navigate(['/courses']);
-        }
-      })
-    ); */
     return this.authServie.getUserInfo().pipe(
       mergeMap((user: User) => {
         if (user) {

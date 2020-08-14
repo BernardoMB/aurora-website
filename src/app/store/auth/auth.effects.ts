@@ -60,6 +60,9 @@ import {
   changeUsername,
   changeUsernameSuccess,
   changeUsernameFailure,
+  enrollCourse,
+  enrollCourseSuccess,
+  enrollCourseFailure
 } from './auth.actions';
 import { of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
@@ -454,6 +457,45 @@ export class AuthEffects {
       // Navigate to course detail view once purchased
       console.log(`purchaseCourseSuccessEffect: Redirecting to /courses`);
       this.router.navigate(['/courses', action.course.id]);
+    }),
+    ), { dispatch: false }
+  );
+
+  enrollCourseEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(enrollCourse),
+      exhaustMap(action =>
+        this.authService.enrollCourse(action.courseId, action.userId).pipe(
+          map((responseBody: Course) => {
+            return enrollCourseSuccess(responseBody);
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            return of(
+              enrollCourseFailure({
+                error: errorResponse,
+                message: errorResponse.error.message,
+              }),
+            );
+          }),
+        ),
+      ),
+    ),
+  );
+
+  enrollCourseSuccessEffect$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(enrollCourseSuccess),
+    tap(action => {
+      this.toastr.success('You are now enrolled.', 'Enjoy!');
+    }),
+    ), { dispatch: false }
+  );
+
+  enrollCourseFailureEffect$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(enrollCourseFailure),
+    tap(action => {
+      this.toastr.error(action.message, 'Cannot enroll.');
     }),
     ), { dispatch: false }
   );

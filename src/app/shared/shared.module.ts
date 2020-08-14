@@ -8,6 +8,8 @@ import { LoadingbarComponent } from './components/loadingbar/loadingbar.componen
 import { LoaderComponent } from './components/loader/loader.component';
 import { AnimatedLogoSpinnerComponentComponent } from './components/animated-logo-spinner-component/animated-logo-spinner-component.component';
 import { MatIconModule } from '@angular/material/icon';
+import { WarningModalComponent } from './components/warning-modal/warning-modal.component';
+import { MaterialModule } from '../material.module';
 @NgModule({
   declarations: [
     ReadTimePipe,
@@ -15,8 +17,14 @@ import { MatIconModule } from '@angular/material/icon';
     LoadingbarComponent,
     LoaderComponent,
     AnimatedLogoSpinnerComponentComponent,
+    WarningModalComponent,
   ],
-  imports: [CommonModule, FlexLayoutModule, MatIconModule],
+  imports: [
+    CommonModule,
+    FlexLayoutModule,
+    MatIconModule,
+    MaterialModule
+  ],
   exports: [
     FlexLayoutModule,
     ReadTimePipe,
@@ -25,7 +33,9 @@ import { MatIconModule } from '@angular/material/icon';
     LoaderComponent,
     AnimatedLogoSpinnerComponentComponent,
     MatIconModule,
+    WarningModalComponent
   ],
   providers: [],
+  entryComponents: [WarningModalComponent]
 })
 export class SharedModule {}

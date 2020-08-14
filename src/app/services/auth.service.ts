@@ -147,17 +147,6 @@ export class AuthService {
     return this.http.post<User>(url, { courses });
   }
 
-
-
-
-
-
-
-
-
-
-
-
   getUserCards(): Observable<any> { // TODO: Sepecify type to receive here
     // TODO: This endpoint does not exists on server
     console.log('Auth service: Getting user cards');
@@ -183,19 +172,11 @@ export class AuthService {
     return this.http.post<User>(url, { courses, paymentMethod, country, ...paymentInfo });
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  enrollCourse(courseId: string, userId: string): Observable<Course> {
+    console.log('Auth service: Enrolling user in course');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/enroll`;
+    return this.http.post<Course>(url, { course: courseId });
+  }
 
   purchaseCourse(course: string, userId: string): Observable<Course> {
     console.log('Auth service: Adding courses to user shooping cart');

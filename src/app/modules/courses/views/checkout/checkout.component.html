@@ -51,6 +51,8 @@
               <input
                 matInput
                 placeholder="Card Number"
+                type="text"
+                inputmode="numeric"
                 formControlName="cardNumberControl"
                 required
                 [value]="newCardForm.get('cardNumberControl').value | creditCardNumber"

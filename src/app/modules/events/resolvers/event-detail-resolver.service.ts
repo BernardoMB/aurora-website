@@ -49,7 +49,7 @@ export class EventDetailResolver implements Resolve<EventDetailInfo> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<any> | Promise<any> | any {
-    console.log('Runing resolver');
+    // console.log('Runing resolver');
     return this.eventsService.getEvent(route.params.id).pipe(
       mergeMap((event: Event) => {
         const page = new Page({ pageNumber: 1, size: 4 });
