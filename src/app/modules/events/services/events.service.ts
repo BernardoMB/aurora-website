@@ -55,6 +55,10 @@ export class EventsService {
       .pipe(map((res) => new PagedData<Event>(res, page)));
   }
 
+  getUserEvents(): Observable<Event[]> {
+    return this.http.get<Event[]>(`${this.baseUrl}/me`);
+  }
+
   /**
    * Get featured events page.
    *
@@ -149,8 +153,15 @@ export class EventsService {
       .pipe(map((res) => new PagedData<Event>(res, page)));
   }
 
-  subscribeToEvent(eventId: string) {
+  subscribeToEvent(eventId: string): Observable<Event> {
     return this.http.post<Event>(`${this.baseUrl}/${eventId}/subscription`, {});
+  }
+
+  unSubscribeFromEvent(eventId: string): Observable<Event> {
+    return this.http.post<Event>(
+      `${this.baseUrl}/${eventId}/unsubscription`,
+      {},
+    );
   }
 
   /**

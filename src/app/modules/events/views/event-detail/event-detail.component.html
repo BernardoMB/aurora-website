@@ -3,21 +3,28 @@
     <div class="event-jumbotron-overlay">
       <div *ngIf="event" class="event-jumbotron-container">
         <div class="top-container">
+          <div class="date-container">
+            <i class="material-icons">
+              today
+            </i>
+            <div class="dates">
+              <div class="from">
+                <div class="label">From</div>
+                <div class="date">
+                  {{ event.startDate | date: 'dd/MMM/yy' }}
+                </div>
+              </div>
+              <div class="to">
+                <div class="label">To</div>
+                <div class="date">
+                  {{ event.endDate | date: 'dd/MMM/yy' }}
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="organizer-name">
             <mat-icon inline>business</mat-icon>
             {{ event.organizer }}
-          </div>
-          <div class="favorite-container">
-            <!-- <div *ngIf="isFavourite" class="isFavorite">
-              <button mat-icon-button (click)="onUnfavouriteEvent()">
-                <mat-icon>favorite</mat-icon>
-              </button>
-            </div>
-            <div *ngIf="!isFavourite" class="notFavorite">
-              <button mat-icon-button (click)="favouriteEvent()">
-                <mat-icon>favorite_border</mat-icon>
-              </button>
-            </div> -->
           </div>
         </div>
         <div class="middle-container">
@@ -32,18 +39,55 @@
             </div>
           </div>
           <div class="event-name">{{ event.name }}</div>
-          <div class="buttons-container">
-            <button class="enroll-button focus-outline" (click)="(null)">
+          <div class="cant-comment-container" *ngIf="!user">
+            <h2>You must be logged in to subscribe</h2>
+            <button
+              mat-stroked-button
+              (click)="onOpenLoginModal()"
+              color="primary"
+            >
+              Log In
+            </button>
+          </div>
+          <div class="buttons-container" *ngIf="!!user">
+            <button
+              class="enroll-button focus-outline"
+              *ngIf="!isSubscribed"
+              (click)="onSubscribeToEvent()"
+            >
               Subscribe <i class="material-icons">subscriptions</i>
+            </button>
+            <button
+              class="enroll-button alternate focus-outline"
+              *ngIf="isSubscribed"
+              (click)="onUnsubscribeFromEvent()"
+            >
+              Unsubscribe <i class="material-icons">subscriptions</i>
             </button>
           </div>
         </div>
         <div class="bottom-container">
-          <div class="date-container">
-            <mat-icon inline>
-              today
-            </mat-icon>
-            {{ event.startDate | date }} - {{ event.endDate | date }}
+          <div class="subscribed-count">
+            <mat-icon inline>supervisor_account</mat-icon>
+            {{ event.subscribed.length }} <span>User</span
+            ><span *ngIf="event.subscribed.length !== 1">s</span> Subscribed
+          </div>
+          <div class="go-to-google">
+            <a
+              mat-stroked-button
+              color="accent"
+              [href]="
+                'https://www.google.com/maps/@' +
+                event.location.coordinates[1] +
+                ',' +
+                event.location.coordinates[0] +
+                ',18z'
+              "
+              target="_blank"
+            >
+              <mat-icon inline>location_on</mat-icon>
+              View in Google Maps &copy;
+            </a>
           </div>
         </div>
       </div>

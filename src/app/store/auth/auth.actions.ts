@@ -163,7 +163,7 @@ export const pullCourseFromCarts = createAction(
 );
 
 export const subscribeToEvent = createAction(
-  '[Auth] UnsubscribeFromEvent',
+  '[Auth] SubscribeFromEvent',
   props<{ eventId: string }>(),
 );
 export const unsubscribeFromEvent = createAction(
