@@ -47,7 +47,7 @@ export class EventsService {
     console.log('Events service: Getting events page');
     const query = {
       ...page.toPaginationParams(),
-      // sort: { 'createdAt': 'desc' },
+      sort: '+createdAt',
     };
     // return this.getFakeEvents(this.getUrl(query)).pipe(
     return this.http
@@ -66,6 +66,8 @@ export class EventsService {
     console.log('Events service: Getting featured events page');
     const query = {
       ...page.toPaginationParams(),
+      sort: '+createdAt',
+
       // sort: { 'createdAt': 'desc' },
       // TODO: add Featured filtering
       // featured: true,
@@ -112,10 +114,9 @@ export class EventsService {
         ...page.toPaginationParams(),
         latitude,
         longitude,
-        meterRadius: 5000,
+        meterRadius: 200000,
       })),
       switchMap((query) =>
-        // this.getFakeEvents(this.getUrl(query, '/near/location'), true),
         this.http.get<ServerPagedDataDto<Event>>(
           this.getUrl(query, '/near/location'),
         ),
@@ -139,7 +140,7 @@ export class EventsService {
     console.log('Events service: Getting related events page');
     const query = {
       ...page.toPaginationParams(),
-      sort: { 'subscribed.length': 'desc' },
+      sort: '+subscribed.length',
       event,
     };
     // return this.getFakeEvents(this.getUrl(query), true).pipe(
@@ -148,9 +149,8 @@ export class EventsService {
       .pipe(map((res) => new PagedData<Event>(res, page)));
   }
 
-  subscribeToEvent() {
-    // TODO: Implement this method
-    throw new Error('Not Implemented!');
+  subscribeToEvent(eventId: string) {
+    return this.http.post<Event>(`${this.baseUrl}/${eventId}/subscription`, {});
   }
 
   /**
