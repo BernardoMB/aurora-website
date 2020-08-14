@@ -18,6 +18,7 @@ import { toPlainObject } from 'lodash';
 export class EventsComponent implements OnInit {
   isAuthenticatedSubscription: Subscription;
   isAuthenticated: boolean;
+  closeByEventsLoaded = false;
 
   // Sliders configuration
   @ViewChildren(SwiperDirective) swiperDirective: QueryList<SwiperDirective>;
@@ -63,7 +64,7 @@ export class EventsComponent implements OnInit {
 
   // Recent events pagination
   closeByEvents: EventParams[];
-  closeByEventsPage = new Page();
+  closeByEventsPage = new Page({ size: 4 });
 
   // Trending events pagination
   trendingEvents: Event[] = [];
@@ -88,7 +89,7 @@ export class EventsComponent implements OnInit {
     });
     // Request second page
     this.upcomingEventsPage = this.upcomingEventsPage.copyWith({
-      pageNumber: 2,
+      pageNumber,
     });
     this.setFeaturedEventsPage({
       offset: this.upcomingEventsPage.pageNumber,
@@ -102,11 +103,11 @@ export class EventsComponent implements OnInit {
       offset: this.trendingEventsPage.pageNumber,
     });
     // Request Trending events second page
-    this.trendingEventsPage = this.trendingEventsPage.copyWith({
-      pageNumber: 2,
+    this.closeByEventsPage = this.closeByEventsPage.copyWith({
+      pageNumber,
     });
-    this.setTrendingEventsPage({
-      offset: this.trendingEventsPage.pageNumber,
+    this.setCloseByEventsPage({
+      offset: this.closeByEventsPage.pageNumber,
     });
 
     // Recent events pagination
@@ -126,11 +127,7 @@ export class EventsComponent implements OnInit {
     this.recentEventsPage = this.recentEventsPage.copyWith({
       size,
     });
-    this.closeByEventsPage = this.closeByEventsPage.copyWith({
-      size,
-    });
     this.setRecentEventsPage({ offset: this.recentEventsPage.pageNumber });
-    this.setCloseByEventsPage({ offset: this.closeByEventsPage.pageNumber });
 
     this.isAuthenticatedSubscription = this.store
       .select(selectAuthIsAuthenticated)
@@ -239,7 +236,6 @@ export class EventsComponent implements OnInit {
     this.eventsService
       .getEventsPageData(this.recentEventsPage)
       .subscribe((pagedData: PagedData<Event>) => {
-        // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
         this.recentEventsPage = pagedData.page;
         this.recentEvents = pagedData.data.toJS();
       });
@@ -250,13 +246,14 @@ export class EventsComponent implements OnInit {
     this.setCloseByEventsPage({ offset: pageNumber });
   }
   setCloseByEventsPage(pageInfo: { offset: number }) {
+    this.closeByEventsLoaded = false;
     this.closeByEventsPage = this.closeByEventsPage.copyWith({
       pageNumber: pageInfo.offset,
     });
     this.eventsService
       .getNearbyEventsPageData(this.closeByEventsPage)
       .subscribe((pagedData: PagedData<Event>) => {
-        // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
+        this.closeByEventsLoaded = true;
         this.closeByEventsPage = pagedData.page;
         this.closeByEvents = pagedData.data
           .asImmutable()

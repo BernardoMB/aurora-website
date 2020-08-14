@@ -102,7 +102,13 @@
     ></pagination-controls>
   </div>
   <ng-template #closeByEventsLoading>
-    <app-loader class="events-loader"></app-loader>
+    <app-loader class="events-loader" *ngIf="!closeByEventsLoaded"></app-loader>
+    <div *ngIf="closeByEventsLoaded" class="no-events-container">
+      <i class="material-icons">explore</i>
+      <div class="no-events-phrase">
+        There are no available events near you
+      </div>
+    </div>
   </ng-template>
 </section>
 

@@ -1,0 +1,71 @@
+.comments-title {
+  font-family: 'Open Sans', 'Segoe UI', 'Trebuchet MS';
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1b4568;
+}
+
+.comments-list {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.comments-title-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.no-comments-container {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 60px;
+  background-color: #f3f3f3;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  .no-comment-cards-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    i.material-icons {
+      font-size: 80px;
+      color: #e8e9eb;
+      margin-bottom: 20px;
+    }
+    .no-comments-phrase {
+      color: #29303b;
+      text-align: center;
+      font-size: 1.1em;
+    }
+  }
+}
+
+.comments-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 60px;
+  background-color: #f3f3f3;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  max-height: 80vh;
+  overflow-y: auto;
+  app-comment-card:not(:last-of-type) {
+    margin-bottom: 20px;
+  }
+}
+
+.create-comment-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px;
+  .cant-comment-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h2 {
+      color: #1b4568;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+}

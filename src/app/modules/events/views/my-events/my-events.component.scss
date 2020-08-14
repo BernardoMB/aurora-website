@@ -1,0 +1,47 @@
+.lerning-header {
+  display: block;
+  position: relative;
+  background: linear-gradient(#29303b, #29303b, #29303b);
+  .header-container {
+    max-width: 1180px;
+    box-sizing: border-box;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px 0px 20px;
+    color: white;
+    .course-title {
+      margin-left: 2px;
+      font-size: 30px;
+      padding: 20px 0px;
+      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+    }
+  }
+}
+
+.events-section {
+  display: block;
+  position: relative;
+  .events-container {
+    padding: 40px;
+    max-width: 1180px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+    margin: auto;
+
+    .events-cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      .event-card {
+        margin: 10px;
+        flex-grow: 1;
+      }
+    }
+  }
+}

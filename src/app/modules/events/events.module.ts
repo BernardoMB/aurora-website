@@ -20,6 +20,8 @@ import {
 import { EventCardComponent } from './components/event-card/event-card.component';
 import { EventSwiperCardComponent } from './components/event-swiper-card/event-swiper-card.component';
 import { EventDetailResolver } from './resolvers/event-detail-resolver.service';
+import { MyEventsComponent } from './views/my-events/my-events.component';
+import { MyEventsResolver } from './resolvers/my-events.resolver.service';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   /* direction: 'horizontal',
@@ -33,6 +35,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     SubscriptionsComponent,
     EventCardComponent,
     EventSwiperCardComponent,
+    MyEventsComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +49,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   ],
   providers: [
     EventDetailResolver,
+    MyEventsResolver,
     {
       provide: SWIPER_CONFIG,
       useValue: DEFAULT_SWIPER_CONFIG,

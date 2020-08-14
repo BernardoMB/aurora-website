@@ -6,11 +6,19 @@
     <span class="day">{{ day }}</span
     ><span class="month">{{ month }}</span>
   </div>
-  <!-- <div class="past-time"></div> -->
+  <div class="captions">
+    <div class="caption">
+      <span class="count">{{ article.likes.length }}</span>
+      Likes
+    </div>
+    <div class="caption">
+      <span class="count">{{ article.comments.length }}</span>
+      Comments
+    </div>
+  </div>
   <div class="fig-caption">
     <h3>{{ article.title }}</h3>
     <p>{{ article.subtitle }}</p>
-    <button class="focus-outline">Read More</button>
   </div>
   <a class="focus-outline" tabindex="0" [routerLink]="['./', article.id]"></a>
 </div>
