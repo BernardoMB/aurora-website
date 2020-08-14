@@ -80,6 +80,38 @@ export class NewsService {
     return this.http.post<Article>(url, dto);
   }
 
+  likeArticle(articleId: string, hasDislike = false): Observable<Article> {
+    console.log('News service: Like article');
+    const url = `${this.baseUrl}/${articleId}/like`;
+    const likeArticle = this.http.post<Article>(url, {});
+    if (hasDislike) {
+      return this.undoLike(articleId).pipe(switchMap(() => likeArticle));
+    }
+    return likeArticle;
+  }
+
+  dislikeArticle(articleId: string, hasLike = false): Observable<Article> {
+    console.log('News service: Dislike article');
+    const url = `${this.baseUrl}/${articleId}/dislike`;
+    const dislikeArticle = this.http.post<Article>(url, {});
+    if (hasLike) {
+      return this.undoLike(articleId).pipe(switchMap(() => dislikeArticle));
+    }
+    return dislikeArticle;
+  }
+
+  undoLike(articleId: string): Observable<Article> {
+    console.log('News service: Undolike article');
+    const url = `${this.baseUrl}/${articleId}/undo-like`;
+    return this.http.delete<Article>(url);
+  }
+
+  undoDislike(articleId: string): Observable<Article> {
+    console.log('News service: Undodislike article');
+    const url = `${this.baseUrl}/${articleId}/undo-dislike`;
+    return this.http.delete<Article>(url);
+  }
+
   /**
    * @param  {any={}} query - the query to be passed to the [query-string library]{@link https://github.com/sindresorhus/query-string#readme}
    * @param  {} subUrlSegment='' - the suburl segment to concatenate to the baseUrl

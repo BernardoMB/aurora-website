@@ -6,13 +6,26 @@
   width: 100%;
   min-width: 220px;
   max-width: 310px;
+  border-radius: 5px;
   background-color: #ffffff;
-  box-shadow: rgba(0, 0, 0, 0.2) 8px 6px 20px 0px;
-  // Font
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    .date {
+      transform: rotateY(90deg);
+      transition-delay: 0s;
+    }
+  }
   text-align: left;
   font-family: 'Raleway', Arial, sans-serif;
   color: #000000;
   font-size: 16px;
+  img {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
   &:hover {
     img {
       transform: scale(1.1);
@@ -79,11 +92,19 @@
   .captions {
     display: flex;
     justify-content: flex-end;
-    font-size: 0.86em;
-    color: #1b4568;
     padding: 20px 20px 0 0;
+    .caption {
+      display: flex;
+      align-items: center;
+    }
+    i {
+      color: rgba(0, 0, 0, 0.5);
+      font-size: 18px;
+      margin-left: 5px;
+    }
     .count {
-      margin-left: 10px;
+      color: #1b4568;
+      margin-left: 15px;
       font-size: 1.2em;
       font-weight: bold;
     }
