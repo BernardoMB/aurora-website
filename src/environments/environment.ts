@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // host: 'http://localhost:3000',
-  host: 'https://mainserver.azurewebsites.net/',
+  host: 'http://localhost:3000',
+  // host: 'https://mainserver.azurewebsites.net',
   apiVersion: 'v1',
 };
 

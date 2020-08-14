@@ -38,7 +38,12 @@
 </section>
 <div class="divider"></div>
 <div class="article-comments">
-  <app-article-detail-comments
+  <app-article-comments
     [comments]="article?.comments"
-  ></app-article-detail-comments>
+    [user]="user$ | async"
+    (openLoginModal)="onOpenLoginModal()"
+    (commentSubmited)="onCommentSubmited($event)"
+    (openUpdateCommentModal)="onOpenUpdateCommentModal($event)"
+  >
+  </app-article-comments>
 </div>

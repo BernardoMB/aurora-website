@@ -2,6 +2,7 @@
 
 .card-container {
   position: relative;
+  margin-bottom: 20px;
   width: 100%;
   min-width: 220px;
   max-width: 310px;
@@ -75,9 +76,24 @@
     transform: rotateY(-90deg);
     transition-delay: 0s;
   }
+  .captions {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 0.86em;
+    color: #1b4568;
+    padding: 20px 20px 0 0;
+    .count {
+      margin-left: 10px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  }
   .fig-caption {
-    padding: 25px;
+    padding: 15px 25px 25px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+
     h3,
     p {
       margin: 0;
@@ -93,7 +109,8 @@
     }
     p {
       font-size: 0.8em;
-      margin-bottom: 20px;
+      min-height: 40px;
+      margin-bottom: 10px;
       line-height: 1.6em;
     }
     button {
