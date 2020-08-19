@@ -1,0 +1,21 @@
+<section class="community-jumbotron-section">
+  <div class="jumbotron-wrapper">
+    <div class="jumbotron-wrapper-overlay">
+      <div class="jumbotron-conatiner">
+        <div class="jumbotron-texts">
+          <div class="jumbotron-title">Community</div>
+          <div class="jumbotron-description">
+            View the latest community activity in Invest Naija &copy; and
+            discover what the buzz is all about.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="chronology-section">
+  <app-community-card
+    *ngFor="let reaction of reactions"
+    [reaction]="reaction"
+  ></app-community-card>
+</div>

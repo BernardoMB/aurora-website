@@ -1,0 +1,30 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image">
+      <i class="material-icons">{{ icon }}</i>
+    </div>
+    <mat-card-title>{{ title }}</mat-card-title>
+    <mat-card-subtitle>{{
+      reaction.createdAt | date: 'dd/MM/yy HH:mm'
+    }}</mat-card-subtitle>
+  </mat-card-header>
+  <div [ngSwitch]="reaction.type">
+    <app-course-community-card
+      *ngSwitchCase="reactionTypes.Review"
+      [reaction]="reaction"
+    ></app-course-community-card>
+    <app-article-community-card
+      *ngSwitchCase="reactionTypes.Like"
+      [reaction]="reaction"
+    ></app-article-community-card>
+    <app-article-community-card
+      *ngSwitchCase="reactionTypes.Dislike"
+      [reaction]="reaction"
+    ></app-article-community-card>
+    <app-article-community-card
+      *ngSwitchCase="reactionTypes.Comment"
+      [reaction]="reaction"
+    ></app-article-community-card>
+    <div *ngSwitchDefault></div>
+  </div>
+</mat-card>

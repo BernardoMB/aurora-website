@@ -1,0 +1,44 @@
+mat-card-actions {
+  margin-bottom: 0;
+}
+::ng-deep .mat-card-image:first-child {
+  margin-top: 0;
+}
+.wrapper {
+  display: relative;
+  .date-container {
+    position: absolute;
+    top: 108px;
+    right: 20px;
+    .date {
+      background-color: #357d24;
+      color: #fff;
+      min-height: 60px;
+      min-width: 60px;
+      text-align: center;
+      transition-delay: 0.2s;
+      font-size: 22px;
+      font-weight: 700;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      text-transform: uppercase;
+      span {
+        display: block;
+        line-height: 30px;
+      }
+      .month {
+        font-size: 16px;
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+  .title-container {
+    position: absolute;
+    top: 108px;
+    left: 20px;
+    width: 220px;
+    color: white;
+    font-weight: bold;
+    font-size: 1.4em;
+    font-family: 'Nunito', sans-serif;
+  }
+}

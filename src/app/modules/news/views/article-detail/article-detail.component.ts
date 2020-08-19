@@ -94,7 +94,10 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
       .commentOnArticle(this.article.id, dto)
       .pipe(untilDestroyed(this))
       .subscribe((updatedArticle) => {
-        this.article = updatedArticle;
+        this.article = {
+          ...this.article,
+          comments: [...updatedArticle.comments],
+        };
       });
   }
 
@@ -116,7 +119,11 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
         );
     this.subscriptions.push(
       operation.subscribe((updatedArticle) => {
-        this.article = updatedArticle;
+        this.article = {
+          ...this.article,
+          likes: [...updatedArticle.likes],
+          dislikes: [...updatedArticle.dislikes],
+        };
       }),
     );
   }
@@ -141,7 +148,11 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
           );
     this.subscriptions.push(
       operation.subscribe((updatedArticle) => {
-        this.article = updatedArticle;
+        this.article = {
+          ...this.article,
+          likes: [...updatedArticle.likes],
+          dislikes: [...updatedArticle.dislikes],
+        };
       }),
     );
   }

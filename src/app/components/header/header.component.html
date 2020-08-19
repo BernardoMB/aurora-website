@@ -92,9 +92,10 @@
           <li class="nav-link">
             <a
               class="focus-outline"
-              [routerLink]="['/home']"
-              fragment="contact"
-              [class.active]="currentSection === 'contact'"
+              routerLink="/community"
+              fragment="community"
+              routerLinkActive="active"
+              (click)="currentSection = undefined"
               >Community</a
             >
           </li>

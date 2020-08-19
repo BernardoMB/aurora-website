@@ -25,6 +25,7 @@ import { SignupFormComponent } from './components/signup-form/signup-form.compon
 import { MainComponent } from './components/main/main.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ToastrModule } from 'ngx-toastr';
+
 import { VerifyEmailModalComponent } from './components/verify-email-modal/verify-email-modal.component';
 import { EmailVerifiedActionModalComponent } from './components/email-verified-action-modal/email-verified-action-modal.component';
 import { LoaderInterceptorService } from './services/loader.interceptor';
@@ -46,7 +47,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     ResertEmaiModalComponent,
     ForgotEmailSentComponent,
     ResetPasswordComponent,
-    MainComponent
+    MainComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,14 +59,15 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     SharedModule,
     AppRoutingModule, // <-- Routing modules should be imported in the correct order.c
     RootStoreModule,
-    ToastrModule.forRoot({ // ToastrModule added
+    ToastrModule.forRoot({
+      // ToastrModule added
       // Global options (any individual option can be a global option)
       // disableTimeOut: true
       progressBar: true,
       closeButton: true,
       enableHtml: true,
-      tapToDismiss: false
-    })
+      tapToDismiss: false,
+    }),
   ],
   providers: [
     AuthGuard,
@@ -89,15 +91,15 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
       // Loading bar
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderInterceptorService,
-      multi: true
-    }
+      multi: true,
+    },
   ],
   entryComponents: [
     LoginFormComponent,
     SignupFormComponent,
     VerifyEmailModalComponent,
     EmailVerifiedActionModalComponent,
-    ResertEmaiModalComponent
+    ResertEmaiModalComponent,
   ],
   bootstrap: [AppComponent],
 })

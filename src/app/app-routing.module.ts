@@ -41,6 +41,13 @@ export const appRoutes: Routes = [
           ),
       },
       {
+        path: 'community',
+        loadChildren: () =>
+          import('./modules/community/community.module').then(
+            (mod) => mod.CommunityModule,
+          ),
+      },
+      {
         path: 'profile',
         loadChildren: () =>
           import('./modules/profile/profile.module').then(

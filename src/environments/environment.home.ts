@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  host: 'http://192.168.0.10:3000',
-  apiVersion: 'v1'
+  host: 'http://169.254.179.98:3000',
+  apiVersion: 'v1',
 };
