@@ -1,0 +1,66 @@
+.community-jumbotron-section {
+  overflow: hidden;
+  .jumbotron-wrapper {
+    background-size: cover;
+    resize: both;
+    background-position-x: center;
+    background-position-y: center;
+    background-image: url('/assets/img/landing/smiling-woman-leaning-on-table.jpg');
+    .jumbotron-wrapper-overlay {
+      background: -moz-linear-gradient(
+        left,
+        rgba(19, 76, 0, 0.4) 0%,
+        rgba(76, 35, 0, 0.4) 100%
+      ); // FF3.6-15
+      background: -webkit-linear-gradient(
+        left,
+        rgba(19, 76, 0, 0.4) 0%,
+        rgba(76, 35, 0, 0.4) 100%
+      ); // Chrome10-25,Safari5.1-6
+      background: linear-gradient(
+        to right,
+        rgba(19, 76, 0, 0.4) 0%,
+        rgba(76, 35, 0, 0.4) 100%
+      ); // W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#66134c00', endColorstr='#664c2300',GradientType=1 ); // IE6-9
+
+      .jumbotron-conatiner {
+        background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 280px;
+        .jumbotron-texts {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          font-family: 'Open Sans';
+          color: white;
+          margin: 20px;
+          .jumbotron-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 300;
+            line-height: 1.1;
+          }
+          .jumbotron-description {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 18px;
+            font-weight: lighter;
+            line-height: 1.1;
+          }
+        }
+      }
+    }
+  }
+}
+
+.chronology-section {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}

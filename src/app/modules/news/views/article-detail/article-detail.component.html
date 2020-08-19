@@ -15,6 +15,50 @@
       {{ article?.createdAt | date }}
     </div>
     <div class="description-sub-title">{{ article?.subtitle }}</div>
+    <div class="social-btns" *ngIf="!user">
+      <div class="social-btns-inner-wrapper">
+        <div class="social-btn-wrapper" [class.active]="userDislikes">
+          <div class="icon">
+            <i class="material-icons">thumb_down</i>
+          </div>
+          <div class="count">
+            {{ article.dislikes?.length }}
+          </div>
+        </div>
+        <div class="social-btn-wrapper" [class.active]="userLikes">
+          <div class="icon"><i class="material-icons">thumb_up</i></div>
+          <div class="count">
+            {{ article.likes?.length }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="social-btns" *ngIf="!!user">
+      <div class="social-btns-inner-wrapper">
+        <button
+          class="social-btn-wrapper"
+          [class.active]="userDislikes"
+          (click)="onDislikeArticle()"
+        >
+          <div class="icon"><i class="material-icons">thumb_down</i></div>
+          <div class="count">
+            {{ article.dislikes?.length }}
+          </div>
+        </button>
+        <button
+          class="social-btn-wrapper"
+          [class.active]="userLikes"
+          (click)="onLikeArticle()"
+        >
+          <div class="icon">
+            <i class="material-icons">thumb_up</i>
+          </div>
+          <div class="count">
+            {{ article.likes?.length }}
+          </div>
+        </button>
+      </div>
+    </div>
     <div
       class="description-content"
       *ngIf="!isExternal"
@@ -38,7 +82,12 @@
 </section>
 <div class="divider"></div>
 <div class="article-comments">
-  <app-article-detail-comments
+  <app-article-comments
     [comments]="article?.comments"
-  ></app-article-detail-comments>
+    [user]="user"
+    (openLoginModal)="onOpenLoginModal()"
+    (commentSubmited)="onCommentSubmited($event)"
+    (openUpdateCommentModal)="onOpenUpdateCommentModal($event)"
+  >
+  </app-article-comments>
 </div>

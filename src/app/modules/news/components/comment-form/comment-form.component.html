@@ -1,0 +1,28 @@
+<div class="comment-form-wrapper">
+  <div class="user-container">
+    <h4>Commenting as {{ user?.name }} {{ user?.lastName }}</h4>
+  </div>
+  <form [formGroup]="commentForm">
+    <mat-form-field appearance="outline">
+      <mat-label>Comment</mat-label>
+      <textarea formControlName="text" rows="4" matInput></textarea>
+      <mat-hint align="end"
+        >{{
+          !!commentForm.get('text').value
+            ? commentForm.get('text').value?.length
+            : 0
+        }}/{{ maxLength }}</mat-hint
+      >
+    </mat-form-field>
+    <div class="form-actions">
+      <button
+        class="submit-button"
+        type="submit"
+        (click)="onSubmit()"
+        [disabled]="!commentForm.valid"
+      >
+        Add comment
+      </button>
+    </div>
+  </form>
+</div>

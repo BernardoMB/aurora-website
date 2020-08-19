@@ -13,13 +13,15 @@
       class="logotype focus-outline"
       src="/assets/img/logos/logotype.svg"
       alt="Invest Naija Logotype"
-      routerLink="/" (click)="mobileNavBarOpen = false"
+      routerLink="/"
+      (click)="mobileNavBarOpen = false"
     />
     <img
       class="logomark focus-outline"
       src="/assets/img/logos/logomark.svg"
       alt="Invest Naija Logotype"
-      routerLink="/" (click)="mobileNavBarOpen = false"
+      routerLink="/"
+      (click)="mobileNavBarOpen = false"
     />
     <div class="header-left">
       <button
@@ -90,9 +92,10 @@
           <li class="nav-link">
             <a
               class="focus-outline"
-              [routerLink]="['/home']"
-              fragment="contact"
-              [class.active]="currentSection === 'contact'"
+              routerLink="/community"
+              fragment="community"
+              routerLinkActive="active"
+              (click)="currentSection = undefined"
               >Community</a
             >
           </li>
@@ -221,6 +224,14 @@
               <div class="menu-separator"></div>
               <div
                 class="menu-section focus-outline"
+                tabindex="0"
+                [routerLink]="['/events/my-events']"
+              >
+                My Events
+              </div>
+              <div class="menu-separator"></div>
+              <div
+                class="menu-section focus-outline"
                 (click)="onHelp()"
                 tabindex="0"
                 (keyup.enter)="onHelp()"
@@ -345,6 +356,14 @@
                 [routerLink]="['/courses/my-courses']"
               >
                 My Courses
+              </div>
+              <div class="menu-separator"></div>
+              <div
+                class="menu-section focus-outline"
+                tabindex="0"
+                [routerLink]="['/events/my-events']"
+              >
+                My Events
               </div>
               <div class="menu-separator"></div>
               <div
@@ -700,15 +719,20 @@
   </div>
 </div> -->
 
-<div *ngIf="mobileNavBarOpen && !user" class="mobile-navigation-links" [@inOutAnimation1]>
+<div
+  *ngIf="mobileNavBarOpen && !user"
+  class="mobile-navigation-links"
+  [@inOutAnimation1]
+>
   <ul class="mobilenav-links">
     <li class="mobilenav-link">
       <a
         class="focus-outline"
         routerLink="/home"
         routerLinkActive="active"
-        [routerLinkActiveOptions]="{exact: true}"
-        (click)="handleMobileLinkClick()">
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="handleMobileLinkClick()"
+      >
         Home
       </a>
     </li>
@@ -728,7 +752,8 @@
         class="focus-outline"
         routerLink="/courses"
         routerLinkActive="active"
-        (click)="handleMobileLinkClick()">
+        (click)="handleMobileLinkClick()"
+      >
         Courses
       </a>
     </li>
@@ -748,7 +773,8 @@
         routerLink="/events"
         routerLinkActive="active"
         (click)="handleMobileLinkClick()"
-      >Events</a>
+        >Events</a
+      >
     </li>
     <li class="mobilenav-link">
       <a
@@ -761,31 +787,28 @@
     </li>
     <div *ngIf="!user" class="divider"></div>
     <li *ngIf="!user" class="mobilenav-link">
-      <a
-        class="focus-outline"
-        (click)="onLogin()"
-        >Log In</a
-      >
+      <a class="focus-outline" (click)="onLogin()">Log In</a>
     </li>
     <li *ngIf="!user" class="mobilenav-link">
-      <a
-        class="focus-outline"
-        (click)="onRegister()"
-        >Sign Up</a
-      >
+      <a class="focus-outline" (click)="onRegister()">Sign Up</a>
     </li>
   </ul>
 </div>
 
-<div *ngIf="mobileNavBarOpen && user" class="mobile-navigation-links" [@inOutAnimation2]>
+<div
+  *ngIf="mobileNavBarOpen && user"
+  class="mobile-navigation-links"
+  [@inOutAnimation2]
+>
   <ul class="mobilenav-links">
     <li class="mobilenav-link">
       <a
         class="focus-outline"
         routerLink="/home"
         routerLinkActive="active"
-        [routerLinkActiveOptions]="{exact: true}"
-        (click)="handleMobileLinkClick()">
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="handleMobileLinkClick()"
+      >
         Home
       </a>
     </li>
@@ -805,7 +828,8 @@
         class="focus-outline"
         routerLink="/courses"
         routerLinkActive="active"
-        (click)="handleMobileLinkClick()">
+        (click)="handleMobileLinkClick()"
+      >
         Courses
       </a>
     </li>
@@ -825,7 +849,8 @@
         routerLink="/events"
         routerLinkActive="active"
         (click)="handleMobileLinkClick()"
-      >Events</a>
+        >Events</a
+      >
     </li>
     <li class="mobilenav-link">
       <a
@@ -843,11 +868,17 @@
   <div class="warning-label-container">
     <mat-icon>report_problem</mat-icon>
     <div class="texts">
-      <div class="resend-phrase">Please check your email address and activate your account.</div>
+      <div class="resend-phrase">
+        Please check your email address and activate your account.
+      </div>
       <div class="resend-label" (click)="resendEmail()">Resend email</div>
     </div>
   </div>
-  <button mat-mini-fab aria-label="close-warning" (click)="dismissEmailWarning()">
+  <button
+    mat-mini-fab
+    aria-label="close-warning"
+    (click)="dismissEmailWarning()"
+  >
     <mat-icon>clear</mat-icon>
   </button>
 </div>

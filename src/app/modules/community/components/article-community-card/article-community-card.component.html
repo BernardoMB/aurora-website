@@ -1,0 +1,18 @@
+<div class="wrapper" fxLayout="column" *ngIf="!!article">
+  <img mat-card-image [src]="article?.imgUrl" alt="Photo of a Shiba Inu" />
+  <div class="date-container">
+    <div class="date">
+      <span class="day">{{ article.createdAt | date: 'dd' }}</span
+      ><span class="month">{{ article.createdAt | date: 'MMM' }}</span>
+    </div>
+  </div>
+  <div class="title-container">
+    {{ article.title }}
+  </div>
+  <mat-card-content>
+    {{ article?.subtitle }}
+  </mat-card-content>
+  <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+    <a mat-button [routerLink]="['..', 'news', article?.id]">Go to article</a>
+  </mat-card-actions>
+</div>
