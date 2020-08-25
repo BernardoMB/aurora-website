@@ -31,6 +31,12 @@
       justify-content: center;
     }
     .article-content {
+      ::ng-deep {
+        * {
+          max-width: 870px;
+          word-break: break-all;
+        }
+      }
     }
     @media screen and (max-width: 500px) {
       padding: 60px 20px;
