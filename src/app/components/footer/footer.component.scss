@@ -117,7 +117,7 @@
   border-top: 1px solid gainsboro;
   .kanto-studio-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: 10px;
     color: dimgray;
     max-width: 1440px;
@@ -129,16 +129,17 @@
     a {
       text-decoration: none;
       cursor: pointer;
-      .kanto {
+      .kanto, .chd {
         height: 13px;
         margin-bottom: -2px;
-        margin-right: 3px;
+        margin-right: 6px;
+        margin-left: 6px;
       }
     }
-    ks-link {
+    .ks-link {
       color: #30b9db;
     }
-    chd-link {
+    .chd-link {
       color: #b56f3a;
     }
   }

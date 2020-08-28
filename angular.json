@@ -60,11 +60,11 @@
                 }
               ]
             },
-            "home": {
+            "local": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.home.ts"
+                  "with": "src/environments/environment.local.ts"
                 }
               ]
             }
@@ -84,8 +84,8 @@
             "production": {
               "browserTarget": "aurora-website:build:production"
             },
-            "home": {
-              "browserTarget": "aurora-website:build:home"
+            "local": {
+              "browserTarget": "aurora-website:build:local"
             }
           }
         },

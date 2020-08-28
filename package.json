@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "serve-devices": "ng serve --host 0.0.0.0 --disable-host-check --port 4203 --configuration home",
+    "serve-devices": "ng serve --host 0.0.0.0 --disable-host-check --port 4203 --configuration local",
     "build": "ng build",
     "build:prod": "ng build --prod --extract-css=false",
     "test": "ng test",
