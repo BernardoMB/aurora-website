@@ -4,7 +4,11 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
+<<<<<<< HEAD
 - azure-pipelines
+=======
+- release/*
+>>>>>>> 57ff18cf1dd2dcebe0191b8009855a4d7cc47cf9
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -18,7 +22,11 @@ steps:
 - script: |
     npm install -g @angular/cli
     npm install
+<<<<<<< HEAD
     ng build --prod
+=======
+    ng build --configuration staging
+>>>>>>> 57ff18cf1dd2dcebe0191b8009855a4d7cc47cf9
   displayName: 'npm install and build'
 
 - task: AzureRmWebAppDeployment@4
@@ -26,5 +34,9 @@ steps:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Aurora (0d9feb65-4be9-47d9-ba2c-17a716d5e681)'
     appType: 'webApp'
+<<<<<<< HEAD
     WebAppName: 'aurora-website-test-delete'
+=======
+    WebAppName: 'aurora-website-staging'
+>>>>>>> 57ff18cf1dd2dcebe0191b8009855a4d7cc47cf9
     packageForLinux: 'dist/aurora-website'
