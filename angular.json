@@ -60,6 +60,34 @@
                 }
               ]
             },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "100mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "100mb"
+                }
+              ]
+            },
             "local": {
               "fileReplacements": [
                 {
@@ -83,6 +111,9 @@
           "configurations": {
             "production": {
               "browserTarget": "aurora-website:build:production"
+            },
+            "staging": {
+              "browserTarget": "aurora-website:build:staging"
             },
             "local": {
               "browserTarget": "aurora-website:build:local"

@@ -7,6 +7,7 @@
     "serve-devices": "ng serve --host 0.0.0.0 --disable-host-check --port 4203 --configuration local",
     "build": "ng build",
     "build:prod": "ng build --prod --extract-css=false",
+    "build:staging": "ng build --configuration staging --extract-css=false",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
