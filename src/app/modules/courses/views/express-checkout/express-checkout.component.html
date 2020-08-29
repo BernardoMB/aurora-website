@@ -9,72 +9,97 @@
   <div class="cart-container">
     <div class="shopping-container">
       <div class="payment-info">
-        <!-- <div style="background-color: red; width: 20px; height: 20px;"></div> -->
         <div class="title">Payment Info</div>
         <div class="billing-address-menu">
-            <mat-form-field appearance="outline">
-              <mat-label>Billing Address</mat-label>
-              <!-- TODO: add formControlName attribute to the following mat-select -->
-              <mat-select>
-                <mat-option style="color: gray;">Select an option</mat-option>
-                <mat-option *ngFor="let country of coursesService.countries"  [value]="country">{{country}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="payment-options">
-          <mat-checkbox class="checkbox" color="primary" [checked]="showPaymentForm" (change)="toggleForm()">
+          <mat-form-field appearance="outline">
+            <mat-label>Billing Country</mat-label>
+            <mat-select [formControl]="countryControl" [errorStateMatcher]="matcher" required>
+              <mat-option style="color: gray;">Select an option</mat-option>
+              <mat-option *ngFor="let country of coursesService.countries"  [value]="country.countryCode">{{country.countryName}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="countryControl.errors && countryControl.errors.required">Billing country is required</mat-error>
+          </mat-form-field>
+      </div>
+        <!-- <div class="payment-options">
+          <mat-checkbox class="checkbox" color="primary" [checked]="showNewCardPaymentForm" (change)="toggleNewCardForm()">
             <div>Credit or Debit Card</div>
-            <img class="mastercard" src="assets/img/payment/card-mc.svg" alt="MasterCard">
-            <img class="visa" src="assets/img/payment/card-visa.svg" alt="VISA">
-            <img class="amex" src="assets/img/payment/card-amex.svg" alt="AMEX">
+            <div class="logos">
+              <img class="mastercard" src="assets/img/payment/card-mc.svg" alt="MasterCard">
+              <img class="visa" src="assets/img/payment/card-visa.svg" alt="VISA">
+              <img class="amex" src="assets/img/payment/card-amex.svg" alt="AMEX">
+            </div>
           </mat-checkbox>
-          <mat-radio-group aria-label="Select an option">
-            <mat-radio-button *ngFor="let card of [1,2,3]" class="radio-button card" color="primary" (change)="cardSelected(card)" [value]="card">
+          <mat-checkbox class="checkbox" color="primary" [checked]="showBankPaymentForm" (change)="toggleBankForm()" style="margin-top: 5px;">
+            <div>Bank account</div>
+            <mat-icon>account_balance</mat-icon>
+          </mat-checkbox>
+          <mat-radio-group aria-label="Select an option" [value]="selectedUserCard">
+            <mat-radio-button *ngFor="let card of userCards" class="radio-button card" color="primary" (change)="cardSelected(card)" [value]="card">
               Option {{card}}
             </mat-radio-button>
           </mat-radio-group>
-        </div>
-        <div *ngIf="showPaymentForm" class="form-container">
-          <form>
+        </div> -->
+        <div *ngIf="showNewCardPaymentForm" class="form-container">
+          <form class="new-card-form" [formGroup]="newCardForm">
             <mat-form-field appearance="outline">
               <mat-label>Name on Card</mat-label>
-              <!-- TODO: add formControlName attribute to the following input -->
-              <input matInput type="text" placeholder="Name on Card">
+              <input matInput type="text" placeholder="Name on Card" formControlName="nameOnCardControl" required>
+              <mat-error *ngIf="newCardForm.controls.nameOnCardControl.errors && newCardForm.controls.nameOnCardControl.errors.required">Required</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Card Number</mat-label>
-              <!-- TODO: add formControlName attribute to the following input -->
-              <input matInput type="number" placeholder="Card Number">
-              <mat-icon style="color: gainsboro;" matSuffix>lock</mat-icon>
+              <input
+                matInput
+                type="text"
+                inputmode="numeric"
+                placeholder="Card Number"
+                formControlName="cardNumberControl"
+                required
+                [value]="newCardForm.get('cardNumberControl').value | creditCardNumber"
+              >
+              <mat-error *ngIf="newCardForm.controls.cardNumberControl.errors && newCardForm.controls.cardNumberControl.errors.notAValidCardNumber">Please enter a valid credit card number</mat-error>
+              <mat-error *ngIf="newCardForm.controls.cardNumberControl.errors && newCardForm.controls.cardNumberControl.errors.required">Required</mat-error>
+              <mat-icon matSuffix>lock</mat-icon>
             </mat-form-field>
             <div class="fields-container">
-              <mat-form-field appearance="outline" style="margin-right: 10px; flex-grow: 1;">
+              <mat-form-field appearance="outline">
                 <mat-label>Expiry Month</mat-label>
-                <!-- TODO: add formControlName attribute to the following mat-select -->
-                <mat-select>
+                <mat-select formControlName="expiryMonthControl" required>
                   <mat-option style="color: gray;">MM</mat-option>
-                  <mat-option *ngFor="let month of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="month">{{month}}</mat-option>
+                  <mat-option *ngFor="let month of ['01','02','03','04','05','06','07','08','09','10','11','12']" [value]="month">{{month}}</mat-option>
                 </mat-select>
+                <mat-error *ngIf="newCardForm.controls.expiryMonthControl.errors && newCardForm.controls.expiryMonthControl.errors.required">Required</mat-error>
               </mat-form-field>
-              <mat-form-field appearance="outline" style="margin-right: 10px; flex-grow: 1;">
+              <mat-form-field appearance="outline">
                 <mat-label>Expiry Year</mat-label>
-                <!-- TODO: add formControlName attribute to the following mat-select -->
-                <mat-select>
+                <mat-select formControlName="expiryYearControl" required>
                   <mat-option style="color: gray;">YYYY</mat-option>
                   <mat-option *ngFor="let year of expirationYears" [value]="year">{{year}}</mat-option>
                 </mat-select>
+                <mat-error *ngIf="newCardForm.controls.expiryYearControl.errors && newCardForm.controls.expiryYearControl.errors.required">Required</mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline">
-                <mat-label>Security Code</mat-label>
-                <!-- TODO: add formControlName attribute to the following input -->
-                <input matInput type="number" placeholder="Security Code">
-                <mat-icon style="color: gainsboro;" matSuffix>help</mat-icon>
+                <mat-label>CVV</mat-label>
+                <input matInput type="number" placeholder="CVV" formControlName="securityCodeControl">
+                <mat-error *ngIf="newCardForm.controls.securityCodeControl.errors && newCardForm.controls.securityCodeControl.errors['notAValidNumber']">Please enter a valid security code (CVV)</mat-error>
+                <mat-icon matSuffix>help</mat-icon>
               </mat-form-field>
-              <!-- TODO: add formControlName attribute to the following radio button -->
             </div>
-            <mat-checkbox class="checkbox" color="primary" [checked]="true" (change)="toggleRememberCard()">
+            <!-- <mat-checkbox class="checkbox" color="primary" [checked]="true" (change)="toggleRememberCard()" formControlName="rememberCardControl">
               <div>Remember this card</div>
-            </mat-checkbox>
+            </mat-checkbox> -->
+          </form>
+          <div class="secure-connection-container">
+            <mat-icon>lock</mat-icon>
+            <div class="labels-container">
+              <div>Secure</div>
+              <div>Connection</div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="showBankPaymentForm" class="form-container">
+          <form>
+            Bank account payment form
           </form>
           <div class="secure-connection-container">
             <mat-icon>lock</mat-icon>
@@ -91,7 +116,9 @@
         <div *ngIf="total !== subtotal" class="subtotal">
           {{ subtotal | currency: 'NGN':'symbol-narrow' }}
         </div>
-        <button class="checkout-button focus-outline" (click)="onCompletePayment()">Complete Payment</button>
+        <button class="checkout-button focus-outline" (click)="onCompletePayment()">
+          Complete Payment
+        </button>
       </div>
     </div>
     <div class="order-summary">
@@ -191,3 +218,7 @@
     </div>
   </div>
 </section>
+
+<div class="spinner-overlay" *ngIf="showProgressSpinner">
+  <mat-spinner aria-label="progress indicator"></mat-spinner>
+</div>

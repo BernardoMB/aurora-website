@@ -53,6 +53,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   cartSubscription: Subscription;
   cart: Course[];
   dialogConfig = new MatDialogConfig();
+  paymentMethod = 'NEW_CARD'; // Default payment method
+  showBankPaymentForm = false;
+  showNewCardPaymentForm = true;
+  expirationYears: number[];
+  rememberCard = true;
+  selectedUserCard;
   get subtotal() {
     let subtotal = 0;
     if (this.cart) {
@@ -73,14 +79,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
     return 0;
   }
-  paymentMethod = 'NEW_CARD'; // Default payment method
-  showBankPaymentForm = false;
-  showNewCardPaymentForm = true;
-  expirationYears: number[];
-  rememberCard = true;
-  selectedUserCard;
 
-  countryControl = new FormControl('', [Validators.required]);
+  countryControl = new FormControl('NG', [Validators.required]);
   newCardForm = new FormGroup({
     nameOnCardControl: new FormControl('', [Validators.required]),
     cardNumberControl: new FormControl('', [
@@ -147,6 +147,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     firstNameControl: new FormControl('', [Validators.required]),
     lastNameControl: new FormControl('', [Validators.required])
   }, /* {
+    // ? Overall form validation needed?
     validators: (control: FormGroup): ValidationErrors | null => {
       // control is the form group
       const isValid = true;
@@ -180,7 +181,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.dialogConfig.panelClass = 'custom-mat-dialog-container';
     this.dialogConfig.backdropClass = 'custom-modal-backdrop';
     this.dialogConfig.maxHeight = '80vh';
-    // Form form errors
+    // Form errors
     this.matcher = new MyErrorStateMatcher();
   }
 
@@ -247,7 +248,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo,
       );
       //#endregion
@@ -268,7 +269,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -289,7 +290,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -310,7 +311,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -330,7 +331,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -351,7 +352,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -372,7 +373,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -393,7 +394,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -414,7 +415,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -435,7 +436,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -456,7 +457,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -477,7 +478,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -498,7 +499,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -519,7 +520,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -540,7 +541,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -561,7 +562,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -582,7 +583,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -603,7 +604,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -624,7 +625,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -645,7 +646,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
@@ -666,57 +667,17 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.user.id,
         courseIds,
         this.paymentMethod,
-        'MX', // TODO: should be iso format
+        'NG',
         paymentInfo
       ); */
       //#endregion
 
-      // * Real case obtain datra from form
-      // TODO: Uncomment code below for production
-      /* if (this.paymentMethod === 'NEW_CARD') {
-        if (this.newCardForm.valid && this.countryControl.valid) {
-          console.log('TODO: Dispatch purchase user cart action');
-          const courseIds = this.cart.map((course: Course) => course.id);
-          this.purchaseCart(
-            this.user.id,
-            courseIds,
-            this.paymentMethod,
-            this.countryControl.value, // TODO: should be iso format
-            {
-              nameOnCard: this.newCardForm.get('nameOnCardControl').value.toString().trim(),
-              cardNumber: this.newCardForm.get('cardNumberControl').value.toString().trim().replace(/\s/g, ''),
-              expiryMonth: this.newCardForm.get('expiryMonthControl').value.toString().trim(),
-              expiryYear: this.newCardForm.get('expiryYearControl').value.toString().trim().slice(-2),
-              securityCode: this.newCardForm.get('securityCodeControl').value.toString().trim(),
-              rememberCard: this.newCardForm.get('rememberCardControl').value
-            }
-          );
-        } else {
-          alert('Payment form is invalid');
-        }
-      } else if (this.paymentMethod === 'USER_CARD') {
-        // User is paying with a card he has previously used
-        alert('Implement this payment method');
-        if (this.cardSelected && this.countryControl.valid) {
-          console.log('TODO: Dispatch purchase user cart action');
-        }
-      } else if (this.paymentMethod === 'BANK_ACCOUNT') {
-        // User is paying using a bank account
-        if (this.bankAccountForm.valid && this.countryControl.valid) {
-          console.log('TODO: Dispatch purchase user cart action');
-        } else {
-          alert('Bank account form is not valid');
-        }
-      } else {
-        alert('No payment method selected');
-      } */
     });
     this.socketConnection.on('payment_success', () => {
       this.iframeDialogRef.close();
       this.user.cart = [];
       this.succesfullPurchase(this.user);
       this.socketConnection.disconnect();
-      // TODO: Stop progress spinner
       this.showProgressSpinner = false;
     });
     this.socketConnection.on('payment_failure', (message) => {
@@ -729,12 +690,16 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       };
       this.paymentErrorModal.open(PaymentErrorModalComponent, dialogConfig);
       this.socketConnection.disconnect();
-      // TODO: Stop progress spinner
       this.showProgressSpinner = false;
     });
   }
 
-  // TODO: Use this aproach
+  /**
+   * Function called when user hits complete payment button.
+   * Use this approach for production environment
+   *
+   * @memberof CheckoutComponent
+   */
   onCompletePayment() {
     this.countryControl.markAsTouched();
     this.newCardForm.markAsTouched();
@@ -787,7 +752,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           this.showProgressSpinner = false;
         });
       } else {
-
+        alert('Invalid payment data. Please review payment form');
       }
     } else if (this.paymentMethod === 'USER_CARD') {
       // User is paying with a card he has previously used
@@ -811,7 +776,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     console.log('CheckoutComponent: purchaseCart function called');
     this.authService.purchaseCart(userId, courses, paymentMethod, country, paymentInfo).pipe(
       catchError((error) => {
-        // Determine type of error (user Aurora API returned data):
+        // Determine type of error (use Aurora API returned data):
         console.error('Chinga tu madre! Ocurrio un error.');
 
         //#region Card requires PIN authentication
@@ -912,7 +877,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             }
           };
           this.paymentErrorModal.open(PaymentErrorModalComponent, dialogConfig);
-          // TODO: Stop progress spinner
           this.showProgressSpinner = false;
         }
         //#endregion
@@ -925,6 +889,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.succesfullPurchase(user);
       }
     });
+  }
+
+  succesfullPurchase(user: User) {
+    this.toastrService.success('Successful purchase.', 'Enjoy!');
+    this.store.dispatch(purchaseCartSuccess(user));
+    this.router.navigate(['courses/my-courses']);
   }
 
   toggleRememberCard() {
@@ -969,11 +939,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   // * Utility functions
-  succesfullPurchase(user: User) {
-    this.toastrService.success('Successful purchase.', 'Enjoy!');
-    this.store.dispatch(purchaseCartSuccess(user));
-    this.router.navigate(['courses/my-courses']);
-  }
+
   pene() {
     console.log('Control', this.countryControl);
     console.log('Form valid', this.newCardForm.valid);

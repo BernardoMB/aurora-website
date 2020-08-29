@@ -9,6 +9,7 @@ export class LessonResolver implements Resolve<any> {
   constructor(private lessonsService: LessonsService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
+    console.log('Lesson resolver fetching lesson');
     return this.lessonsService.getLesson(route.params.id);
   }
 }

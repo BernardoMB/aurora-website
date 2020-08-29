@@ -1,0 +1,16 @@
+<section class="lerning-header">
+  <div class="header-container">
+    <div class="course-title">My Events</div>
+  </div>
+</section>
+<div *ngIf="events">
+  <section *ngIf="events.length > 0" class="events-section">
+    <div class="events-container">
+      <div class="events-cards-container">
+        <div class="event-card" *ngFor="let event of events">
+          <app-event-card [event]="event"></app-event-card>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

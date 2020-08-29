@@ -1,0 +1,16 @@
+<div class="wrapper" fxLayout="column" *ngIf="!!course">
+  <img mat-card-image [src]="course?.imgUrl" alt="Photo of a Shiba Inu" />
+  <mat-card-content>
+    {{ course?.description }}
+  </mat-card-content>
+  <div class="title-container">
+    {{ course.name }}
+  </div>
+  <div *ngIf="course.rating" class="rating-container">
+    <i class="material-icons">star</i>
+    <div>{{ course.rating | number: '1.0-1' }}</div>
+  </div>
+  <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+    <a mat-button [routerLink]="['..', 'courses', course?.id]">Go to course</a>
+  </mat-card-actions>
+</div>

@@ -9,7 +9,17 @@ import { Course } from '../../../../shared/models/course.model';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { LoginFormComponent } from '../../../../components/login-form/login-form.component';
 import { SignupFormComponent } from '../../../../components/signup-form/signup-form.component';
-import { addCourseToCart, pushCourseToCarts, addCourseToFavorites, removeCourseFromFavorites, addCourseToWishlist, removeCourseFromWishlist, addCourseToArchive, removeCourseFromArchive } from '../../../../store/auth/auth.actions';
+import {
+  addCourseToCart,
+  pushCourseToCarts,
+  addCourseToFavorites,
+  removeCourseFromFavorites,
+  addCourseToWishlist,
+  removeCourseFromWishlist,
+  addCourseToArchive,
+  removeCourseFromArchive,
+  enrollCourse
+} from '../../../../store/auth/auth.actions';
 import { CookieService } from 'ngx-cookie-service';
 import * as html2canvas from 'html2canvas';
 import { ReviewModalComponent } from '../../components/review-modal/review-modal.component';
@@ -20,6 +30,8 @@ import * as faker from 'faker';
 import { IReview } from '../../interfaces/IReview';
 import { Review } from '../../../../shared/models/review.model';
 import { EmailWarningModalComponent } from '../../components/email-warning-modal/email-warning-modal.component';
+import { PaymentErrorModalComponent } from '../../components/payment-error-modal/payment-error-modal.component';
+import { WarningModalComponent } from '../../../../shared/components/warning-modal/warning-modal.component';
 
 @Component({
   selector: 'app-course-detail',
@@ -27,6 +39,7 @@ import { EmailWarningModalComponent } from '../../components/email-warning-modal
   styleUrls: ['./course-detail.component.scss'],
 })
 export class CourseDetailComponent implements OnInit, OnDestroy {
+  dialogConfig = new MatDialogConfig();
   routeFragmentSubscription: Subscription;
   routeDataSubscription: Subscription;
   isFavorite = false;
@@ -46,14 +59,15 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   canAddToWishlist = true;
   showArchiveButton = false;
   canArchiveCourse = true;
-  get enrolled() {
+  enrolled = false;
+  /* get enrolled() {
     if (this.user && this.course) {
       if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
         return true;
       }
     }
     return false;
-  }
+  } */
 
   // #region Reviews infinite scroll
   @ViewChild(CdkVirtualScrollViewport)
@@ -75,9 +89,10 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     private signupDialog: MatDialog,
     private reviewDialog: MatDialog,
     private emailWarningDialog: MatDialog,
+    private enrollDialog: MatDialog,
     private cookieService: CookieService,
     private coursesService: CoursesService
-  ) {
+    ) {
     // Scroll to top
     this.router.events.subscribe(event => {
       // console.log('Navigation event:', event);
@@ -85,7 +100,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         // Prevent scrolling if changed tab.
         const fragment = event.url.split('#')[1];
         if (fragment) {
-          console.log('FRAGMENT', fragment);
+          // console.log('Fragment', fragment);
           return;
         }
         // console.log('Scrolling to top');
@@ -106,7 +121,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         }
       }),
       scan((acc, batch) => {
-        return { ...acc, ...batch };
+        return { ...acc, ...(batch as any) };
       }, {})
     );
     this.infinite = batchMap.pipe(map(v => Object.values(v)));
@@ -126,6 +141,13 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       }
     });
     // #endregion
+
+    //#region Modals configuration
+    this.dialogConfig.autoFocus = true;
+    this.dialogConfig.panelClass = 'custom-mat-dialog-container';
+    this.dialogConfig.backdropClass = 'custom-modal-backdrop';
+    this.dialogConfig.maxHeight = '80vh';
+    //#endregion
 
     // Set the current tab getting rote fragment if any
     this.routeFragmentSubscription = this.route.fragment.subscribe((fragment: string) => {
@@ -167,13 +189,14 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         this.showCertificateTab = true;
 
         // Determine if user is enrolled
-        const userId = this.course.enrolledUsers.find((id: string) => id === this.user.id);
-        if (userId) {
+        const enrolled = user.purchasedCourses.filter((purchasedCourse) => purchasedCourse.course === this.course.id).length > 0 ? true : false;
+        if (enrolled) {
           // User is enrolled
+          this.enrolled = true;
           this.showWishlistButton = false;
           this.showArchiveButton = true;
 
-          // Determine user progress
+          // Get user progress
           const purchasedCourse = user.purchasedCourses.find((el: IPurchasedCourse) => el.course === this.course.id);
           if (purchasedCourse) {
             const userProgress = purchasedCourse.progress;
@@ -257,13 +280,16 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       this.store.dispatch(addCourseToCart({ courseId, userId: this.user.id }));
     } else {
       let courseIds: string[] = [];
-      const cartCookie: string = this.cookieService.get('cartCookie');
+      // const cartCookie: string = this.cookieService.get('cartCookie');
+      const cartCookie: string = localStorage.getItem('cartCookie');
       if (cartCookie) {
         courseIds = JSON.parse(cartCookie);
       }
       courseIds.push(this.course.id);
-      this.cookieService.delete('cartCookie');
-      this.cookieService.set('cartCookie', JSON.stringify(courseIds));
+      // this.cookieService.delete('cartCookie');
+      localStorage.removeItem('cartCookie');
+      // this.cookieService.set('cartCookie', JSON.stringify(courseIds));
+      localStorage.setItem('cartCookie', JSON.stringify(courseIds));
       this.store.dispatch(pushCourseToCarts({ course: this.course }));
     }
   }
@@ -275,27 +301,16 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         console.log(`CourseDetailComponent: Authenticated state is true, Redirecting to /courses/cart/checkout/express/course/${this.course.id}`);
         this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
       } else {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.autoFocus = true;
-        dialogConfig.panelClass = 'custom-mat-dialog-container';
-        dialogConfig.backdropClass = 'custom-modal-backdrop';
-        dialogConfig.maxHeight = '80vh';
-        let emailWarningDialogRef;
-        emailWarningDialogRef = this.emailWarningDialog.open(EmailWarningModalComponent, dialogConfig);
+        this.emailWarningDialog.open(EmailWarningModalComponent, this.dialogConfig);
       }
     } else {
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.autoFocus = true;
-      dialogConfig.panelClass = 'custom-mat-dialog-container';
-      dialogConfig.backdropClass = 'custom-modal-backdrop';
-      dialogConfig.maxHeight = '80vh';
       let loginDialogRef;
       let signupDialogRef;
-      loginDialogRef = this.loginDialog.open(LoginFormComponent, dialogConfig);
+      loginDialogRef = this.loginDialog.open(LoginFormComponent, this.dialogConfig);
       loginDialogRef.afterClosed().subscribe(result => {
         if (result) {
           if (result.showSignUpModalOnClose) {
-            signupDialogRef = this.signupDialog.open(SignupFormComponent, dialogConfig);
+            signupDialogRef = this.signupDialog.open(SignupFormComponent, this.dialogConfig);
           }
           if (this.isAuthenticated) {
             // Check if user owns this course
@@ -313,13 +328,46 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
                 console.log(`CourseDetailComponent: Authenticated state is true, Redirecting to /courses/cart/checkout/express/course/${this.course.id}`);
                 this.router.navigate([`/courses/cart/checkout/express/course/${this.course.id}`]);
               } else  {
-                const dialogConfig = new MatDialogConfig();
-                dialogConfig.autoFocus = true;
-                dialogConfig.panelClass = 'custom-mat-dialog-container';
-                dialogConfig.backdropClass = 'custom-modal-backdrop';
-                dialogConfig.maxHeight = '80vh';
-                let emailWarningDialogRef;
-                emailWarningDialogRef = this.emailWarningDialog.open(EmailWarningModalComponent, dialogConfig);
+                this.emailWarningDialog.open(EmailWarningModalComponent, this.dialogConfig);
+              }
+            }
+          }
+        }
+      });
+    }
+  }
+
+  onEnroll() {
+    if (this.isAuthenticated) {
+      if (this.user.emailVerified) {
+        this.store.dispatch(enrollCourse({ userId: this.user.id, courseId: this.course.id }));
+      } else {
+        this.emailWarningDialog.open(EmailWarningModalComponent, this.dialogConfig);
+      }
+    } else {
+      let loginDialogRef;
+      let signupDialogRef;
+      loginDialogRef = this.loginDialog.open(LoginFormComponent, this.dialogConfig);
+      loginDialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          if (result.showSignUpModalOnClose) {
+            signupDialogRef = this.signupDialog.open(SignupFormComponent, this.dialogConfig);
+          }
+          if (this.isAuthenticated) {
+            // Check if user owns this course
+            let index = 0;
+            let found = false;
+            while (index < this.user.courses.length && !found) {
+                if (this.user.courses[index] === this.course.id) {
+                    found = true;
+                }
+                index++;
+            }
+            if (!found) {
+              if (this.user.emailVerified) {
+                this.store.dispatch(enrollCourse({ userId: this.user.id, courseId: this.course.id }));
+              } else  {
+                this.emailWarningDialog.open(EmailWarningModalComponent, this.dialogConfig);
               }
             }
           }
@@ -346,6 +394,17 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     if (this.enrolled) {
       console.log(`CourseDetailComponent: Navigating to lesson/${lessonId}`);
       this.router.navigate(['./learn/lesson', lessonId], { relativeTo: this.route });
+    } else {
+      this.enrollDialog.open(WarningModalComponent, {
+        autoFocus: true,
+        panelClass: 'custom-mat-dialog-container',
+        backdropClass: 'custom-modal-backdrop',
+        maxHeight: '80vh',
+        data: {
+          title: 'Enroll now',
+          message: 'Enroll in the course to view this lesson'
+        }
+      });
     }
   }
 

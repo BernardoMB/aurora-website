@@ -15,6 +15,9 @@ export class User {
   purchasedCourses?: IPurchasedCourse[];
   cart?: Course[];
   courses?: string[];
+  likedArticles?: string[];
+  eventSubscriptions?: string[];
+  dislikedArticles?: string[];
   favoriteCourses?: string[];
   wishList?: string[];
   archivedCourses?: string[];

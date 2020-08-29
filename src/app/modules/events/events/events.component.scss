@@ -302,3 +302,23 @@
     width: 220px;
   }
 }
+
+.no-events-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 60px;
+  background-color: #f3f3f3;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  i.material-icons {
+    font-size: 80px;
+    color: #e8e9eb;
+    margin-bottom: 20px;
+  }
+  .no-events-phrase {
+    color: #29303b;
+    text-align: center;
+    font-size: 1.1em;
+  }
+}

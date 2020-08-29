@@ -59,7 +59,8 @@ export class LearningGuard implements CanActivate {
         })
       );
     }
-    const userToken = this.cookieService.get('userToken');
+    // const userToken = this.cookieService.get('userToken');
+    const userToken = localStorage.getItem('userToken');
     if (userToken) {
       return this.authService.checkCourseAccess(courseId).pipe(
         map((res: { canAccess: boolean }) => {

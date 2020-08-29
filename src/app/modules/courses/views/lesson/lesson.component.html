@@ -1,13 +1,18 @@
 <div *ngIf="lesson.type === 'VIDEO'" class="player-container">
   <div class="player-wrapper">
-    <app-amp-player
-      #player
+    <!-- <app-amp-player
       [src]="lesson.adaptiveStreamingUrl"
       [autoplay]="false"
       [token]="decryptionKeyToken"
       [width]="'auto'"
       [height]="'100%'"
-    ></app-amp-player>
+    ></app-amp-player> -->
+    <video id="azuremediaplayer" class="azuremediaplayer amp-default-skin amp-big-play-centered" tabindex="0" controls>
+      <p class="amp-no-js">
+        To view this video please enable JavaScript, and consider upgrading to a web
+        browser that supports HTML5 video
+      </p>
+    </video>
   </div>
 </div>
 

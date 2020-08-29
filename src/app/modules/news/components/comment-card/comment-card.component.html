@@ -1,0 +1,45 @@
+<div class="comment-card-wrapper">
+  <div class="comment-card-container">
+    <div class="comment-type-container">
+      <!-- <div class="profile-pic-container" [style.backgroundImage]="'url(' + comment.user.profilePicMiniUrl + ')'"></div> -->
+    </div>
+
+    <div class="comment-details-container">
+      <div class="comment-header">
+        <div class="left">
+          <div class="comment-title-container">
+            <div class="left">
+              <div class="comment-title">
+                {{ comment.user.username }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="right">
+          <div class="comment-date">
+            <div class="right">
+              {{ comment.updatedAt | date: 'hh:mm' }}
+            </div>
+            <div class="left">
+              <div class="day">
+                {{ comment.updatedAt | date: 'dd' }}
+              </div>
+              <div class="month">
+                {{ comment.updatedAt | date: 'MMM' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="description-container">
+        <div class="description">{{ comment.text }}</div>
+      </div>
+      <div class="action-buttons">
+        <button *ngIf="editable" mat-icon-button (click)="update.next()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

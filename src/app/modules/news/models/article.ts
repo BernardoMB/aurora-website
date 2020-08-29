@@ -1,12 +1,15 @@
+import { Like } from './like';
+import { Comment } from './comment';
+import { ArticleType } from './enums/article-type';
 export class Article {
-  comments: any[];
-  likes: any[];
-  dislikes: any[];
+  comments: Comment[];
+  likes: Like[];
+  dislikes: Like[];
   title: string;
   subtitle: string;
   description: string;
   externalUrl?: string;
-  type: string;
+  type: ArticleType;
   data: string;
   readTime: string;
   imgUrl: string;

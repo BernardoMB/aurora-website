@@ -42,9 +42,10 @@
           </div>
           <div class="course-name">{{ course.name }}</div>
           <div class="buttons-container">
-            <button *ngIf="!enrolled && !showGoToCart" class="enroll-button focus-outline" (click)="onAddToCart(course.id)">Add to cart <i class="material-icons">add_shopping_cart</i></button>
+            <button *ngIf="!enrolled && !showGoToCart && course.price !== 0" class="enroll-button focus-outline" (click)="onAddToCart(course.id)">Add to cart <i class="material-icons">add_shopping_cart</i></button>
             <button *ngIf="!enrolled && showGoToCart" class="enroll-button focus-outline" [routerLink]="['/courses/cart']">Go to cart <i class="material-icons">shopping_cart</i></button>
-            <button *ngIf="!enrolled" class="buy-now-button focus-outline" (click)="onBuyNow()">Buy now</button>
+            <button *ngIf="!enrolled && course.price !== 0" class="buy-now-button focus-outline" (click)="onBuyNow()">Buy now</button>
+            <button *ngIf="!enrolled && course.price === 0" class="enroll-button focus-outline" (click)="onEnroll()">Enroll now</button>
             <button *ngIf="enrolled" class="enroll-button focus-outline" tabindex="0" [routerLink]="['./learn']">Learn Now <i class="material-icons">arrow_forward_ios</i></button>
           </div>
         </div>
@@ -53,8 +54,14 @@
             <div *ngIf="course.price === 0" class="free-container">
               <div class="free">Free</div>
             </div>
-            <div *ngIf="course.price > 0" class="price">
+            <div *ngIf="course.price > 0 && course.discount === 0" class="price">
               {{ course.price | currency: 'NGN':'symbol-narrow' }}
+            </div>
+            <div *ngIf="course.price > 0 && course.discount > 0" class="price crossed">
+              {{ course.price | currency: 'NGN':'symbol-narrow' }}
+            </div>
+            <div *ngIf="course.price > 0 && course.discount > 0" class="price">
+              {{ course.price * (1 - course.discount) | currency: 'NGN':'symbol-narrow' }}
             </div>
           </div>
           <div *ngIf="course.rating" class="rating-container">

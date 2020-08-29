@@ -10,6 +10,7 @@ const routes: Routes = [
   {
     path: ':id',
     resolve: { article: ArticleDetailResolver },
+    data: { animation: 'courses' },
     component: ArticleDetailComponent,
   },
 ];

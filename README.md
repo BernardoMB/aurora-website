@@ -36,22 +36,7 @@ To see how cart functionality works see Bernardo's OneNote notes
 
 ## Pagination
 
-Library ued: https://www.npmjs.com/package/ngx-pagination
-
-## TODOS:
-
-- Delete unused certificate images inside Azure assets directory
-- Implement safe navigation. Here is an example: 
-  ```html
-  <h2>{{contact?.name}}</h2>
-  <dl>
-    <dt>Phone</dt>
-    <dd>{{contact?.phone}}</dd>
-    <dt>Website</dt>
-    <dd>{{contact?.website}}</dd>
-  </dl>
-  ```
-- Route guards should not grant access if they found a user token. founding a user token is not enough. Guards should validate the found token to see if it is valid and then decide to grant access. That is now possible because observables of true or false can be returned in the canActivate function.
+Library used: https://www.npmjs.com/package/ngx-pagination
 
 ## Swiper JS
 

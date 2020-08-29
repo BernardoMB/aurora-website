@@ -25,10 +25,10 @@ export class CheckoutResolver implements Resolve<any> {
         this.user = user;
       }
     });
-    console.log('Resolver requesting checkout info');
+    // console.log('Resolver requesting checkout info');
     const availableBanks = this.paymentsService.getAvailableBanks();
     const userCards = this.authService.getUserCards();
-    return forkJoin(availableBanks, userCards).pipe(
+    return forkJoin([availableBanks, userCards]).pipe(
       map((allResponses) => {
         const checkoutInfo = {
           availableBanks: allResponses[0],
