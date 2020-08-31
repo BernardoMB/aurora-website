@@ -152,8 +152,9 @@ export class CoursesComponent implements OnInit, OnDestroy {
       .subscribe((categories: Category[]) => {
         // TODO: Add featured courses into the model and incorporate functionality properly into thee front-end.
         if (categories) {
-          this.topCategories = categories.slice(0, 5);
-          this.featuredCategories = categories.slice(4, 12);
+          /* this.topCategories = categories.slice(0, 5);
+          this.featuredCategories = categories.slice(4, 12); */
+          this.featuredCategories = categories;
         }
       });
 
