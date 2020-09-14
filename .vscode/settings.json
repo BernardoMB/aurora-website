@@ -14,5 +14,6 @@
   "json.schemaDownload.enable": true,
 
   // Associate schemas to JSON files in the current project
-  "json.schemas": []
+  "json.schemas": [],
+  "workbench.colorTheme": "Pink Cat Boo"
 }
