@@ -2,6 +2,7 @@
 $color2: #01888e;
 $color1: #f47c25;
 $loadingbar-height: 3px;
+$loadingbar-height-mobile: 4px;
 $glow-thickness: 0px;
 
 .hidden {
@@ -22,6 +23,9 @@ $glow-thickness: 0px;
   -webkit-box-shadow: 0px 0px $glow-thickness 0px $color1;
   -moz-box-shadow: 0px 0px $glow-thickness 0px $color1;
   box-shadow: 0px 0px $glow-thickness 0px $color1;
+  @media screen and (max-width: 425px) {
+    height: $loadingbar-height-mobile;
+  }
 }
 .loader:before {
   display: block;
@@ -32,6 +36,9 @@ $glow-thickness: 0px;
   height: $loadingbar-height;
   background-color: $color2;
   animation: loading 2s linear infinite;
+  @media screen and (max-width: 425px) {
+    height: $loadingbar-height-mobile;
+  }
 }
 @keyframes loading {
   from {left: -200px; width: 30%;}

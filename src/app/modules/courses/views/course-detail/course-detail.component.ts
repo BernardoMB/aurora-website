@@ -39,12 +39,12 @@ import { WarningModalComponent } from '../../../../shared/components/warning-mod
   styleUrls: ['./course-detail.component.scss'],
 })
 export class CourseDetailComponent implements OnInit, OnDestroy {
-  dialogConfig = new MatDialogConfig();
+  selectedTabIndex = 0;
+  showCertificateTab = false;
   routeFragmentSubscription: Subscription;
+  dialogConfig = new MatDialogConfig();
   routeDataSubscription: Subscription;
   isFavorite = false;
-  currentTab = 'about';
-  showCertificateTab = false;
   userSubscription: Subscription;
   user: User;
   isAuthenticatedSubscription: Subscription;
@@ -60,14 +60,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   showArchiveButton = false;
   canArchiveCourse = true;
   enrolled = false;
-  /* get enrolled() {
-    if (this.user && this.course) {
-      if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
-        return true;
-      }
-    }
-    return false;
-  } */
+
+  // Tabs old logic
+  // currentTab = 'about';
 
   // #region Reviews infinite scroll
   @ViewChild(CdkVirtualScrollViewport)
@@ -109,7 +104,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       return;
     });
 
-    // #region Reviews infinite scroll
+    //#region Reviews infinite scroll
     const batchMap = this.offset.pipe(
       throttleTime(500),
       mergeMap((value: { courseId: string, offset: number }) => {
@@ -152,13 +147,33 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     // Set the current tab getting rote fragment if any
     this.routeFragmentSubscription = this.route.fragment.subscribe((fragment: string) => {
       if (fragment) {
-        this.currentTab = fragment;
+        switch (fragment) {
+          case 'about':
+            this.selectedTabIndex = 0;
+            break;
+          case 'lessons':
+            this.selectedTabIndex = 1;
+            break;
+          case 'reviews':
+            this.selectedTabIndex = 2;
+            break;
+          case 'certificate':
+            this.selectedTabIndex = 3;
+            break;
+          default:
+            this.selectedTabIndex = 0;
+            break;
+        }
+
+        // Tabs old logic (instead of the switch)
+        // this.currentTab = fragment;
       }
     });
   }
 
   ngOnInit() {
     this.routeDataSubscription = this.route.data.subscribe((data) => {
+      console.log('Resolved data', {data});
       if (data.courseDetailInfo) {
         const courseDetailInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } = data.courseDetailInfo;
         this.course = courseDetailInfo.course;
@@ -273,6 +288,11 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     this.routeFragmentSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
     this.isAuthenticatedSubscription.unsubscribe();
+  }
+
+  onTabNavigation(tabIndex) {
+    const fragments = ['about', 'lessons', 'reviews', 'certificate'];
+    this.router.navigate(['./'], { relativeTo: this.route, fragment: fragments[tabIndex] });
   }
 
   onAddToCart(courseId: string) {

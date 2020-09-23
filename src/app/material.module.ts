@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   // Add material components the application uses
@@ -28,6 +29,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatCheckboxModule,
     MatProgressSpinnerModule,
     MatCardModule,
+    MatTabsModule
   ],
   exports: [
     MatMenuModule,
@@ -43,6 +45,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatCheckboxModule,
     MatProgressSpinnerModule,
     MatCardModule,
+    MatTabsModule
   ],
 })
 export class MaterialModule {}

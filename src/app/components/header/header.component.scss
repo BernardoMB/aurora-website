@@ -3,6 +3,7 @@ $categories-label-break: 900px;
 $break-header: 800px;
 $break-registration-buttons: 450px;
 $focus-border: 2px;
+$navigation-indicator-bottom-position: -21.5px;
 
 .static-header {
   // Static header:
@@ -144,7 +145,7 @@ $focus-border: 2px;
                   z-index: -1;
                   width: 100%;
                   height: 3px;
-                  bottom: -22px;
+                  bottom: $navigation-indicator-bottom-position;
                   background-color: #eb7e00;
                 }
               }
@@ -513,7 +514,7 @@ $focus-border: 2px;
                   z-index: -1;
                   width: 100%;
                   height: 3px;
-                  bottom: -22px;
+                  bottom: $navigation-indicator-bottom-position;
                   background-color: #eb7e00;
                 }
               }
