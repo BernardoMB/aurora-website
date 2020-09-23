@@ -26,7 +26,6 @@ import { ReviewModalComponent } from '../../components/review-modal/review-modal
 import { CoursesService } from '../../services/courses.service';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { throttleTime, mergeMap, tap, map, scan } from 'rxjs/operators';
-import * as faker from 'faker';
 import { IReview } from '../../interfaces/IReview';
 import { Review } from '../../../../shared/models/review.model';
 import { EmailWarningModalComponent } from '../../components/email-warning-modal/email-warning-modal.component';
