@@ -274,10 +274,10 @@
     </div>
   </mat-tab>
   <mat-tab label="Content">
-    <div class="tab tab-lessons">
-      <div class="lessons-title">{{ course.lessons.length }} lessons</div>
+    <div class="tab tab-content">
+      <div class="lessons-title">{{ course.courseObjects.length }} lessons</div>
       <div class="lessons-container nice-container-scroll">
-        <div
+        <!-- <div
           class="lesson-card"
           *ngFor="let lesson of course.lessons; let i = index"
         >
@@ -287,8 +287,8 @@
             [enrolled]="enrolled"
             (navigateToLesson)="navigateToLesson($event)"
           ></app-lesson-card>
-        </div>
-        <div
+        </div -->
+        <!-- <div
           class="lesson-card-small"
           *ngFor="let lesson of course.lessons; let i = index"
         >
@@ -314,7 +314,49 @@
               <i *ngIf="enrolled" class="material-icons focus-outline" tabindex="0" (click)="navigateToLesson(lesson.id)">navigate_next</i>
             </div>
           </div>
-        </div>
+        </div> -->
+
+
+        <!-- <div *ngFor="let courseObject of course.courseObjects; let i = index;">
+          <div *ngIf="courseObject.type === 'LESSON'">
+            <div>{{i}}</div>
+            <div>{{courseObject.courseObject.title}}</div>
+            <div>{{courseObject.courseObject.description}}</div>
+          </div>
+          <div *ngIf="courseObject.type === 'QUIZ'">
+            <div>{{i}}</div>
+            <div>{{courseObject.courseObject.title}}</div>
+            <div>{{courseObject.courseObject.description}}</div>
+            <div>{{courseObject.courseObject.assesments.length}}</div>
+          </div>
+        </div> -->
+
+        <mat-accordion class="example-headers-align" multi>
+          <mat-expansion-panel #panel class="expansion-panel" hideToggle *ngFor="let object of course.courseObjects; let i = index;">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="panel-title">
+                <div class="object-number" *ngIf="!panel.expanded">{{1 + i}}. </div>
+                <div class="title" *ngIf="!panel.expanded">{{ object.type === 'LESSON' ? object.courseObject.title : 'Quiz: ' + object.courseObject.title }}</div>
+                <button mat-flat-button class="view-button" *ngIf="panel.expanded && object.type === 'LESSON'" (click)="onViewCourseObject(object)">View lesson</button>
+                <button mat-flat-button class="view-button" *ngIf="panel.expanded && object.type === 'QUIZ'" (click)="onViewCourseObject(object)">Take quiz</button>
+                <i *ngIf="panel.expanded" class="material-icons">
+                  {{ object.courseObject.type === 'VIDEO' ? 'insert_drive_file' : object.courseObject.type === 'DOCUMENT' ? 'subject' : object.type === 'QUIZ' ? 'assignment' : 'play_circle_outline' }}
+                </i>
+              </mat-panel-title>
+              <mat-panel-description class="panel-description">
+                <div class="duration">
+                  {{ object.courseObject.type === 'VIDEO' ? (object.courseObject.fileDuration | readTime) : object.type === 'QUIZ' ? object.courseObject.assesments.length + ' assmt': (object.courseObject.readTime | readTime) }}
+                  <i class="material-icons">
+                    {{ object.courseObject.type === 'VIDEO' ? 'menu_book' : object.type === 'QUIZ' ? 'short_text' : 'access_time' }}
+                  </i>
+                </div>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="topic">{{1 + i}}. {{ object.type === 'LESSON' ? object.courseObject.title : 'Quiz: ' + object.courseObject.title }}</div>
+            <div>{{object.courseObject.description}}</div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
       </div>
     </div>
   </mat-tab>
