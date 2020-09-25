@@ -27,7 +27,9 @@ import { QuizResolver } from './resolvers/quiz-resolver.service';
 
 /* courses/  */
 const routes: Routes = [
-  { path: '', component: CoursesComponent, data: { animation: 'courses' } },
+  { path: '', component: CoursesComponent,
+    data: { animation: 'courses' }
+  },
   { path: 'all', component: AllCoursesComponent },
   {
     path: 'cart/checkout/express/course/:courseId',

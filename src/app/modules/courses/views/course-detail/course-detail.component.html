@@ -13,20 +13,15 @@
             </div>
           </div>
           <div class="favorite-container">
-            <div *ngIf="showArchiveButton && canArchiveCourse" class="wishlist-button" (click)="onArchiveCourse()">Archive course</div>
-            <div *ngIf="showArchiveButton && !canArchiveCourse" class="wishlist-button" (click)="onUnarchiveCourse()">Unarchive course</div>
+            <button mat-flat-button *ngIf="showArchiveButton && canArchiveCourse" class="wishlist-button" (click)="onArchiveCourse()">Archive course</button>
+            <button mat-flat-button *ngIf="showArchiveButton && !canArchiveCourse" class="wishlist-button" (click)="onUnarchiveCourse()">Unarchive course</button>
             <div *ngIf="showWishlistButton && canAddToWishlist" class="wishlist-button" (click)="onAddToWishlist()">Add to wishlist</div>
             <div *ngIf="showWishlistButton && !canAddToWishlist" class="wishlist-button" (click)="onRemoveFromWishlist()">Remove from wishlist</div>
-            <div *ngIf="isFavorite" class="isFavorite">
-              <i class="material-icons" (click)="onUnfavoriteCourse()">
-                favorite
+            <button mat-icon-button class="favorite-toggler-button">
+              <i class="material-icons" (click)="isFavorite ? onUnfavoriteCourse() : onFavoriteCourse()">
+                {{ isFavorite ? 'favorite' : 'favorite_border' }}
               </i>
-            </div>
-            <div *ngIf="!isFavorite" class="notFavorite">
-              <i class="material-icons" (click)="onFavoriteCourse()">
-                favorite_border
-              </i>
-            </div>
+            </button>
           </div>
         </div>
         <div class="middle-container">
@@ -46,7 +41,7 @@
             <button *ngIf="!enrolled && showGoToCart" class="enroll-button focus-outline" [routerLink]="['/courses/cart']">Go to cart <i class="material-icons">shopping_cart</i></button>
             <button *ngIf="!enrolled && course.price !== 0" class="buy-now-button focus-outline" (click)="onBuyNow()">Buy now</button>
             <button *ngIf="!enrolled && course.price === 0" class="enroll-button focus-outline" (click)="onEnroll()">Enroll now</button>
-            <button *ngIf="enrolled" class="enroll-button focus-outline" tabindex="0" [routerLink]="['./learn']">Learn Now <i class="material-icons">arrow_forward_ios</i></button>
+            <button mat-flat-button *ngIf="enrolled" class="enroll-button focus-outline" tabindex="0" (click)="onGoToLearningView()">Learn Now <i class="material-icons">arrow_forward_ios</i></button>
           </div>
         </div>
         <div class="bottom-container">
@@ -74,198 +69,6 @@
   </div>
 </section>
 
-<!-- Old tabs -->
-
-<!-- <section class="tabs-section">
-  <div class="tabs-container">
-    <a
-      class="tab-selector focus-outline"
-      [class.active]="currentTab === 'about'"
-      (click)="currentTab = 'about'"
-      tabindex="0"
-      [routerLink]="['./']"
-      fragment="about"
-    >
-      About
-    </a>
-    <a
-      class="tab-selector focus-outline"
-      [class.active]="currentTab === 'lessons'"
-      (click)="currentTab = 'lessons'"
-      tabindex="0"
-      [routerLink]="['./']"
-      fragment="lessons"
-    >
-      Lessons
-    </a>
-    <a
-      class="tab-selector focus-outline"
-      [class.active]="currentTab === 'reviews'"
-      (click)="currentTab = 'reviews'"
-      tabindex="0"
-      [routerLink]="['./']"
-      fragment="reviews"
-    >
-      Reviews
-    </a>
-    <a
-      *ngIf="showCertificateTab"
-      class="tab-selector focus-outline"
-      [class.active]="currentTab === 'certificate'"
-      (click)="currentTab = 'certificate'"
-      tabindex="0"
-      [routerLink]="['./']"
-      fragment="certificate"
-    >
-      Certificate
-    </a>
-  </div>
-</section> -->
-
-<!-- <section class="tab-content-section">
-  <div *ngIf="course">
-    <div *ngIf="currentTab === 'about'" class="tab tab-about">
-      <div class="description-title">Course overview</div>
-      <div class="description-content" [innerHTML]="course.overview"></div>
-    </div>
-    <div *ngIf="currentTab === 'lessons'" class="tab tab-lessons">
-      <div class="lessons-title">{{ course.lessons.length }} lessons</div>
-      <div class="lessons-container nice-container-scroll">
-        <div
-          class="lesson-card"
-          *ngFor="let lesson of course.lessons; let i = index"
-        >
-          <app-lesson-card
-            [lesson]="lesson"
-            [lessonNumber]="i + 1"
-            [enrolled]="enrolled"
-            (navigateToLesson)="navigateToLesson($event)"
-          ></app-lesson-card>
-        </div>
-        <div
-          class="lesson-card-small"
-          *ngFor="let lesson of course.lessons; let i = index"
-        >
-          <div class="lesson-card-container">
-            <div class="lesson-title" (click)="navigateToLesson(lesson.id)">{{lesson.title}}</div>
-            <div class="lesson-description">{{lesson.description}}</div>
-            <div class="lesson-details">
-              <i class="material-icons">
-                {{ lesson.type === 'VIDEO' ? 'insert_drive_file' : lesson.type === 'DOCUMENT' ? 'subject' : 'play_circle_outline' }}
-              </i>
-              <div *ngIf="lesson.type === 'VIDEO'" class="lesson-duration">
-                {{ lesson.fileDuration | readTime }}
-                <i class="material-icons">
-                  access_time
-                </i>
-              </div>
-              <div *ngIf="lesson.type !== 'VIDEO'" class="lesson-readtime">
-                {{ lesson.readTime | readTime }}
-                <i class="material-icons">
-                  menu_book
-                </i>
-              </div>
-              <i *ngIf="enrolled" class="material-icons focus-outline" tabindex="0" (click)="navigateToLesson(lesson.id)">navigate_next</i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="currentTab === 'reviews'" class="tab tab-reviews">
-      <div class="reviews-title-container">
-        <div *ngIf="course.totalReviews" class="reviews-title">{{ course.totalReviews }} reviews</div>
-        <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="reviews-title">0 reviews</div>
-      </div>
-      <div *ngIf="reviews && reviews.length > 0">
-        <cdk-virtual-scroll-viewport
-          class="virtual-scroll-viewport nice-container-scroll"
-          itemSize="161"
-          (scrolledIndexChange)="nextBatch($event, reviews.length)"
-        >
-          <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews; let i = index; trackBy: trackByIdx">
-            <app-review-card [review]="review"></app-review-card>
-          </div>
-        </cdk-virtual-scroll-viewport>
-      </div>
-      <div *ngIf="!reviews || reviews.length === 0" class="no-reviews-container">
-        <div class="no-review-cards-container">
-          <i class="material-icons">inbox</i>
-          <div class="no-reviews-phrase">This course has no reviews</div>
-        </div>
-      </div>
-      <div *ngIf="canRateCourse" class="rate-container">
-        <button mat-raised-button [color]="'accent'" (click)="onRateCourse()">Rate this course</button>
-      </div>
-      <div *ngIf="userReview" class="user-review-container">
-        <div class="reviews-title">Your review</div>
-        <div calss="user-review-card-container">
-          <app-review-card [review]="userReview"></app-review-card>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="currentTab === 'certificate' && showCertificateTab && showCertificate"
-      class="tab tab-certificate"
-    >
-      <div class="certificate-wrapper">
-        <div id="certificate" class="certificate">
-          <div class="certificate-container">
-            <img alt="Invest Naija Logotype" class="logotype" src="/assets/img/logos/logotype-certificate.svg">
-            <div class="certificate-label">certificate</div>
-            <div class="awarded-container">
-              <div class="line"></div>
-              <div class="awarded-label">this certificate is awarded to</div>
-              <div class="line"></div>
-            </div>
-            <div class="name">
-              <div class="user-names">{{user.name}} {{user.lastName}}</div>
-              <div class="line name-line"></div>
-            </div>
-            <div class="course-details">
-              <div class="course-data course-category">
-                <div class="course-data-label">course category:</div>
-                <div class="course-data-input">
-                  <div class="course-value">{{course.category.name}}</div>
-                  <div class="input-line"></div>
-                </div>
-              </div>
-              <div class="course-data course-name">
-                <div class="course-data-label">course name:</div>
-                <div class="course-data-input">
-                  <div class="course-value">{{course.name}}</div>
-                  <div class="input-line"></div>
-                </div>
-              </div>
-              <div class="course-data course-date">
-                <div class="course-data-label">date:</div>
-                <div class="course-data-input">
-                  <div class="course-value">{{course.category.createdAt}}</div>
-                  <div class="input-line"></div>
-                </div>
-              </div>
-              <div class="course-data course-url">
-                <div class="course-data-label">url:</div>
-                <div class="course-data-input">
-                  <div class="course-value">https://investnaija.com/courses/{{course.id}}</div>
-                  <div class="input-line"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button class="download-certificate-button focus-outline" (click)="onDownloadCertificate()">Download certificate</button>
-    </div>
-    <div *ngIf="currentTab === 'certificate' && showCertificateTab && !showCertificate"
-      class="tab tab-no-certificate"
-    >
-      <div class="no-certificate">
-        <i class="material-icons">inbox</i>
-        <div class="complete-phrase">Complete this course to download your certificate</div>
-      </div>
-    </div>
-  </div>
-</section> -->
-
 <mat-tab-group class="tab-group" (selectedIndexChange)="onTabNavigation($event)" [(selectedIndex)]="selectedTabIndex">
   <mat-tab label="About">
     <div class="tab tab-about">
@@ -277,60 +80,6 @@
     <div class="tab tab-content">
       <div class="lessons-title">{{ course.courseObjects.length }} lessons</div>
       <div class="lessons-container nice-container-scroll">
-        <!-- <div
-          class="lesson-card"
-          *ngFor="let lesson of course.lessons; let i = index"
-        >
-          <app-lesson-card
-            [lesson]="lesson"
-            [lessonNumber]="i + 1"
-            [enrolled]="enrolled"
-            (navigateToLesson)="navigateToLesson($event)"
-          ></app-lesson-card>
-        </div -->
-        <!-- <div
-          class="lesson-card-small"
-          *ngFor="let lesson of course.lessons; let i = index"
-        >
-          <div class="lesson-card-container">
-            <div class="lesson-title" (click)="navigateToLesson(lesson.id)">{{lesson.title}}</div>
-            <div class="lesson-description">{{lesson.description}}</div>
-            <div class="lesson-details">
-              <i class="material-icons">
-                {{ lesson.type === 'VIDEO' ? 'insert_drive_file' : lesson.type === 'DOCUMENT' ? 'subject' : 'play_circle_outline' }}
-              </i>
-              <div *ngIf="lesson.type === 'VIDEO'" class="lesson-duration">
-                {{ lesson.fileDuration | readTime }}
-                <i class="material-icons">
-                  access_time
-                </i>
-              </div>
-              <div *ngIf="lesson.type !== 'VIDEO'" class="lesson-readtime">
-                {{ lesson.readTime | readTime }}
-                <i class="material-icons">
-                  menu_book
-                </i>
-              </div>
-              <i *ngIf="enrolled" class="material-icons focus-outline" tabindex="0" (click)="navigateToLesson(lesson.id)">navigate_next</i>
-            </div>
-          </div>
-        </div> -->
-
-
-        <!-- <div *ngFor="let courseObject of course.courseObjects; let i = index;">
-          <div *ngIf="courseObject.type === 'LESSON'">
-            <div>{{i}}</div>
-            <div>{{courseObject.courseObject.title}}</div>
-            <div>{{courseObject.courseObject.description}}</div>
-          </div>
-          <div *ngIf="courseObject.type === 'QUIZ'">
-            <div>{{i}}</div>
-            <div>{{courseObject.courseObject.title}}</div>
-            <div>{{courseObject.courseObject.description}}</div>
-            <div>{{courseObject.courseObject.assesments.length}}</div>
-          </div>
-        </div> -->
-
         <mat-accordion class="example-headers-align" multi>
           <mat-expansion-panel #panel class="expansion-panel" hideToggle *ngFor="let object of course.courseObjects; let i = index;">
             <mat-expansion-panel-header>
@@ -340,7 +89,7 @@
                 <button mat-flat-button class="view-button" *ngIf="panel.expanded && object.type === 'LESSON'" (click)="onViewCourseObject(object)">View lesson</button>
                 <button mat-flat-button class="view-button" *ngIf="panel.expanded && object.type === 'QUIZ'" (click)="onViewCourseObject(object)">Take quiz</button>
                 <i *ngIf="panel.expanded" class="material-icons">
-                  {{ object.courseObject.type === 'VIDEO' ? 'insert_drive_file' : object.courseObject.type === 'DOCUMENT' ? 'subject' : object.type === 'QUIZ' ? 'assignment' : 'play_circle_outline' }}
+                  {{ object.type === 'QUIZ' ? 'assignment' : object.courseObject.type === 'VIDEO' ? 'play_circle_outline' : object.type === 'DOCUMENT' ? 'insert_drive_file' : 'subject' }}
                 </i>
               </mat-panel-title>
               <mat-panel-description class="panel-description">
@@ -356,7 +105,6 @@
             <div>{{object.courseObject.description}}</div>
           </mat-expansion-panel>
         </mat-accordion>
-
       </div>
     </div>
   </mat-tab>
@@ -388,7 +136,7 @@
       </div>
       <div *ngIf="userReview" class="user-review-container">
         <div class="reviews-title">Your review</div>
-        <div calss="user-review-card-container">
+        <div class="user-review-card-container">
           <app-review-card [review]="userReview"></app-review-card>
         </div>
       </div>
@@ -445,7 +193,7 @@
           </div>
         </div>
       </div>
-      <button class="download-certificate-button focus-outline" (click)="onDownloadCertificate()">Download certificate</button>
+      <button mat-flat-button class="download-certificate-button focus-outline" (click)="onDownloadCertificate()">Download certificate</button>
     </div>
     <div *ngIf="showCertificateTab && !showCertificate"
       class="tab tab-no-certificate"

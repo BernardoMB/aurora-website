@@ -291,7 +291,14 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
 
   onTabNavigation(tabIndex) {
     const fragments = ['about', 'lessons', 'reviews', 'certificate'];
-    this.router.navigate(['./'], { relativeTo: this.route, fragment: fragments[tabIndex] });
+    console.log(fragments[tabIndex]);
+    this.router.navigate([`./`], {
+      fragment: fragments[tabIndex],
+      /* preserveFragment: true, */
+      /* skipLocationChange: true, */
+      relativeTo: this.route,
+      replaceUrl: true,
+    });
   }
 
   onAddToCart(courseId: string) {
@@ -393,6 +400,10 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  onGoToLearningView() {
+    this.router.navigate(['./learn'], { relativeTo: this.route, skipLocationChange: true });
   }
 
   async onDownloadCertificate() {
