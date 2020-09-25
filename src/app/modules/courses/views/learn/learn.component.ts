@@ -23,6 +23,7 @@ import { QuizzesService } from '../../services/quizzes.service';
   styleUrls: ['./learn.component.scss'],
 })
 export class LearnComponent implements OnInit, OnDestroy {
+  selectedTabIndex = 0;
   routeFragmentSubscription: Subscription; // To set the current tab
   currentTab = 'about'; // Default tab when page loads
   routerSubscription: Subscription;
@@ -37,6 +38,7 @@ export class LearnComponent implements OnInit, OnDestroy {
   // ! Here
   courseObjectIds: string[];
   currentCourseObjectId: string;
+  currentCourseObject: any;
 
   relatedCourses: Course[];
   userReview: IReview;
@@ -58,6 +60,7 @@ export class LearnComponent implements OnInit, OnDestroy {
   createdReview: IReview;
   // #endregion
 
+  dummyArr = [];
   constructor(
     private store: Store<State>,
     private route: ActivatedRoute,
@@ -66,6 +69,14 @@ export class LearnComponent implements OnInit, OnDestroy {
     private coursesService: CoursesService,
     public quizzesService: QuizzesService
   ) {
+    for (let i = 0; i <= 100; i++) {
+      this.dummyArr.push(`Hello ${i}`);
+    }
+
+
+
+
+
     // Stop scroll when route #fragment change
     this.router.events.subscribe(event => {
       // console.log('Navigation event:', event);
@@ -114,12 +125,33 @@ export class LearnComponent implements OnInit, OnDestroy {
     });
     // #endregion
 
-    // Set the current tab getting the route #fragment if any
+    // Set the current tab getting rote fragment if any
     this.routeFragmentSubscription = this.route.fragment.subscribe((fragment: string) => {
       if (fragment) {
-        this.currentTab = fragment;
+        switch (fragment) {
+          case 'about':
+            this.selectedTabIndex = 0;
+            break;
+          case 'lessons':
+            this.selectedTabIndex = 1;
+            break;
+          case 'reviews':
+            this.selectedTabIndex = 2;
+            break;
+          case 'certificate':
+            this.selectedTabIndex = 3;
+            break;
+          default:
+            this.selectedTabIndex = 0;
+            break;
+        }
+
+        // Tabs old logic (instead of the switch)
+        // this.currentTab = fragment;
       }
     });
+
+
   }
 
   ngOnInit() {
@@ -297,6 +329,38 @@ export class LearnComponent implements OnInit, OnDestroy {
     this.routerSubscription.unsubscribe();
     if (this.urlSubscription) {
       this.urlSubscription.unsubscribe();
+    }
+  }
+
+  onTabNavigation(tabIndex) {
+    const fragments = ['about', 'lessons', 'reviews', 'certificate'];
+    console.log(fragments[tabIndex]);
+    // This object is the external course object
+    const object = this.course.courseObjects.filter((object) => object.courseObject.id === this.currentCourseObjectId)[0];
+    let courseObjectType;
+    if (object.type === 'LESSON') {
+      courseObjectType = 'lesson';
+    } else if (object.type === 'QUIZ') {
+      courseObjectType = 'quiz';
+    }
+    this.router.navigate([`./${courseObjectType}/${this.currentCourseObjectId}`], {
+      fragment: fragments[tabIndex],
+      /* preserveFragment: true, */
+      /* skipLocationChange: true, */
+      relativeTo: this.route,
+      replaceUrl: true,
+    });
+  }
+
+  onViewCourseObject(object: any) {
+    // TODO: Use courseObject type for object argument
+    const courseObjectId = object.courseObject.id;
+    if (object.type === 'LESSON') {
+      console.log(`LearnComponent: Navigating to lesson/${courseObjectId}`);
+      this.router.navigate(['lesson/', courseObjectId], { relativeTo: this.route });
+    } else if (object.type === 'QUIZ') {
+      console.log(`LearnComponent: Navigating to quiz/${courseObjectId}`);
+      this.router.navigate(['lesson/', courseObjectId], { relativeTo: this.route });
     }
   }
 

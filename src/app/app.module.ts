@@ -69,6 +69,8 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
       tapToDismiss: false,
     }),
   ],
+  exports: [
+  ],
   providers: [
     AuthGuard,
     ...DOCUMENT_PROVIDERS, // For header sections logic

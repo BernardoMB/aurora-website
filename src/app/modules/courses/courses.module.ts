@@ -52,6 +52,8 @@ import { PaymentErrorModalComponent } from './components/payment-error-modal/pay
 import { QuizComponent } from './views/quiz/quiz.component';
 import { QuizResolver } from './resolvers/quiz-resolver.service';
 import { QuizzesService } from './services/quizzes.service';
+import { FooterComponent } from '../../components/footer/footer.component';
+import { AppModule } from '../../app.module';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   /* direction: 'horizontal',
@@ -89,7 +91,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         EnterBillingInfoModalComponent,
         IframeModalComponent,
         PaymentErrorModalComponent,
-        QuizComponent
+        QuizComponent,
     ],
     imports: [
       CommonModule,

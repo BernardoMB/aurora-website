@@ -1,4 +1,4 @@
-<section class="lerning-header">
+<!-- <section class="lerning-header">
   <div class="header-container">
     <div *ngIf="course" class="course-title focus-outline" [routerLink]="['/courses', course.id]">{{ course.name }}</div>
     <div class="favorite-container">
@@ -14,23 +14,21 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
-<div class="column-container">
+<!-- <div class="column-container">
   <div class="content-container">
     <div class="content">
       <router-outlet></router-outlet>
     </div>
     <div class="navigation-container">
       <div>
-        <!-- <div *ngIf="showPrevButton" class="navigation-button" tabindex="0" (click)="goToPrevLesson()"> -->
         <div *ngIf="showPrevButton" class="navigation-button" tabindex="0" (click)="goToPrevCourseObject()">
           <i class="material-icons">keyboard_arrow_left</i>
           <div class="navigation-label">Previous</div>
         </div>
       </div>
       <div>
-        <!-- <div *ngIf="showNextButton" class="navigation-button" tabindex="0" (click)="goToNextLesson()"> -->
         <div *ngIf="showNextButton" class="navigation-button" tabindex="0" (click)="goToNextCourseObject()">
           <div class="navigation-label">Complete</div>
           <i class="material-icons">keyboard_arrow_right</i>
@@ -77,12 +75,12 @@
       </a>
     </div>
     <div class="tab-content-section">
-      <!-- About tab content -->
+
       <div *ngIf="currentTab === 'about'" class="tab tab-about">
         <div class="description-title">Course overview</div>
         <div class="description-content" [innerHTML]="course.overview"></div>
       </div>
-      <!-- Lessons tab content -->
+
       <div *ngIf="currentTab === 'lessons'" class="tab tab-lessons">
         <div class="lessons-title">{{ course.lessons.length }} lessons</div>
         <div class="lessons-container nice-container-scroll">
@@ -132,7 +130,7 @@
           </div>
         </div>
       </div>
-      <!-- Reviews tab content -->
+
       <div *ngIf="currentTab === 'reviews'" class="tab tab-reviews">
         <div class="reviews-title-container">
           <div *ngIf="course.totalReviews" class="reviews-title">{{ course.totalReviews }} reviews</div>
@@ -165,7 +163,7 @@
           </div>
         </div>
       </div>
-      <!-- Certificate tab content -->
+
       <div *ngIf="currentTab === 'certificate' && showCertificate"
         class="tab tab-certificate"
       >
@@ -304,7 +302,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 <!-- TODO: Fix this issue -->
 <!-- <div class="lesson-card-container-2">
@@ -318,7 +316,7 @@
   </div>
 </div> -->
 
-<section *ngIf="relatedCourses && relatedCourses.length > 0" class="courses-section">
+<!-- <section *ngIf="relatedCourses && relatedCourses.length > 0" class="courses-section">
   <div class="courses-container">
     <div class="title-container">
       <div class="title">You might also be interested in</div>
@@ -334,4 +332,321 @@
     </div>
     <a class="focus-outline" [routerLink]="['/courses/categories/', course.category.id]" [queryParams]="{ page: 1 }">View all</a>
   </div>
-</section>
+</section> -->
+
+<div class="main-container">
+  <div class="learning">
+    <section class="lerning-header">
+      <div class="header-container">
+        <div *ngIf="course" class="course-title focus-outline" [routerLink]="['/courses', course.id]">{{ course.name }}</div>
+        <div class="favorite-container">
+          <div *ngIf="isFavorite" class="isFavorite">
+            <i class="material-icons" (click)="onUnfavoriteCourse()">
+              favorite
+            </i>
+          </div>
+          <div *ngIf="!isFavorite" class="notFavorite">
+            <i class="material-icons" (click)="onFavoriteCourse()">
+              favorite_border
+            </i>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+    <div class="navigation-container">
+      <div>
+        <div *ngIf="showPrevButton" class="navigation-button" tabindex="0" (click)="goToPrevCourseObject()">
+          <i class="material-icons">keyboard_arrow_left</i>
+          <div class="navigation-label">Previous</div>
+        </div>
+      </div>
+      <div>
+        <div *ngIf="showNextButton" class="navigation-button" tabindex="0" (click)="goToNextCourseObject()">
+          <div class="navigation-label">Complete</div>
+          <i class="material-icons">keyboard_arrow_right</i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content-sidebar">
+    <div class="sidebar-header">Course content</div>
+    <div class="sidebar-list">
+      <div class="lesson-container" *ngFor="let courseObject of course.courseObjects; let i = index">
+        <div style="display: flex; flex-direction: row-reverse;">
+          <div class="left">
+            <i *ngIf="objectCompleted(courseObject.courseObject.id)" class="material-icons">
+              check_box
+            </i>
+            <i *ngIf="!objectCompleted(courseObject.courseObject.id)" class="material-icons">
+              check_box_outline_blank
+            </i>
+          </div>
+          <div class="right">
+            <div class="number-title-container">
+              <a *ngIf="courseObject.type === 'LESSON'"  [routerLink]="['./lesson', courseObject.courseObject.id]"  routerLinkActive="active">{{i + 1}}. {{ courseObject.courseObject.title }}</a>
+              <a *ngIf="courseObject.type === 'QUIZ'" [routerLink]="['./quiz', courseObject.courseObject.id]"  routerLinkActive="active">{{i + 1}}. Quiz: {{ courseObject.courseObject.title }}</a>
+            </div>
+            <div class="type-duration-container">
+              <div class="type">
+                <i *ngIf="courseObject.courseObject.type === 'DOCUMENT'" class="material-icons">
+                  insert_drive_file
+                </i>
+                <i *ngIf="courseObject.courseObject.type === 'ARTICLE'" class="material-icons">
+                  subject
+                </i>
+                <i *ngIf="courseObject.courseObject.type === 'VIDEO'" class="material-icons">
+                  play_circle_outline
+                </i>
+                <i *ngIf="courseObject.courseObject.type === 'MULTIPLE_CHOICE'" class="material-icons">
+                  assignment
+                </i>
+              </div>
+              <div class="duration">
+                <div *ngIf="courseObject.courseObject.type === 'VIDEO'" class="lesson-duration">
+                  <div class="label">
+                    {{ courseObject.courseObject.fileDuration | readTime }}
+                  </div>
+                  <i class="material-icons">
+                    access_time
+                  </i>
+                </div>
+                <div *ngIf="courseObject.courseObject.type === 'ARTICLE'" class="lesson-readtime">
+                  <div class="label">
+                    {{ courseObject.courseObject.readTime | readTime }}
+                  </div>
+                  <i class="material-icons">
+                    menu_book
+                  </i>
+                </div>
+                <div *ngIf="courseObject.courseObject.type === 'DOCUMENT'" class="lesson-readtime">
+                  <div class="label">
+                    {{ courseObject.courseObject.readTime | readTime }}
+                  </div>
+                  <i class="material-icons">
+                    menu_book
+                  </i>
+                </div>
+                <div *ngIf="courseObject.type === 'QUIZ'" class="lesson-readtime">
+                  <div class="label">
+                    {{ courseObject.courseObject.assesments.length }} assesments
+                  </div>
+                  <i class="material-icons">
+                    short_text
+                  </i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="details">
+    <mat-tab-group class="tab-group" (selectedIndexChange)="onTabNavigation($event)" [(selectedIndex)]="selectedTabIndex">
+      <mat-tab label="About">
+        <div class="tab tab-about">
+          <div class="description-title">Course overview</div>
+          <div class="description-content" [innerHTML]="course.overview"></div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Content">
+        <div class="tab tab-content">
+          <div class="lessons-title">{{ course.courseObjects.length }} lessons</div>
+          <div class="lessons-container nice-container-scroll">
+            <mat-accordion class="example-headers-align" multi>
+              <mat-expansion-panel #panel class="expansion-panel" hideToggle *ngFor="let object of course.courseObjects; let i = index;">
+                <mat-expansion-panel-header>
+                  <mat-panel-title class="panel-title">
+                    <div class="object-number" *ngIf="!panel.expanded">{{1 + i}}. </div>
+                    <div class="title" *ngIf="!panel.expanded">{{ object.type === 'LESSON' ? object.courseObject.title : 'Quiz: ' + object.courseObject.title }}</div>
+                    <button mat-flat-button class="view-button" *ngIf="panel.expanded && object.type === 'LESSON'" (click)="onViewCourseObject(object)">View lesson</button>
+                    <button mat-flat-button class="view-button" *ngIf="panel.expanded && object.type === 'QUIZ'" (click)="onViewCourseObject(object)">Take quiz</button>
+                    <i *ngIf="panel.expanded" class="material-icons">
+                      {{ object.type === 'QUIZ' ? 'assignment' : object.courseObject.type === 'VIDEO' ? 'play_circle_outline' : object.type === 'DOCUMENT' ? 'insert_drive_file' : 'subject' }}
+                    </i>
+                  </mat-panel-title>
+                  <mat-panel-description class="panel-description">
+                    <div class="duration">
+                      {{ object.courseObject.type === 'VIDEO' ? (object.courseObject.fileDuration | readTime) : object.type === 'QUIZ' ? object.courseObject.assesments.length + ' assmt': (object.courseObject.readTime | readTime) }}
+                      <i class="material-icons">
+                        {{ object.courseObject.type === 'VIDEO' ? 'menu_book' : object.type === 'QUIZ' ? 'short_text' : 'access_time' }}
+                      </i>
+                    </div>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div class="topic">{{1 + i}}. {{ object.type === 'LESSON' ? object.courseObject.title : 'Quiz: ' + object.courseObject.title }}</div>
+                <div>{{object.courseObject.description}}</div>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Reviews">
+        <div class="tab tab-reviews">
+          <div class="reviews-title-container">
+            <div *ngIf="course.totalReviews" class="reviews-title">{{ course.totalReviews }} reviews</div>
+            <div *ngIf="!(course.totalReviews) || course.totalReviews === 0" class="reviews-title">0 reviews</div>
+          </div>
+          <div *ngIf="reviews && reviews.length > 0">
+            <cdk-virtual-scroll-viewport
+              class="virtual-scroll-viewport nice-container-scroll"
+              itemSize="161"
+              (scrolledIndexChange)="nextBatch($event, reviews.length)"
+            >
+              <div class="review-card animated slideInRight" *cdkVirtualFor="let review of reviews; let i = index; trackBy: trackByIdx">
+                <app-review-card [review]="review"></app-review-card>
+              </div>
+            </cdk-virtual-scroll-viewport>
+          </div>
+          <div *ngIf="!reviews || reviews.length === 0" class="no-reviews-container">
+            <div class="no-review-cards-container">
+              <i class="material-icons">inbox</i>
+              <div class="no-reviews-phrase">This course has no reviews</div>
+            </div>
+          </div>
+          <div *ngIf="canRateCourse" class="rate-container">
+            <button mat-raised-button [color]="'accent'" (click)="onRateCourse()">Rate this course</button>
+          </div>
+          <div *ngIf="userReview" class="user-review-container">
+            <div class="reviews-title">Your review</div>
+            <div class="user-review-card-container">
+              <app-review-card [review]="userReview"></app-review-card>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Certificate">
+        <div *ngIf="showCertificate"
+          class="tab tab-certificate"
+        >
+          <div class="certificate-wrapper">
+            <div id="certificate" class="certificate">
+              <div class="certificate-container">
+                <img alt="Invest Naija Logotype" class="logotype" src="/assets/img/logos/logotype-certificate.svg">
+                <div class="certificate-label">certificate</div>
+                <div class="awarded-container">
+                  <div class="line"></div>
+                  <div class="awarded-label">this certificate is awarded to</div>
+                  <div class="line"></div>
+                </div>
+                <div class="name">
+                  <div class="user-names">{{user.name}} {{user.lastName}}</div>
+                  <div class="line name-line"></div>
+                </div>
+                <div class="course-details">
+                  <div class="course-data course-category">
+                    <div class="course-data-label">course category:</div>
+                    <div class="course-data-input">
+                      <div class="course-value">{{course.category.name}}</div>
+                      <div class="input-line"></div>
+                    </div>
+                  </div>
+                  <div class="course-data course-name">
+                    <div class="course-data-label">course name:</div>
+                    <div class="course-data-input">
+                      <div class="course-value">{{course.name}}</div>
+                      <div class="input-line"></div>
+                    </div>
+                  </div>
+                  <div class="course-data course-date">
+                    <div class="course-data-label">date:</div>
+                    <div class="course-data-input">
+                      <div class="course-value">{{course.category.createdAt}}</div>
+                      <div class="input-line"></div>
+                    </div>
+                  </div>
+                  <div class="course-data course-url">
+                    <div class="course-data-label">url:</div>
+                    <div class="course-data-input">
+                      <div class="course-value">https://investnaija.com/courses/{{course.id}}</div>
+                      <div class="input-line"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button mat-flat-button class="download-certificate-button focus-outline" (click)="onDownloadCertificate()">Download certificate</button>
+        </div>
+        <div *ngIf="!showCertificate"
+          class="tab tab-no-certificate"
+        >
+          <div class="no-certificate">
+            <i class="material-icons">inbox</i>
+            <div class="complete-phrase">Complete this course to download your certificate</div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div class="footer">
+    <section class="footer-container">
+      <div class="footer-inner">
+        <div class="footer-container">
+          <div class="logotype-section-container">
+            <!-- Logo container -->
+            <div class="logotype-container focus-outline" routerLink="/">
+              <img
+                class="logotype"
+                src="/assets/img/logos/logotype.svg"
+                alt="Invest Naija Logotype"
+              />
+            </div>
+            <div class="phrase">
+              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
+              commodo ligula eget dolor. Aenean massa.
+            </div>
+          </div>
+          <div class="sitemap-container">
+            <div class="contact-info-container">
+              <div class="title">Contact Info</div>
+              <div class="detail">Lorem ipsum street</div>
+              <div class="detail">+ 44 55 66 77</div>
+              <div class="detail">info@invest.com</div>
+            </div>
+            <div class="site-map-container">
+              <div class="title">Site Map</div>
+              <a class="link focus-outline" routerLink="/">Home</a>
+              <a class="link focus-outline" routerLink="/courses">Learning</a>
+              <a class="link focus-outline" routerLink="/news">News</a>
+              <a class="link focus-outline" routerLink="/events">Events</a>
+              <a class="link focus-outline" [routerLink]="['/invest']">Invest</a>
+              <a class="link focus-outline" [routerLink]="['/home']" fragment="contact">Contact us</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bottom-section">
+      <div class="kanto-studio-container">
+        <small>
+          Copyright © 2020
+          <a class="focus-outline chd-link" href="http://www.chapelhilldenham.com/" target="_blank">
+          <!-- <a class="focus-outline chd-link" href="https://kantostudio.com/" target="_blank"> -->
+            <img
+              class="chd"
+              src="/assets/img/logos/chd/chapelhilldenham.svg"
+              alt="kanto"
+            />
+            Chapel Hill Denham
+          </a>
+        </small>
+        <!-- <small>
+          Developed by
+          <a class="focus-outline ks-link" href="https://kantostudio.com/" target="_blank">
+            <img
+              class="kanto"
+              src="/assets/img/logos/kanto/kanto.svg"
+              alt="kanto"
+            />
+            Kanto Studio
+          </a>
+        </small> -->
+      </div>
+    </section>
+  </div>
+</div>
