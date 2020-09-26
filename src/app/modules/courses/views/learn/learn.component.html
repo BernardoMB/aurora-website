@@ -582,8 +582,27 @@
       </mat-tab>
     </mat-tab-group>
   </div>
+  <div class="related-courses">
+    <section *ngIf="relatedCourses && relatedCourses.length > 0" class="courses-section">
+      <div class="courses-container">
+        <div class="title-container">
+          <div class="title">You might also be interested in</div>
+          <a class="focus-outline" [routerLink]="['/courses/categories/', course.category.id]" [queryParams]="{ page: 1 }">View all</a>
+        </div>
+        <div class="cards-container">
+          <div
+            class="course-card"
+            *ngFor="let course of relatedCourses; let i = index"
+          >
+            <app-course-card [course]="course"></app-course-card>
+          </div>
+        </div>
+        <a class="focus-outline" [routerLink]="['/courses/categories/', course.category.id]" [queryParams]="{ page: 1 }">View all</a>
+      </div>
+    </section>
+  </div>
   <div class="footer">
-    <section class="footer-container">
+    <div class="footer-container">
       <div class="footer-inner">
         <div class="footer-container">
           <div class="logotype-section-container">
@@ -619,9 +638,9 @@
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="bottom-section">
+    <div class="bottom-section">
       <div class="kanto-studio-container">
         <small>
           Copyright © 2020
@@ -647,6 +666,6 @@
           </a>
         </small> -->
       </div>
-    </section>
+    </div>
   </div>
 </div>
