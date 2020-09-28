@@ -758,10 +758,12 @@ $navigation-indicator-bottom-position: -21.5px;
   left: 0;
   right: 0;
   background: #4b4b50;
-  z-index: 5; // Could be 3 but azure media player was getting on top so it had to be changed to 5
+  z-index: 10; // has to be 10 because other components in the learning view
   padding-bottom: 20px;
   border-bottom-left-radius: 25px;
   border-bottom-right-radius: 25px;
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
   ul.mobilenav-links {
     padding: 0 0 0 2px;
     margin: 0px;
