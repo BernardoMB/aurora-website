@@ -26,7 +26,8 @@
             "assets": ["src/favicon.ico", "src/assets", "src/web.config"],
             "styles": [
               "node_modules/animate.css/animate.css",
-              "src/styles.scss",
+              "src/scss/styles.scss",
+              "src/scss/fonts/fonts.scss",
               "node_modules/swiper/css/swiper.css"
             ],
             "scripts": []
@@ -136,7 +137,8 @@
             "assets": ["src/favicon.ico", "src/assets", "src/web.config"],
             "styles": [
               "node_modules/animate.css/animate.css",
-              "src/styles.scss",
+              "src/scss/styles.scss",
+              "src/scss/fonts/fonts.scss",
               "node_modules/swiper/css/swiper.css"
             ],
             "scripts": []

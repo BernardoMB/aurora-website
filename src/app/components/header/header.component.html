@@ -388,12 +388,12 @@
         </div>
         <div *ngIf="!user" class="register-section">
           <div class="login-button-container">
-            <button mat-flat-button class="login-button focus-outline" (click)="onLogin()">
+            <button mat-flat-button class="login-button custom-button-primary-light focus-outline" (click)="onLogin()">
               Log in
             </button>
           </div>
           <div class="signup-button-container">
-            <button mat-flat-button class="signup-button focus-outline" (click)="onRegister()">
+            <button mat-flat-button class="signup-button custom-button-primary focus-outline" (click)="onRegister()">
               Sign up
             </button>
           </div>
@@ -720,8 +720,7 @@
   </div>
 </div> -->
 
-<div
-  *ngIf="mobileNavBarOpen && !user"
+<div *ngIf="mobileNavBarOpen && !user"
   class="mobile-navigation-links"
   [@inOutAnimation1]
 >
@@ -796,8 +795,7 @@
   </ul>
 </div>
 
-<div
-  *ngIf="mobileNavBarOpen && user"
+<div *ngIf="mobileNavBarOpen && user"
   class="mobile-navigation-links"
   [@inOutAnimation2]
 >

@@ -332,51 +332,11 @@ $header-secondary: #66CBA6;
           font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
           .login-button-container {
             margin-right: 10px;
-            cursor: pointer;
             .login-button {
-              background: #FFFFFF;
-              border-radius: 21px;
-              color: #218C90;
-              /* display: inline-block;
-              font-weight: 600;
-              font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
-              text-align: center;
-              vertical-align: middle;
-              white-space: nowrap;
-              padding: 11px 12px;
-              font-size: 15px;
-              line-height: 1.35135;
-              border-radius: 2px;
-              user-select: none;
-              cursor: pointer;
-
-              color: #686f7a;
-              background-color: #fff;
-              border: 1px solid #686f7a;
-              &:hover {
-                color: #fff;
-                background-color: #1f5e11;
-              } */
             }
           }
           .signup-button-container {
-            cursor: pointer;
             .signup-button {
-              &:hover {
-                background: #FFFFFF;
-                border-radius: 21px;
-                color: #218C90;
-              }
-              background: #FFFFFF;
-              border-radius: 21px;
-              color: #FFFFFF;
-              white-space: nowrap;
-              cursor: pointer;
-              background: #67C3A4; /* Old browsers */
-              background: -moz-linear-gradient(-45deg,  #67C3A4 0%, #1F8D90 100%); /* FF3.6-15 */
-              background: -webkit-linear-gradient(-45deg,  #67C3A4 0%,#1F8D90 100%); /* Chrome10-25,Safari5.1-6 */
-              background: linear-gradient(135deg,  #67C3A4 0%,#1F8D90 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-              filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#67C3A4', endColorstr='#1F8D90',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
             }
           }
         }

@@ -104,22 +104,9 @@
             display: flex;
             align-items: center;
             .wishlist-button {
-              /* cursor: pointer;
-              border: 2px solid white;
-              padding: 2px 10px;
-              border-radius: 20px;
-              font-size: 12px;
               line-height: unset;
-              color: white;
-              background-color: inherit; */
-              /* @media screen and (min-width: 425px) {
-                &:hover {
-                  color: #29303b;
-                  background-color: white;
-                }
-              } */
-              line-height: unset;
-              padding: 2px 10px;
+              font-size: 14px;
+              padding: 4px 18px;
               text-decoration: none;
               vertical-align: middle;
               text-align: center;
@@ -150,6 +137,7 @@
           }
         }
         .middle-container {
+          font-family: Dinot;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -200,16 +188,6 @@
             }
           }
           .course-name {
-            /* padding: 15px;
-            font-family: 'Open Sans';
-            font-size: 36px;
-            font-weight: 300;
-            line-height: 1.1;
-            color: $font-color;
-            text-align: center;
-            max-width: 520px; */
-            // margin-bottom: 20px;
-            font-family: 'Open sans';
             padding: 15px;
             max-width: 520px;
             font-style: normal;
@@ -225,6 +203,7 @@
             justify-content: center;
             align-items: center;
             .enroll-button {
+              font-family: Arial, Helvetica, sans-serif;
               display: flex;
               margin-bottom: 20px;
               align-items: center;
@@ -263,6 +242,7 @@
               }
             }
             .buy-now-button {
+              font-family: Arial, Helvetica, sans-serif;
               display: flex;
               margin-bottom: 20px;
               align-items: center;
@@ -376,7 +356,7 @@
     max-width: 900px;
     color: grey;
     .description-title {
-      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      font-family: Dinot;
       font-size: 22px;
       font-weight: 600;
       margin: 0 0 10px;
@@ -417,7 +397,7 @@
   .tab-content {
     max-width: 900px;
     .lessons-title {
-      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      font-family: Dinot;
       font-size: 22px;
       font-weight: 600;
       margin-bottom: 10px;
@@ -576,7 +556,7 @@
   .tab-reviews {
     max-width: 900px;
     .reviews-title {
-      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      font-family: Dinot;
       font-size: 22px;
       font-weight: 600;
       margin-bottom: 10px;

@@ -65,7 +65,8 @@ export class NewsService {
     console.log('News service: Getting featured articles');
     return this.http.get<ServerPagedDataDto<Article>>(this.getUrl()).pipe(
       map((res) => {
-        return res.data.slice(0, 4);
+        // TODO: Should not use as any here
+        return (res as any).items.slice(0, 4);
       }),
       // map((res) => new PagedData<Article>(res, page)),
     );

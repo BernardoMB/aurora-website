@@ -1,7 +1,8 @@
-// Import animations
+// * Animations
 // @import '~animate.css/animate.css';
 
-// Custom Theming for Angular Material
+// * Custom Theming for Angular Material
+
 // For more information: https://material.angular.io/guide/theming
 
 // Import theming functionality
@@ -101,10 +102,10 @@ $mat-aurora-orange: (
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-// Define the primary pallete
-// * (the second parameter passed to mat-palette() is the default primary color)
-// * (the third parameter passed to mat-palette() is the lighter variant of the color [some components use these values])
-// * (the Fourth parameter passed to mat-palette() is the darker variant of the color [some components use these values])
+// Define the primary pallete:
+// - (the second parameter passed to mat-palette() is the default primary color)
+// - (the third parameter passed to mat-palette() is the lighter variant of the color [some components use these values])
+// - (the Fourth parameter passed to mat-palette() is the darker variant of the color [some components use these values])
 $aurora-website-primary: mat-palette($mat-aurora-green, 700, 400, 900);
 // Define the accent pallete  (the second parameter passed to mat-palette() is the default accent color)
 $aurora-website-accent: mat-palette($mat-aurora-orange, 700, 400, 900);
@@ -137,7 +138,7 @@ $alt-theme: mat-dark-theme($alt-primary, $alt-accent, $alt-warn);
   @include angular-material-theme($alt-theme);
 }
 
-/* You can add global styles to this file, and also import other style files */
+// * You can add global styles to this file, and also import other style files
 
 html,
 body {
@@ -150,7 +151,7 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
-// Change autocomplete styles in WebKit
+// * Change autocomplete styles in WebKit
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -167,7 +168,7 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-// Change scrollbars styles
+// * Change scrollbars styles
 
 body::-webkit-scrollbar {
   width: 8px;
@@ -182,7 +183,7 @@ body::-webkit-scrollbar-thumb {
   // border: 2px solid #555555;
 }
 
-// Custom classes
+// * Custom classes
 
 $focus-outline-thickeness: 2px;
 .focus-outline {
@@ -195,7 +196,43 @@ $focus-outline-thickeness: 2px;
   }
 }
 
-// Modify Angular Material classes
+.custom-button-primary {
+  border-radius: 20px !important;
+  white-space: nowrap;
+  cursor: pointer;
+  text-align: center;
+  color: #FFFFFF;
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1f8d90+0,67c3a4+100 */
+  background: rgb(31,141,144); /* Old browsers */
+  background: -moz-linear-gradient(left,  rgba(31,141,144,1) 0%, rgba(103,195,164,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left,  rgba(31,141,144,1) 0%,rgba(103,195,164,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right,  rgba(31,141,144,1) 0%,rgba(103,195,164,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f8d90', endColorstr='#67c3a4',GradientType=1 ); /* IE6-9 */
+  &:hover {
+    background: #FFFFFF;
+    color: #218C90;
+  }
+}
+
+.custom-button-primary-light {
+  border-radius: 20px !important;
+  white-space: nowrap;
+  cursor: pointer;
+  text-align: center;
+  background: #FFFFFF;
+  color: #218C90;
+  &:hover {
+    color: #FFFFFF;
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1f8d90+0,67c3a4+100 */
+    background: rgb(31,141,144); /* Old browsers */
+    background: -moz-linear-gradient(left,  rgba(31,141,144,1) 0%, rgba(103,195,164,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left,  rgba(31,141,144,1) 0%,rgba(103,195,164,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right,  rgba(31,141,144,1) 0%,rgba(103,195,164,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f8d90', endColorstr='#67c3a4',GradientType=1 ); /* IE6-9 */
+  }
+}
+
+// * Modify Angular Material classes
 
 .custom-mat-dialog-container {
   .mat-dialog-container {
@@ -215,7 +252,7 @@ $focus-outline-thickeness: 2px;
   overflow-y: hidden !important;
 }
 
-// Ngx Paginator styles
+// * Ngx Paginator styles
 
 .pagination-controls .ngx-pagination {
   padding-left: 0px;
@@ -245,7 +282,7 @@ $focus-outline-thickeness: 2px;
   }
 }
 
-// Toasts
+// * Toasts
 
 // Option 1 (Regular style)
 
@@ -265,6 +302,6 @@ $focus-outline-thickeness: 2px;
 @import '~bootstrap/scss/mixins';
 @import '~ngx-toastr/toastr-bs4-alert';
 
-// Swiper
+// * Swiper
 // Commented because building issues
 // @import '~swiper/css/swiper.css';

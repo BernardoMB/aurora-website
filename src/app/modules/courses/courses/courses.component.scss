@@ -1,4 +1,5 @@
 $categories-header-break: 980px;
+
 .categories-header-mobile {
   background: #f7f8fa;
   border-bottom: 1px solid #dedfe0;
@@ -99,29 +100,25 @@ $categories-header-break: 980px;
       background: linear-gradient(to right,  rgba(0,135,142,0.75) 0%,rgba(0,135,142,0.75) 25%,rgba(0,58,85,0.75) 75%,rgba(0,58,85,0.75) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bf00878e', endColorstr='#bf003a55',GradientType=1 ); /* IE6-9 */
       .jumbotron-conatiner {
-        // background-color: rgba(0, 0, 0, 0.4);
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 280px;
+        height: 300px;
         .jumbotron-texts {
           display: flex;
           flex-direction: column;
           align-items: center;
-          font-family: 'Open Sans';
+          font-family: Dinot;
           color: white;
           margin: 20px;
           .jumbotron-title {
-            font-size: 36px;
-            font-weight: 600;
-            line-height: 1.1;
+            font-size: 56px;
+            font-weight: bold;
           }
           .jumbotron-description {
-            text-align: center;
             margin-top: 14px;
-            font-size: 18px;
-            font-weight: lighter;
-            line-height: 1.1;
+            text-align: center;
+            font-size: 32px;
           }
         }
       }
@@ -131,28 +128,16 @@ $categories-header-break: 980px;
 
 
 .view-all-link {
-  padding: 6px 28px;
+  padding: 4px 24px;
   text-decoration: none;
   &:hover {
-    background: #FFFFFF;
-    border-radius: 21px;
-    color: #218C90;
     box-shadow: inset 0 0 0 2px #218C90;
   }
-  background: #FFFFFF;
-  border-radius: 21px;
-  color: #FFFFFF;
-  white-space: nowrap;
-  cursor: pointer;
-  background: #67C3A4; /* Old browsers */
-  background: -moz-linear-gradient(-45deg,  #67C3A4 0%, #1F8D90 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(-45deg,  #67C3A4 0%,#1F8D90 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(135deg,  #67C3A4 0%,#1F8D90 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#67C3A4', endColorstr='#1F8D90',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 .courses-slider-section {
   display: block;
   position: relative;
+  font-family: Dinot;
   .courses-container {
     padding: 40px;
     max-width: 1180px;
@@ -166,10 +151,9 @@ $categories-header-break: 980px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-family: 'Trebuchet MS', Helvetica, sans-serif;
       .title {
-        color: #1b4568;
-        font-size: 20px;
+        color: #032C43;
+        font-size: 36px;
         font-weight: bold;
       }
     }
@@ -192,10 +176,10 @@ $categories-header-break: 980px;
 }
 .featured-courses {
   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+66,032c43+100&0.24+0,0.24+100 */
-background: -moz-linear-gradient(top,  rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.14) 66%, rgba(3,44,67,0.14) 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top,  rgba(255,255,255,0.14) 0%,rgba(255,255,255,0.14) 66%,rgba(3,44,67,0.14) 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom,  rgba(255,255,255,0.14) 0%,rgba(255,255,255,0.14) 66%,rgba(3,44,67,0.14) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3dffffff', endColorstr='#3d032c43',GradientType=0 ); /* IE6-9 */
+  background: -moz-linear-gradient(top,  rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.14) 66%, rgba(3,44,67,0.14) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  rgba(255,255,255,0.14) 0%,rgba(255,255,255,0.14) 66%,rgba(3,44,67,0.14) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  rgba(255,255,255,0.14) 0%,rgba(255,255,255,0.14) 66%,rgba(3,44,67,0.14) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3dffffff', endColorstr='#3d032c43',GradientType=0 ); /* IE6-9 */
 }
 .trending-courses {
   background-color: white;
@@ -208,6 +192,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3dffffff', e
 }
 
 .categories-section {
+  font-family: Dinot;
   display: block;
   position: relative;
   background-color: white;
@@ -224,10 +209,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3dffffff', e
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-family: 'Trebuchet MS', Helvetica, sans-serif;
       .categories-title {
-        color: #1b4568;
-        font-size: 20px;
+        color: #032C43;
+        font-size: 36px;
         font-weight: bold;
       }
     }
@@ -306,6 +290,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3dffffff', e
 }
 
 .courses-recent-section {
+  font-family: Dinot;
   display: block;
   position: relative;
   background-color: #f4f4f4;
@@ -322,10 +307,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3dffffff', e
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-family: 'Trebuchet MS', Helvetica, sans-serif;
       .title {
-        color: #1b4568;
-        font-size: 20px;
+        color: #032C43;
+        font-size: 36px;
         font-weight: bold;
       }
     }

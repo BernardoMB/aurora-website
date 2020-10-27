@@ -35,19 +35,19 @@ export class CoursesComponent implements OnInit, OnDestroy {
   config: SwiperConfigInterface = {
     initialSlide: 0, // Slide Index Starting from 0
     slidesPerView: 1.5,
-    spaceBetween: 15, // Pixels between each slide
+    spaceBetween: 10, // Pixels between each slide
     breakpoints: {
       500: {
         slidesPerView: 2,
-        spaceBetween: 20,
+        spaceBetween: 15,
       },
       700: {
         slidesPerView: 3,
-        spaceBetween: 30,
+        spaceBetween: 25,
       },
       1020: {
         slidesPerView: 4,
-        spaceBetween: 40,
+        spaceBetween: 35,
       },
     },
     scrollbar: {

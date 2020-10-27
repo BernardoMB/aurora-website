@@ -128,7 +128,7 @@
 }
 
 .course-card-wrapper-2 {
-  // padding: 20px;
+  padding: 10px;
   @media screen and (max-width: 500px) {
     padding: 10px 6px;
     padding-bottom: 20px;
@@ -206,7 +206,7 @@
       .course-details {
         border-bottom-right-radius: $radio;
         border-bottom-left-radius: $radio;
-        padding: 20px;
+        padding: 15px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
