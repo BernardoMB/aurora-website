@@ -20,6 +20,51 @@
   }
 }
 
+.courses-jumbotron-section {
+  overflow: hidden;
+  .jumbotron-wrapper {
+    background-size: cover;
+    resize: both;
+    background-position-x: center;
+    background-position-y: center;
+    background-image: url('/assets/img/jumbotrons/pattern.png');
+    .jumbotron-wrapper-overlay {
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#00878e+25,003a55+75&0.75+0,0.75+100 */
+      background: -moz-linear-gradient(left,  rgba(0,135,142,0.75) 0%, rgba(0,135,142,0.75) 25%, rgba(0,58,85,0.75) 75%, rgba(0,58,85,0.75) 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(left,  rgba(0,135,142,0.75) 0%,rgba(0,135,142,0.75) 25%,rgba(0,58,85,0.75) 75%,rgba(0,58,85,0.75) 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to right,  rgba(0,135,142,0.75) 0%,rgba(0,135,142,0.75) 25%,rgba(0,58,85,0.75) 75%,rgba(0,58,85,0.75) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bf00878e', endColorstr='#bf003a55',GradientType=1 ); /* IE6-9 */
+      .jumbotron-conatiner {
+        // background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 220px;
+        .jumbotron-texts {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          font-family: 'Open Sans';
+          color: white;
+          margin: 20px;
+          .jumbotron-title {
+            font-size: 36px;
+            font-weight: 600;
+            line-height: 1.1;
+          }
+          .jumbotron-description {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 18px;
+            font-weight: lighter;
+            line-height: 1.1;
+          }
+        }
+      }
+    }
+  }
+}
+
 .cart-section {
   display: block;
   position: relative;
@@ -46,16 +91,14 @@
         flex-grow: 1;
         display: flex;
         flex-direction: column;
-        margin-right: 30px;
+        margin-right: 80px;
         .course-item {
           display: flex;
-          padding: 10px;
+          padding: 15px 10px;
           border: 1px solid gainsboro;
           margin-bottom: 20px;
           border-radius: 5px;
           .course-image {
-            min-width: 130px;
-            min-height: 80px;
             width: 130px;
             height: 80px;
             background-size: cover;
@@ -64,6 +107,10 @@
             background-position-y: center;
             position: relative;
             cursor: pointer;
+            border-radius: 5px;
+            -webkit-box-shadow: 0px 0px 15px -10px rgba(0,0,0,0.75);
+            -moz-box-shadow: 0px 0px 15px -10px rgba(0,0,0,0.75);
+            box-shadow: 0px 0px 15px -10px rgba(0,0,0,0.75);
             &:after {
               content: '';
               position: absolute;
@@ -85,7 +132,7 @@
             margin: 0px 10px;
             .course-name {
               color: #29303b;
-              font-weight: 700;
+              font-weight: bold;
               font-family: open sans, helvetica neue, Helvetica, Arial,
                 sans-serif;
               cursor: pointer;
@@ -112,8 +159,12 @@
             flex-direction: column;
             a {
               cursor: pointer;
+              color: #29303b;
+              font-weight: bold;
+              font-family: open sans, helvetica neue, Helvetica, Arial,
+                sans-serif;
               &:hover {
-                color: #408e2d;
+                color: #218C90;
               }
             }
           }
@@ -123,8 +174,8 @@
             margin-left: 20px;
             font-family: open sans, helvetica neue, Helvetica, Arial;
             .price {
-              font-weight: 700;
-              color: #408e2d;
+              font-weight: bold;
+              color: #218C90;
               font-size: 18px;
               display: flex;
               align-items: center;
@@ -156,7 +207,7 @@
         .course-item-small {
           display: flex;
           flex-direction: column;
-          padding: 10px;
+          padding: 15px 10px;
           border: 1px solid gainsboro;
           margin-bottom: 20px;
           border-radius: 5px;
@@ -173,6 +224,10 @@
               background-position-y: center;
               position: relative;
               cursor: pointer;
+              border-radius: 5px;
+              -webkit-box-shadow: 0px 0px 15px -10px rgba(0,0,0,0.75);
+              -moz-box-shadow: 0px 0px 15px -10px rgba(0,0,0,0.75);
+              box-shadow: 0px 0px 15px -10px rgba(0,0,0,0.75);
               &:after {
                 content: '';
                 position: absolute;
@@ -222,8 +277,8 @@
                 font-family: open sans, helvetica neue, Helvetica, Arial;
                 flex-direction: row-reverse;
                 .price {
-                  font-weight: 700;
-                  color: #408e2d;
+                  font-weight: bold;
+                  color: #218C90;
                   font-size: 15px;
                   display: flex;
                   align-items: center;
@@ -260,10 +315,13 @@
               flex-direction: column;
               a {
                 cursor: pointer;
-                color: #1f5e11;
+                color: #29303b;
+                font-weight: bold;
                 font-size: 14px;
+                font-family: open sans, helvetica neue, Helvetica, Arial,
+                  sans-serif;
                 &:hover {
-                  color: #408e2d;
+                  color: #218C90;
                 }
               }
             }
@@ -286,42 +344,56 @@
         display: flex;
         flex-direction: column;
         .total-label {
-          font-size: 18px;
-          color: #686f7a;
+          font-style: normal;
+          font-weight: bold;
+          font-size: 28px;
+          color: #032C43;
         }
         .total {
-          font-weight: 600;
+          font-weight: bold;
           font-size: 36px;
-          color: #29303b;
+          color: #032C43;
           font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
         }
         .subtotal {
-          margin-top: 5px;
           margin-bottom: 10px;
           text-decoration: line-through;
-          color: #686f7a;
-          font-weight: 15px;
+          color: #3F3F3F;
+          font-weight: bold;
+          font-size: 28px;
+          opacity: 0.46;
           font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
         }
         .checkout-button {
-          display: inline-block;
-          font-weight: 600;
-          font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
-          text-align: center;
+          border: none;
+          line-height: unset;
+          padding: 8px 30px;
+          text-decoration: none;
           vertical-align: middle;
-          white-space: nowrap;
-          padding: 11px 60px;
-          font-size: 15px;
-          line-height: 1.35135;
-          border-radius: 2px;
-          user-select: none;
-          cursor: pointer;
-          color: #fff;
-          background-color: #eb6c00;
-          border: 1px solid transparent;
+          text-align: center;
           &:hover {
-            background-color: #1f5e11;
+            background: #FFFFFF;
+            border-radius: 21px;
+            color: #eb6c00;
+            box-shadow: inset 0 0 0 2px coral;
           }
+          background: #FFFFFF;
+          border-radius: 21px;
+          color: #FFFFFF;
+          white-space: nowrap;
+          cursor: pointer;
+          /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ef9d38+0,ec5a58+100 */
+          background: rgb(239,157,56); /* Old browsers */
+          background: -moz-linear-gradient(top,  rgba(239,157,56,1) 0%, rgba(236,90,88,1) 100%); /* FF3.6-15 */
+          background: -webkit-linear-gradient(top,  rgba(239,157,56,1) 0%,rgba(236,90,88,1) 100%); /* Chrome10-25,Safari5.1-6 */
+          background: linear-gradient(to bottom,  rgba(239,157,56,1) 0%,rgba(236,90,88,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ef9d38', endColorstr='#ec5a58',GradientType=0 ); /* IE6-9 */
+          @media screen and (max-width: 500px) {
+            margin-bottom: 30px;
+          }
+        }
+        @media screen and (max-width: 750px) {
+          align-items: center;
         }
       }
       @media screen and (max-width: 850px) {
@@ -391,13 +463,33 @@
         font-size: 20px;
         font-weight: bold;
       }
-      a {
+      .view-all-link {
+        padding: 6px 32px;
+        text-decoration: none;
+        &:hover {
+          background: #FFFFFF;
+          border-radius: 21px;
+          color: #218C90;
+          box-shadow: inset 0 0 0 2px #218C90;
+        }
+        background: #FFFFFF;
+        border-radius: 21px;
+        color: #FFFFFF;
+        white-space: nowrap;
+        cursor: pointer;
+        background: #67C3A4; /* Old browsers */
+        background: -moz-linear-gradient(-45deg,  #67C3A4 0%, #1F8D90 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(-45deg,  #67C3A4 0%,#1F8D90 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(135deg,  #67C3A4 0%,#1F8D90 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#67C3A4', endColorstr='#1F8D90',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+      }
+      /* a {
         margin-left: 20px;
         font-size: 18px;
         color: darkgray;
         text-decoration: underline;
         cursor: pointer;
-      }
+      } */
     }
     .cards-container {
       display: flex;

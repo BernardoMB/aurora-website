@@ -5,6 +5,14 @@ $break-registration-buttons: 450px;
 $focus-border: 2px;
 $navigation-indicator-bottom-position: -21.5px;
 
+
+$header-font-color: #FFFFFF;
+$header-font-hover-color: #eb7e00;
+$header-color: #032C43;
+$header-hamburger-color: white; //eb6c00
+$header-categories-color: white; //a92a3
+$header-secondary: #66CBA6;
+
 .static-header {
   // Static header:
   // position: relative;
@@ -18,7 +26,7 @@ $navigation-indicator-bottom-position: -21.5px;
     0 3px 1px 0 rgba(20, 23, 28, 0.1);
   display: block;
   z-index: 10;
-  background: white;
+  background: $header-color;
   .header-inner {
     display: flex;
     justify-content: space-between;
@@ -38,7 +46,7 @@ $navigation-indicator-bottom-position: -21.5px;
         width: 30px;
         height: 3px;
         margin: 5px 0px;
-        background-color:  #eb6c00;
+        background-color:  $header-hamburger-color;
         display: block;
         -webkit-transition: all 0.3s ease-in-out;
         -o-transition: all 0.3s ease-in-out;
@@ -95,7 +103,7 @@ $navigation-indicator-bottom-position: -21.5px;
         background-color: unset;
         border-radius: 5px;
         border: 1px solid transparent;
-        color: #8a92a3;
+        color: $header-categories-color;
         height: 100%;
         padding: 0px 15px;
         &:hover {
@@ -120,7 +128,6 @@ $navigation-indicator-bottom-position: -21.5px;
       .header-container {
         display: flex;
         font-family: 'Trebuchet MS', Helvetica, sans-serif;
-        color: #1f5e11;
         font-size: 18px;
         height: 100%;
         .navigation-links {
@@ -134,11 +141,16 @@ $navigation-indicator-bottom-position: -21.5px;
             list-style: none;
             margin: 0px 10px;
             a {
-              color: #1f5e11;
+              //color: inherit;
+              color: $header-font-color;
               text-decoration: none;
               position: relative;
               &.active {
                 font-weight: bold;
+                color: $header-secondary;
+                &:hover {
+                  color: $header-secondary;
+                }
                 &:before {
                   content: '';
                   position: absolute;
@@ -146,15 +158,15 @@ $navigation-indicator-bottom-position: -21.5px;
                   width: 100%;
                   height: 3px;
                   bottom: $navigation-indicator-bottom-position;
-                  background-color: #eb7e00;
+                  background-color: $header-secondary;
                 }
               }
-              &:visited {
-                color: inherit;
-              }
               &:hover {
-                color: #408e2d;
+                color: $header-secondary;
               }
+              /* &:visited {
+                color: inherit;
+              } */
             }
           }
         }
@@ -182,9 +194,10 @@ $navigation-indicator-bottom-position: -21.5px;
           margin: 0px 20px;
           position: relative;
           i {
+            color: $header-secondary;
             cursor: pointer;
             &:hover {
-              color: #408e2d;
+              color: $header-font-color;
             }
           }
           .cart-count-indicator {
@@ -214,10 +227,11 @@ $navigation-indicator-bottom-position: -21.5px;
           flex-direction: column;
           justify-content: center;
           position: relative;
+          color: $header-font-color;
           i {
             cursor: pointer;
             &:hover {
-              color: #408e2d;
+              color: $header-secondary;
             }
           }
           display: none;
@@ -235,8 +249,9 @@ $navigation-indicator-bottom-position: -21.5px;
           justify-content: flex-end;
           .user-name-container {
             position: relative;
+            color: $header-font-color;
             &:hover {
-              color: #408e2d;
+              color: $header-secondary;
             }
             .user-menu-wrapper {
               position: absolute;
@@ -316,10 +331,13 @@ $navigation-indicator-bottom-position: -21.5px;
           font-size: 13px;
           font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
           .login-button-container {
-            margin-right: 4px;
+            margin-right: 10px;
             cursor: pointer;
             .login-button {
-              display: inline-block;
+              background: #FFFFFF;
+              border-radius: 21px;
+              color: #218C90;
+              /* display: inline-block;
               font-weight: 600;
               font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
               text-align: center;
@@ -338,30 +356,27 @@ $navigation-indicator-bottom-position: -21.5px;
               &:hover {
                 color: #fff;
                 background-color: #1f5e11;
-              }
+              } */
             }
           }
           .signup-button-container {
             cursor: pointer;
             .signup-button {
-              display: inline-block;
-              font-weight: 600;
-              font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
-              text-align: center;
-              vertical-align: middle;
-              white-space: nowrap;
-              padding: 11px 12px;
-              font-size: 15px;
-              line-height: 1.35135;
-              border-radius: 2px;
-              user-select: none;
-              cursor: pointer;
-              color: #fff;
-              background-color: #eb6c00;
-              border: 1px solid transparent;
               &:hover {
-                background-color: #1f5e11;
+                background: #FFFFFF;
+                border-radius: 21px;
+                color: #218C90;
               }
+              background: #FFFFFF;
+              border-radius: 21px;
+              color: #FFFFFF;
+              white-space: nowrap;
+              cursor: pointer;
+              background: #67C3A4; /* Old browsers */
+              background: -moz-linear-gradient(-45deg,  #67C3A4 0%, #1F8D90 100%); /* FF3.6-15 */
+              background: -webkit-linear-gradient(-45deg,  #67C3A4 0%,#1F8D90 100%); /* Chrome10-25,Safari5.1-6 */
+              background: linear-gradient(135deg,  #67C3A4 0%,#1F8D90 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+              filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#67C3A4', endColorstr='#1F8D90',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
             }
           }
         }
@@ -489,7 +504,7 @@ $navigation-indicator-bottom-position: -21.5px;
       .header-container {
         display: flex;
         font-family: 'Trebuchet MS', Helvetica, sans-serif;
-        color: #1f5e11;
+        //color: #1f5e11;
         font-size: 18px;
         height: 100%;
         .navigation-links {
@@ -503,7 +518,7 @@ $navigation-indicator-bottom-position: -21.5px;
             list-style: none;
             margin: 0px 10px;
             a {
-              color: #1f5e11;
+              // color: #1f5e11;
               text-decoration: none;
               position: relative;
               &.active {
@@ -683,7 +698,7 @@ $navigation-indicator-bottom-position: -21.5px;
           font-size: 13px;
           font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
           .login-button-container {
-            margin-right: 4px;
+            margin-right: 10px;
             cursor: pointer;
             .login-button {
               display: inline-block;
@@ -867,12 +882,14 @@ $navigation-indicator-bottom-position: -21.5px;
 .courses-container {
   .course-item {
     display: flex;
+    align-items: center;
     padding: 10px 20px;
     outline-offset: -2px;
     &:hover {
       background-color: #f2f3f5;
     }
     .course-image {
+      border-radius: 5px;
       min-width: 80px;
       min-height: 60px;
       width: 80px;
@@ -883,6 +900,7 @@ $navigation-indicator-bottom-position: -21.5px;
       background-position-y: center;
       position: relative;
       cursor: pointer;
+      filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.363117));
       &:after {
         content: '';
         position: absolute;
@@ -907,9 +925,9 @@ $navigation-indicator-bottom-position: -21.5px;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        color: #505763;
-        font-size: 13px;
-        font-weight: 600;
+        color: #0D2B41;
+        font-weight: bold;
+        font-size: 14px;
         cursor: pointer;
         &:hover {
           text-decoration: underline;
@@ -918,9 +936,9 @@ $navigation-indicator-bottom-position: -21.5px;
       .course-prices {
         display: flex;
         .final-price {
-          margin-right: 20px;
-          color: #eb6c00;
-          font-weight: 600;
+          margin-right: 10px;
+          color: #218C90;
+          font-weight: bold;
         }
         .original-price {
           text-decoration: line-through;
@@ -934,45 +952,49 @@ $navigation-indicator-bottom-position: -21.5px;
     padding: 10px 20px;
     display: flex;
     flex-direction: column;
-    background-color: #f2f3f5;
+    align-items: center;
+    background-color: #EEEDED;
     .total-container {
       display: flex;
+      justify-content: center;
       margin-bottom: 10px;
       font-size: 15px;
       font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      color: #0D2B41;
+      font-weight: bold;
       .label {
-        color: #686f7a;
-        margin-right: 20px;
+        margin-right: 10px;
       }
       .total {
-        margin-right: 20px;
-        color: #29303b;
+        margin-right: 10px;
         font-weight: 600;
       }
       .subtotal {
         text-decoration: line-through;
-        color: #686f7a;
+        color: #383838;
+        font-weight: normal;
       }
     }
     .cart-button {
-      display: inline-block;
-      font-weight: 600;
-      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
-      text-align: center;
-      vertical-align: middle;
-      white-space: nowrap;
-      padding: 11px 12px;
-      font-size: 15px;
-      line-height: 1.35135;
-      border-radius: 2px;
-      user-select: none;
-      cursor: pointer;
-      color: #fff;
-      background-color: #1f5e11;
-      border: 1px solid transparent;
       &:hover {
-        background-color: #eb6c00;
+        background: #FFFFFF;
+        border-radius: 21px;
+        color: #218C90;
+        box-shadow: inset 0 0 0 2px #218C90;
       }
+      background: #FFFFFF;
+      border-radius: 21px;
+      color: #FFFFFF;
+      white-space: nowrap;
+      line-height: unset;
+      padding: 6px 30px;
+      cursor: pointer;
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#67c3a4+0,1f8d90+100 */
+      background: rgb(103,195,164); /* Old browsers */
+      background: -moz-linear-gradient(top,  rgba(103,195,164,1) 0%, rgba(31,141,144,1) 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(top,  rgba(103,195,164,1) 0%,rgba(31,141,144,1) 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom,  rgba(103,195,164,1) 0%,rgba(31,141,144,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#67c3a4', endColorstr='#1f8d90',GradientType=0 ); /* IE6-9 */
     }
   }
 }
@@ -1090,5 +1112,8 @@ $navigation-indicator-bottom-position: -21.5px;
   .mat-menu-panel {
     // max-width: 400px !important;
     max-width: unset !important;
+  }
+  .mat-menu-content {
+    padding-bottom: 0px !important;
   }
 }

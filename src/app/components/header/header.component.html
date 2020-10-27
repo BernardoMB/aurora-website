@@ -11,7 +11,7 @@
     </div>
     <img
       class="logotype focus-outline"
-      src="/assets/img/logos/logotype-new.svg"
+      src="/assets/img/logos/logotype-white-no-chd.svg"
       alt="Invest Naija Logotype"
       routerLink="/"
       (click)="mobileNavBarOpen = false"
@@ -100,9 +100,9 @@
             >
           </li>
         </ul>
-        <div class="divider-container">
+        <!-- <div class="divider-container">
           <div class="divider"></div>
-        </div>
+        </div> -->
         <div class="cart-container">
           <i
             class="material-icons focus-outline"
@@ -174,6 +174,7 @@
                     </div>
                   </div>
                   <button
+                    mat-flat-button
                     class="cart-button focus-outline"
                     *ngIf="showGoToCartButton"
                     [routerLink]="['/courses/cart']"
@@ -387,13 +388,13 @@
         </div>
         <div *ngIf="!user" class="register-section">
           <div class="login-button-container">
-            <button class="login-button focus-outline" (click)="onLogin()">
-              Log In
+            <button mat-flat-button class="login-button focus-outline" (click)="onLogin()">
+              Log in
             </button>
           </div>
           <div class="signup-button-container">
-            <button class="signup-button focus-outline" (click)="onRegister()">
-              Sign Up
+            <button mat-flat-button class="signup-button focus-outline" (click)="onRegister()">
+              Sign up
             </button>
           </div>
         </div>

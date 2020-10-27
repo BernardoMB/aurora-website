@@ -17,8 +17,12 @@ $modal-break: 630px;
     padding-bottom: 24px;
     .modal-title {
       margin: 0px 24px;
+      font-style: normal;
+      font-weight: bold;
       font-size: 15px;
-      font-weight: 600;
+      line-height: 22px;
+      text-align: center;
+      color: #383838;
     }
     i {
       margin-right: 24px;
@@ -31,6 +35,12 @@ $modal-break: 630px;
   .welcome-phrase {
     text-align: center;
     margin-bottom: 10px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 22px;
+    text-align: center;
+    color: #383838;
   }
   form {
     // font-size: 14px;
@@ -74,25 +84,28 @@ $modal-break: 630px;
     .login-button-container {
       width: 100%;
       cursor: pointer;
+      display: flex;
+      justify-content: center;
       .login-button {
-        width: 100%;
-        display: inline-block;
-        font-weight: 600;
-        text-align: center;
-        vertical-align: middle;
-        white-space: nowrap;
-        padding: 11px 25px;
-        font-size: 15px;
-        line-height: 1.35135;
-        border-radius: 2px;
-        user-select: none;
-        cursor: pointer;
-        color: #fff;
-        background-color: #eb6c00;
-        border: 1px solid transparent;
         &:hover {
-          background-color: #1f5e11;
+          background: #FFFFFF;
+          border-radius: 21px;
+          color: #218C90;
         }
+        background: #FFFFFF;
+        border-radius: 21px;
+        color: #FFFFFF;
+        white-space: nowrap;
+        line-height: unset;
+        border: none;
+        font-weight: bold;
+        padding: 8px 36px;
+        cursor: pointer;
+        background: #67C3A4; /* Old browsers */
+        background: -moz-linear-gradient(-45deg,  #67C3A4 0%, #1F8D90 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(-45deg,  #67C3A4 0%,#1F8D90 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(135deg,  #67C3A4 0%,#1F8D90 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#67C3A4', endColorstr='#1F8D90',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
       }
     }
   }
@@ -100,10 +113,12 @@ $modal-break: 630px;
     padding: 20px;
     margin-bottom: 20px;
     width: calc(100% - 40px);
+    font-weight: bold;
+    text-align: center;
     a {
-      color: #289e50;
+      color: #259192;
       cursor: pointer;
-      font-weight: 500;
+      font-weight: bold;
       &:hover {
         text-decoration: underline;
       }

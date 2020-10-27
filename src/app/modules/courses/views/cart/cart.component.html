@@ -1,12 +1,25 @@
-<section class="cart-view-header">
+<!-- <section class="cart-view-header">
   <div class="cart-view-header-container">
     <h1 class="title">Shopping Cart</h1>
+  </div>
+</section> -->
+
+<section class="courses-jumbotron-section">
+  <div class="jumbotron-wrapper">
+    <div class="jumbotron-wrapper-overlay">
+      <div class="jumbotron-conatiner">
+        <div class="jumbotron-texts">
+          <div class="jumbotron-title">Shopping Cart</div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <section class="cart-section">
   <div class="cart-container">
-    <div *ngIf="cart" class="cart-counter">{{ cart.length }} Courses in Cart</div>
+    <div *ngIf="cart && cart.length === 1" class="cart-counter">{{ cart.length }} Course in Cart</div>
+    <div *ngIf="cart && cart.length > 1" class="cart-counter">{{ cart.length }} Courses in Cart</div>
     <div *ngIf="cart && cart.length > 0" class="shopping-container">
       <div class="courses-list">
         <div *ngFor="let course of cart; let i = index" class="course-item">
@@ -53,7 +66,6 @@
           </div>
         </div>
         <div *ngFor="let course of cart; let i = index" class="course-item-small">
-
           <div class="upper">
             <div
               class="course-image focus-outline"
@@ -101,7 +113,6 @@
               >
             </div>
           </div>
-
         </div>
       </div>
       <div class="checkout-card">
@@ -110,7 +121,7 @@
         <div *ngIf="total !== subtotal" class="subtotal">
           {{ subtotal | currency: 'NGN':'symbol-narrow' }}
         </div>
-        <button class="checkout-button focus-outline" (click)="onCheckout()">Checkout</button>
+        <button mat-flat-button class="checkout-button focus-outline" (click)="onCheckout()">Checkout</button>
       </div>
     </div>
     <div *ngIf="!cart || cart.length === 0" class="empty-container">
@@ -126,7 +137,7 @@
     </div>
     <div class="title-container">
       <div class="title">Rencently wishlisted</div>
-      <a [routerLink]="['./../my-courses/wishlist']">View all</a>
+      <a class="view-all-link focus-outline" [routerLink]="['./../my-courses/wishlist']">View all</a>
     </div>
     <div *ngIf="wishedCourses && wishedCourses.length > 0" class="cards-container">
       <div class="course-card" *ngFor="let course of wishedCourses; let i = index">

@@ -452,6 +452,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         reviews.length ? null : this.theEnd = true;
       }),
       map((reviews: any[]) => {
+        console.log({reviews});
         return reviews.reduce((acc, review) => {
           const id = review.id;
           const data = {

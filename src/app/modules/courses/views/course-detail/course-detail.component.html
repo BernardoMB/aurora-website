@@ -15,8 +15,8 @@
           <div class="favorite-container">
             <button mat-flat-button *ngIf="showArchiveButton && canArchiveCourse" class="wishlist-button" (click)="onArchiveCourse()">Archive course</button>
             <button mat-flat-button *ngIf="showArchiveButton && !canArchiveCourse" class="wishlist-button" (click)="onUnarchiveCourse()">Unarchive course</button>
-            <div *ngIf="showWishlistButton && canAddToWishlist" class="wishlist-button" (click)="onAddToWishlist()">Add to wishlist</div>
-            <div *ngIf="showWishlistButton && !canAddToWishlist" class="wishlist-button" (click)="onRemoveFromWishlist()">Remove from wishlist</div>
+            <button mat-flat-button *ngIf="showWishlistButton && canAddToWishlist" class="wishlist-button" (click)="onAddToWishlist()">Add to wishlist</button>
+            <button mat-flat-button *ngIf="showWishlistButton && !canAddToWishlist" class="wishlist-button" (click)="onRemoveFromWishlist()">Remove from wishlist</button>
             <button mat-icon-button class="favorite-toggler-button">
               <i class="material-icons" (click)="isFavorite ? onUnfavoriteCourse() : onFavoriteCourse()">
                 {{ isFavorite ? 'favorite' : 'favorite_border' }}
@@ -37,10 +37,10 @@
           </div>
           <div class="course-name">{{ course.name }}</div>
           <div class="buttons-container">
-            <button *ngIf="!enrolled && !showGoToCart && course.price !== 0" class="enroll-button focus-outline" (click)="onAddToCart(course.id)">Add to cart <i class="material-icons">add_shopping_cart</i></button>
-            <button *ngIf="!enrolled && showGoToCart" class="enroll-button focus-outline" [routerLink]="['/courses/cart']">Go to cart <i class="material-icons">shopping_cart</i></button>
-            <button *ngIf="!enrolled && course.price !== 0" class="buy-now-button focus-outline" (click)="onBuyNow()">Buy now</button>
-            <button *ngIf="!enrolled && course.price === 0" class="enroll-button focus-outline" (click)="onEnroll()">Enroll now</button>
+            <button mat-flat-button *ngIf="!enrolled && !showGoToCart && course.price !== 0" class="enroll-button focus-outline" (click)="onAddToCart(course.id)">Add to cart <i class="material-icons">add_shopping_cart</i></button>
+            <button mat-flat-button *ngIf="!enrolled && showGoToCart" class="enroll-button focus-outline" [routerLink]="['/courses/cart']">Go to cart <i class="material-icons">shopping_cart</i></button>
+            <button mat-flat-button *ngIf="!enrolled && course.price !== 0" class="buy-now-button focus-outline" (click)="onBuyNow()">Buy now</button>
+            <button mat-flat-button *ngIf="!enrolled && course.price === 0" class="enroll-button focus-outline" (click)="onEnroll()">Enroll now</button>
             <button mat-flat-button *ngIf="enrolled" class="enroll-button focus-outline" tabindex="0" (click)="onGoToLearningView()">Learn Now <i class="material-icons">arrow_forward_ios</i></button>
           </div>
         </div>
@@ -206,7 +206,7 @@
   </mat-tab>
 </mat-tab-group>
 
-<div class="divider"></div>
+<!-- <div class="divider"></div> -->
 
 <section *ngIf="relatedCourses && relatedCourses.length > 0" class="courses-section">
   <div class="courses-container">
@@ -225,3 +225,5 @@
     <a class="focus-outline" [routerLink]="['/courses/categories/', course.category.id]" [queryParams]="{ page: 1 }">View all</a>
   </div>
 </section>
+
+

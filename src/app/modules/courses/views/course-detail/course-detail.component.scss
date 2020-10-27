@@ -1,16 +1,26 @@
 .course-jumbotron {
   overflow: hidden;
   .course-jumbotron-wrapper {
-    background-size: cover;
+    /* background-size: cover;
     resize: both;
     background-position-x: center;
-    background-position-y: center;
-    background-image: url('/assets/img/jumbotrons/courses-jumbotron.jpg');
+    background-position-y: center; */
+    background-image: url('/assets/img/jumbotrons/pattern.png');
     .course-jumbotron-overlay {
-      background: linear-gradient(#29303b, #29303b, #29303b);
+      // /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#00878e+0,003a55+100&0.8+0,0.88+100 */
+      // background: -moz-linear-gradient(left,  rgba(0,135,142,0.8) 0%, rgba(0,58,85,0.88) 100%); /* FF3.6-15 */
+      // background: -webkit-linear-gradient(left,  rgba(0,135,142,0.8) 0%,rgba(0,58,85,0.88) 100%); /* Chrome10-25,Safari5.1-6 */
+      // background: linear-gradient(to right,  rgba(0,135,142,0.8) 0%,rgba(0,58,85,0.88) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc00878e', endColorstr='#e0003a55',GradientType=1 ); /* IE6-9 */
+
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#00878e+25,003a55+75&0.75+0,0.75+100 */
+      background: -moz-linear-gradient(left,  rgba(0,135,142,0.75) 0%, rgba(0,135,142,0.75) 25%, rgba(0,58,85,0.75) 75%, rgba(0,58,85,0.75) 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(left,  rgba(0,135,142,0.75) 0%,rgba(0,135,142,0.75) 25%,rgba(0,58,85,0.75) 75%,rgba(0,58,85,0.75) 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to right,  rgba(0,135,142,0.75) 0%,rgba(0,135,142,0.75) 25%,rgba(0,58,85,0.75) 75%,rgba(0,58,85,0.75) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bf00878e', endColorstr='#bf003a55',GradientType=1 ); /* IE6-9 */
       display: block;
       position: relative;
-      $opacity: 0.1;
+      //$opacity: 0.1;
       .course-jumbotron-container {
         padding: 24px 20px;
         max-width: 1292px;
@@ -94,18 +104,41 @@
             display: flex;
             align-items: center;
             .wishlist-button {
-              cursor: pointer;
+              /* cursor: pointer;
               border: 2px solid white;
               padding: 2px 10px;
               border-radius: 20px;
               font-size: 12px;
               line-height: unset;
               color: white;
-              background-color: inherit;
-              @media screen and (min-width: 425px) {
+              background-color: inherit; */
+              /* @media screen and (min-width: 425px) {
                 &:hover {
                   color: #29303b;
                   background-color: white;
+                }
+              } */
+              line-height: unset;
+              padding: 2px 10px;
+              text-decoration: none;
+              vertical-align: middle;
+              text-align: center;
+              background: #FFFFFF;
+              border-radius: 21px;
+              background: #FFFFFF;
+              color: #eb6c00;
+              white-space: nowrap;
+              cursor: pointer;
+              @media screen and (min-width: 425px) {
+                &:hover {
+                  border-radius: 21px;
+                  color: #FFFFFF;
+                  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ef9d38+0,ec5a58+100 */
+                  background: rgb(239,157,56); /* Old browsers */
+                  background: -moz-linear-gradient(top,  rgba(239,157,56,1) 0%, rgba(236,90,88,1) 100%); /* FF3.6-15 */
+                  background: -webkit-linear-gradient(top,  rgba(239,157,56,1) 0%,rgba(236,90,88,1) 100%); /* Chrome10-25,Safari5.1-6 */
+                  background: linear-gradient(to bottom,  rgba(239,157,56,1) 0%,rgba(236,90,88,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ef9d38', endColorstr='#ec5a58',GradientType=0 ); /* IE6-9 */
                 }
               }
             }
@@ -127,16 +160,19 @@
             justify-content: center;
             margin-top: 20px;
             .image-wrapper {
-              border-radius: 5px;
-              padding: 5px;
+              /* padding: 5px;
+              border: 1px solid gainsboro; */
+              border-radius: 6px;
               background-color: white;
-              border: 1px solid gainsboro;
+              box-shadow: 0px 14px 18px rgba(0, 0, 0, 0.303677);
               .course-image-container {
+                border-radius: inherit;
                 background-size: cover;
                 resize: both;
                 background-position-x: center;
                 background-position-y: center;
                 .image-overlay {
+                  border-radius: inherit;
                   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+0,0+54 */
                   background: -moz-linear-gradient(
                     top,
@@ -164,15 +200,25 @@
             }
           }
           .course-name {
-            padding: 10px;
+            /* padding: 15px;
             font-family: 'Open Sans';
             font-size: 36px;
             font-weight: 300;
             line-height: 1.1;
             color: $font-color;
-            margin-bottom: 20px;
             text-align: center;
+            max-width: 520px; */
+            // margin-bottom: 20px;
+            font-family: 'Open sans';
+            padding: 15px;
             max-width: 520px;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 38px;
+            line-height: 49px;
+            text-align: center;
+            letter-spacing: 1px;
+            color: $font-color;
           }
           .buttons-container {
             display: flex;
@@ -195,16 +241,28 @@
               -ms-user-select: none;
               user-select: none;
               cursor: pointer;
-              color: #fff;
-              background-color: #eb6c00;
-              border: 1px solid transparent;
+              border: none;
+              color: #FFFFFF;
+              /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ef9d38+0,ec5a58+100 */
+              background: rgb(239,157,56); /* Old browsers */
+              background: -moz-linear-gradient(top,  rgba(239,157,56,1) 0%, rgba(236,90,88,1) 100%); /* FF3.6-15 */
+              background: -webkit-linear-gradient(top,  rgba(239,157,56,1) 0%,rgba(236,90,88,1) 100%); /* Chrome10-25,Safari5.1-6 */
+              background: linear-gradient(to bottom,  rgba(239,157,56,1) 0%,rgba(236,90,88,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+              filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ef9d38', endColorstr='#ec5a58',GradientType=0 ); /* IE6-9 */
+              @media screen and (min-width: 425px) {
+                &:hover {
+                  border-radius: 20px;
+                  color: #ED6056;
+                  background: none;
+                  background-color: white;
+                }
+              }
               i {
                 margin-left: 10px;
                 font-size: 22px;
               }
             }
             .buy-now-button {
-              margin-left: 10px;
               display: flex;
               margin-bottom: 20px;
               align-items: center;
@@ -221,9 +279,23 @@
               -ms-user-select: none;
               user-select: none;
               cursor: pointer;
-              color: #fff;
-              background-color: unset;
-              border: 2px solid white;
+              border: none;
+              color: #ED6056;
+              background: none;
+              background-color: white;
+              @media screen and (min-width: 425px) {
+                &:hover {
+                  border-radius: 20px;
+                  color: #FFFFFF;
+              /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ef9d38+0,ec5a58+100 */
+              background: rgb(239,157,56); /* Old browsers */
+              background: -moz-linear-gradient(top,  rgba(239,157,56,1) 0%, rgba(236,90,88,1) 100%); /* FF3.6-15 */
+              background: -webkit-linear-gradient(top,  rgba(239,157,56,1) 0%,rgba(236,90,88,1) 100%); /* Chrome10-25,Safari5.1-6 */
+              background: linear-gradient(to bottom,  rgba(239,157,56,1) 0%,rgba(236,90,88,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+              filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ef9d38', endColorstr='#ec5a58',GradientType=0 ); /* IE6-9 */
+                }
+              }
+              margin-left: 10px;
               @media screen and (max-width: 320px) {
                 margin-left: 0px;
               }
@@ -356,7 +428,7 @@
       display: flex;
       flex-direction: column;
       padding: 40px 60px;
-      background-color: #f3f3f3;
+      background-color: #f5f5f5;
       border: 1px solid gainsboro;
       border-radius: 5px;
       max-height: 400px;
@@ -423,11 +495,6 @@
       @media screen and (max-width: $lessons-break) {
         padding: 25px 15px;
       }
-
-
-
-
-
       .expansion-panel {
         //margin-bottom: 10px;
         .mat-content {
@@ -442,7 +509,7 @@
             flex-grow: 1;
             margin-right: 10px;
             font-weight: 600;
-            color: #1f5e11;
+            color: #5D5D5D;
             .object-number {
               margin-right: 4px;
             }
@@ -476,7 +543,9 @@
               display: flex;
               align-items: center;
               white-space: nowrap;
-              font-size: 12px;
+              font-size: 14px;
+              font-weight: 600;
+              color: #032C43;
               i {
                 $duration-font-size: 16px;
                 width: $duration-font-size;
@@ -498,14 +567,10 @@
           display: flex;
           font-weight: 600;
           font-size: 15px;
-          color: #1f5e11;
+          color: #29303b;
           margin-bottom: 5px;
         }
       }
-
-
-
-
     }
   }
   .tab-reviews {
@@ -525,7 +590,7 @@
       display: flex;
       flex-direction: column;
       padding: 40px 60px;
-      background-color: #f3f3f3;
+      background-color: #f5f5f5;
       border: 1px solid gainsboro;
       border-radius: 5px;
       height: 400px;
@@ -776,8 +841,11 @@
     }
   }
   ::ng-deep {
+    .mat-tab-header {
+      border: none;
+    }
     .mat-tab-list {
-      background-color: #f3f3f3;
+      background-color: #f5f5f5;
       .mat-tab-labels {
         justify-content: space-around;
         max-width: 1292px;
@@ -787,6 +855,7 @@
           padding: 0px;
           flex-grow: 1;
           min-width: unset;
+          max-width: 200px;
           .mat-tab-label-content {
             font-size: 16px;
             color: #29303b;
@@ -805,7 +874,7 @@
         }
       }
       .mat-ink-bar {
-        background-color: darkorange;
+        background-color: #F95654;
         height: 3px;
       }
     }
@@ -821,6 +890,7 @@
 .courses-section {
   display: block;
   position: relative;
+  background-color: #f5f5f5;
   .courses-container {
     padding: 40px 24px;
     max-width: 1290px;
