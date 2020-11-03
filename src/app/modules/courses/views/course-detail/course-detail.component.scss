@@ -7,12 +7,6 @@
     background-position-y: center; */
     background-image: url('/assets/img/jumbotrons/pattern.png');
     .course-jumbotron-overlay {
-      // /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#00878e+0,003a55+100&0.8+0,0.88+100 */
-      // background: -moz-linear-gradient(left,  rgba(0,135,142,0.8) 0%, rgba(0,58,85,0.88) 100%); /* FF3.6-15 */
-      // background: -webkit-linear-gradient(left,  rgba(0,135,142,0.8) 0%,rgba(0,58,85,0.88) 100%); /* Chrome10-25,Safari5.1-6 */
-      // background: linear-gradient(to right,  rgba(0,135,142,0.8) 0%,rgba(0,58,85,0.88) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-      // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cc00878e', endColorstr='#e0003a55',GradientType=1 ); /* IE6-9 */
-
       /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#00878e+25,003a55+75&0.75+0,0.75+100 */
       background: -moz-linear-gradient(left,  rgba(0,135,142,0.75) 0%, rgba(0,135,142,0.75) 25%, rgba(0,58,85,0.75) 75%, rgba(0,58,85,0.75) 100%); /* FF3.6-15 */
       background: -webkit-linear-gradient(left,  rgba(0,135,142,0.75) 0%,rgba(0,135,142,0.75) 25%,rgba(0,58,85,0.75) 75%,rgba(0,58,85,0.75) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -960,7 +954,7 @@
 :host ::ng-deep .course-card-wrapper {
   display: flex;
   flex-grow: 1;
-  max-width: 418px;
+  max-width: 250px;
 }
 
 :host ::ng-deep .course-card-wrapper {

@@ -1,7 +1,15 @@
 .lerning-header {
   display: block;
   position: relative;
-  background: linear-gradient(#29303b, #29303b, #29303b);
+  //background: linear-gradient(#29303b, #29303b, #29303b);
+  background-image: url('/assets/img/jumbotrons/pattern.png');
+  .wrapper {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#00878e+25,003a55+75&0.75+0,0.75+100 */
+    background: -moz-linear-gradient(right,  rgba(0,135,142,0.75) 0%, rgba(0,135,142,0.75) 25%, rgba(0,58,85,0.75) 75%, rgba(0,58,85,0.75) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(right,  rgba(0,135,142,0.75) 0%,rgba(0,135,142,0.75) 25%,rgba(0,58,85,0.75) 75%,rgba(0,58,85,0.75) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to left,  rgba(0,135,142,0.75) 0%,rgba(0,135,142,0.75) 25%,rgba(0,58,85,0.75) 75%,rgba(0,58,85,0.75) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bf00878e', endColorstr='#bf003a55',GradientType=1 ); /* IE6-9 */
+  }
   .header-container {
     max-width: 1180px;
     box-sizing: border-box;
@@ -279,7 +287,7 @@
 :host ::ng-deep .course-card-wrapper {
   display: flex;
   flex-grow: 1;
-  max-width: 418px;
+  max-width: 260px;
 }
 
 :host ::ng-deep .course-card-wrapper {

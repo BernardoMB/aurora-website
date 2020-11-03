@@ -1,22 +1,42 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,600,700,800');
 
-.lerning-header {
-  display: block;
-  position: relative;
-  background: linear-gradient(#29303b, #29303b, #29303b);
-  .header-container {
-    max-width: 1220px;
-    box-sizing: border-box;
-    margin: auto;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 60px;
-    .news-title {
-      color: white;
-      font-size: 24px;
-      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+.courses-jumbotron-section {
+  overflow: hidden;
+  .jumbotron-wrapper {
+    background-size: cover;
+    resize: both;
+    background-position-x: center;
+    background-position-y: center;
+    background-image: url('/assets/img/jumbotrons/courses-all-jumbotron.jpg');
+    .jumbotron-wrapper-overlay {
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#00878e+25,003a55+75&0.75+0,0.75+100 */
+      background: -moz-linear-gradient(left,  rgba(0,135,142,0.75) 0%, rgba(0,135,142,0.75) 25%, rgba(0,58,85,0.75) 75%, rgba(0,58,85,0.75) 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(left,  rgba(0,135,142,0.75) 0%,rgba(0,135,142,0.75) 25%,rgba(0,58,85,0.75) 75%,rgba(0,58,85,0.75) 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to right,  rgba(0,135,142,0.75) 0%,rgba(0,135,142,0.75) 25%,rgba(0,58,85,0.75) 75%,rgba(0,58,85,0.75) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bf00878e', endColorstr='#bf003a55',GradientType=1 ); /* IE6-9 */
+      .jumbotron-conatiner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 300px;
+        .jumbotron-texts {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          font-family: Dinot;
+          color: white;
+          margin: 20px;
+          .jumbotron-title {
+            font-size: 56px;
+            font-weight: bold;
+          }
+          .jumbotron-description {
+            margin-top: 14px;
+            text-align: center;
+            font-size: 32px;
+          }
+        }
+      }
     }
   }
 }
