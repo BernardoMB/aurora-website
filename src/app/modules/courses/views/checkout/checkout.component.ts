@@ -92,7 +92,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           console.log('Card number', cardNumber);
           if (cardNumber) {
             // 19 because Verve cards are 19 digits
-            if (16 <= cardNumber.length && cardNumber.length <= 19) {
+            if (15 <= cardNumber.length && cardNumber.length <= 19) {
               console.log(`${cardNumber.length} is valid :\)`);
               isValid = true;
               console.log('Returning null');
@@ -777,7 +777,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.authService.purchaseCart(userId, courses, paymentMethod, country, paymentInfo).pipe(
       catchError((error) => {
         // Determine type of error (use Aurora API returned data):
-        console.error('Chinga tu madre! Ocurrio un error.');
+        console.error('Chinga tu madre! Ocurrio un error.', error);
 
         //#region Card requires PIN authentication
         if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'PIN') {
