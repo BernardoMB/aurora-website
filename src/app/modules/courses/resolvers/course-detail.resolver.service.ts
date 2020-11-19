@@ -54,7 +54,7 @@ export class CourseDetailResolver implements Resolve<any> {
             map((relatedCoursesPage: PagedData<Course>) => {
               const courseDetailInfo = {
                 course,
-                relatedCourses: relatedCoursesPage.data,
+                relatedCourses: relatedCoursesPage.data.asImmutable().toJS(),
               };
               return courseDetailInfo;
             }),

@@ -65,7 +65,7 @@ export class LearnResolver implements Resolve<any> {
                     const learningInfo = {
                       course,
                       userProgress,
-                      relatedCourses: relatedCoursesPage.data,
+                      relatedCourses: relatedCoursesPage.data.asImmutable().toJS(),
                     };
                     return learningInfo;
                   }),
@@ -80,7 +80,7 @@ export class LearnResolver implements Resolve<any> {
                     const learningInfo = {
                       course,
                       userProgress,
-                      relatedCourses: relatedCoursesPage.data,
+                      relatedCourses: relatedCoursesPage.data.asImmutable().toJS(),
                     };
                     return learningInfo;
                   }),

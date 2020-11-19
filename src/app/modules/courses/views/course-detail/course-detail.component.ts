@@ -26,7 +26,6 @@ import { ReviewModalComponent } from '../../components/review-modal/review-modal
 import { CoursesService } from '../../services/courses.service';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { throttleTime, mergeMap, tap, map, scan } from 'rxjs/operators';
-import * as faker from 'faker';
 import { IReview } from '../../interfaces/IReview';
 import { Review } from '../../../../shared/models/review.model';
 import { EmailWarningModalComponent } from '../../components/email-warning-modal/email-warning-modal.component';
@@ -39,12 +38,12 @@ import { WarningModalComponent } from '../../../../shared/components/warning-mod
   styleUrls: ['./course-detail.component.scss'],
 })
 export class CourseDetailComponent implements OnInit, OnDestroy {
-  dialogConfig = new MatDialogConfig();
+  selectedTabIndex = 0;
+  showCertificateTab = false;
   routeFragmentSubscription: Subscription;
+  dialogConfig = new MatDialogConfig();
   routeDataSubscription: Subscription;
   isFavorite = false;
-  currentTab = 'about';
-  showCertificateTab = false;
   userSubscription: Subscription;
   user: User;
   isAuthenticatedSubscription: Subscription;
@@ -60,14 +59,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   showArchiveButton = false;
   canArchiveCourse = true;
   enrolled = false;
-  /* get enrolled() {
-    if (this.user && this.course) {
-      if (this.course.enrolledUsers.indexOf(this.user.id) !== -1) {
-        return true;
-      }
-    }
-    return false;
-  } */
+
+  // Tabs old logic
+  // currentTab = 'about';
 
   // #region Reviews infinite scroll
   @ViewChild(CdkVirtualScrollViewport)
@@ -109,7 +103,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       return;
     });
 
-    // #region Reviews infinite scroll
+    //#region Reviews infinite scroll
     const batchMap = this.offset.pipe(
       throttleTime(500),
       mergeMap((value: { courseId: string, offset: number }) => {
@@ -152,15 +146,35 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     // Set the current tab getting rote fragment if any
     this.routeFragmentSubscription = this.route.fragment.subscribe((fragment: string) => {
       if (fragment) {
-        this.currentTab = fragment;
+        switch (fragment) {
+          case 'about':
+            this.selectedTabIndex = 0;
+            break;
+          case 'lessons':
+            this.selectedTabIndex = 1;
+            break;
+          case 'reviews':
+            this.selectedTabIndex = 2;
+            break;
+          case 'certificate':
+            this.selectedTabIndex = 3;
+            break;
+          default:
+            this.selectedTabIndex = 0;
+            break;
+        }
+
+        // Tabs old logic (instead of the switch)
+        // this.currentTab = fragment;
       }
     });
   }
 
   ngOnInit() {
     this.routeDataSubscription = this.route.data.subscribe((data) => {
+      console.log('Resolved data', {data});
       if (data.courseDetailInfo) {
-        const courseDetailInfo: { course: Course, userProgress: string[], relatedCourses: Course[] } = data.courseDetailInfo;
+        const courseDetailInfo: { course: Course, relatedCourses: Course[] } = data.courseDetailInfo;
         this.course = courseDetailInfo.course;
         this.relatedCourses = courseDetailInfo.relatedCourses;
         // #region Cart logic
@@ -200,7 +214,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           const purchasedCourse = user.purchasedCourses.find((el: IPurchasedCourse) => el.course === this.course.id);
           if (purchasedCourse) {
             const userProgress = purchasedCourse.progress;
-            if (userProgress.length === this.course.lessons.length) {
+            if (userProgress.length === this.course.courseObjects.length) {
               // User has completed this course
               this.showCertificate = true;
             } else {
@@ -236,7 +250,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           this.isFavorite = false;
         }
 
-        // Determine if course is user's wishlist
+        // Determine if course is in user's wishlist
         const wishedCourseId = user.wishList.find((id: string) => id === this.course.id);
         if (wishedCourseId) {
           this.canAddToWishlist = false;
@@ -244,7 +258,7 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
           this.canAddToWishlist = true;
         }
 
-        // Determine if course is user's wishlist
+        // Determine if course is in user's archived courses
         const archivedCourseId = user.archivedCourses.find((id: string) => id === this.course.id);
         if (archivedCourseId) {
           this.canArchiveCourse = false;
@@ -273,6 +287,18 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     this.routeFragmentSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
     this.isAuthenticatedSubscription.unsubscribe();
+  }
+
+  onTabNavigation(tabIndex) {
+    const fragments = ['about', 'lessons', 'reviews', 'certificate'];
+    console.log(fragments[tabIndex]);
+    this.router.navigate([`./`], {
+      fragment: fragments[tabIndex],
+      /* preserveFragment: true, */
+      /* skipLocationChange: true, */
+      relativeTo: this.route,
+      replaceUrl: true,
+    });
   }
 
   onAddToCart(courseId: string) {
@@ -376,6 +402,10 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  onGoToLearningView() {
+    this.router.navigate(['./learn'], { relativeTo: this.route, skipLocationChange: true });
+  }
+
   async onDownloadCertificate() {
     window.scrollTo(0, 0);
     setTimeout(async () => {
@@ -389,11 +419,17 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
     }, 1);
   }
 
-  navigateToLesson($event: string) {
-    const lessonId = $event;
+  onViewCourseObject(object: any) {
+    // TODO: Use courseObject type for object argument
     if (this.enrolled) {
-      console.log(`CourseDetailComponent: Navigating to lesson/${lessonId}`);
-      this.router.navigate(['./learn/lesson', lessonId], { relativeTo: this.route });
+      const courseObjectId = object.courseObject.id;
+      if (object.type === 'LESSON') {
+        console.log(`CourseDetailComponent: Navigating to lesson/${courseObjectId}`);
+        this.router.navigate(['./learn/lesson', courseObjectId], { relativeTo: this.route });
+      } else if (object.type === 'QUIZ') {
+        console.log(`CourseDetailComponent: Navigating to quiz/${courseObjectId}`);
+        this.router.navigate(['./learn/quiz', courseObjectId], { relativeTo: this.route });
+      }
     } else {
       this.enrollDialog.open(WarningModalComponent, {
         autoFocus: true,
@@ -406,6 +442,51 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  //#region Reviews infinite scroll
+  getBatch(courseId, offset) {
+    // console.log(`Fetching batch. CourseId: ${courseId}, Offset: ${offset}`);
+    return this.coursesService.getCourseReviews(courseId, offset, this.batch).pipe(
+      tap((reviews: any[]) => {
+        reviews.length ? null : this.theEnd = true;
+      }),
+      map((reviews: any[]) => {
+        return reviews.reduce((acc, review) => {
+          const id = review.id;
+          const data = {
+            review: review.review,
+            rating: review.rating,
+            user: {
+              name: review.user.name,
+              lastName: review.user.lastName
+            }
+          };
+          return { ...acc, [id]: data };
+        }, {});
+      })
+    );
+  }
+
+  nextBatch(e, offset) {
+    // console.log('ScrollIndexChanged. Event:', e);
+    if (this.theEnd) {
+      // console.log('There are no more reviews to fetch');
+      return;
+    }
+    const end = this.viewport.getRenderedRange().end;
+    const total = this.viewport.getDataLength();
+    // console.log(`${end}, '>=', ${total}`);
+    if (end === total) {
+      // console.log('All fetched elements were rendered. Asking for more elements. Offset:', offset);
+      const value = { courseId: this.course.id, offset };
+      // console.log('Nexting value', value);
+      this.offset.next(value);
+    }
+  }
+
+  trackByIdx(i) {
+    return i;
   }
 
   onRateCourse() {
@@ -461,54 +542,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
       }
     });
   }
+  //#endregion
 
-  // Reviews infinite scroll
-  getBatch(courseId, offset) {
-    // console.log(`Fetching batch. CourseId: ${courseId}, Offset: ${offset}`);
-    return this.coursesService.getCourseReviews(courseId, offset, this.batch).pipe(
-      tap((reviews: any[]) => {
-        reviews.length ? null : this.theEnd = true;
-      }),
-      map((reviews: any[]) => {
-        return reviews.reduce((acc, review) => {
-          const id = review.id;
-          const data = {
-            review: review.review,
-            rating: review.rating,
-            user: {
-              name: review.user.name,
-              lastName: review.user.lastName
-            }
-          };
-          return { ...acc, [id]: data };
-        }, {});
-      })
-    );
-  }
-
-  nextBatch(e, offset) {
-    // console.log('ScrollIndexChanged. Event:', e);
-    if (this.theEnd) {
-      // console.log('There are no more reviews to fetch');
-      return;
-    }
-    const end = this.viewport.getRenderedRange().end;
-    const total = this.viewport.getDataLength();
-    // console.log(`${end}, '>=', ${total}`);
-    if (end === total) {
-      // console.log('All fetched elements were rendered. Asking for more elements. Offset:', offset);
-      const value = { courseId: this.course.id, offset };
-      // console.log('Nexting value', value);
-      this.offset.next(value);
-    }
-  }
-
-  trackByIdx(i) {
-    return i;
-  }
-
-  // Favorite courses
-
+  //#region Favorite
   onFavoriteCourse() {
     if (this.isAuthenticated) {
       this.store.dispatch(addCourseToFavorites({ courseId: this.course.id, userId: this.user.id }));
@@ -544,9 +580,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   onUnfavoriteCourse() {
     this.store.dispatch(removeCourseFromFavorites({ courseId: this.course.id, userId: this.user.id }));
   }
+  //#endregion
 
-  // Wishlist courses
-
+  //#region Whislist
   onAddToWishlist() {
     if (this.isAuthenticated) {
       this.store.dispatch(addCourseToWishlist({ courseId: this.course.id, userId: this.user.id }));
@@ -582,9 +618,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   onRemoveFromWishlist() {
     this.store.dispatch(removeCourseFromWishlist({ courseId: this.course.id, userId: this.user.id }));
   }
+  //#endregion
 
-  // Archive courses
-
+  //#region Archive
   onArchiveCourse() {
     this.store.dispatch(addCourseToArchive({ courseId: this.course.id, userId: this.user.id }));
   }
@@ -592,5 +628,6 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   onUnarchiveCourse() {
     this.store.dispatch(removeCourseFromArchive({ courseId: this.course.id, userId: this.user.id }));
   }
+  //#endregion
 
 }

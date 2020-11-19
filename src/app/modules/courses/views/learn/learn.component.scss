@@ -717,19 +717,7 @@
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+// TODO: Fix html element with this class
 .lesson-card-container-2 {
   display: flex;
   flex-direction: column;
@@ -740,14 +728,6 @@
     border-bottom: 1px solid gainsboro;
   }
 }
-
-
-
-
-
-
-
-
 
 .courses-section {
   display: block;
@@ -858,4 +838,1047 @@
 
 :host ::ng-deep .course-name {
   max-width: 220px;
+}
+
+
+.main-container {
+  $mobile-break: 768px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 64px);
+  .learning {
+    width: 75%;
+    .lerning-header {
+      display: block;
+      position: relative;
+      background-color: #29303b;
+      position: fixed;
+      width: 75%;
+      z-index: 9;
+      .header-container {
+        max-width: 1032px;
+        box-sizing: border-box;
+        margin: auto;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 20px;
+        .course-title {
+          color: white;
+          font-size: 20px;
+          font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+          cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+        .favorite-container {
+          .isFavorite {
+            display: flex;
+            justify-content: flex-end;
+            i {
+              color: hotpink;
+            }
+          }
+          .notFavorite {
+            display: flex;
+            justify-content: flex-end;
+            i {
+              color: hotpink;
+            }
+          }
+        }
+      }
+      @media screen and (max-width: $mobile-break) {
+        position: relative;
+        width: 100%;
+      }
+    }
+    .content {
+      margin-top: 57px;
+      @media screen and (max-width: $mobile-break) {
+        margin-top: 0px;
+      }
+    }
+    .navigation-container {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 20px;
+      background-color: #3c454f;
+      position: relative;
+      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      .navigation-button {
+        display: flex;
+        color: white;
+        font-size: 13px;
+        font-weight: 600;
+        align-items: center;
+        cursor: pointer;
+        &:focus {
+          outline: none;
+        }
+        &:hover {
+          .navigation-label {
+            text-decoration: underline;
+          }
+        }
+      }
+      .complete-course-button {
+        display: flex;
+        color: white;
+        font-size: 13px;
+        font-weight: 600;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 10px;
+        //border: 1px solid white;
+        &:hover {
+          background-color: #26292c;
+        }
+      }
+      /* @media screen and (max-width: 850px) {
+        border-right: 0px;
+      } */
+    }
+    @media screen and (max-width: $mobile-break) {
+      width: 100%;
+    }
+  }
+  .content-sidebar {
+    z-index: 10;
+    position: fixed;
+    right: 0px;
+    width: 25%;
+    height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: column;
+    .sidebar-header {
+      display: inline-block; // Required for fixing flexbox column direction bug on IOS
+      font-size: 20px;
+      padding: 15px;
+      background-color: #29303b;
+      color: white;
+      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+      @media screen and (max-width: $mobile-break) {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        font-size: 18px;
+        line-height: 1;
+        border: 1px solid gainsboro;
+        font-weight: 600;
+        color: #29303b;
+        background-color: #f3f3f3;
+      }
+    }
+    .sidebar-list {
+      flex-grow: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      direction: rtl;
+      background-color: white;
+      .lesson-container {
+        display:  inline-block;
+        padding: 15px 20px;
+        border-bottom: 1px solid gainsboro;
+        background-color: white;
+        .left {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-right: 18px;
+          i {
+            color: #357d24;
+          }
+        }
+        .right {
+          display: flex;
+          flex-direction: column;
+          justify-content: stretch;
+          color: #29303b;
+          font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+          .number-title-container {
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: flex-start;
+            font-size: 15px;
+            font-weight: 600;
+            a {
+              text-align: left;
+              color: #29303b;
+              cursor: pointer;
+              text-decoration: none;
+              direction: ltr;
+              &:hover {
+                text-decoration: underline;
+              }
+              &:visited {
+                color: #29303b;
+                text-decoration: none;
+              }
+              &.active {
+                color: #f18d02;
+              }
+            }
+          }
+          .type-duration-container {
+            margin-top: 5px;
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
+            color: #29303bbe;
+            font-size: 14px;
+            margin-left: -4px;
+            .type {
+              width: 24px;
+              height: 24px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              i {
+                font-size: 20px;
+              }
+            }
+            .duration {
+              margin-left: 10px;
+              .lesson-duration,
+              .lesson-readtime {
+                display: flex;
+                flex-direction: row-reverse;
+                align-items: center;
+                i {
+                  font-size: 20px;
+                  margin-left: 5px;
+                }
+                .label {
+                  direction: ltr;
+                  white-space: nowrap;
+                }
+              }
+            }
+          }
+          @media screen and (max-width: 850px) {
+            flex-grow: 1;
+          }
+        }
+        &:nth-last-child(1) {
+          border-bottom: none;
+        }
+      }
+      @media screen and (max-width: $mobile-break) {
+        border-left: 1px solid gainsboro;
+        border-right: 1px solid gainsboro;
+        border-bottom: 1px solid gainsboro;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+    }
+    @media screen and (min-width: $mobile-break) {
+      .sidebar-list::-webkit-scrollbar {
+        width: 8px;
+        background-color: #f5f5f5;
+        //border-bottom-left-radius: 4px;
+      }
+      .sidebar-list::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: #f5f5f5;
+        //border-bottom-left-radius: 4px;
+      }
+      .sidebar-list::-webkit-scrollbar-thumb {
+        background-color: #c1c1c1;
+        //border-bottom-left-radius: 4px;
+      }
+    }
+    @media screen and (max-width: $mobile-break) {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      z-index: 8;
+      margin: 40px;
+      width: calc(100% - 80px);
+    }
+    @media screen and (max-width: 425px) {
+      margin: 20px;
+      width: calc(100% - 40px);
+    }
+  }
+  .details {
+    width: 75%;
+    flex-grow: 1;
+    .tab-group {
+      .tab {
+        box-sizing: border-box;
+        overflow: hidden;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        max-width: 1180px;
+        padding: 20px 20px;
+        padding-bottom: 40px;
+        position: relative;
+      }
+      .tab-about {
+        max-width: 900px;
+        color: grey;
+        .description-title {
+          font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+          font-size: 22px;
+          font-weight: 600;
+          margin: 0 0 10px;
+          color: #29303b;
+        }
+        .description-content {
+          padding: 40px;
+          border-radius: 5px;
+          background-color: white;
+          border: 1px solid gainsboro;
+          max-height: 400px;
+          overflow: auto;
+          @media screen and (max-width: 600px) {
+            padding: 40px 15px;
+          }
+        }
+        .description-content::-webkit-scrollbar {
+          width: 8px;
+          background-color: white;
+          position: relative;
+          border-radius: 5px;
+        }
+        .description-content::-webkit-scrollbar-track {
+          background-color: white;
+          position: relative;
+          padding: 5px 0px;
+          margin: 5px 0px;
+          margin-right: 5px;
+          padding-right: 5px;
+        }
+        .description-content::-webkit-scrollbar-thumb {
+          background-color: #c1c1c1;
+          border: 2px solid white;
+          border-radius: 5px;
+          margin: 5px 0px;
+        }
+      }
+      .tab-content {
+        max-width: 900px;
+        .lessons-title {
+          font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+          font-size: 22px;
+          font-weight: 600;
+          margin-bottom: 10px;
+          color: #29303b;
+        }
+        .lessons-container {
+          $lessons-break: 800px;
+          display: flex;
+          flex-direction: column;
+          padding: 40px 60px;
+          background-color: #f3f3f3;
+          border: 1px solid gainsboro;
+          border-radius: 5px;
+          max-height: 400px;
+          overflow: auto;
+          .lesson-card {
+            margin-bottom: 40px;
+            &:nth-last-child(1) {
+              margin-bottom: 0px;
+            }
+            @media screen and (max-width: $lessons-break) {
+              display: none;
+            }
+          }
+          .lesson-card-small {
+            margin-bottom: 15px;
+            display: none;
+            background-color: white;
+            padding: 10px;
+            box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 18px 0px;
+            border-radius: 4px;
+            .lesson-card-container {
+              display: flex;
+              flex-direction: column;
+              width: 100%;
+              .lesson-title {
+                font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+                font-weight: bold;
+                color: #1f5e11;
+                cursor: pointer;
+                &:hover {
+                  text-decoration: underline;
+                }
+              }
+              .lesson-description {
+                color: gray;
+                margin-top: 10px;
+                overflow: hidden;
+                display: -webkit-box!important;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+              }
+              .lesson-details {
+                margin-top: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                color: rgb(83, 83, 83);
+                .lesson-duration, .lesson-readtime {
+                  display: flex;
+                  align-items: center;
+                  i {
+                    margin-left: 3px;
+                  }
+                }
+              }
+            }
+            &:nth-last-child(1) {
+              margin-bottom: 0px;
+            }
+            @media screen and (max-width: $lessons-break) {
+              display: inherit;
+            }
+          }
+          @media screen and (max-width: $lessons-break) {
+            padding: 25px 15px;
+          }
+
+
+
+
+
+          .expansion-panel {
+            //margin-bottom: 10px;
+            .mat-content {
+              height: 100%;
+              align-items: center;
+            }
+            .mat-expansion-panel-header {
+              padding: 0px 10px;
+              .panel-title {
+                height: 100%;
+                align-items: center;
+                flex-grow: 1;
+                margin-right: 10px;
+                font-weight: 600;
+                color: #1f5e11;
+                .object-number {
+                  margin-right: 4px;
+                }
+                .title {
+                  max-height: 20px;
+                  overflow: hidden;
+                  display: -webkit-box!important;
+                  -webkit-line-clamp: 1;
+                  -webkit-box-orient: vertical;
+                }
+                .view-button {
+                  height: 20px;
+                  line-height: unset;
+                  color: rgb(90, 90, 90);
+                  border: 1px solid gainsboro;
+                  border-radius: 4px;
+                }
+                i {
+                  color: dimgray;
+                  $duration-font-size: 16px;
+                  width: $duration-font-size;
+                  height: $duration-font-size;
+                  font-size: $duration-font-size;
+                  margin-left: 3px;
+                }
+              }
+              .panel-description {
+                flex-grow: unset;
+                margin-right: 0px;
+                .duration {
+                  display: flex;
+                  align-items: center;
+                  white-space: nowrap;
+                  font-size: 12px;
+                  i {
+                    $duration-font-size: 16px;
+                    width: $duration-font-size;
+                    height: $duration-font-size;
+                    font-size: $duration-font-size;
+                    margin-left: 3px;
+                  }
+                }
+              }
+            }
+            ::ng-deep {
+              .mat-expansion-panel-content {
+                .mat-expansion-panel-body {
+                  padding: 0 10px 16px;
+                }
+              }
+            }
+            .topic {
+              display: flex;
+              font-weight: 600;
+              font-size: 15px;
+              color: #1f5e11;
+              margin-bottom: 5px;
+            }
+          }
+
+
+
+
+        }
+      }
+      .tab-reviews {
+        max-width: 900px;
+        .reviews-title {
+          font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+          font-size: 22px;
+          font-weight: 600;
+          margin-bottom: 10px;
+          color: #29303b;
+        }
+        .reviews-title-container {
+          display: flex;
+          justify-content: space-between;
+        }
+        .virtual-scroll-viewport {
+          display: flex;
+          flex-direction: column;
+          padding: 40px 60px;
+          background-color: #f3f3f3;
+          border: 1px solid gainsboro;
+          border-radius: 5px;
+          height: 400px;
+          overflow-x: hidden;
+          &::ng-deep {
+            .cdk-virtual-scroll-content-wrapper {
+              position: relative !important;
+              top: unset !important;
+              left: unset !important;
+              contain: unset !important;
+            }
+          }
+          .review-card {
+            margin-bottom: 40px;
+            &:nth-last-child(1) {
+              //margin-bottom: 0px;
+            }
+          }
+          @media screen and (max-width: 700px) {
+            padding: 25px 15px;
+          }
+        }
+        .no-reviews-container {
+          display: flex;
+          flex-direction: column;
+          padding: 40px 60px;
+          background-color: #f3f3f3;
+          border: 1px solid gainsboro;
+          border-radius: 5px;
+          max-height: 400px;
+          overflow: auto;
+          .no-review-cards-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            i {
+              font-size: 120px;
+              color: #e8e9eb;
+              margin-bottom: 20px;
+            }
+            .no-reviews-phrase {
+              color: #29303b;
+              text-align: center;
+            }
+          }
+        }
+        .rate-container {
+          display: flex;
+          margin-top: 20px;
+          justify-content: center;
+        }
+        .user-review-container {
+          display: flex;
+          flex-direction: column;
+          margin-top: 20px;
+          .user-review-card-container {
+            padding: 20px 65px;
+            /* max-width: 738px;
+            position: relative;
+            margin: auto; */
+            @media screen and (max-width: 700px) {
+              padding: 25px 15px;
+            }
+          }
+        }
+      }
+      .tab-certificate {
+        align-items: center;
+        .certificate-wrapper {
+          width: 100%;
+          max-width: 860px;
+          overflow-x: scroll;
+          display: flex;
+          -webkit-box-shadow: 0px 0px 25px -2px rgba(0,0,0,0.14);
+          -moz-box-shadow: 0px 0px 25px -2px rgba(0,0,0,0.14);
+          box-shadow: 0px 0px 25px -2px rgba(0,0,0,0.14);
+          margin: 14px 0px;
+          .certificate {
+            width: 840px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            padding: 10px;
+            background-image: url("../../../../../assets/img/certificate/certificate_template_vector_1_green.png");
+            background-repeat: no-repeat;
+            background-origin: content-box;
+            background-size: 100% 100%;
+            .certificate-container {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              padding: 100px;
+              .logotype {
+                margin-bottom: 30px;
+              }
+              .certificate-label {
+                text-transform: uppercase;
+                letter-spacing: 12px;
+                font-family: none;
+                color: dimgray;
+                font-size: 50px;
+              }
+              .line {
+                width: 150px;
+                height: 2px;
+                background-color: forestgreen;
+              }
+              .awarded-container {
+                display: flex;
+                align-items: center;
+                .awarded-label {
+                  font-size: 10px;
+                  font-weight: 700;
+                  text-transform: uppercase ;
+                  margin: 0px 20px;
+                  color: #1f5e11;
+                }
+              }
+              .name {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+                margin-top: 40px;
+                .user-names {
+                  font-family: 'Great Vibes', cursive;
+                  font-size: 54px;
+                  color: #1f5e11;
+                  margin-left: 30px;
+                  margin-right: 30px;
+                  text-align: center;
+                }
+                .name-line {
+                  background-color: darkgray;
+                  width: 100%;
+                }
+              }
+              .course-details {
+                display: flex;
+                flex-direction: column;
+                margin-top: 40px;
+                border-left: 3px solid #ffa743;
+                padding-left: 10px;
+                .course-data {
+                  display: flex;
+                  align-items: center;
+                  margin: 2px 0px;
+                  .course-data-label {
+                    text-transform: uppercase;
+                    margin-right: 5px;
+                    font-size: 10px;
+                    font-weight: 700;
+                    text-transform: uppercase ;
+                    color: #1f5e11;
+                  }
+                  .course-data-input {
+                    flex-grow: 1;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    .course-value {
+                      line-height: 1;
+                      font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+                      color: dimgray;
+                    }
+                    .input-line {
+                      height: 2px;
+                      width: 100%;
+                      background-color: darkgray;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        .download-certificate-button {
+          font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+          margin-top: 20px;
+          display: inline-block;
+          font-weight: 600;
+          text-align: center;
+          vertical-align: middle;
+          white-space: nowrap;
+          padding: 11px 12px;
+          font-size: 15px;
+          line-height: 1.35135;
+          border-radius: 2px;
+          user-select: none;
+          cursor: pointer;
+          color: #fff;
+          background-color: #eb6c00;
+          border: 1px solid transparent;
+          @media screen and (min-width: 425px) {
+            &:hover {
+              background-color: #1f5e11;
+            }
+          }
+        }
+      }
+      .tab-no-certificate {
+        max-width: 900px;
+        .no-certificate {
+          margin-top: 40px;
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          background-color: #f3f3f3;
+          border: 1px solid gainsboro;
+          border-radius: 5px;
+          padding: 40px 60px;
+          i {
+            font-size: 120px;
+            color: #e8e9eb;
+            margin-bottom: 20px;
+          }
+          .complete-phrase {
+            color: #29303b;
+            text-align: center;
+          }
+        }
+      }
+      .nice-container-scroll {
+        @media screen and (min-width: 425px) {
+          &::-webkit-scrollbar {
+            width: 8px;
+            background-color: #f3f3f3;
+            position: relative;
+            border-radius: 5px;
+          }
+          &::-webkit-scrollbar-track {
+            background-color: #f3f3f3;
+            position: relative;
+            padding: 5px 0px;
+            margin: 5px 0px;
+            margin-right: 5px;
+            padding-right: 5px;
+          }
+          &::-webkit-scrollbar-thumb {
+            background-color: #c1c1c1;
+            border: 2px solid #f3f3f3;
+            border-radius: 5px;
+            margin: 5px 0px;
+          }
+        }
+      }
+      ::ng-deep {
+        .mat-tab-list {
+          background-color: #f3f3f3;
+          .mat-tab-labels {
+            justify-content: space-around;
+            max-width: 1292px;
+            padding: 0px 24px;
+            margin: auto;
+            .mat-tab-label {
+              padding: 0px;
+              flex-grow: 1;
+              min-width: unset;
+              .mat-tab-label-content {
+                font-size: 16px;
+                color: #29303b;
+                font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+                font-weight: bold;
+                @media screen and (max-width: 425px) {
+                  font-size: 13px;
+                }
+              }
+            }
+            .mat-tab-label-active {
+              opacity: 1;
+            }
+            @media screen and (max-width: 425px) {
+              padding: 0px 20px;
+            }
+          }
+          .mat-ink-bar {
+            background-color: darkorange;
+            height: 3px;
+          }
+        }
+      }
+    }
+    @media screen and (max-width: $mobile-break) {
+      width: 100%;
+    }
+  }
+  .related-courses {
+    width: 75%;
+    .courses-section {
+      display: block;
+      position: relative;
+      .courses-container {
+        padding: 40px 20px;
+        max-width: 1180px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-sizing: border-box;
+        position: relative;
+        margin: auto;
+        a {
+          margin-top: 10px;
+          font-size: 18px;
+          color: darkgray;
+          text-decoration: underline;
+          cursor: pointer;
+          display: none;
+          justify-content: center;
+          @media screen and (max-width: 450px) {
+            display: inherit;
+          }
+        }
+        .title-container {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-family: 'Trebuchet MS', Helvetica, sans-serif;
+          .title {
+            color: #1b4568;
+            font-size: 20px;
+            font-weight: bold;
+          }
+          a {
+            //margin-right: 20px;
+            font-size: 18px;
+            color: darkgray;
+            text-decoration: underline;
+            cursor: pointer;
+            @media screen and (max-width: 450px) {
+              display: none;
+            }
+          }
+        }
+        .cards-container {
+          display: flex;
+          flex-wrap: wrap;
+          margin-top: 10px;
+          .course-card {
+            margin: 10px;
+            flex-grow: 1;
+          }
+        }
+      }
+
+      .buttons-container {
+        padding: 40px 20px;
+        max-width: 1180px;
+        display: flex;
+        justify-content: space-evenly;
+        overflow: hidden;
+        box-sizing: border-box;
+        position: relative;
+        margin: auto;
+        button {
+          display: inline-block;
+          font-weight: 600;
+          text-align: center;
+          vertical-align: middle;
+          white-space: nowrap;
+          padding: 11px 12px;
+          font-size: 15px;
+          line-height: 1.35135;
+          border-radius: 2px;
+          user-select: none;
+          cursor: pointer;
+          color: #fff;
+          background-color: #eb6c00;
+          border: 1px solid transparent;
+          &:hover {
+            background-color: #1f5e11;
+          }
+        }
+      }
+    }
+    @media screen and (max-width: $mobile-break) {
+      width: 100%;
+    }
+  }
+  .footer {
+    width: 75%;
+    border-top: 1px solid gainsboro;
+    .footer-container {
+      display: block;
+      position: relative;
+      z-index: 1;
+      background: #f3f3f3;
+      .footer-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: inherit;
+        box-sizing: border-box;
+        max-width: 1440px;
+        margin: auto;
+        padding: 40px 20px;
+        padding-bottom: 10px;
+        position: relative;
+        z-index: 1;
+        .footer-container {
+          display: flex;
+          width: 100%;
+          @media screen and (max-width: 700px) {
+            flex-direction: column;
+            align-items: center;
+          }
+          .logotype-section-container {
+            // border: 1px solid dimgray;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            /* .logotype-container {
+              .logotype {
+              }
+            } */
+            .phrase {
+              color: dimgray;
+              margin-top: 20px;
+              max-width: 300px;
+              font-size: 14px;
+              @media screen and (max-width: 700px) {
+                text-align: center;
+              }
+            }
+            @media screen and (max-width: 700px) {
+              margin-bottom: 30px;
+            }
+          }
+          .sitemap-container {
+            // border: 1px solid dimgray;
+            flex-grow: 1;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            .contact-info-container {
+              flex-grow: 1;
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              margin-bottom: 20px;
+              .title {
+                font-family: 'Trebuchet MS', Helvetica, sans-serif;
+                color: #1f5e11;
+                font-size: 18px;
+                margin-bottom: 10px;
+              }
+              .detail {
+                color: dimgray;
+                margin: 5px 0px;
+                font-size: 14px;
+              }
+              @media screen and (max-width: 450px) {
+                align-items: center;
+              }
+            }
+            .site-map-container {
+              flex-grow: 1;
+              margin-left: 40px;
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              margin-bottom: 20px;
+              .title {
+                font-family: 'Trebuchet MS', Helvetica, sans-serif;
+                color: #1f5e11;
+                font-size: 18px;
+                margin-bottom: 10px;
+              }
+              .link {
+                color: dimgray;
+                margin: 5px 0px;
+                font-size: 14px;
+                text-decoration: none;
+                &:hover {
+                  text-decoration: underline;
+                  color: #1f5e11;
+                }
+              }
+              @media screen and (max-width: 450px) {
+                margin-left: 0px;
+                align-items: center;
+              }
+            }
+            @media screen and (max-width: 450px) {
+              flex-direction: column;
+              align-items: center;
+              margin-bottom: 30px;
+            }
+          }
+        }
+      }
+    }
+    .bottom-section {
+      background: #f3f3f3;
+      border-top: 1px solid gainsboro;
+      .kanto-studio-container {
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+        color: dimgray;
+        max-width: 1440px;
+        margin: auto;
+        box-sizing: border-box;
+        max-width: 1440px;
+        position: relative;
+        z-index: 1;
+        a {
+          text-decoration: none;
+          cursor: pointer;
+          .kanto, .chd {
+            height: 13px;
+            margin-bottom: -2px;
+            margin-right: 6px;
+            margin-left: 6px;
+          }
+        }
+        .ks-link {
+          color: #30b9db;
+        }
+        .chd-link {
+          color: #b56f3a;
+        }
+      }
+    }
+    @media screen and (max-width: $mobile-break) {
+      width: 100%;
+    }
+  }
+  @media screen and (max-width: $mobile-break) {
+    display: unset;
+    flex-direction: unset;
+  }
 }

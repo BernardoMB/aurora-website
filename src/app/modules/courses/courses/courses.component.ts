@@ -2,14 +2,12 @@ import {
   Component,
   OnInit,
   OnDestroy,
-  ViewChild,
-  AfterViewInit,
   HostListener,
   ViewChildren,
   QueryList,
 } from '@angular/core';
 import { CoursesService } from '../services/courses.service';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Course } from '../../../shared/models/course.model';
 import { Category } from '../../../shared/models/category.model';
 import { Store } from '@ngrx/store';
@@ -17,11 +15,8 @@ import { AuthState } from '../../../store/auth/auth.state';
 import { selectAuthIsAuthenticated } from '../../../store/auth/auth.selectors';
 import { Router, NavigationEnd } from '@angular/router';
 import {
-  SwiperComponent,
   SwiperDirective,
-  SwiperConfigInterface,
-  SwiperScrollbarInterface,
-  SwiperPaginationInterface,
+  SwiperConfigInterface
 } from 'ngx-swiper-wrapper';
 import { PagedData } from '../../../shared/models/paged-data.model';
 import { Page } from '../../../shared/models/page.model';

@@ -1,65 +1,67 @@
-<section class="footer">
-  <div class="footer-inner">
-    <div class="footer-container">
-      <div class="logotype-section-container">
-        <!-- Logo container -->
-        <div class="logotype-container focus-outline" routerLink="/">
-          <img
-            class="logotype"
-            src="/assets/img/logos/logotype.svg"
-            alt="Invest Naija Logotype"
-          />
+<div *ngIf="showFooter">
+  <section class="footer">
+    <div class="footer-inner">
+      <div class="footer-container">
+        <div class="logotype-section-container">
+          <!-- Logo container -->
+          <div class="logotype-container focus-outline" routerLink="/">
+            <img
+              class="logotype"
+              src="/assets/img/logos/logotype.svg"
+              alt="Invest Naija Logotype"
+            />
+          </div>
+          <div class="phrase">
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
+            commodo ligula eget dolor. Aenean massa.
+          </div>
         </div>
-        <div class="phrase">
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
-          commodo ligula eget dolor. Aenean massa.
-        </div>
-      </div>
-      <div class="sitemap-container">
-        <div class="contact-info-container">
-          <div class="title">Contact Info</div>
-          <div class="detail">Lorem ipsum street</div>
-          <div class="detail">+ 44 55 66 77</div>
-          <div class="detail">info@invest.com</div>
-        </div>
-        <div class="site-map-container">
-          <div class="title">Site Map</div>
-          <a class="link focus-outline" routerLink="/">Home</a>
-          <a class="link focus-outline" routerLink="/courses">Learning</a>
-          <a class="link focus-outline" routerLink="/news">News</a>
-          <a class="link focus-outline" routerLink="/events">Events</a>
-          <a class="link focus-outline" [routerLink]="['/invest']">Invest</a>
-          <a class="link focus-outline" [routerLink]="['/home']" fragment="contact">Contact us</a>
+        <div class="sitemap-container">
+          <div class="contact-info-container">
+            <div class="title">Contact Info</div>
+            <div class="detail">Lorem ipsum street</div>
+            <div class="detail">+ 44 55 66 77</div>
+            <div class="detail">info@invest.com</div>
+          </div>
+          <div class="site-map-container">
+            <div class="title">Site Map</div>
+            <a class="link focus-outline" routerLink="/">Home</a>
+            <a class="link focus-outline" routerLink="/courses">Learning</a>
+            <a class="link focus-outline" routerLink="/news">News</a>
+            <a class="link focus-outline" routerLink="/events">Events</a>
+            <a class="link focus-outline" [routerLink]="['/invest']">Invest</a>
+            <a class="link focus-outline" [routerLink]="['/home']" fragment="contact">Contact us</a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="bottom-section">
-  <div class="kanto-studio-container">
-    <small>
-      Copyright © 2020
-      <!-- <a class="focus-outline chd-link" href="http://www.chapelhilldenham.com/" target="_blank"> -->
-      <a class="focus-outline chd-link" href="https://kantostudio.com/" target="_blank">
-        <img
-          class="chd"
-          src="/assets/img/logos/chd/chapelhilldenham.svg"
-          alt="kanto"
-        />
-        Chapel Hill Denham
-      </a>
-    </small>
-    <!-- <small>
-      Developed by
-      <a class="focus-outline ks-link" href="https://kantostudio.com/" target="_blank">
-        <img
-          class="kanto"
-          src="/assets/img/logos/kanto/kanto.svg"
-          alt="kanto"
-        />
-        Kanto Studio
-      </a>
-    </small> -->
-  </div>
-</section>
+  <section class="bottom-section">
+    <div class="kanto-studio-container">
+      <small>
+        Copyright © 2020
+        <a class="focus-outline chd-link" href="http://www.chapelhilldenham.com/" target="_blank">
+        <!-- <a class="focus-outline chd-link" href="https://kantostudio.com/" target="_blank"> -->
+          <img
+            class="chd"
+            src="/assets/img/logos/chd/chapelhilldenham.svg"
+            alt="kanto"
+          />
+          Chapel Hill Denham
+        </a>
+      </small>
+      <!-- <small>
+        Developed by
+        <a class="focus-outline ks-link" href="https://kantostudio.com/" target="_blank">
+          <img
+            class="kanto"
+            src="/assets/img/logos/kanto/kanto.svg"
+            alt="kanto"
+          />
+          Kanto Studio
+        </a>
+      </small> -->
+    </div>
+  </section>
+</div>

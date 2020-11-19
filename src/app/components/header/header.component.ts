@@ -172,8 +172,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.mobileNavBarOpen = false; // <-- default ui state
       this.showCategories = false; // <-- default ui state
       if (this.route.firstChild.snapshot.url[0].path === 'courses') {
+        // console.log('Route snapshot', this.route);
         this.showCategories = true;
-        this.getCategories();
       }
       // The following code hides the Go to cart button from the cart menu if the
       // user is already in the cart view
@@ -193,6 +193,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.getCategories();
+
     // #region sections logic
     // TODO: Fix this code section
     if (isPlatformBrowser(this.platformId)) {

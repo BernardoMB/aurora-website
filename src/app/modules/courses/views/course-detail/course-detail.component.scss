@@ -12,12 +12,11 @@
       position: relative;
       $opacity: 0.1;
       .course-jumbotron-container {
-        padding: 20px 20px;
-        max-width: 1180px;
+        padding: 24px 20px;
+        max-width: 1292px;
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        box-sizing: border-box;
         position: relative;
         margin: auto;
         $font-color: white;
@@ -99,25 +98,18 @@
               border: 2px solid white;
               padding: 2px 10px;
               border-radius: 20px;
-              color: white;
-              margin-right: 10px;
               font-size: 12px;
-              &:hover {
-                color: #29303b;
-                background-color: white;
-                // font-weight: bold;
+              line-height: unset;
+              color: white;
+              background-color: inherit;
+              @media screen and (min-width: 425px) {
+                &:hover {
+                  color: #29303b;
+                  background-color: white;
+                }
               }
             }
-            .isFavorite {
-              display: flex;
-              justify-content: flex-end;
-              i {
-                color: hotpink;
-              }
-            }
-            .notFavorite {
-              display: flex;
-              justify-content: flex-end;
+            .favorite-toggler-button {
               i {
                 color: hotpink;
               }
@@ -288,76 +280,15 @@
             }
           }
         }
+        @media screen and (max-width: 425px) {
+          padding: 20px;
+        }
       }
     }
   }
 }
 
-.tabs-section {
-  display: block;
-  position: relative;
-  background-color: #f3f3f3;
-  border-bottom: 1px solid gainsboro;
-  .tabs-container {
-    padding: 20px 20px;
-    max-width: 1180px;
-    display: flex;
-    justify-content: space-around;
-    overflow: hidden;
-    box-sizing: border-box;
-    position: relative;
-    margin: auto;
-    .tab-selector {
-      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
-        'Lucida Sans', Arial, sans-serif;
-      color: #29303b;
-      position: relative;
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-      &.active {
-        &:before {
-          content: '';
-          position: absolute;
-          width: 100%;
-          height: 3px;
-          bottom: -20px;
-          background-color: darkorange;
-        }
-        &:hover {
-          &:before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 3px;
-            bottom: -20px;
-            background-color: darkorange;
-          }
-        }
-      }
-      &:hover {
-        &:before {
-          content: '';
-          position: absolute;
-          width: 100%;
-          height: 3px;
-          bottom: -20px;
-          background-color: #cc7000;
-        }
-      }
-      &:visited {
-        color: inherit;
-      }
-    }
-    @media screen and (max-width: 400px) {
-      font-size: 14px;
-    }
-  }
-}
-
-.tab-content-section {
-  display: block;
-  position: relative;
+.tab-group {
   .tab {
     box-sizing: border-box;
     overflow: hidden;
@@ -411,7 +342,7 @@
       margin: 5px 0px;
     }
   }
-  .tab-lessons {
+  .tab-content {
     max-width: 900px;
     .lessons-title {
       font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
@@ -492,6 +423,89 @@
       @media screen and (max-width: $lessons-break) {
         padding: 25px 15px;
       }
+
+
+
+
+
+      .expansion-panel {
+        //margin-bottom: 10px;
+        .mat-content {
+          height: 100%;
+          align-items: center;
+        }
+        .mat-expansion-panel-header {
+          padding: 0px 10px;
+          .panel-title {
+            height: 100%;
+            align-items: center;
+            flex-grow: 1;
+            margin-right: 10px;
+            font-weight: 600;
+            color: #1f5e11;
+            .object-number {
+              margin-right: 4px;
+            }
+            .title {
+              max-height: 20px;
+              overflow: hidden;
+              display: -webkit-box!important;
+              -webkit-line-clamp: 1;
+              -webkit-box-orient: vertical;
+            }
+            .view-button {
+              height: 20px;
+              line-height: unset;
+              color: rgb(90, 90, 90);
+              border: 1px solid gainsboro;
+              border-radius: 4px;
+            }
+            i {
+              color: dimgray;
+              $duration-font-size: 16px;
+              width: $duration-font-size;
+              height: $duration-font-size;
+              font-size: $duration-font-size;
+              margin-left: 3px;
+            }
+          }
+          .panel-description {
+            flex-grow: unset;
+            margin-right: 0px;
+            .duration {
+              display: flex;
+              align-items: center;
+              white-space: nowrap;
+              font-size: 12px;
+              i {
+                $duration-font-size: 16px;
+                width: $duration-font-size;
+                height: $duration-font-size;
+                font-size: $duration-font-size;
+                margin-left: 3px;
+              }
+            }
+          }
+        }
+        ::ng-deep {
+          .mat-expansion-panel-content {
+            .mat-expansion-panel-body {
+              padding: 0 10px 16px;
+            }
+          }
+        }
+        .topic {
+          display: flex;
+          font-weight: 600;
+          font-size: 15px;
+          color: #1f5e11;
+          margin-bottom: 5px;
+        }
+      }
+
+
+
+
     }
   }
   .tab-reviews {
@@ -569,6 +583,9 @@
       margin-top: 20px;
       .user-review-card-container {
         padding: 20px 65px;
+        /* max-width: 738px;
+        position: relative;
+        margin: auto; */
         @media screen and (max-width: 700px) {
           padding: 25px 15px;
         }
@@ -704,8 +721,10 @@
       color: #fff;
       background-color: #eb6c00;
       border: 1px solid transparent;
-      &:hover {
-        background-color: #1f5e11;
+      @media screen and (min-width: 425px) {
+        &:hover {
+          background-color: #1f5e11;
+        }
       }
     }
   }
@@ -733,39 +752,81 @@
     }
   }
   .nice-container-scroll {
-    &::-webkit-scrollbar {
-      width: 8px;
-      background-color: #f3f3f3;
-      position: relative;
-      border-radius: 5px;
-    }
-    &::-webkit-scrollbar-track {
-      background-color: #f3f3f3;
-      position: relative;
-      padding: 5px 0px;
-      margin: 5px 0px;
-      margin-right: 5px;
-      padding-right: 5px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: #c1c1c1;
-      border: 2px solid #f3f3f3;
-      border-radius: 5px;
-      margin: 5px 0px;
+    @media screen and (min-width: 425px) {
+      &::-webkit-scrollbar {
+        width: 8px;
+        background-color: #f3f3f3;
+        position: relative;
+        border-radius: 5px;
+      }
+      &::-webkit-scrollbar-track {
+        background-color: #f3f3f3;
+        position: relative;
+        padding: 5px 0px;
+        margin: 5px 0px;
+        margin-right: 5px;
+        padding-right: 5px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #c1c1c1;
+        border: 2px solid #f3f3f3;
+        border-radius: 5px;
+        margin: 5px 0px;
+      }
     }
   }
+  ::ng-deep {
+    .mat-tab-list {
+      background-color: #f3f3f3;
+      .mat-tab-labels {
+        justify-content: space-around;
+        max-width: 1292px;
+        padding: 0px 24px;
+        margin: auto;
+        .mat-tab-label {
+          padding: 0px;
+          flex-grow: 1;
+          min-width: unset;
+          .mat-tab-label-content {
+            font-size: 16px;
+            color: #29303b;
+            font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+            font-weight: bold;
+            @media screen and (max-width: 425px) {
+              font-size: 13px;
+            }
+          }
+        }
+        .mat-tab-label-active {
+          opacity: 1;
+        }
+        @media screen and (max-width: 425px) {
+          padding: 0px 20px;
+        }
+      }
+      .mat-ink-bar {
+        background-color: darkorange;
+        height: 3px;
+      }
+    }
+  }
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: gainsboro;
 }
 
 .courses-section {
   display: block;
   position: relative;
   .courses-container {
-    padding: 40px 20px;
-    max-width: 1180px;
+    padding: 40px 24px;
+    max-width: 1290px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    box-sizing: border-box;
     position: relative;
     margin: auto;
     a {
@@ -810,6 +871,9 @@
         flex-grow: 1;
       }
     }
+    @media screen and (max-width: 425px) {
+      padding: 40px 20px;
+    }
   }
 
   .buttons-container {
@@ -841,12 +905,6 @@
       }
     }
   }
-}
-
-.divider {
-  width: 100%;
-  height: 1px;
-  background-color: gainsboro;
 }
 
 :host ::ng-deep .course-card-wrapper {

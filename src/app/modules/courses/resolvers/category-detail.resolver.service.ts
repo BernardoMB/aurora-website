@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { CoursesService } from '../services/courses.service';
 import { map } from 'rxjs/operators';
 import { Category } from '../../../shared/models/category.model';
-import * as faker from 'faker';
 
 /**
  * This resolver resolves the category for the category detail view.
