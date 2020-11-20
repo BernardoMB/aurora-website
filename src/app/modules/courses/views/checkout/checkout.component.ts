@@ -834,6 +834,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
                 catchError((validatePaymentError) => {
                   console.log('Validate payment error', validatePaymentError);
                   this.toastrService.error('Could not validate your payment');
+                  this.showProgressSpinner = false;
                   throw validatePaymentError;
                 })
               ).subscribe((user: User) => {
