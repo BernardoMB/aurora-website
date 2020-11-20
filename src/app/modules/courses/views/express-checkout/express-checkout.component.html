@@ -1,7 +1,15 @@
-<section class="cart-view-header">
-  <div class="cart-view-header-container">
-    <h1 class="title">Checkout</h1>
-    <div class="subtitle">You are just one step away from knowledge!</div>
+<section class="courses-jumbotron-section">
+  <div class="jumbotron-wrapper">
+    <div class="jumbotron-wrapper-overlay">
+      <div class="jumbotron-conatiner">
+        <div class="jumbotron-texts">
+          <div class="jumbotron-title">Checkout</div>
+          <div class="jumbotron-description">
+            You are just one step away from knowledge!
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -116,7 +124,7 @@
         <div *ngIf="total !== subtotal" class="subtotal">
           {{ subtotal | currency: 'NGN':'symbol-narrow' }}
         </div>
-        <button class="checkout-button focus-outline" (click)="onCompletePayment()">
+        <button mat-flat-button class="checkout-button focus-outline" (click)="onCompletePayment()">
           Complete Payment
         </button>
       </div>
