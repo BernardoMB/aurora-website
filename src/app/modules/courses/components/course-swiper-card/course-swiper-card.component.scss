@@ -214,6 +214,7 @@
           margin-bottom: 5px;
           .course-name {
             height: 44px;
+            font-family: 'Segoe UI';
             cursor: pointer;
             overflow: hidden;
             display: -webkit-box!important;
@@ -252,6 +253,7 @@
             }
           }
           .price-container {
+            display: flex;
             .free-container {
               // background-color: white;
               border-radius: 5px;
@@ -268,6 +270,16 @@
             }
             .price {
               font-size: 14px;
+            }
+            .discounted-price {
+              font-size: 14px;
+              display: flex;
+              .price {
+                text-decoration: line-through;
+                margin-right: 6px;
+              }
+              .final-price {
+              }
             }
           }
         }

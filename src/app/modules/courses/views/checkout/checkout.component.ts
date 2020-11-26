@@ -231,8 +231,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.showProgressSpinner = true;
 
       // ! Testcards
-      //#region Test card 1: Test MasterCard PIN authentication
-      // PIN modal, OTP modal // * Success
+      //#region ardsard 1: Test MasterCard PIN authentication
+      // PIN (3310) modal, OTP (12345) modal // * Success
       this.countryControl.setValue('NG');
       const courseIds = this.cart.map((course: Course) => course.id);
       const paymentInfo = {

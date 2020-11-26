@@ -59,6 +59,9 @@ export class CourseDetailComponent implements OnInit, OnDestroy {
   showArchiveButton = false;
   canArchiveCourse = true;
   enrolled = false;
+  get finalPrice() {
+    return this.course.price * (1 - this.course.discount);
+  }
 
   // Tabs old logic
   // currentTab = 'about';

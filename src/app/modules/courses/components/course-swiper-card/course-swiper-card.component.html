@@ -78,8 +78,14 @@
             <div *ngIf="course.price === 0" class="free-container">
               <div class="free">Free</div>
             </div>
-            <div *ngIf="course.price > 0" class="price">
+
+            <div *ngIf="course.price > 0 && course.discount === 0" class="price">
               {{ course.price | currency: 'NGN':'symbol-narrow' }}
+            </div>
+
+            <div *ngIf="course.price > 0 && course.discount > 0" class="discounted-price">
+              <div class="price">{{ course.price | currency: 'NGN':'symbol-narrow' }}</div>
+              <div class="final-price">{{ finalPrice | currency: 'NGN':'symbol-narrow' }}</div>
             </div>
           </div>
         </div>
