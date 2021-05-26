@@ -78,7 +78,7 @@
     "@types/node": "^12.11.1",
     "@types/socket.io-client": "^1.4.33",
     "babel-loader": "^8.1.0",
-    "browserslist": "^4.12.2",
+    "browserslist": "^4.16.5",
     "browserslist-config-google": "^2.0.0",
     "codelyzer": "^5.1.2",
     "jasmine-core": "~3.4.0",
