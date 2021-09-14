@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ResertEmaiModalComponent } from './resert-emai-modal.component';
 
@@ -6,7 +6,7 @@ describe('ResertEmaiModalComponent', () => {
   let component: ResertEmaiModalComponent;
   let fixture: ComponentFixture<ResertEmaiModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ResertEmaiModalComponent ]
     })

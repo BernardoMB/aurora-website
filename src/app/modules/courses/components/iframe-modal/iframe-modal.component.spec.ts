@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { IframeModalComponent } from './iframe-modal.component';
 
@@ -6,7 +6,7 @@ describe('IframeModalComponent', () => {
   let component: IframeModalComponent;
   let fixture: ComponentFixture<IframeModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ IframeModalComponent ]
     })

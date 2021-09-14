@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ExpressionOfInterestModalComponent } from './expression-of-interest-modal.component';
 
@@ -6,7 +6,7 @@ describe('ExpressionOfInterestModalComponent', () => {
   let component: ExpressionOfInterestModalComponent;
   let fixture: ComponentFixture<ExpressionOfInterestModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ExpressionOfInterestModalComponent ]
     })
