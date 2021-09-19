@@ -17,7 +17,7 @@ class PaginationDtoBuilder {
   private _data: ImmutableMap<string, number>;
   constructor(pagination?: PaginationDto) {
     this._data = pagination
-      ? ImmutableMap<string, number>({ ...(pagination.toJS() as any) })
+      ? ImmutableMap<string, number>({ ...(pagination.toJSObject() as any) })
       : ImmutableMap<string, number>();
   }
   skip(skip: number): PaginationDtoBuilder {
@@ -60,7 +60,7 @@ export default class PaginationDto extends ImmutableRecord<PaginationParams>
     yield ['limit', this.limit];
   }
 
-  toJS(): object {
+  toJSObject(): object {
     return {
       skip: this.skip,
       limit: this.limit,

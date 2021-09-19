@@ -15,5 +15,5 @@
 
   // Associate schemas to JSON files in the current project
   "json.schemas": [],
-  "workbench.colorTheme": "Pink Cat Boo"
+  "workbench.colorTheme": "Default Dark+"
 }

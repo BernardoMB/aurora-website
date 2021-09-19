@@ -237,7 +237,7 @@ export class EventsComponent implements OnInit {
       .getEventsPageData(this.recentEventsPage)
       .subscribe((pagedData: PagedData<Event>) => {
         this.recentEventsPage = pagedData.page;
-        this.recentEvents = pagedData.data.toJS();
+        this.recentEvents = pagedData.data.toJS() as Event[];
       });
   }
 

@@ -198,7 +198,7 @@ export class CourseCategoryDetailComponent implements OnInit, OnDestroy {
       .subscribe((pagedData: PagedData<Course>) => {
         // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
         this.recentCoursesPage = pagedData.page;
-        this.recentCourses = pagedData.data.asImmutable().toJS();
+        this.recentCourses = pagedData.data.asImmutable().toJS() as Course[];
       });
   }
 }

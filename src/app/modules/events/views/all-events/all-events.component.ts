@@ -81,7 +81,7 @@ export class AllEventsComponent implements OnInit, OnDestroy {
           `Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`,
         );
         this.page = pagedData.page;
-        this.events = pagedData.data.toJS();
+      this.events = pagedData.data.toJS() as Event[];
       });
   }
 }

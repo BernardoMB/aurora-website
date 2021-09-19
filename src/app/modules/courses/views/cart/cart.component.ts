@@ -191,7 +191,7 @@ export class CartComponent implements OnInit, OnDestroy {
       .subscribe((pagedData: PagedData<Course>) => {
         // console.log(`Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`);
         this.page = pagedData.page;
-        this.wishedCourses = pagedData.data.asImmutable().toJS();
+        this.wishedCourses = pagedData.data.asImmutable().toJS() as Course[];
       });
   }
 

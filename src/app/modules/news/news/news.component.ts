@@ -82,7 +82,7 @@ export class NewsComponent implements OnInit, OnDestroy {
       .getArticlesPageData(this.page)
       .subscribe((pagedData: PagedData<Article>) => {
         this.page = pagedData.page;
-        this.articles = pagedData.data.toJS();
+        this.articles = pagedData.data.toJS() as Article[];
       });
   }
 }

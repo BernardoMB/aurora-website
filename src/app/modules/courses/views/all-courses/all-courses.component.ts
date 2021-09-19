@@ -85,7 +85,7 @@ export class AllCoursesComponent implements OnInit, OnDestroy {
           `Page number: ${pagedData.page.pageNumber}; Total pages: ${pagedData.page.totalPages}`,
         );
         this.page = pagedData.page;
-        this.courses = pagedData.data.asImmutable().toJS();
+        this.courses = pagedData.data.asImmutable().toJS() as Course[];
       });
   }
 }

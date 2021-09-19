@@ -35,7 +35,10 @@
             "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "allowedCommonJsDependencies": [
+              "socket.io-client"
+            ]
           },
           "configurations": {
             "production": {
@@ -106,12 +109,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "aurora-website:build",
-            "sourceMap": {
-              "scripts": true,
-              "styles": true,
-              "vendor": true
-            }
+            "browserTarget": "aurora-website:build"
           },
           "configurations": {
             "production": {
