@@ -1,314 +1,314 @@
-// // * Animations
-// // @import '~animate.css/animate.css';
+// * Animations
+// @import '~animate.css/animate.css';
 
-// // * Fonts
+// * Fonts
 
-// @font-face {
-//   font-family: Dinot, Roboto, 'Helvetica Neue', sans-serif;
-//   src: url('./fonts/Dinot.otf') format("opentype");
-// }
+@font-face {
+    font-family: Dinot, Roboto, 'Helvetica Neue', sans-serif;
+    src: url('./fonts/Dinot.otf') format("opentype");
+}
 
-// // * Custom Theming for Angular Material
+// * Custom Theming for Angular Material
 
-// // For more information: https://material.angular.io/guide/theming
+// For more information: https://material.angular.io/guide/theming
 
-// // Import theming functionality
-// @import '~@angular/material/theming';
-// // Plus imports for other components in your app.
+// Import theming functionality
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
 
-// // See the following guide for Angular Material theming
-// // https://coursetro.com/posts/code/116/Create-your-own-Angular-5-Material-Theme
-// // Or see the following video
-// // https://www.youtube.com/watch?v=kHbMm7psBag
+// See the following guide for Angular Material theming
+// https://coursetro.com/posts/code/116/Create-your-own-Angular-5-Material-Theme
+// Or see the following video
+// https://www.youtube.com/watch?v=kHbMm7psBag
 
-// // Include the common styles for Angular Material. We include this here so that you only
-// // have to load a single css file for Angular Material in your app.
-// // Be sure that you only ever include this mixin once!
-// // Incluide common styles
-// @include mat-core();
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+// Incluide common styles
+@include mat-core();
 
-// // Define color palettes
+// Define color palettes
 
-// $dark-primary-text: rgba(black, 0.87);
-// $dark-secondary-text: rgba(black, 0.54);
-// $dark-disabled-text: rgba(black, 0.38);
-// $dark-dividers: rgba(black, 0.12);
-// $dark-focused: rgba(black, 0.12);
-// $light-primary-text: white;
-// $light-secondary-text: rgba(white, 0.7);
-// $light-disabled-text: rgba(white, 0.5);
-// $light-dividers: rgba(white, 0.12);
-// $light-focused: rgba(white, 0.12);
+$dark-primary-text: rgba(black, 0.87);
+$dark-secondary-text: rgba(black, 0.54);
+$dark-disabled-text: rgba(black, 0.38);
+$dark-dividers: rgba(black, 0.12);
+$dark-focused: rgba(black, 0.12);
+$light-primary-text: white;
+$light-secondary-text: rgba(white, 0.7);
+$light-disabled-text: rgba(white, 0.5);
+$light-dividers: rgba(white, 0.12);
+$light-focused: rgba(white, 0.12);
 
-// $mat-aurora-green: (
-//   50 : #e2e6e8,
-//   100 : #b6bfc6,
-//   200 : #8695a0,
-//   300 : #566b7a,
-//   400 : #314b5e,
-//   500 : #0d2b41,
-//   600 : #0b263b,
-//   700 : #092032,
-//   800 : #071a2a,
-//   900 : #03101c,
-//   A100 : #5aa2ff,
-//   A200 : #2786ff,
-//   A400 : #006af3,
-//   A700 : #005fda,
-//   contrast: (
-//       50 : #000000,
-//       100 : #000000,
-//       200 : #000000,
-//       300 : #ffffff,
-//       400 : #ffffff,
-//       500 : #ffffff,
-//       600 : #ffffff,
-//       700 : #ffffff,
-//       800 : #ffffff,
-//       900 : #ffffff,
-//       A100 : #000000,
-//       A200 : #ffffff,
-//       A400 : #ffffff,
-//       A700 : #ffffff,
-//   )
-// );
+$mat-aurora-green: (
+    50 : #e2e6e8,
+  100 : #b6bfc6,
+  200 : #8695a0,
+  300 : #566b7a,
+  400 : #314b5e,
+  500 : #0d2b41,
+  600 : #0b263b,
+  700 : #092032,
+  800 : #071a2a,
+  900 : #03101c,
+  A100 : #5aa2ff,
+  A200 : #2786ff,
+  A400 : #006af3,
+  A700 : #005fda,
+  contrast: (
+      50 : #000000,
+      100 : #000000,
+      200 : #000000,
+      300 : #ffffff,
+      400 : #ffffff,
+      500 : #ffffff,
+      600 : #ffffff,
+      700 : #ffffff,
+      800 : #ffffff,
+      900 : #ffffff,
+      A100 : #000000,
+      A200 : #ffffff,
+      A400 : #ffffff,
+      A700 : #ffffff,
+  )
+);
 
-// $mat-aurora-orange: (
-//   50: #fdf3e0,
-//   100: #fbe0b2,
-//   200: #f9cc80,
-//   300: #f7b74e,
-//   400: #f6a728,
-//   500: #f59805,
-//   600: #f18d02,
-//   700: #eb7d00,
-//   800: #e56e00,
-//   900: #dc5500,
-//   A100: #fbe0b2,
-//   A200: #f9cc80,
-//   A400: #f6a728,
-//   A700: #eb7d00,
-//   contrast: (
-//     50: $dark-primary-text,
-//     100: $dark-primary-text,
-//     200: $dark-primary-text,
-//     300: $dark-primary-text,
-//     400: $dark-primary-text,
-//     500: $dark-primary-text,
-//     600: $dark-primary-text,
-//     700: $light-primary-text,
-//     800: $light-primary-text,
-//     900: $light-primary-text,
-//     A100: $dark-primary-text,
-//     A200: $dark-primary-text,
-//     A400: $dark-primary-text,
-//     A700: $dark-primary-text,
-//   ),
-// );
+$mat-aurora-orange: (
+  50: #fdf3e0,
+  100: #fbe0b2,
+  200: #f9cc80,
+  300: #f7b74e,
+  400: #f6a728,
+  500: #f59805,
+  600: #f18d02,
+  700: #eb7d00,
+  800: #e56e00,
+  900: #dc5500,
+  A100: #fbe0b2,
+  A200: #f9cc80,
+  A400: #f6a728,
+  A700: #eb7d00,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $dark-primary-text,
+    600: $dark-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $dark-primary-text,
+    A400: $dark-primary-text,
+    A700: $dark-primary-text,
+  ),
+);
 
-// // Define the palettes for your theme using the Material Design palettes available in palette.scss
-// // (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// // hue. Available color palettes: https://material.io/design/color/
-// // Define the primary pallete:
-// // - (the second parameter passed to mat-palette() is the default primary color)
-// // - (the third parameter passed to mat-palette() is the lighter variant of the color [some components use these values])
-// // - (the Fourth parameter passed to mat-palette() is the darker variant of the color [some components use these values])
-// $aurora-website-primary: mat-palette($mat-aurora-green, 700, 400, 900);
-// // Define the accent pallete  (the second parameter passed to mat-palette() is the default accent color)
-// $aurora-website-accent: mat-palette($mat-aurora-orange, 700, 400, 900);
-// // The warn palette is optional (defaults to red).
-// // Provide an optional warning pallete
-// $aurora-website-warn: mat-palette($mat-red);
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+// Define the primary pallete:
+// - (the second parameter passed to mat-palette() is the default primary color)
+// - (the third parameter passed to mat-palette() is the lighter variant of the color [some components use these values])
+// - (the Fourth parameter passed to mat-palette() is the darker variant of the color [some components use these values])
+$aurora-website-primary: mat-palette($mat-aurora-green, 700, 400, 900);
+// Define the accent pallete  (the second parameter passed to mat-palette() is the default accent color)
+$aurora-website-accent: mat-palette($mat-aurora-orange, 700, 400, 900);
+// The warn palette is optional (defaults to red).
+// Provide an optional warning pallete
+$aurora-website-warn: mat-palette($mat-red);
 
-// // Create the theme object (a Sass map containing all of the palettes).
-// // Create a light mixin
-// $aurora-website-theme: mat-light-theme(
-//   $aurora-website-primary,
-//   $aurora-website-accent,
-//   $aurora-website-warn
-// );
-// // Create a dark mixin
-// // $custom-theme: mat-dark-theme($custom-primary, $custom-accent);
+// Create the theme object (a Sass map containing all of the palettes).
+// Create a light mixin
+$aurora-website-theme: mat-light-theme(
+  $aurora-website-primary,
+  $aurora-website-accent,
+  $aurora-website-warn
+);
+// Create a dark mixin
+// $custom-theme: mat-dark-theme($custom-primary, $custom-accent);
 
-// // Include theme styles for core and each component used in your app.
-// // Alternatively, you can import and @include the theme mixins for each component
-// // that you are using.
-// // Create the theme
-// @include angular-material-theme($aurora-website-theme);
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+// Create the theme
+@include angular-material-theme($aurora-website-theme);
 
-// // ALTERNATIVE THEME
-// $alt-primary: mat-palette($mat-yellow);
-// $alt-accent: mat-palette($mat-grey, 200);
-// $alt-warn: mat-palette($mat-red);
-// $alt-theme: mat-dark-theme($alt-primary, $alt-accent, $alt-warn);
-// .alternative {
-//   @include angular-material-theme($alt-theme);
-// }
+// ALTERNATIVE THEME
+$alt-primary: mat-palette($mat-yellow);
+$alt-accent: mat-palette($mat-grey, 200);
+$alt-warn: mat-palette($mat-red);
+$alt-theme: mat-dark-theme($alt-primary, $alt-accent, $alt-warn);
+.alternative {
+  @include angular-material-theme($alt-theme);
+}
 
-// // * You can add global styles to this file, and also import other style files
+// * You can add global styles to this file, and also import other style files
 
-// html,
-// body {
-//   /* min-height: 100vh;
-//   height: 100%; */
-//   background-color: #fafbfc;
-// }
-// body {
-//   margin: 0;
-//   font-family: Roboto, 'Helvetica Neue', sans-serif;
-// }
+html,
+body {
+  /* min-height: 100vh;
+  height: 100%; */
+  background-color: #fafbfc;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
 
-// // * Change autocomplete styles in WebKit
+// * Change autocomplete styles in WebKit
 
-// input:-webkit-autofill,
-// input:-webkit-autofill:hover,
-// input:-webkit-autofill:focus,
-// textarea:-webkit-autofill,
-// textarea:-webkit-autofill:hover,
-// textarea:-webkit-autofill:focus,
-// select:-webkit-autofill,
-// select:-webkit-autofill:hover,
-// select:-webkit-autofill:focus {
-//   // border: 1px dashed greenyellow;
-//   -webkit-text-fill-color: #0F2331;
-//   box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0) inset;
-//   transition: background-color 5000s ease-in-out 0s;
-// }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  // border: 1px dashed greenyellow;
+  -webkit-text-fill-color: #0F2331;
+  box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
 
-// // * Change scrollbars styles
+// * Change scrollbars styles
 
-// body::-webkit-scrollbar {
-//   width: 8px;
-//   background-color: #f5f5f5;
-// }
-// body::-webkit-scrollbar-track {
-//   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//   background-color: #f5f5f5;
-// }
-// body::-webkit-scrollbar-thumb {
-//   background-color: #c1c1c1;
-//   // border: 2px solid #555555;
-// }
+body::-webkit-scrollbar {
+  width: 8px;
+  background-color: #f5f5f5;
+}
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
+}
+body::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+  // border: 2px solid #555555;
+}
 
-// // * Custom classes
+// * Custom classes
 
-// $focus-outline-thickeness: 2px;
-// .focus-outline {
-//   &:focus {
-//     outline: $focus-outline-thickeness solid #46DDA9;
-//     outline-style: dashed;
-//     @media screen and (max-width: 450px) {
-//       outline: none;
-//     }
-//   }
-// }
+$focus-outline-thickeness: 2px;
+.focus-outline {
+  &:focus {
+    outline: $focus-outline-thickeness solid #46DDA9;
+    outline-style: dashed;
+    @media screen and (max-width: 450px) {
+      outline: none;
+    }
+  }
+}
 
-// .custom-button-primary {
-//   border-radius: 20px !important;
-//   white-space: nowrap;
-//   cursor: pointer;
-//   text-align: center;
-//   color: #FFFFFF;
-//   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1f8d90+0,67c3a4+100 */
-//   background: rgb(31,141,144); /* Old browsers */
-//   background: -moz-linear-gradient(left,  rgba(31,141,144,1) 0%, rgba(103,195,164,1) 100%); /* FF3.6-15 */
-//   background: -webkit-linear-gradient(left,  rgba(31,141,144,1) 0%,rgba(103,195,164,1) 100%); /* Chrome10-25,Safari5.1-6 */
-//   background: linear-gradient(to right,  rgba(31,141,144,1) 0%,rgba(103,195,164,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-//   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f8d90', endColorstr='#67c3a4',GradientType=1 ); /* IE6-9 */
-//   &:hover {
-//     background: #FFFFFF;
-//     color: #218C90;
-//   }
-// }
+.custom-button-primary {
+  border-radius: 20px !important;
+  white-space: nowrap;
+  cursor: pointer;
+  text-align: center;
+  color: #FFFFFF;
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1f8d90+0,67c3a4+100 */
+  background: rgb(31,141,144); /* Old browsers */
+  background: -moz-linear-gradient(left,  rgba(31,141,144,1) 0%, rgba(103,195,164,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left,  rgba(31,141,144,1) 0%,rgba(103,195,164,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right,  rgba(31,141,144,1) 0%,rgba(103,195,164,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f8d90', endColorstr='#67c3a4',GradientType=1 ); /* IE6-9 */
+  &:hover {
+    background: #FFFFFF;
+    color: #218C90;
+  }
+}
 
-// .custom-button-primary-light {
-//   border-radius: 20px !important;
-//   white-space: nowrap;
-//   cursor: pointer;
-//   text-align: center;
-//   background: #FFFFFF;
-//   color: #218C90;
-//   &:hover {
-//     color: #FFFFFF;
-//     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1f8d90+0,67c3a4+100 */
-//     background: rgb(31,141,144); /* Old browsers */
-//     background: -moz-linear-gradient(left,  rgba(31,141,144,1) 0%, rgba(103,195,164,1) 100%); /* FF3.6-15 */
-//     background: -webkit-linear-gradient(left,  rgba(31,141,144,1) 0%,rgba(103,195,164,1) 100%); /* Chrome10-25,Safari5.1-6 */
-//     background: linear-gradient(to right,  rgba(31,141,144,1) 0%,rgba(103,195,164,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-//     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f8d90', endColorstr='#67c3a4',GradientType=1 ); /* IE6-9 */
-//   }
-// }
+.custom-button-primary-light {
+  border-radius: 20px !important;
+  white-space: nowrap;
+  cursor: pointer;
+  text-align: center;
+  background: #FFFFFF;
+  color: #218C90;
+  &:hover {
+    color: #FFFFFF;
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1f8d90+0,67c3a4+100 */
+    background: rgb(31,141,144); /* Old browsers */
+    background: -moz-linear-gradient(left,  rgba(31,141,144,1) 0%, rgba(103,195,164,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left,  rgba(31,141,144,1) 0%,rgba(103,195,164,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right,  rgba(31,141,144,1) 0%,rgba(103,195,164,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f8d90', endColorstr='#67c3a4',GradientType=1 ); /* IE6-9 */
+  }
+}
 
-// // * Modify Angular Material classes
+// * Modify Angular Material classes
 
-// .custom-mat-dialog-container {
-//   .mat-dialog-container {
-//     padding: 0px;
-//   }
-// }
+.custom-mat-dialog-container {
+  .mat-dialog-container {
+    padding: 0px;
+  }
+}
 
-// .custom-modal-backdrop {
-//   background: rgba(black, 0.54);
-// }
+.custom-modal-backdrop {
+  background: rgba(black, 0.54);
+}
 
-// .mat-form-field-appearance-outline .mat-form-field-outline-thick {
-//   color: #0F2331;
-// }
+.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #0F2331;
+}
 
-// .mat-tab-body-content {
-//   overflow-y: hidden !important;
-// }
+.mat-tab-body-content {
+  overflow-y: hidden !important;
+}
 
-// // * Ngx Paginator styles
+// * Ngx Paginator styles
 
-// .pagination-controls .ngx-pagination {
-//   padding-left: 0px;
-//   display: flex;
-//   justify-content: center;
-//   font-weight: 500;
-//   .current {
-//     border-radius: 10px;
-//     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#00878e+0,003a55+100 */
-//     background: rgb(0,135,142); /* Old browsers */
-//     background: -moz-linear-gradient(top,  rgba(0,135,142,1) 0%, rgba(0,58,85,1) 100%); /* FF3.6-15 */
-//     background: -webkit-linear-gradient(top,  rgba(0,135,142,1) 0%,rgba(0,58,85,1) 100%); /* Chrome10-25,Safari5.1-6 */
-//     background: linear-gradient(to bottom,  rgba(0,135,142,1) 0%,rgba(0,58,85,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-//     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00878e', endColorstr='#003a55',GradientType=0 ); /* IE6-9 */
-//   }
-//   li {
-//     a {
-//       outline: unset;
-//       &:focus {
-//         outline: $focus-outline-thickeness solid #46DDA9;
-//         outline-style: dashed;
-//       }
-//       &:hover {
-//         border-radius: 10px;
-//       }
-//     }
-//   }
-// }
+.pagination-controls .ngx-pagination {
+  padding-left: 0px;
+  display: flex;
+  justify-content: center;
+  font-weight: 500;
+  .current {
+    border-radius: 10px;
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#00878e+0,003a55+100 */
+    background: rgb(0,135,142); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(0,135,142,1) 0%, rgba(0,58,85,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(0,135,142,1) 0%,rgba(0,58,85,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(0,135,142,1) 0%,rgba(0,58,85,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00878e', endColorstr='#003a55',GradientType=0 ); /* IE6-9 */
+  }
+  li {
+    a {
+      outline: unset;
+      &:focus {
+        outline: $focus-outline-thickeness solid #46DDA9;
+        outline-style: dashed;
+      }
+      &:hover {
+        border-radius: 10px;
+      }
+    }
+  }
+}
 
-// // * Toasts
+// * Toasts
 
-// // Option 1 (Regular style)
+// Option 1 (Regular style)
 
-// /* @import '~ngx-toastr/toastr'; */
+/* @import '~ngx-toastr/toastr'; */
 
-// // Option 2 (Bootstrap 4 styles)
-// // Requires bootstrap
+// Option 2 (Bootstrap 4 styles)
+// Requires bootstrap
 
-// /* @import '~bootstrap/scss/bootstrap';
-// @import '~ngx-toastr/toastr-bs4-alert'; */
+/* @import '~bootstrap/scss/bootstrap';
+@import '~ngx-toastr/toastr-bs4-alert'; */
 
-// // Option 2 [Alternative] (Bootstrap 4 styles)
-// // if you'd like to use it without importing all of bootstrap it requires only functions, variables and mixins.
+// Option 2 [Alternative] (Bootstrap 4 styles)
+// if you'd like to use it without importing all of bootstrap it requires only functions, variables and mixins.
 
-// @import '~bootstrap/scss/functions';
-// @import '~bootstrap/scss/variables';
-// @import '~bootstrap/scss/mixins';
-// @import '~ngx-toastr/toastr-bs4-alert';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+@import '~ngx-toastr/toastr-bs4-alert';
 
-// // * Swiper
-// // Commented because building issues
-// // @import '~swiper/css/swiper.css';
+// * Swiper
+// Commented because building issues
+// @import '~swiper/css/swiper.css';
