@@ -171,6 +171,17 @@ export class AuthService {
     const url = `${this.host}/${this.apiVersion}/users/${userId}/purchasedCourses`;
     return this.http.post<User>(url, { courses, paymentMethod, country, ...paymentInfo });
   }
+  
+  purchaseCart2(
+    userId: string,
+    courses: string[],
+    paymentMethod: string,
+    country: string
+  ): Observable<{ user: User, paymentIntentClientSecret: string }> {
+    console.log('Auth service: Purchasing user cart');
+    const url = `${this.host}/${this.apiVersion}/users/${userId}/purchasedCourses2`;
+    return this.http.post<{ user: User, paymentIntentClientSecret: string }>(url, { courses, paymentMethod, country });
+  }
 
   enrollCourse(courseId: string, userId: string): Observable<Course> {
     console.log('Auth service: Enrolling user in course');

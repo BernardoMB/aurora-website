@@ -36,4 +36,12 @@ export class PaymentsService {
     console.log('Payments service: Validating payment');
     return this.http.post<User>(`${this.url}/validate/courses`, dto);
   }
+
+  //#region Stripe
+  createPaymentIntent(coursesIds: string[]) {
+    console.log(`Payments service (Stripe): Creating payment intent for courses ${coursesIds}`);
+    var createPaymentIntentDto = coursesIds;
+    return this.http.post(`${this.url}/paymentIntent`, createPaymentIntentDto);
+  }
+  //#endregion
 }
