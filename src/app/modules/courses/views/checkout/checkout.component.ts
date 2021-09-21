@@ -210,6 +210,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.cartSubscription = this.store.pipe(select(selectAuthCart)).subscribe((courses: Course[]) => {
       if (courses && courses.length > 0) {
         this.cart = courses;
+        console.log(this.cart);
       } else {
         console.log('CheckoutComponent: No courses in order. Redirecting to /courses/cart');
         this.router.navigate(['/courses/cart']);
@@ -710,6 +711,19 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.newCardForm.controls.securityCodeControl.markAsTouched();
     // * Real case obtain data from form
     if (this.paymentMethod === 'NEW_CARD') {
+      // TODO: Delete the set value statements when testing is done
+      this.countryControl.setValue('NG');
+      this.newCardForm.setValue({
+        nameOnCardControl: 'Bernardo Mondragon',
+        cardNumberControl: '5531886652142950',
+        expiryMonthControl: '09',
+        expiryYearControl: 22,
+        securityCodeControl: '564',
+        rememberCardControl: true
+      });
+      console.log(this.countryControl.valid);
+      console.log(this.newCardForm.valid);
+      console.log(this.newCardForm.errors);
       if (this.newCardForm.valid && this.countryControl.valid) {
         const courseIds = this.cart.map((course: Course) => course.id);
         this.socketConnection = io(`${this.host}`);
@@ -731,6 +745,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           //     redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
           //   }
           // );
+          console.log('Calling purchaseCart2 method');
           this.purchaseCart2(
             this.user.id,
             courseIds,
