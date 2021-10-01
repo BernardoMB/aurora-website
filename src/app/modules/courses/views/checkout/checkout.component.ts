@@ -1049,7 +1049,29 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           || paymentIntentClientSecret.length == 0
         ) {
           // Handle succesfull payment intent.
-          // Continue here
+          this.stripe.confirmPayment(paymentIntentClientSecret, )
+
+          const clientSecret = paymentIntentClientSecret;
+
+
+
+          this.stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+              card:  {
+                number: paymentInfo.cardNumber,
+                exp_month: paymentInfo.expiryMonth,
+                exp_year: paymentInfo.expiryYear,
+                cvc: paymentInfo.securityCode
+              },
+              billing_details: {
+                name: 'Jenny Rosen',
+              },
+            },
+            receipt_email: this.user.email
+          }).then(function(result) {
+            console.log('Tansaction result');
+            console.log(result);
+          });
         }
       }
     });
