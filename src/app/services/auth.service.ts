@@ -177,10 +177,10 @@ export class AuthService {
     courses: string[],
     paymentMethod: string,
     country: string
-  ): Observable<{ user: User, paymentIntentClientSecret: string }> {
+  ): Observable<{ user: User, paymentIntentClientSecret: string, purchaseCompleted: boolean }> {
     console.log('Auth service: Purchasing user cart');
     const url = `${this.host}/${this.apiVersion}/users/${userId}/purchasedCourses2`;
-    return this.http.post<{ user: User, paymentIntentClientSecret: string }>(url, { courses, paymentMethod, country });
+    return this.http.post<{ user: User, paymentIntentClientSecret: string, purchaseCompleted: boolean }>(url, { courses, paymentMethod, country });
   }
 
   enrollCourse(courseId: string, userId: string): Observable<Course> {

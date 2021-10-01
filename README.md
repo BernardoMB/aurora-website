@@ -52,5 +52,8 @@ Visit `ngx-swiper-wrapper` documentation.
 
 See the following tutorial: https://www.youtube.com/watch?v=YlHPyvP5bKU.
 
+## Stripe
 
+Adding Stripe to the project:
+https://stackoverflow.com/questions/54753390/angular-7-stripe-error-ts2304-cannot-find-name-stripe
 

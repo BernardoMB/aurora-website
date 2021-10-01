@@ -40,6 +40,7 @@
     "@ngrx/router-store": "^9.2.1",
     "@ngrx/store": "^9.2.1",
     "@ngrx/store-devtools": "^9.2.1",
+    "@types/stripe-v3": "^3.1.25",
     "animate.css": "^3.7.2",
     "bootstrap": "^4.5.0",
     "class-transformer": "^0.2.3",

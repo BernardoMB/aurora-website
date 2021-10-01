@@ -25,6 +25,7 @@ import * as io from 'socket.io-client';
 import { environment } from '../../../../../environments/environment';
 import { PaymentErrorModalComponent } from '../../components/payment-error-modal/payment-error-modal.component';
 import { MyErrorStateMatcher } from './control.error-matcher';
+declare var Stripe: stripe.StripeStatic;
 
 @Component({
   selector: 'app-checkout',
@@ -79,6 +80,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
     return 0;
   }
+  stripe;
 
   countryControl = new FormControl('NG', [Validators.required]);
   newCardForm = new FormGroup({
@@ -183,6 +185,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.dialogConfig.maxHeight = '80vh';
     // Form errors
     this.matcher = new MyErrorStateMatcher();
+    // Initialize Stripe
+    this.stripe = Stripe(environment.stripePublishableKey);
   }
 
   ngOnInit() {
@@ -745,7 +749,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           //     redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
           //   }
           // );
-          console.log('Calling purchaseCart2 method');
           this.purchaseCart2(
             this.user.id,
             courseIds,
@@ -926,9 +929,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     console.log('CheckoutComponent: purchaseCart2 function called');
     this.authService.purchaseCart2(userId, courses, paymentMethod, country).pipe(
       catchError((error) => {
-        // Determine type of error (use Aurora API returned data):
-        console.error('Chinga tu madre! Ocurrio un error.', error);
-
+        // Determine type of error. Handle Stripe error or Aurora API error.
+        console.error('Error creating payment intent', error);
+        
         //#region Card requires PIN authentication
         if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'PIN') {
           console.error('Retry request sending PIN');
@@ -1034,12 +1037,20 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
         throw error;
       })
-    ).subscribe((res: { user: User, paymentIntentClientSecret: string }) => {
-      if (res.user.cart.length === 0) {
+    ).subscribe((res: { user: User, paymentIntentClientSecret: string, purchaseCompleted: boolean }) => {
+      if (res.user.cart.length === 0 && res.purchaseCompleted) {
         this.succesfullPurchase(res.user);
       } else {
-        const { paymentIntentClientSecret } = res;
         console.log({res});
+        const { paymentIntentClientSecret } = res;
+        if (!paymentIntentClientSecret
+          || paymentIntentClientSecret == undefined
+          || paymentIntentClientSecret == ""
+          || paymentIntentClientSecret.length == 0
+        ) {
+          // Handle succesfull payment intent.
+          // Continue here
+        }
       }
     });
   }
