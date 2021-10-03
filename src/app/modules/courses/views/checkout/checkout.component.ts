@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Subscription, throwError } from 'rxjs';
 import { Course } from '../../../../shared/models/course.model';
 import { Store, select } from '@ngrx/store';
@@ -36,7 +36,7 @@ declare var Stripe: stripe.StripeStatic;
     useValue: { color: 'primary' },
   }]
 })
-export class CheckoutComponent implements OnInit, OnDestroy {
+export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
   matcher;
   showProgressSpinner = false;
   iframeDialogRef: MatDialogRef<IframeModalComponent>;
@@ -81,6 +81,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     return 0;
   }
   stripe;
+  elements;
 
   countryControl = new FormControl('NG', [Validators.required]);
   newCardForm = new FormGroup({
@@ -187,6 +188,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.matcher = new MyErrorStateMatcher();
     // Initialize Stripe
     this.stripe = Stripe(environment.stripePublishableKey);
+    // Initialize Stripe Elements
+    this.elements = this.stripe.elements();
   }
 
   ngOnInit() {
@@ -226,6 +229,36 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.cartSubscription.unsubscribe();
     this.isAuthenticatedSubscription.unsubscribe();
     this.userSubscription.unsubscribe();
+  }
+
+  async ngAfterViewInit() {
+    var _this = this;
+
+    var style = {
+      base: {
+        color: "#32325d",
+      }
+    };
+    
+    var card = _this.elements.create("card", { style: style });
+    card.mount("#card-element");
+
+    card.on('change', ({error}) => {
+      let displayError = document.getElementById('card-errors');
+      if (error) {
+        displayError.textContent = error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+
+    var form = document.getElementById('payment-form');
+
+    form.addEventListener('submit', function(ev) {
+      ev.preventDefault();
+      // Try purchasing cart
+      _this.onCompletePayment2(card);
+    });
   }
 
   // Pay button
@@ -715,7 +748,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.newCardForm.controls.securityCodeControl.markAsTouched();
     // * Real case obtain data from form
     if (this.paymentMethod === 'NEW_CARD') {
-      // TODO: Delete the set value statements when testing is done
+      
+      //#region Set form value
+      // TODO: Delete this region when testing is done
       this.countryControl.setValue('NG');
       this.newCardForm.setValue({
         nameOnCardControl: 'Bernardo Mondragon',
@@ -725,9 +760,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         securityCodeControl: '564',
         rememberCardControl: true
       });
-      console.log(this.countryControl.valid);
-      console.log(this.newCardForm.valid);
-      console.log(this.newCardForm.errors);
+      //#endregion
+
       if (this.newCardForm.valid && this.countryControl.valid) {
         const courseIds = this.cart.map((course: Course) => course.id);
         this.socketConnection = io(`${this.host}`);
@@ -763,6 +797,114 @@ export class CheckoutComponent implements OnInit, OnDestroy {
               rememberCard: this.newCardForm.get('rememberCardControl').value ? true : false,
               redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
             }
+          );
+        });
+        this.socketConnection.on('payment_success', () => {
+          this.iframeDialogRef.close();
+          this.user.cart = [];
+          this.succesfullPurchase(this.user);
+          this.socketConnection.disconnect();
+          this.showProgressSpinner = false;
+        });
+        this.socketConnection.on('payment_failure', (message) => {
+          this.iframeDialogRef.close();
+          const dialogConfig = {
+            ...(this.dialogConfig),
+            data: {
+              errorMessage: message
+            }
+          };
+          this.paymentErrorModal.open(PaymentErrorModalComponent, dialogConfig);
+          this.socketConnection.disconnect();
+          this.showProgressSpinner = false;
+        });
+      } else {
+        alert('Invalid payment data. Please review payment form');
+      }
+    } else if (this.paymentMethod === 'USER_CARD') {
+      // User is paying with a card he has previously used
+      alert('Implement this payment method');
+      if (this.cardSelected && this.countryControl.valid) {
+        console.log('TODO: Dispatch purchase user cart action');
+      }
+    } else if (this.paymentMethod === 'BANK_ACCOUNT') {
+      // User is paying using a bank account
+      if (this.bankAccountForm.valid && this.countryControl.valid) {
+        console.log('TODO: Dispatch purchase user cart action');
+      } else {
+        alert('Bank account form is not valid');
+      }
+    } else {
+      alert('No payment method selected');
+    }
+  }
+  
+  /**
+   * Function called when user hits complete payment button.
+   * Use this approach for production environment
+   *
+   * @memberof CheckoutComponent
+   */
+  onCompletePayment2(card) {
+    this.countryControl.markAsTouched();
+    this.newCardForm.markAsTouched();
+    this.newCardForm.controls.nameOnCardControl.markAsTouched();
+    this.newCardForm.controls.cardNumberControl.markAsTouched();
+    this.newCardForm.controls.expiryMonthControl.markAsTouched();
+    this.newCardForm.controls.expiryYearControl.markAsTouched();
+    this.newCardForm.controls.securityCodeControl.markAsTouched();
+    // * Real case obtain data from form
+    if (this.paymentMethod === 'NEW_CARD') {
+      
+      //#region Set form value
+      // TODO: Delete this region when testing is done
+      this.countryControl.setValue('NG');
+      this.newCardForm.setValue({
+        nameOnCardControl: 'Bernardo Mondragon',
+        cardNumberControl: '5531886652142950',
+        expiryMonthControl: '09',
+        expiryYearControl: 22,
+        securityCodeControl: '564',
+        rememberCardControl: true
+      });
+      //#endregion
+
+      if (this.newCardForm.valid && this.countryControl.valid) {
+        const courseIds = this.cart.map((course: Course) => course.id);
+        this.socketConnection = io(`${this.host}`);
+        this.socketConnection.on('connect', () => {
+          this.connectionId = this.socketConnection.id;
+          this.showProgressSpinner = true;
+          // this.purchaseCart(
+          //   this.user.id,
+          //   courseIds,
+          //   this.paymentMethod,
+          //   this.countryControl.value,
+          //   {
+          //     nameOnCard: this.newCardForm.get('nameOnCardControl').value.toString().trim(),
+          //     cardNumber: this.newCardForm.get('cardNumberControl').value.toString().trim().replace(/\s/g, ''),
+          //     expiryMonth: this.newCardForm.get('expiryMonthControl').value.toString().trim(),
+          //     expiryYear: this.newCardForm.get('expiryYearControl').value.toString().trim().slice(-2),
+          //     securityCode: this.newCardForm.get('securityCodeControl').value.toString().trim(),
+          //     rememberCard: this.newCardForm.get('rememberCardControl').value ? true : false,
+          //     redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+          //   }
+          // );
+          this.purchaseCart3(
+            this.user.id,
+            courseIds,
+            this.paymentMethod,
+            this.countryControl.value,
+            {
+              nameOnCard: this.newCardForm.get('nameOnCardControl').value.toString().trim(),
+              cardNumber: this.newCardForm.get('cardNumberControl').value.toString().trim().replace(/\s/g, ''),
+              expiryMonth: this.newCardForm.get('expiryMonthControl').value.toString().trim(),
+              expiryYear: this.newCardForm.get('expiryYearControl').value.toString().trim().slice(-2),
+              securityCode: this.newCardForm.get('securityCodeControl').value.toString().trim(),
+              rememberCard: this.newCardForm.get('rememberCardControl').value ? true : false,
+              redirect_url: `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`
+            },
+            card
           );
         });
         this.socketConnection.on('payment_success', () => {
@@ -925,7 +1067,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     });
   }
 
-  purchaseCart2(userId: string, courses: string[], paymentMethod: string, country: string, paymentInfo: IPaymentInfo) {
+  async purchaseCart2(userId: string, courses: string[], paymentMethod: string, country: string, paymentInfo: IPaymentInfo) {
     console.log('CheckoutComponent: purchaseCart2 function called');
     this.authService.purchaseCart2(userId, courses, paymentMethod, country).pipe(
       catchError((error) => {
@@ -1037,24 +1179,33 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
         throw error;
       })
-    ).subscribe((res: { user: User, paymentIntentClientSecret: string, purchaseCompleted: boolean }) => {
+    ).subscribe(async (res: { user: User, paymentIntentClientSecret: string, purchaseCompleted: boolean }) => {
       if (res.user.cart.length === 0 && res.purchaseCompleted) {
         this.succesfullPurchase(res.user);
       } else {
         console.log({res});
         const { paymentIntentClientSecret } = res;
-        if (!paymentIntentClientSecret
-          || paymentIntentClientSecret == undefined
-          || paymentIntentClientSecret == ""
-          || paymentIntentClientSecret.length == 0
+        if (paymentIntentClientSecret
+          && paymentIntentClientSecret !== undefined
+          && paymentIntentClientSecret !== ""
+          && paymentIntentClientSecret.length !== 0
         ) {
+          console.log('Completing payment');
           // Handle succesfull payment intent.
-          this.stripe.confirmPayment(paymentIntentClientSecret, )
+
+          // Create payment method
+          const card = await this.stripe.createPaymentMethod({
+            type: 'card',
+            card: {
+              number: paymentInfo.cardNumber,
+              exp_month: paymentInfo.expiryMonth,
+              exp_year: paymentInfo.expiryYear,
+              cvc: paymentInfo.securityCode
+            },
+          });
+          console.log({card});
 
           const clientSecret = paymentIntentClientSecret;
-
-
-
           this.stripe.confirmCardPayment(clientSecret, {
             payment_method: {
               card:  {
@@ -1072,6 +1223,186 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             console.log('Tansaction result');
             console.log(result);
           });
+        }
+      }
+    });
+  }
+  
+  async purchaseCart3(userId: string, courses: string[], paymentMethod: string, country: string, paymentInfo: IPaymentInfo, card) {
+    console.log('CheckoutComponent: purchaseCart2 function called');
+    this.authService.purchaseCart2(userId, courses, paymentMethod, country).pipe(
+      catchError((error) => {
+        // Determine type of error. Handle Stripe error or Aurora API error.
+        console.error('Error creating payment intent', error);
+        
+        //#region Card requires PIN authentication
+        if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'PIN') {
+          console.error('Retry request sending PIN');
+          const enterPinDialogRef = this.enterPinModal.open(EnterPinModalComponent, this.dialogConfig);
+          enterPinDialogRef.afterClosed().subscribe((pin: string) => {
+            if (pin && pin.length >= 3) {
+              console.log('Pin was entered. Purchasing cart');
+              this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, pin });
+            }
+          });
+        }
+        //#endregion
+        //#region Card requires sending billing info (NOAUTH_INTERNATIONAL method)
+        if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'NOAUTH_INTERNATIONAL') {
+          console.error('Retry request sending Billing info');
+          const enterbillingInfoDialogRef = this.enterBillingInfoModal.open(EnterBillingInfoModalComponent, this.dialogConfig);
+          enterbillingInfoDialogRef.afterClosed().subscribe((billingInfo: IBillingInfo) => {
+            if (billingInfo) {
+              const redirectUrl = `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`;
+              console.log('Billing info was entered. Purchasing cart');
+              this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, ...billingInfo, suggested_auth: 'NOAUTH_INTERNATIONAL', redirect_url: redirectUrl });
+            }
+          });
+        }
+        //#endregion
+        //#region Card requires sending billing info (AVS_VBVSECURECODE method)
+        if (error.error.error.status === 'success' && error.error.error.data.suggested_auth === 'AVS_VBVSECURECODE') {
+          console.error('Retry request sending Billing info');
+          const enterbillingInfoDialogRef = this.enterBillingInfoModal.open(EnterBillingInfoModalComponent, this.dialogConfig);
+          enterbillingInfoDialogRef.afterClosed().subscribe((billingInfo: IBillingInfo) => {
+            if (billingInfo) {
+              const redirectUrl = `${this.host}/${this.apiVersion}/payments/validate/3dsecure?connectionid=${this.connectionId}`;
+              console.log('Billing info was entered. Purchasing cart');
+              this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, ...billingInfo, suggested_auth: 'AVS_VBVSECURECODE', redirect_url: redirectUrl });
+            }
+          });
+        }
+        //#endregion
+
+        //#region Card requires OTP validation
+        if (error.error.error.status === 'success' && error.error.error.data.authModelUsed === 'PIN') {
+          const transactionReference = error.error.error.data.flwRef;
+          const internalTransactionReference = error.error.error.data.txRef;
+          const enterOtpDialogRef = this.enterOtpModal.open(EnterOtpModalComponent, this.dialogConfig);
+          enterOtpDialogRef.afterClosed().subscribe((otp: string) => {
+            if (otp) {
+              const validatePaymentDto: ValidatePaymentDto = {
+                transactionReference,
+                internalTransactionReference,
+                otp
+              };
+              this.paymentsService.validatePayment(validatePaymentDto).pipe(
+                catchError((validatePaymentError) => {
+                  console.log('Validate payment error', validatePaymentError);
+                  this.toastrService.error('Could not validate your payment');
+                  this.showProgressSpinner = false;
+                  throw validatePaymentError;
+                })
+              ).subscribe((user: User) => {
+                console.log('Validate payment response', user);
+                if (user.cart.length === 0) {
+                  this.succesfullPurchase(user);
+                }
+              });
+            }
+          });
+        }
+        //#endregion
+        //#region Card requires 3DSecure validation
+        if (error.error.error.status === 'success' && error.error.error.data.authModelUsed === 'VBVSECURECODE') {
+          const dialogConfig = {
+            ...(this.dialogConfig),
+            data: error.error.error.data.authurl
+          };
+          this.iframeDialogRef = this.iframeModal.open(IframeModalComponent, dialogConfig);
+        }
+        //#endregion
+
+        //#region Handling Rave error response
+        if (error.error.error.status === 'error' && error.error.error.message === 'Incorrect PIN') {
+          console.error('Retry request sending PIN');
+          this.toastrService.error('Enter PIN again', 'Incorrect PIN');
+          const enterPinDialogRef = this.enterPinModal.open(EnterPinModalComponent, this.dialogConfig);
+          enterPinDialogRef.afterClosed().subscribe((pin: string) => {
+            if (pin && pin.length >= 3) {
+              console.log('Pin was entered. Purchasing cart');
+              this.purchaseCart(userId, courses, paymentMethod, country, { ...paymentInfo, pin });
+            }
+          });
+        } else if (error.error.error.status === 'error' && (error.error.error.data.code === 'FLW_ERR' || error.error.error.data.code === 'CARD_ERR')) {
+          this.toastrService.error('Payment error');
+          this.socketConnection.disconnect();
+          const dialogConfig = {
+            ...(this.dialogConfig),
+            data: {
+              errorMessage: error.error.error.data.message
+            }
+          };
+          this.paymentErrorModal.open(PaymentErrorModalComponent, dialogConfig);
+          this.showProgressSpinner = false;
+        }
+        //#endregion
+
+        throw error;
+      })
+    ).subscribe(async (res: { user: User, paymentIntentClientSecret: string, purchaseCompleted: boolean }) => {
+      if (res.user.cart.length === 0 && res.purchaseCompleted) {
+        this.succesfullPurchase(res.user);
+      } else {
+        console.log({res});
+        const { paymentIntentClientSecret } = res;
+        if (paymentIntentClientSecret
+          && paymentIntentClientSecret !== undefined
+          && paymentIntentClientSecret !== ""
+          && paymentIntentClientSecret.length !== 0
+        ) {
+          console.log('Completing payment');
+          // Handle succesfull payment intent.
+          
+          const clientSecret = paymentIntentClientSecret;
+          // If the client secret was rendered server-side as a data-secret attribute
+          // on the <form> element, you can retrieve it here by calling `form.dataset.secret`
+          this.stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+              card: card,
+              billing_details: {
+                name: `${res.user.name} ${res.user.lastName}`
+              }
+            }
+          }).then(function(result) {
+            if (result.error) {
+              // Show error to your customer (e.g., insufficient funds)
+              console.log(result.error.message);
+            } else {
+              // The payment has been processed!
+              if (result.paymentIntent.status === 'succeeded') {
+                // Show a success message to your customer
+                // There's a risk of the customer closing the window before callback
+                // execution. Set up a webhook or plugin to listen for the
+                // payment_intent.succeeded event that handles any business critical
+                // post-payment actions.
+                
+                console.log('Payment succeded');
+                console.log(result);
+              }
+            }
+          });
+
+
+          
+          /* this.stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+              card:  {
+                number: paymentInfo.cardNumber,
+                exp_month: paymentInfo.expiryMonth,
+                exp_year: paymentInfo.expiryYear,
+                cvc: paymentInfo.securityCode
+              },
+              billing_details: {
+                name: 'Jenny Rosen',
+              },
+            },
+            receipt_email: this.user.email
+          }).then(function(result) {
+            console.log('Tansaction result');
+            console.log(result);
+          }); */
+
         }
       }
     });
