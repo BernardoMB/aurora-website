@@ -186,10 +186,11 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dialogConfig.maxHeight = '80vh';
     // Form errors
     this.matcher = new MyErrorStateMatcher();
-    // Initialize Stripe
+    
+    //#region Stripe initialization
     this.stripe = Stripe(environment.stripePublishableKey);
-    // Initialize Stripe Elements
     this.elements = this.stripe.elements();
+    //#endregion
   }
 
   ngOnInit() {
@@ -1454,13 +1455,4 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store.dispatch(removeCourseFromCart({ courseId: course.id, userId: this.user.id }));
     }
   }
-
-  // * Utility functions
-
-  pene() {
-    console.log('Control', this.countryControl);
-    console.log('Form valid', this.newCardForm.valid);
-    console.log(this.newCardForm);
-  }
-
 }
