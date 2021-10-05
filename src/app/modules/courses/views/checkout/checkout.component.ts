@@ -11,19 +11,8 @@ import { CoursesService } from '../../services/courses.service';
 import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from '../../../../services/auth.service';
-import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { EnterPinModalComponent } from '../../components/enter-pin-modal/enter-pin-modal.component';
-import { IPaymentInfo } from '../../../../shared/interfaces/payment-info.interface';
-import { EnterOtpModalComponent } from '../../components/enter-otp-modal/enter-otp-modal.component';
-import { PaymentsService } from '../../../../services/payments.service';
-import { ValidatePaymentDto } from '../../../../shared/dtos/validate-payment.dto';
 import { ToastrService } from 'ngx-toastr';
-import { EnterBillingInfoModalComponent, IBillingInfo } from '../../components/enter-billing-info-modal/enter-billing-info-modal.component';
-import { IframeModalComponent } from '../../components/iframe-modal/iframe-modal.component';
-import * as io from 'socket.io-client';
 import { environment } from '../../../../../environments/environment';
-import { PaymentErrorModalComponent } from '../../components/payment-error-modal/payment-error-modal.component';
-import { MyErrorStateMatcher } from './control.error-matcher';
 declare var Stripe: stripe.StripeStatic;
 
 @Component({
@@ -203,6 +192,8 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
   };
   // Cusotm UI behaviour
   showSuccesfullMessage = false;
+  paymentForm;
+  submitButton;
 
   constructor(
     private store: Store<AuthState>,
@@ -210,7 +201,6 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
     private route: ActivatedRoute,
     public coursesService: CoursesService,
     private authService: AuthService,
-    private paymentsService: PaymentsService,
     private toastrService: ToastrService
   ) {
     this.stripe = Stripe(environment.stripePublishableKey);
@@ -283,15 +273,15 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
     
     card.on('change', ({error}) => {
       const cardErrors = document.getElementById('card-errors');
-      const submitButton = form.querySelector('button[type=submit]');
+      //const submitButton = form.querySelector('button[type=submit]');
       if (error) {
         cardErrors.textContent = error.message;
         cardErrors.classList.add('visible');
-        submitButton.setAttribute('disabled', 'disabled');
+        this.submitButton.setAttribute('disabled', 'disabled');
       } else {
         cardErrors.textContent = '';
         cardErrors.classList.remove('visible');
-        submitButton.removeAttribute('disabled');
+        this.submitButton.removeAttribute('disabled');
       }
     });
 
@@ -303,44 +293,42 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
      * or Apple Pay, Google Pay, and Microsoft Pay since they provide name and
      * shipping information directly.
      */
-    var form = document.getElementById('payment-form');
-    const submitButton = form.querySelector('button[type=submit]');
+     this.paymentForm = document.getElementById('payment-form');
+     this.submitButton = this.paymentForm.querySelector('button[type=submit]');
     
     // Listen to changes to the user-selected country.
-    form.querySelector('select[name=country]').addEventListener('change', (event) => {
+    this.paymentForm.querySelector('select[name=country]').addEventListener('change', (event) => {
       event.preventDefault();
       this.selectCountry((event.target as any).value);
     });
 
-    form.addEventListener('submit', async (event) => {
-      var _this = this;
-
+    this.paymentForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      _this.loading(true);
+      this.loading(true);
 
       // Retrieve the user information from the form.
-      const payment = (form.querySelector('input[name=payment]:checked') as any).value;
-      const name = (form.querySelector('input[name=name]') as any).value;
-      const country = (form.querySelector('select[name=country] option:checked') as any).value;
-      const email = (form.querySelector('input[name=email]') as any).value;
-      const phone = (form.querySelector('input[name=phone]') as any).value;
+      const payment = (this.paymentForm.querySelector('input[name=payment]:checked') as any).value;
+      const name = (this.paymentForm.querySelector('input[name=name]') as any).value;
+      const country = (this.paymentForm.querySelector('select[name=country] option:checked') as any).value;
+      const email = (this.paymentForm.querySelector('input[name=email]') as any).value;
+      const phone = (this.paymentForm.querySelector('input[name=phone]') as any).value;
       const billingAddress = {
-        line1: (form.querySelector('input[name=address]') as any).value,
-        postal_code: (form.querySelector('input[name=postal_code]') as any).value,
+        line1: (this.paymentForm.querySelector('input[name=address]') as any).value,
+        postal_code: (this.paymentForm.querySelector('input[name=postal_code]') as any).value,
       };
       const shipping = {
         name,
         address: {
-          line1: (form.querySelector('input[name=address]') as any).value,
-          city: (form.querySelector('input[name=city]') as any).value,
-          postal_code: (form.querySelector('input[name=postal_code]') as any).value,
-          state: (form.querySelector('input[name=state]') as any).value,
+          line1: (this.paymentForm.querySelector('input[name=address]') as any).value,
+          city: (this.paymentForm.querySelector('input[name=city]') as any).value,
+          postal_code: (this.paymentForm.querySelector('input[name=postal_code]') as any).value,
+          state: (this.paymentForm.querySelector('input[name=state]') as any).value,
           country,
         },
       };
       // Disable the Pay button to prevent multiple click events.
-      (submitButton as any).disabled = true;
-      submitButton.textContent = 'Processing…';
+      (this.submitButton as any).disabled = true;
+      this.submitButton.textContent = 'Processing…';
 
       const courseIds = this.cart.map((course: Course) => course.id);
 
@@ -381,7 +369,7 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
                     phone
                   }
                 },
-                receipt_email: (form.querySelector('input[name=email]') as any).value,
+                receipt_email: (this.paymentForm.querySelector('input[name=email]') as any).value,
                 shipping: null // TODO: Make non-null
               });
               this.handlePayment(response, res.user);
@@ -395,37 +383,21 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
     for (let input of (document.querySelectorAll('input[name=payment]') as any)) {
       input.addEventListener('change', (event) => {
         event.preventDefault();
-        const payment = (form.querySelector('input[name=payment]:checked') as any).value;
+        const payment = (this.paymentForm.querySelector('input[name=payment]:checked') as any).value;
         const flow = this.paymentMethods[payment].flow;
 
         // Update button label.
         //updateButtonLabel(event.target.value);
 
         // Show the relevant details, whether it's an extra element or extra information for the user.
-        form
-          .querySelector('.payment-info.card')
-          .classList.toggle('visible', payment === 'card');
-        form
-          .querySelector('.payment-info.ideal')
-          .classList.toggle('visible', payment === 'ideal');
-        form
-          .querySelector('.payment-info.sepa_debit')
-          .classList.toggle('visible', payment === 'sepa_debit');
-        form
-          .querySelector('.payment-info.wechat')
-          .classList.toggle('visible', payment === 'wechat');
-        form
-          .querySelector('.payment-info.au_becs_debit')
-          .classList.toggle('visible', payment === 'au_becs_debit');
-        form
-          .querySelector('.payment-info.redirect')
-          .classList.toggle('visible', flow === 'redirect');
-        form
-          .querySelector('.payment-info.receiver')
-          .classList.toggle('visible', flow === 'receiver');
-        document
-          .getElementById('card-errors')
-          .classList.remove('visible');
+        this.paymentForm.querySelector('.payment-info.card').classList.toggle('visible', payment === 'card');
+        this.paymentForm.querySelector('.payment-info.ideal').classList.toggle('visible', payment === 'ideal');
+        this.paymentForm.querySelector('.payment-info.sepa_debit').classList.toggle('visible', payment === 'sepa_debit');
+        this.paymentForm.querySelector('.payment-info.wechat').classList.toggle('visible', payment === 'wechat');
+        this.paymentForm.querySelector('.payment-info.au_becs_debit').classList.toggle('visible', payment === 'au_becs_debit');
+        this.paymentForm.querySelector('.payment-info.redirect').classList.toggle('visible', flow === 'redirect');
+        this.paymentForm.querySelector('.payment-info.receiver').classList.toggle('visible', flow === 'receiver');
+        document.getElementById('card-errors').classList.remove('visible');
       });
     }
     
@@ -436,7 +408,7 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
     let countryParam = urlParams.get('country')
       ? urlParams.get('country').toUpperCase()
       : 'MX';
-    if (form.querySelector(`option[value="${countryParam}"]`)) {
+    if (this.paymentForm.querySelector(`option[value="${countryParam}"]`)) {
       country = countryParam;
     }
     this.selectCountry(country);
@@ -475,19 +447,18 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
    // Show only form fields that are relevant to the selected country.
    showRelevantFormFields(country: string) {
-    var form = document.getElementById('payment-form');
     if (!country) {
-      country = (form.querySelector('select[name=country] option:checked') as any).value;
+      country = (this.paymentForm.querySelector('select[name=country] option:checked') as any).value;
     }
-    const zipLabel = form.querySelector('label.zip');
+    const zipLabel = this.paymentForm.querySelector('label.zip');
     // Only show the state input for the United States.
     zipLabel.parentElement.classList.toggle(
       'with-state',
       ['AU', 'US'].includes(country)
     );
     // Update the ZIP label to make it more relevant for each country.
-    const zipInput = form.querySelector('label.zip input');
-    const zipSpan = form.querySelector('label.zip span');
+    const zipInput = this.paymentForm.querySelector('label.zip input');
+    const zipSpan = this.paymentForm.querySelector('label.zip span');
     switch (country) {
       case 'US':
         (zipSpan as any).innerText = 'ZIP';
@@ -508,8 +479,8 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Update the 'City' to appropriate name
-    const cityInput = form.querySelector('label.city input');
-    const citySpan = form.querySelector('label.city span');
+    const cityInput = this.paymentForm.querySelector('label.city input');
+    const citySpan = this.paymentForm.querySelector('label.city span');
     switch (country) {
       case 'AU':
         (citySpan as any).innerText = 'City / Suburb';
@@ -524,12 +495,11 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Show only the payment methods that are relevant to the selected country.
   showRelevantPaymentMethods(country) {
-    var form = document.getElementById('payment-form');
     if (!country) {
-      country = (form.querySelector('select[name=country] option:checked') as any).value;
+      country = (this.paymentForm.querySelector('select[name=country] option:checked') as any).value;
     }
 
-    const paymentInputs = form.querySelectorAll('input[name=payment]');
+    const paymentInputs = this.paymentForm.querySelectorAll('input[name=payment]');
     for (let i = 0; i < paymentInputs.length; i++) {
       let input = paymentInputs[i];
       input.parentElement.classList.toggle(
@@ -550,14 +520,12 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Check the first payment option again.
     (paymentInputs[0] as any).checked = 'checked';
-    form.querySelector('.payment-info.card').classList.add('visible');
-    form.querySelector('.payment-info.ideal').classList.remove('visible');
-    form.querySelector('.payment-info.sepa_debit').classList.remove('visible');
-    form.querySelector('.payment-info.wechat').classList.remove('visible');
-    form.querySelector('.payment-info.redirect').classList.remove('visible');
-    form
-      .querySelector('.payment-info.au_becs_debit')
-      .classList.remove('visible');
+    this.paymentForm.querySelector('.payment-info.card').classList.add('visible');
+    this.paymentForm.querySelector('.payment-info.ideal').classList.remove('visible');
+    this.paymentForm.querySelector('.payment-info.sepa_debit').classList.remove('visible');
+    this.paymentForm.querySelector('.payment-info.wechat').classList.remove('visible');
+    this.paymentForm.querySelector('.payment-info.redirect').classList.remove('visible');
+    this.paymentForm.querySelector('.payment-info.au_becs_debit').classList.remove('visible');
   };
 
   // Shows a success message when the payment is complete
@@ -572,8 +540,8 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showSuccesfullMessage = true;
     /* document.querySelector("button").disabled = true; */
     //let submitButton = document.getElementById('submit');
-    const submitButton = document.querySelector('button[type=submit]');
-    submitButton.setAttribute('disabled', 'disabled');
+    //const submitButton = document.querySelector('button[type=submit]');
+    this.submitButton.setAttribute('disabled', 'disabled');
   };
 
   // Show a spinner on payment submission
@@ -619,13 +587,13 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
     const confirmationElement = document.getElementById('confirmation');
     
     //let submitButton = document.getElementById('submit');
-    const submitButton = document.querySelector('button[type=submit]');
+    //const submitButton = document.querySelector('button[type=submit]');
 
     if (error && error.type === 'validation_error') {
       //mainElement.classList.remove('processing');
       //mainElement.classList.remove('receiver');
-      (submitButton as any).disabled = false;
-      submitButton.textContent = 'Complete Payment';
+      (this.submitButton as any).disabled = false;
+      this.submitButton.textContent = 'Complete Payment';
     } else if (error) {
       //mainElement.classList.remove('processing');
       //mainElement.classList.remove('receiver');
