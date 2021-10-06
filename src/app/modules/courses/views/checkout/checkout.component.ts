@@ -305,6 +305,9 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
     this.paymentForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       this.loading(true);
+      // Disable the Pay button to prevent multiple click events.
+      (this.submitButton as any).disabled = true;
+      this.submitButton.textContent = 'Processing…';
 
       // Retrieve the user information from the form.
       const payment = (this.paymentForm.querySelector('input[name=payment]:checked') as any).value;
@@ -326,21 +329,19 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
           country,
         },
       };
-      // Disable the Pay button to prevent multiple click events.
-      (this.submitButton as any).disabled = true;
-      this.submitButton.textContent = 'Processing…';
-
+      
       const courseIds = this.cart.map((course: Course) => course.id);
-
-      this.authService.purchaseCart2(this.user.id, courseIds, 'NEW_CARD', 'Nigeria').pipe(
+      this.authService.purchaseCartStripe(this.user.id, courseIds, 'NEW_CARD', 'Nigeria').pipe(
         catchError((error) => {
-          alert('Error ocurred');
           // Determine type of error. Handle Stripe error or Aurora API error.
-          console.error('Error creating payment intent for purchasing cart', error);
+          const errMsg = 'Error creating payment intent for purchasing cart';
+          console.error(errMsg, error);
+          this.toastrService.error(errMsg, 'Cannot proceed with payment');
           // TODO: Handle Stripe error
           throw error;
         })
-      ).subscribe(async (res: { user: User, paymentIntentClientSecret: string, purchaseCompleted: boolean }) => {
+        ).subscribe(async (res: { user: User, paymentIntentClientSecret: string, purchaseCompleted: boolean }) => {
+        console.log('Payment Intent created');
         if (res.user.cart.length === 0 && res.purchaseCompleted) {
           this.succesfullPurchase(res.user);
         } else {
@@ -353,15 +354,12 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
           ) {
             // Handle succesfull payment intent.
             // Create the payment request.
-
             console.log('Completing payment');
             const clientSecret = paymentIntentClientSecret;
-
             if (payment === 'card') {
               const response = await this.stripe.confirmCardPayment(clientSecret, {
                 payment_method: {
                   card,
-                  // TODO: Collect proper billing details
                   billing_details: {
                     address: billingAddress,
                     name,
@@ -370,10 +368,14 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
                   }
                 },
                 receipt_email: (this.paymentForm.querySelector('input[name=email]') as any).value,
-                shipping: null // TODO: Make non-null
+                shipping // Make it a separate from so back-end can update the order price in the front-end 
               });
               this.handlePayment(response, res.user);
             }
+          } else {
+            const errMsg = 'Invalid client secret';
+            console.error(errMsg);
+            this.toastrService.error(errMsg, 'Cannot proceed with payment');
           }
         }
       });
@@ -585,9 +587,6 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
     //const mainElement = document.getElementById('main');
     const confirmationElement = document.getElementById('confirmation');
-    
-    //let submitButton = document.getElementById('submit');
-    //const submitButton = document.querySelector('button[type=submit]');
 
     if (error && error.type === 'validation_error') {
       //mainElement.classList.remove('processing');

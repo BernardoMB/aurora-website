@@ -172,7 +172,7 @@ export class AuthService {
     return this.http.post<User>(url, { courses, paymentMethod, country, ...paymentInfo });
   }
   
-  purchaseCart2(
+  purchaseCartStripe(
     userId: string,
     courses: string[],
     paymentMethod: string,
