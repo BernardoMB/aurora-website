@@ -583,23 +583,30 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Handle new PaymentIntent result
   handlePayment(paymentResponse: any, user: User) {
+    console.log('Handling new PaymentIntent result');
     const {paymentIntent, error} = paymentResponse;
 
     //const mainElement = document.getElementById('main');
     const confirmationElement = document.getElementById('confirmation');
 
     if (error && error.type === 'validation_error') {
+      console.log('Validation error');
+
       //mainElement.classList.remove('processing');
       //mainElement.classList.remove('receiver');
       (this.submitButton as any).disabled = false;
       this.submitButton.textContent = 'Complete Payment';
     } else if (error) {
+      console.log('Error');
+
       //mainElement.classList.remove('processing');
       //mainElement.classList.remove('receiver');
       (confirmationElement.querySelector('.error-message') as any).innerText =
         error.message;
       //mainElement.classList.add('error');
     } else if (paymentIntent.status === 'succeeded') {
+      console.log('Succeded');
+
       // Success! Payment is confirmed. Update the interface to display the confirmation screen.
       //mainElement.classList.remove('processing');
       //mainElement.classList.remove('receiver');
@@ -621,6 +628,8 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
         this.succesfullPurchase(user);
       }, 3000);
     } else if (paymentIntent.status === 'processing') {
+      console.log('Processing');
+
       // Success! Now waiting for payment confirmation. Update the interface to display the confirmation screen.
       //mainElement.classList.remove('processing');
       // Update the note about receipt and shipping (the payment is not yet confirmed by the bank).
@@ -628,12 +637,16 @@ export class CheckoutComponent implements OnInit, OnDestroy, AfterViewInit {
         'We’ll send your receipt and ship your items as soon as your payment is confirmed.';
       //mainElement.classList.add('success');
     } else if (paymentIntent.status === 'requires_payment_method') {
+      console.log('Requires payment method');
+
       // Failure. Requires new PaymentMethod, show last payment error message.
       //mainElement.classList.remove('processing');
       (confirmationElement.querySelector('.error-message') as any).innerText =
         paymentIntent.last_payment_error || 'Payment failed';
       //mainElement.classList.add('error');
     } else {
+      console.log('Undefined error');
+
       // Payment has failed.
       //mainElement.classList.remove('success');
       //mainElement.classList.remove('processing');
