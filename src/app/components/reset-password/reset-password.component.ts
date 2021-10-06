@@ -69,6 +69,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
         this.token = this.route.snapshot.queryParams.email;
 
       } else {
+        console.log('ResetPasswordModalComponent: No email query params. Redirecting user to /');
         this.router.navigate(['/']);
       }
     });
