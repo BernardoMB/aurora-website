@@ -1,0 +1,519 @@
+.courses-jumbotron-section {
+  overflow: hidden;
+  .jumbotron-wrapper {
+    /* background-size: cover;
+    resize: both;
+    background-position-x: center;
+    background-position-y: center; */
+    background-image: url('/assets/img/jumbotrons/pattern.png');
+    .jumbotron-wrapper-overlay {
+      /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#00878e+25,003a55+75&0.75+0,0.75+100 */
+      background: -moz-linear-gradient(left,  rgba(0,135,142,0.75) 0%, rgba(0,135,142,0.75) 25%, rgba(0,58,85,0.75) 75%, rgba(0,58,85,0.75) 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(left,  rgba(0,135,142,0.75) 0%,rgba(0,135,142,0.75) 25%,rgba(0,58,85,0.75) 75%,rgba(0,58,85,0.75) 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to right,  rgba(0,135,142,0.75) 0%,rgba(0,135,142,0.75) 25%,rgba(0,58,85,0.75) 75%,rgba(0,58,85,0.75) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bf00878e', endColorstr='#bf003a55',GradientType=1 ); /* IE6-9 */
+      .jumbotron-conatiner {
+        // background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 220px;
+        .jumbotron-texts {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          font-family: 'Open Sans';
+          color: white;
+          margin: 20px;
+          .jumbotron-title {
+            font-size: 36px;
+            font-weight: 600;
+            line-height: 1.1;
+          }
+          .jumbotron-description {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 18px;
+            font-weight: lighter;
+            line-height: 1.3;
+          }
+        }
+      }
+    }
+  }
+}
+
+.cart-section {
+  display: block;
+  position: relative;
+  .cart-container {
+    max-width: 1180px;
+    box-sizing: border-box;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    padding: 20px 20px;
+    flex-direction: column;
+    .cart-counter {
+      font-family: 'Trebuchet MS', Helvetica, sans-serif;
+      color: #1b4568;
+      font-size: 20px;
+      font-weight: bold;
+      margin: 40px 0px 10px 0px;
+    }
+    .shopping-container {
+      display: flex;
+      margin-bottom: 30px;
+      .payment-info {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        margin-right: 30px;
+        .title {
+          font-family: 'Trebuchet MS', Helvetica, sans-serif;
+          color: #1b4568;
+          font-size: 20px;
+          font-weight: bold;
+          margin: 40px 0px 10px 0px;
+        }
+        .billing-address-menu {
+          margin-top: 20px;
+          mat-form-field {
+            @media screen and (max-width:420px) {
+              width: 100%;
+            }
+          }
+        }
+        .payment-options {
+          display: flex;
+          flex-direction: column;
+          .checkbox {
+            ::ng-deep {
+              .mat-checkbox-label {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+              }
+            }
+            .logos {
+              .mastercard, .visa, .amex {
+                width: 64px;
+                height: 30px;
+              }
+            }
+            mat-icon {
+              color: gray;
+              margin-left: 10px;
+            }
+          }
+          mat-radio-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 10px;
+            .radio-button {
+              ::ng-deep {
+                .mat-radio-label-content {
+                  display: flex;
+                  align-items: center;
+                }
+              }
+            }
+            .radio-button, .card {
+              margin-bottom: 15px;
+            }
+          }
+        }
+        .form-container {
+          margin: 20px 0px;
+          padding: 15px;
+          background-color: #f8f8f9;
+          border: 1px solid #dedfe0;
+          border-radius: 4px;
+          .new-card-form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            ::ng-deep {
+              .mat-form-field-outline {
+                border-radius: 5px;
+                background-color: white;
+              }
+              .mat-radio-label-content {
+                display: flex;
+                align-items: center;
+              }
+            }
+            .checkbox {
+              color: grey;
+            }
+            .fields-container {
+              display: flex;
+              mat-form-field {
+                margin-right: 10px;
+                flex-grow: 1;
+                &:nth-last-child(1) {
+                  margin-right: 0px;
+                }
+                @media screen and (max-width: 1060px) {
+                  margin-right: 0px !important;
+                }
+              }
+              @media screen and (max-width: 1060px) {
+                flex-direction: column;
+              }
+            }
+            mat-icon {
+              color: gainsboro;
+            }
+          }
+          .secure-connection-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            color: gainsboro;
+            font-family: sf pro text,-apple-system,BlinkMacSystemFont,segoe ui,Roboto,Helvetica,Arial,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol;
+            mat-icon {
+              font-size: 36px;
+              width: 36px;
+              height: 36px;
+            }
+            .labels-container {
+              display: flex;
+              flex-direction: column;
+              justify-content: flex-start;
+              div {
+                line-height: 1;
+              }
+            }
+          }
+        }
+        @media screen and (max-width: 750px) {
+          margin-right: 0px;
+        }
+      }
+      .checkout-card {
+        display: flex;
+        flex-direction: column;
+        .total-label {
+          font-style: normal;
+          font-weight: bold;
+          font-size: 28px;
+          color: #032C43;
+        }
+        .total {
+          font-weight: bold;
+          font-size: 36px;
+          color: #032C43;
+          font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+        }
+        .subtotal {
+          margin-bottom: 10px;
+          text-decoration: line-through;
+          color: #3F3F3F;
+          font-weight: bold;
+          font-size: 28px;
+          opacity: 0.46;
+          font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+        }
+        .checkout-button {
+          border: none;
+          line-height: unset;
+          padding: 8px 30px;
+          text-decoration: none;
+          vertical-align: middle;
+          text-align: center;
+          &:hover {
+            background: #FFFFFF;
+            border-radius: 21px;
+            color: #eb6c00;
+            box-shadow: inset 0 0 0 2px coral;
+          }
+          background: #FFFFFF;
+          border-radius: 21px;
+          color: #FFFFFF;
+          white-space: nowrap;
+          cursor: pointer;
+          /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ef9d38+0,ec5a58+100 */
+          background: rgb(239,157,56); /* Old browsers */
+          background: -moz-linear-gradient(top,  rgba(239,157,56,1) 0%, rgba(236,90,88,1) 100%); /* FF3.6-15 */
+          background: -webkit-linear-gradient(top,  rgba(239,157,56,1) 0%,rgba(236,90,88,1) 100%); /* Chrome10-25,Safari5.1-6 */
+          background: linear-gradient(to bottom,  rgba(239,157,56,1) 0%,rgba(236,90,88,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ef9d38', endColorstr='#ec5a58',GradientType=0 ); /* IE6-9 */
+          @media screen and (max-width: 500px) {
+            margin-bottom: 30px;
+          }
+        }
+        @media screen and (max-width: 750px) {
+          align-items: center;
+        }
+      }
+      @media screen and (max-width: 650px) {
+        flex-direction: column;
+      }
+    }
+    .order-summary {
+      display: flex;
+      flex-direction: column;
+      .title {
+        font-family: 'Trebuchet MS', Helvetica, sans-serif;
+        color: #1b4568;
+        font-size: 20px;
+        font-weight: bold;
+        margin: 40px 0px 20px 0px;
+      }
+      .course-item {
+        display: flex;
+        padding: 10px;
+        border: 1px solid gainsboro;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        .course-image {
+          width: 130px;
+          height: 80px;
+          background-size: cover;
+          resize: both;
+          background-position-x: center;
+          background-position-y: center;
+          position: relative;
+          cursor: pointer;
+          border-radius: 5px;
+          -webkit-box-shadow: 0px 0px 15px -10px rgba(0,0,0,0.75);
+          -moz-box-shadow: 0px 0px 15px -10px rgba(0,0,0,0.75);
+          box-shadow: 0px 0px 15px -10px rgba(0,0,0,0.75);
+          &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+          }
+          &:hover {
+            &:after {
+              background-color: rgba($color: #000000, $alpha: 0.3);
+            }
+          }
+        }
+        .course-details {
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+          margin: 0px 10px;
+          .course-name {
+            color: #29303b;
+            font-weight: bold;
+            font-family: open sans, helvetica neue, Helvetica, Arial,
+              sans-serif;
+            cursor: pointer;
+              &:hover {
+                text-decoration: underline;
+              }
+          }
+          .category-container {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+            .category-color-indicator {
+              width: 10px;
+              height: 10px;
+              border-radius: 10px;
+              margin-right: 10px;
+            }
+            .category-name {
+            }
+          }
+        }
+        .action-items {
+          display: flex;
+          flex-direction: column;
+          a {
+            cursor: pointer;
+            color: #29303b;
+            font-weight: bold;
+            font-family: open sans, helvetica neue, Helvetica, Arial,
+              sans-serif;
+            &:hover {
+              color: #218C90;
+            }
+          }
+        }
+        .price-container {
+          display: flex;
+          flex-direction: column;
+          margin-left: 20px;
+          font-family: open sans, helvetica neue, Helvetica, Arial;
+          .price {
+            font-weight: bold;
+            color: #218C90;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            i {
+              margin-left: 5px;
+              font-size: 16px;
+            }
+          }
+          .discount-container {
+            .list-price {
+              font-weight: 400;
+              color: grey;
+              font-size: 18px;
+              display: flex;
+              align-items: center;
+              text-decoration: line-through;
+            }
+            .discount {
+              margin-top: 5px;
+              font-size: 12px;
+              color: grey;
+            }
+          }
+        }
+        @media screen and (max-width: 500px) {
+          display: none;
+        }
+      }
+      .course-item-small {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        border: 1px solid gainsboro;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        .upper {
+          display: flex;
+          .course-image {
+            min-width: 100px;
+            min-height: 100px;
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            resize: both;
+            background-position-x: center;
+            background-position-y: center;
+            position: relative;
+            cursor: pointer;
+            border-radius: 5px;
+            -webkit-box-shadow: 0px 0px 15px -10px rgba(0,0,0,0.75);
+            -moz-box-shadow: 0px 0px 15px -10px rgba(0,0,0,0.75);
+            box-shadow: 0px 0px 15px -10px rgba(0,0,0,0.75);
+            &:after {
+              content: '';
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: 0;
+              right: 0;
+            }
+            &:hover {
+              &:after {
+                background-color: rgba($color: #000000, $alpha: 0.3);
+              }
+            }
+          }
+          .course-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            margin-left: 10px;
+            justify-content: space-between;
+            .course-name {
+              color: #29303b;
+              font-weight: 700;
+              font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
+              font-size: 15px;
+              cursor: pointer;
+                &:hover {
+                  text-decoration: underline;
+                }
+            }
+            .category-container {
+              display: flex;
+              align-items: center;
+              margin-top: 5px;
+              .category-color-indicator {
+                width: 10px;
+                height: 10px;
+                border-radius: 10px;
+                margin-right: 10px;
+              }
+              .category-name {
+                font-size: 13px;
+              }
+            }
+            .price-container {
+              display: flex;
+              font-family: open sans, helvetica neue, Helvetica, Arial;
+              flex-direction: row-reverse;
+              .price {
+                font-weight: bold;
+                color: #218C90;
+                font-size: 15px;
+                display: flex;
+                align-items: center;
+                i {
+                  margin-left: 2px;
+                  font-size: 14px;
+                }
+              }
+              .discount-container {
+                display: flex;
+                align-items: center;
+                .list-price {
+                  font-weight: 400;
+                  color: grey;
+                  font-size: 12px;
+                  display: flex;
+                  align-items: center;
+                  text-decoration: line-through;
+                }
+                .discount {
+                  margin: 0px 3px;
+                  font-size: 8px;
+                  color: grey;
+                }
+              }
+            }
+          }
+        }
+        .lower {
+          display: flex;
+          margin-top: 5px;
+          .action-items {
+            display: flex;
+            flex-direction: column;
+            a {
+              cursor: pointer;
+              color: #29303b;
+              font-weight: bold;
+              font-size: 14px;
+              font-family: open sans, helvetica neue, Helvetica, Arial,
+                sans-serif;
+              &:hover {
+                color: #218C90;
+              }
+            }
+          }
+        }
+        display: none;
+        @media screen and (max-width: 500px) {
+          display: inherit;
+        }
+      }
+    }
+  }
+}
+
+.spinner-overlay {
+  z-index: 10; // It has to be on top of the header too
+  position: fixed;
+  top: -64px;
+  height: calc(100vh + 64px);
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
