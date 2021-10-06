@@ -85,7 +85,11 @@
       // Re-enable the Pay button.
       submitButton.disabled = false;
     });
+
+    // Make sure all data is loaded from the store to compute the payment amount.
+    await store.loadProducts();
   
+    //#region Other payment methods
     /**
      * Implement a Stripe IBAN Element that matches the look-and-feel of the app.
      *
@@ -158,7 +162,9 @@
       // Re-enable the Pay button.
       submitButton.disabled = false;
     });
+    //#endregion
   
+    //#region Stripe Payment Request
     /**
      * Implement a Stripe Payment Request Button Element.
      *
@@ -167,9 +173,6 @@
      * When of these two options is available, this element adds a “Pay” button on top
      * of the page to let users pay in just a click (or a tap on mobile).
      */
-  
-    // Make sure all data is loaded from the store to compute the payment amount.
-    await store.loadProducts();
   
     // Create the payment request.
     const paymentRequest = stripe.paymentRequest({
@@ -263,6 +266,7 @@
       // Show the payment request section.
       document.getElementById('payment-request').classList.add('visible');
     }
+    //#endregion
   
     /**
      * Handle the form submission.
