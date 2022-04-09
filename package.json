@@ -50,7 +50,7 @@
     "jquery": "^3.5.1",
     "lodash": "^4.17.15",
     "material-design-icons": "^3.0.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "ngx-chronology": "^1.1.2",
     "ngx-cookie-service": "^2.3.0",
     "ngx-pagination": "^5.0.0",
